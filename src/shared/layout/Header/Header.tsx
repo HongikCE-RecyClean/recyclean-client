@@ -1,6 +1,7 @@
-import { Recycle, User } from "lucide-react";
+import { User } from "lucide-react";
 import styled from "@emotion/styled";
 import { Button } from "../../ui/Button/Button";
+import recycleanLogo from "../../../assets/recycleanLogo.svg";
 
 const HeaderBar = styled.header`
   position: sticky;
@@ -28,6 +29,11 @@ const Brand = styled.div`
   color: ${({ theme }) => theme.colors.text};
 `;
 
+const BrandLogo = styled.img`
+  width: 28px;
+  height: 28px;
+`;
+
 const BrandTitle = styled.h1`
   margin: 0;
   font-size: 1.1rem;
@@ -39,7 +45,7 @@ export function Header() {
     <HeaderBar>
       <HeaderInner>
         <Brand>
-          <Recycle size={24} color="#2f855a" />
+          <BrandLogo src={recycleanLogo} alt="RecyClean 로고(logo)" />
           <BrandTitle>RecyClean</BrandTitle>
         </Brand>
         <Button variant="ghost" size="icon" aria-label="사용자 메뉴 열기">
