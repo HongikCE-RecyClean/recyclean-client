@@ -12,13 +12,14 @@ import {
   Shield,
   Sun,
   User,
-  Volume2
+  Volume2,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../shared/ui/Card/Card";
 import { Badge } from "../../shared/ui/Badge/Badge";
 import { Button } from "../../shared/ui/Button/Button";
 import { Switch } from "../../shared/ui/Switch/Switch";
-import { Avatar, AvatarFallback, AvatarImage } from "../../shared/ui/Avatar/Avatar";
+import { Avatar, AvatarImage } from "../../shared/ui/Avatar/Avatar";
+import recycleanLogo from "../../assets/recycleanLogo.svg";
 import { Separator } from "../../shared/ui/Separator/Separator";
 import { SelectField } from "../../shared/ui/SelectField/SelectField";
 
@@ -86,14 +87,14 @@ const languages = [
   { value: "ko", label: "한국어" },
   { value: "en", label: "English" },
   { value: "es", label: "Español" },
-  { value: "fr", label: "Français" }
+  { value: "fr", label: "Français" },
 ];
 
 const regions = [
   { value: "kr", label: "대한민국" },
   { value: "us", label: "United States" },
   { value: "ca", label: "Canada" },
-  { value: "uk", label: "United Kingdom" }
+  { value: "uk", label: "United Kingdom" },
 ];
 
 export function SettingsPage() {
@@ -108,7 +109,7 @@ export function SettingsPage() {
     totalPoints: 287,
     itemsRecycled: 156,
     joinDate: "2024년 1월",
-    streakDays: 12
+    streakDays: 12,
   };
 
   return (
@@ -117,11 +118,13 @@ export function SettingsPage() {
         <CardContent>
           <ProfileRow>
             <Avatar size={64}>
-              <AvatarImage src="" alt="사용자" />
-              <AvatarFallback>EC</AvatarFallback>
+              <AvatarImage
+                src={recycleanLogo}
+                alt="기본 사용자 프로필 이미지(profile image)"
+                style={{ objectFit: "contain", padding: "12px" }}
+              />
             </Avatar>
             <div style={{ flex: 1 }}>
-              <h3 style={{ margin: 0 }}>EcoWarrior</h3>
               <p style={{ margin: "4px 0 0", color: "#475569", fontSize: "0.85rem" }}>
                 가입일 {userStats.joinDate}
               </p>
@@ -162,8 +165,7 @@ export function SettingsPage() {
       <Card>
         <CardHeader>
           <CardTitle>
-            <SettingsIcon size={18} />
-            앱 설정
+            <SettingsIcon size={18} />앱 설정
           </CardTitle>
         </CardHeader>
         <SectionStack>
@@ -237,7 +239,11 @@ export function SettingsPage() {
           </div>
           <div>
             <div style={{ fontWeight: 600, marginBottom: "8px", fontSize: "0.85rem" }}>지역</div>
-            <SelectField options={regions} value={region} onChange={(event) => setRegion(event.target.value)} />
+            <SelectField
+              options={regions}
+              value={region}
+              onChange={(event) => setRegion(event.target.value)}
+            />
           </div>
         </SectionStack>
       </Card>
@@ -264,8 +270,7 @@ export function SettingsPage() {
               도움말 센터
             </Button>
             <Button variant="outline" style={{ justifyContent: "flex-start" }}>
-              <Info size={16} />
-              앱 정보
+              <Info size={16} />앱 정보
             </Button>
             <Button variant="destructive" style={{ justifyContent: "flex-start" }}>
               <LogOut size={16} />
