@@ -82,4 +82,4 @@ jobs:
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Deployment URL
-        run: echo "Deployed: ${{ steps.deploy.outputs.url }}"
+        run: 'echo "Deployed: ${{ steps.deploy.outputs.url }}"'
