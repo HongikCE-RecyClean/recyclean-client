@@ -1,0 +1,85 @@
+name: Deploy to Vercel (main only)
+
+on:
+  push:
+    branches: [main]
+
+# 같은 브랜치의 이전 실행 취소(최신만 유지)
+concurrency:
+  group: vercel-prod-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # ← 이 워크플로우가 "이 오너의 레포에서만" 돌도록 제한
+  UPSTREAM_OWNER: HongikCE-RecyClean
+
+  # Vercel 스코프/프로젝트 식별자 (Secrets에서 가져옴)
+  # NOTE: secrets.VERCEL_TEAM_ID == orgId (원한다면 secrets.VERCEL_ORG_ID로 이름 변경해도 됨)
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  deploy:
+    # 포크 레포에서 실행되는 것을 차단
+    if: github.ref == 'refs/heads/main' && github.repository_owner == env.UPSTREAM_OWNER
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate required secrets early
+        env:
+          VERCEL_TOKEN:      ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID:     ${{ env.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ env.VERCEL_PROJECT_ID }}
+        run: |
+          set -euo pipefail
+          for v in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Missing required secret: $v"
+              exit 1
+            fi
+          done
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node (LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # pnpm을 쓰는 프로젝트라면 lockfile 존재 시 pnpm 설치
+      - name: Install pnpm (if pnpm-lock.yaml exists)
+        if: hashFiles('pnpm-lock.yaml') != ''
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      # vercel build/dev를 쓸 경우, 최신 프로젝트 설정/ENV를 로컬 캐시에 당겨서 사용
+      - name: Pull Vercel env (production)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build (production)
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy to Vercel (production)
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          url=$(vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Deployment URL
+        run: echo "Deployed: ${{ steps.deploy.outputs.url }}"
