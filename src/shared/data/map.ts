@@ -1,13 +1,14 @@
-import type { BadgeTone } from "../../shared/ui/Badge/Badge";
 import type {
   FilterOption,
   RecyclingCenter,
   TrashBin,
   TrashBinAvailability,
   TrashBinType,
-} from "./types";
+} from "shared/types/map";
+import type { BadgeTone } from "shared/ui/Badge/Badge";
 
-export const TRASH_BINS: TrashBin[] = [
+// 지도 페이지 초기 쓰레기통 데이터
+export const trashBins: TrashBin[] = [
   {
     id: "1",
     type: "recycling",
@@ -60,7 +61,8 @@ export const TRASH_BINS: TrashBin[] = [
   },
 ];
 
-export const RECYCLING_CENTERS: RecyclingCenter[] = [
+// 지도 페이지 초기 재활용 센터 데이터
+export const recyclingCenters: RecyclingCenter[] = [
   {
     id: "1",
     name: "EcoCenter Downtown",
@@ -98,7 +100,8 @@ export const RECYCLING_CENTERS: RecyclingCenter[] = [
   },
 ];
 
-export const FILTER_OPTIONS: FilterOption[] = [
+// 지도 페이지 필터 옵션
+export const filterOptions: FilterOption[] = [
   { value: "all", label: "전체 유형" },
   { value: "recycling", label: "재활용" },
   { value: "general", label: "일반" },
@@ -106,20 +109,23 @@ export const FILTER_OPTIONS: FilterOption[] = [
   { value: "compost", label: "퇴비" },
 ];
 
-export const TYPE_ACCENT: Record<TrashBinType, string> = {
+// 쓰레기통 유형 강조색 매핑
+export const typeAccent: Record<TrashBinType, string> = {
   recycling: "#2563eb",
   general: "#64748b",
   compost: "#16a34a",
   electronic: "#7c3aed",
 };
 
-export const AVAILABILITY_TONE: Record<TrashBinAvailability, "success" | "danger" | "warning"> = {
+// 쓰레기통 상태 톤 매핑
+export const availabilityTone: Record<TrashBinAvailability, "success" | "danger" | "warning"> = {
   available: "success",
   full: "danger",
   maintenance: "warning",
 };
 
-export const MATERIAL_COLORS: Record<string, BadgeTone> = {
+// 재료 배지 색상 매핑
+export const materialColors: Record<string, BadgeTone> = {
   Plastic: "info",
   Glass: "success",
   Metal: "danger",
