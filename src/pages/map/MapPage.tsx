@@ -1,10 +1,11 @@
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useMemo } from "react";
 import styled from "@emotion/styled";
 import { MapFilterCard } from "./components/MapFilterCard";
 import { MapPlaceholderCard } from "./components/MapPlaceholderCard";
 import { TrashBinList } from "./components/TrashBinList";
 import { RecyclingCenterList } from "./components/RecyclingCenterList";
-import { FILTER_OPTIONS, RECYCLING_CENTERS, TRASH_BINS } from "./constants";
+import { useMapData } from "shared/api/map";
+import { useMapStore } from "shared/state/mapStore";
 
 const PageContainer = styled.div`
   width: 100%;
@@ -16,12 +17,17 @@ const PageContainer = styled.div`
 `;
 
 export function MapPage() {
-  const [selectedType, setSelectedType] = useState<string>("all");
+  const { selectedType, setSelectedType } = useMapStore();
+  const { data } = useMapData();
+  const bins = data?.bins ?? [];
+  const options = data?.options ?? [];
+  const centers = data?.centers ?? [];
 
+  // 선택된 유형에 맞춰 쓰레기통 목록 필터링
   const filteredBins = useMemo(() => {
-    if (selectedType === "all") return TRASH_BINS;
-    return TRASH_BINS.filter((bin) => bin.type === selectedType);
-  }, [selectedType]);
+    if (selectedType === "all") return bins;
+    return bins.filter((bin) => bin.type === selectedType);
+  }, [bins, selectedType]);
 
   const handleTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSelectedType(event.target.value);
@@ -31,12 +37,12 @@ export function MapPage() {
     <PageContainer>
       <MapFilterCard
         selectedType={selectedType}
-        options={FILTER_OPTIONS}
+        options={options}
         onTypeChange={handleTypeChange}
       />
       <MapPlaceholderCard binCount={filteredBins.length} />
       <TrashBinList bins={filteredBins} />
-      <RecyclingCenterList centers={RECYCLING_CENTERS} />
+      <RecyclingCenterList centers={centers} />
     </PageContainer>
   );
 }

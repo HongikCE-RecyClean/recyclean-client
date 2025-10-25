@@ -1,10 +1,14 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import '@styles/global.css.ts'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "@styles/global.css.ts";
+import App from "./App.tsx";
+import { AppProviders } from "shared/providers/AppProviders";
 
-createRoot(document.getElementById('root')!).render(
+// 루트 렌더링 설정
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
+    <AppProviders>
+      <App />
+    </AppProviders>
   </StrictMode>,
-)
+);

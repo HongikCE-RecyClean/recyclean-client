@@ -4,7 +4,7 @@ import { MapPin, Navigation, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Button } from "../../../shared/ui/Button/Button";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
-import type { FilterOption } from "../types";
+import type { FilterOption } from "shared/types/map";
 
 interface MapFilterCardProps {
   selectedType: string;

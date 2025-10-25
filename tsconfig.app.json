@@ -14,7 +14,8 @@
     "moduleDetection": "force",
     "baseUrl": "./src",
     "paths": {
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "shared/*": ["shared/*"]
     },
     "noEmit": true,
     "jsx": "react-jsx",

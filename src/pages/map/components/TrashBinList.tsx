@@ -3,8 +3,8 @@ import { Clock, Navigation, Recycle, Trash2 } from "lucide-react";
 import { Card, CardContent } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
-import { AVAILABILITY_TONE, MATERIAL_COLORS, TYPE_ACCENT } from "../constants";
-import type { TrashBin } from "../types";
+import { mapAvailabilityTone, mapMaterialColors, mapTypeAccent } from "shared/api/map";
+import type { TrashBin } from "shared/types/map";
 
 interface TrashBinListProps {
   bins: TrashBin[];
@@ -74,7 +74,7 @@ export function TrashBinList({ bins }: TrashBinListProps) {
   return (
     <BinList>
       {bins.map((bin) => (
-        <BinCard key={bin.id} $accent={TYPE_ACCENT[bin.type]}>
+        <BinCard key={bin.id} $accent={mapTypeAccent[bin.type]}>
           <CardContent>
             <BinHeader>
               <BinInfo>
@@ -90,7 +90,7 @@ export function TrashBinList({ bins }: TrashBinListProps) {
               <div style={{ textAlign: "right" }}>
                 <Badge variant="outline">{bin.distance}</Badge>
                 <div style={{ marginTop: "6px" }}>
-                  <Badge tone={AVAILABILITY_TONE[bin.availability]}>
+                  <Badge tone={mapAvailabilityTone[bin.availability]}>
                     {bin.availability === "available"
                       ? "이용 가능"
                       : bin.availability === "full"
@@ -105,7 +105,7 @@ export function TrashBinList({ bins }: TrashBinListProps) {
               <SectionLabel>수거 품목</SectionLabel>
               <AcceptedItems>
                 {bin.acceptedItems.map((item) => (
-                  <Badge key={item} variant="soft" tone={MATERIAL_COLORS[item] ?? "neutral"}>
+                  <Badge key={item} variant="soft" tone={mapMaterialColors[item] ?? "neutral"}>
                     {item}
                   </Badge>
                 ))}
