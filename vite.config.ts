@@ -13,6 +13,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@styles": resolve(__dirname, "src/styles"),
+      shared: resolve(__dirname, "src/shared"),
     },
   },
   server: {
