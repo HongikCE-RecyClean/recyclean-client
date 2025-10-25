@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "@emotion/styled";
 import {
   Bell,
@@ -22,6 +21,7 @@ import { Avatar, AvatarImage } from "../../shared/ui/Avatar/Avatar";
 import recycleanLogo from "../../assets/recycleanLogo.svg";
 import { Separator } from "../../shared/ui/Separator/Separator";
 import { SelectField } from "../../shared/ui/SelectField/SelectField";
+import { useSettingsStore } from "shared/state/settingsStore";
 
 const PageContainer = styled.div`
   width: 100%;
@@ -98,12 +98,21 @@ const regions = [
 ];
 
 export function SettingsPage() {
-  const [notifications, setNotifications] = useState(true);
-  const [location, setLocation] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
-  const [sounds, setSounds] = useState(true);
-  const [language, setLanguage] = useState("ko");
-  const [region, setRegion] = useState("kr");
+  // 사용자 설정 스토어 바인딩
+  const {
+    notifications,
+    setNotifications,
+    location,
+    setLocation,
+    darkMode,
+    setDarkMode,
+    sounds,
+    setSounds,
+    language,
+    setLanguage,
+    region,
+    setRegion,
+  } = useSettingsStore();
 
   const userStats: UserStats = {
     totalPoints: 287,
