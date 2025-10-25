@@ -4,8 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Car
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
 import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
-import { MATERIAL_COLORS } from "../constants";
-import type { RecyclingCenter } from "../types";
+import { mapMaterialColors } from "shared/api/map";
+import type { RecyclingCenter } from "shared/types/map";
 
 interface RecyclingCenterListProps {
   centers: RecyclingCenter[];
@@ -81,7 +81,7 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
 
                 <MaterialChips>
                   {center.acceptedMaterials.map((material) => (
-                    <Badge key={material} tone={MATERIAL_COLORS[material] ?? "neutral"}>
+                    <Badge key={material} tone={mapMaterialColors[material] ?? "neutral"}>
                       {material}
                     </Badge>
                   ))}
