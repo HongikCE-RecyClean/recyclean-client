@@ -1,9 +1,4 @@
-import styled from "@emotion/styled";
+import * as S from "./Separator.styles";
 
-export const Separator = styled.hr`
-  border: none;
-  height: 1px;
-  width: 100%;
-  background: ${({ theme }) => theme.colors.border};
-  margin: ${({ theme }) => theme.spacing(3)} 0;
-`;
+// 전역 구분선 컴포넌트 재노출
+export const Separator = S.Separator;

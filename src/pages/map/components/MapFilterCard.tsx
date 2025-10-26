@@ -1,10 +1,9 @@
 import { ChangeEvent } from "react";
-import styled from "@emotion/styled";
 import { MapPin, Navigation, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
-import { Button } from "../../../shared/ui/Button/Button";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import type { FilterOption } from "shared/types/map";
+import * as S from "./MapFilterCard.styles";
 
 interface MapFilterCardProps {
   selectedType: string;
@@ -13,22 +12,13 @@ interface MapFilterCardProps {
   onUseLocationClick?: () => void;
 }
 
-const FilterRow = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  align-items: center;
-`;
-
-const FullWidthButton = styled(Button)`
-  width: 100%;
-`;
-
 export function MapFilterCard({
   selectedType,
   options,
   onTypeChange,
   onUseLocationClick,
 }: MapFilterCardProps) {
+  // 지도 필터 카드 렌더링
   return (
     <Card>
       <CardHeader>
@@ -37,13 +27,13 @@ export function MapFilterCard({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <FullWidthButton variant="outline" onClick={onUseLocationClick}>
+        <S.FullWidthButton variant="outline" onClick={onUseLocationClick}>
           <Navigation size={18} />내 위치 사용하기
-        </FullWidthButton>
-        <FilterRow>
+        </S.FullWidthButton>
+        <S.FilterRow>
           <Filter size={16} color="#64748b" />
           <SelectField options={options} value={selectedType} onChange={onTypeChange} />
-        </FilterRow>
+        </S.FilterRow>
       </CardContent>
     </Card>
   );

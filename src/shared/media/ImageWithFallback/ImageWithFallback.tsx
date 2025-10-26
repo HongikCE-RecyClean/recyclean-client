@@ -1,27 +1,5 @@
 import { useState } from "react";
-import styled from "@emotion/styled";
-
-const ErrorContainer = styled.div`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-color: ${({ theme }) => theme.colors.surfaceMuted};
-  color: ${({ theme }) => theme.colors.textMuted};
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-`;
-
-const FallbackIcon = styled.span`
-  font-size: 1.5rem;
-`;
-
-const StyledImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-`;
+import * as S from "./ImageWithFallback.styles";
 
 export interface ImageWithFallbackProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackIcon?: React.ReactNode;
@@ -36,14 +14,15 @@ export function ImageWithFallback({
 
   if (didError) {
     return (
-      <ErrorContainer>
-        <FallbackIcon>{fallbackIcon}</FallbackIcon>
-      </ErrorContainer>
+      <S.ErrorContainer>
+        <S.FallbackIcon>{fallbackIcon}</S.FallbackIcon>
+      </S.ErrorContainer>
     );
   }
 
+  // 이미지 로딩 실패 시 대체 표시 처리
   return (
-    <StyledImage
+    <S.StyledImage
       {...rest}
       onError={(event) => {
         setDidError(true);
