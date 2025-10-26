@@ -9,9 +9,7 @@ export const BinList = styled.div`
 `;
 
 // 쓰레기통 카드 프레임 스타일 정의
-export const BinCard = styled(Card)<{ $accent: string }>`
-  border-left: 4px solid ${({ $accent }) => $accent};
-`;
+export const BinCard = styled(Card)``;
 
 // 카드 헤더 정렬 정의
 export const BinHeader = styled.div`

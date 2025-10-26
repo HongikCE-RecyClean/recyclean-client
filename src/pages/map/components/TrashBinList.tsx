@@ -2,7 +2,7 @@ import { Clock, Navigation, Recycle, Trash2 } from "lucide-react";
 import { Card, CardContent } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
-import { mapAvailabilityTone, mapMaterialColors, mapTypeAccent } from "shared/api/map";
+import { mapAvailabilityTone, mapMaterialColors } from "shared/api/map";
 import type { TrashBin } from "shared/types/map";
 import * as S from "./TrashBinList.styles";
 
@@ -23,7 +23,7 @@ export function TrashBinList({ bins }: TrashBinListProps) {
   return (
     <S.BinList>
       {bins.map((bin) => (
-        <S.BinCard key={bin.id} $accent={mapTypeAccent[bin.type]}>
+        <S.BinCard key={bin.id}>
           <CardContent>
             <S.BinHeader>
               <S.BinInfo>
