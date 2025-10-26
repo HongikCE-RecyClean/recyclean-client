@@ -8,4 +8,13 @@ export const queryKeys = {
     all: ["map"] as const,
     data: () => [...queryKeys.map.all, "data"] as const,
   },
+  analyze: {
+    all: ["analyze"] as const,
+    result: () => [...queryKeys.analyze.all, "result"] as const,
+  },
+  settings: {
+    all: ["settings"] as const,
+    profile: () => [...queryKeys.settings.all, "profile"] as const,
+    preferences: () => [...queryKeys.settings.all, "preferences"] as const,
+  },
 };

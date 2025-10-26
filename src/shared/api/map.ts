@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import { delay } from "shared/utils/delay";
 import {
   filterOptions,
@@ -9,6 +9,8 @@ import {
   availabilityTone,
 } from "shared/data/map";
 import type { RecyclingCenter, TrashBin } from "shared/types/map";
+import { apiClient } from "./client";
+import { isMockApiEnabled } from "./config";
 import { queryKeys } from "./queryKeys";
 
 // 지도 데이터 묶음 타입
@@ -18,26 +20,40 @@ export interface MapData {
   options: typeof filterOptions;
 }
 
-// 지도 데이터 조회 함수
-export async function fetchMapData(): Promise<MapData> {
-  await delay(80);
-  return {
-    bins: trashBins,
-    centers: recyclingCenters,
-    options: filterOptions,
-  };
-}
+// 목 지연 시간 정의
+const MOCK_DELAY_MS = 80;
 
-// 지도 데이터 쿼리 훅
-export function useMapData() {
-  return useQuery({
-    queryKey: queryKeys.map.data(),
-    queryFn: fetchMapData,
-    initialData: {
+// 지도 데이터 조회 함수
+export async function fetchMapData(client = apiClient): Promise<MapData> {
+  if (isMockApiEnabled()) {
+    await delay(MOCK_DELAY_MS);
+    return {
       bins: trashBins,
       centers: recyclingCenters,
       options: filterOptions,
-    },
+    };
+  }
+  const response = await client.get<MapData>("/map");
+  return response.data;
+}
+
+// 지도 데이터 쿼리 훅
+export function useMapData(
+  options?: Omit<UseQueryOptions<MapData, Error>, "queryKey" | "queryFn">,
+) {
+  const shouldUseMock = isMockApiEnabled();
+  return useQuery<MapData>({
+    queryKey: queryKeys.map.data(),
+    queryFn: () => fetchMapData(),
+    initialData: shouldUseMock
+      ? {
+          bins: trashBins,
+          centers: recyclingCenters,
+          options: filterOptions,
+        }
+      : undefined,
+    staleTime: 1000 * 60,
+    ...options,
   });
 }
 
