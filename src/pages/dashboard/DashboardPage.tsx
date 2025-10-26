@@ -76,23 +76,6 @@ export function DashboardPage() {
         monthlyGoal={monthlyGoal}
         progressValue={progressValue}
       />
-      <QuickActionsCard onAnalyze={() => navigate("/analyze")} onOpenMap={() => navigate("/map")} />
-      <RecentActivityCard recentActivity={recentActivity} />
-      <AchievementsCard achievements={achievements} />
-      <MaterialSearchCard
-        searchTerm={searchTerm}
-        onSearchTermChange={(event) => setSearchTerm(event.target.value)}
-        materialCategory={materialCategory}
-        onMaterialCategoryChange={setMaterialCategory}
-        filteredMaterials={filteredMaterials}
-      />
-      <GoalsCard goals={goals} />
-      <TipsCard
-        tips={filteredTips}
-        selectedTipCategory={selectedTipCategory}
-        onSelectedTipCategoryChange={setSelectedTipCategory}
-        tipCategoryOptions={tipCategories}
-      />
       <TrackerCard
         totalPoints={totalPoints}
         monthlyGoal={monthlyGoal}
@@ -100,6 +83,23 @@ export function DashboardPage() {
         entriesCount={entries.length}
         totalItems={totalItems}
         categoryCount={categoryCount}
+      />
+      {/* <QuickActionsCard onAnalyze={() => navigate("/analyze")} onOpenMap={() => navigate("/map")} /> */}
+      <RecentActivityCard recentActivity={recentActivity} />
+      {/* <AchievementsCard achievements={achievements} /> */}
+      <MaterialSearchCard
+        searchTerm={searchTerm}
+        onSearchTermChange={(event) => setSearchTerm(event.target.value)}
+        materialCategory={materialCategory}
+        onMaterialCategoryChange={setMaterialCategory}
+        filteredMaterials={filteredMaterials}
+      />
+      {/* <GoalsCard goals={goals} /> */}
+      <TipsCard
+        tips={filteredTips}
+        selectedTipCategory={selectedTipCategory}
+        onSelectedTipCategoryChange={setSelectedTipCategory}
+        tipCategoryOptions={tipCategories}
       />
     </S.PageContainer>
   );
