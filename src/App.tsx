@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AppShell } from "./shared/layout/AppShell/AppShell";
 import { DashboardPage } from "./pages/dashboard/DashboardPage";
 import { AnalyzePage } from "./pages/analyze/AnalyzePage";
+import { CalendarPage } from "./pages/calendar/CalendarPage";
 import { MapPage } from "./pages/map/MapPage";
 import { SettingsPage } from "./pages/settings/SettingsPage";
 
@@ -13,6 +14,7 @@ export function App() {
         <Route element={<AppShell />}>
           <Route path="/" element={<DashboardPage />} />
           <Route path="/analyze" element={<AnalyzePage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />

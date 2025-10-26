@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { Camera, Home, MapPin, Settings } from "lucide-react";
+import { Camera, CalendarDays, Home, MapPin, Settings } from "lucide-react";
 import * as S from "./BottomNav.styles";
 
 interface NavItem {
@@ -11,6 +11,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { to: "/", label: "홈", icon: (props) => <Home {...props} /> },
   { to: "/analyze", label: "분석", icon: (props) => <Camera {...props} /> },
+  { to: "/calendar", label: "달력", icon: (props) => <CalendarDays {...props} /> },
   { to: "/map", label: "지도", icon: (props) => <MapPin {...props} /> },
   { to: "/settings", label: "설정", icon: (props) => <Settings {...props} /> },
 ];
