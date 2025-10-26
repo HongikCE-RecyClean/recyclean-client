@@ -33,7 +33,7 @@ export function MonthlyProgressCard({
         <Progress value={progressValue} />
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
           <span style={{ color: "#64748b" }}>{Math.round(progressValue)}% 달성</span>
-          <span style={{ color: "#16a34a", fontWeight: 600 }}>좋은 속도예요!</span>
+          {/* <span style={{ color: "#16a34a", fontWeight: 600 }}>좋은 속도예요!</span> */}
         </div>
       </CardContent>
     </Card>
