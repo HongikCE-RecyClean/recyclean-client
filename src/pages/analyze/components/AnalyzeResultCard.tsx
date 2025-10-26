@@ -2,7 +2,7 @@ import { AlertCircle, CheckCircle, XCircle } from "lucide-react";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
 import { Card, CardContent, CardHeader } from "../../../shared/ui/Card/Card";
-import { RecognitionResult } from "../types";
+import type { RecognitionResult } from "../types";
 import * as S from "../AnalyzePage.styles";
 
 // 분석 결과 카드 정의
@@ -20,7 +20,7 @@ export function AnalyzeResultCard({ result, onReset }: AnalyzeResultCardProps) {
   );
 
   return (
-    <Card style={{ borderLeft: "4px solid #22c55e" }}>
+    <Card>
       <CardHeader>
         <S.ResultHeader>
           <S.ResultTitle>
