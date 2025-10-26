@@ -1,43 +1,25 @@
-import {
-  Bell,
-  Globe,
-  HelpCircle,
-  Info,
-  LogOut,
-  MapPin,
-  Moon,
-  Settings as SettingsIcon,
-  Shield,
-  Sun,
-  User,
-  Volume2,
-} from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../shared/ui/Card/Card";
-import { Badge } from "../../shared/ui/Badge/Badge";
-import { Button } from "../../shared/ui/Button/Button";
-import { Switch } from "../../shared/ui/Switch/Switch";
-import { Avatar, AvatarImage } from "../../shared/ui/Avatar/Avatar";
 import recycleanLogo from "../../assets/recycleanLogo.svg";
-import { Separator } from "../../shared/ui/Separator/Separator";
-import { SelectField } from "../../shared/ui/SelectField/SelectField";
 import { useSettingsStore } from "shared/state/settingsStore";
+import {
+  SettingsAppPreferencesCard,
+  SettingsImpactCard,
+  SettingsLocaleCard,
+  SettingsProfileCard,
+  SettingsSupportActionsCard,
+} from "./components";
 import * as S from "./SettingsPage.styles";
+import { LocaleOption, UserStats } from "./types";
 
-interface UserStats {
-  totalPoints: number;
-  itemsRecycled: number;
-  joinDate: string;
-  streakDays: number;
-}
-
-const languages = [
+// 지원 언어 목록 정의
+const languages: LocaleOption[] = [
   { value: "ko", label: "한국어" },
   { value: "en", label: "English" },
   { value: "es", label: "Español" },
   { value: "fr", label: "Français" },
 ];
 
-const regions = [
+// 지원 지역 목록 정의
+const regions: LocaleOption[] = [
   { value: "kr", label: "대한민국" },
   { value: "us", label: "United States" },
   { value: "ca", label: "Canada" },
@@ -68,174 +50,30 @@ export function SettingsPage() {
     streakDays: 12,
   };
 
-  // 설정 페이지 전체 UI 렌더링
+  // 설정 페이지 섹션 컴포넌트 조합
   return (
     <S.PageContainer>
-      <Card>
-        <CardContent>
-          <S.ProfileRow>
-            <Avatar size={64}>
-              <AvatarImage
-                src={recycleanLogo}
-                alt="기본 사용자 프로필 이미지(profile image)"
-                style={{ objectFit: "contain", padding: "12px" }}
-              />
-            </Avatar>
-            <div style={{ flex: 1 }}>
-              <p style={{ margin: "4px 0 0", color: "#475569", fontSize: "0.85rem" }}>
-                가입일 {userStats.joinDate}
-              </p>
-              <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
-                <Badge tone="success">{userStats.totalPoints} pts</Badge>
-                <Badge variant="outline">{userStats.streakDays}일 연속</Badge>
-              </div>
-            </div>
-          </S.ProfileRow>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <MapPin size={18} />
-            나의 영향력
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <S.StatGrid>
-            <div>
-              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#16a34a" }}>
-                {userStats.itemsRecycled}
-              </div>
-              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>처리한 아이템</div>
-            </div>
-            <div>
-              <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#2563eb" }}>
-                {userStats.totalPoints}
-              </div>
-              <div style={{ fontSize: "0.8rem", color: "#64748b" }}>누적 포인트</div>
-            </div>
-          </S.StatGrid>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <SettingsIcon size={18} />앱 설정
-          </CardTitle>
-        </CardHeader>
-        <S.SectionStack>
-          <S.SettingsItem>
-            <S.SettingsLabel>
-              <Bell size={16} color="#64748b" />
-              <S.SettingsText>
-                <span style={{ fontWeight: 600 }}>알림</span>
-                <span style={{ fontSize: "0.75rem", color: "#64748b" }}>재활용 리마인더 알림</span>
-              </S.SettingsText>
-            </S.SettingsLabel>
-            <Switch checked={notifications} onCheckedChange={setNotifications} />
-          </S.SettingsItem>
-
-          <Separator />
-
-          <S.SettingsItem>
-            <S.SettingsLabel>
-              <MapPin size={16} color="#64748b" />
-              <S.SettingsText>
-                <span style={{ fontWeight: 600 }}>위치 서비스</span>
-                <span style={{ fontSize: "0.75rem", color: "#64748b" }}>주변 배출함 찾기</span>
-              </S.SettingsText>
-            </S.SettingsLabel>
-            <Switch checked={location} onCheckedChange={setLocation} />
-          </S.SettingsItem>
-
-          <Separator />
-
-          <S.SettingsItem>
-            <S.SettingsLabel>
-              {darkMode ? <Moon size={16} color="#64748b" /> : <Sun size={16} color="#64748b" />}
-              <S.SettingsText>
-                <span style={{ fontWeight: 600 }}>다크 모드</span>
-                <span style={{ fontSize: "0.75rem", color: "#64748b" }}>어두운 테마로 변경</span>
-              </S.SettingsText>
-            </S.SettingsLabel>
-            <Switch checked={darkMode} onCheckedChange={setDarkMode} />
-          </S.SettingsItem>
-
-          <Separator />
-
-          <S.SettingsItem>
-            <S.SettingsLabel>
-              <Volume2 size={16} color="#64748b" />
-              <S.SettingsText>
-                <span style={{ fontWeight: 600 }}>사운드</span>
-                <span style={{ fontSize: "0.75rem", color: "#64748b" }}>액션 사운드 효과</span>
-              </S.SettingsText>
-            </S.SettingsLabel>
-            <Switch checked={sounds} onCheckedChange={setSounds} />
-          </S.SettingsItem>
-        </S.SectionStack>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <Globe size={18} />
-            언어 및 지역
-          </CardTitle>
-        </CardHeader>
-        <S.SectionStack>
-          <div>
-            <div style={{ fontWeight: 600, marginBottom: "8px", fontSize: "0.85rem" }}>언어</div>
-            <SelectField
-              options={languages}
-              value={language}
-              onChange={(event) => setLanguage(event.target.value)}
-            />
-          </div>
-          <div>
-            <div style={{ fontWeight: 600, marginBottom: "8px", fontSize: "0.85rem" }}>지역</div>
-            <SelectField
-              options={regions}
-              value={region}
-              onChange={(event) => setRegion(event.target.value)}
-            />
-          </div>
-        </S.SectionStack>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <Shield size={18} />
-            계정 및 지원
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <S.ActionList>
-            <Button variant="outline" style={{ justifyContent: "flex-start" }}>
-              <User size={16} />
-              프로필 편집
-            </Button>
-            <Button variant="outline" style={{ justifyContent: "flex-start" }}>
-              <Shield size={16} />
-              개인정보 보호 설정
-            </Button>
-            <Button variant="outline" style={{ justifyContent: "flex-start" }}>
-              <HelpCircle size={16} />
-              도움말 센터
-            </Button>
-            <Button variant="outline" style={{ justifyContent: "flex-start" }}>
-              <Info size={16} />앱 정보
-            </Button>
-            <Button variant="destructive" style={{ justifyContent: "flex-start" }}>
-              <LogOut size={16} />
-              로그아웃
-            </Button>
-          </S.ActionList>
-        </CardContent>
-      </Card>
+      <SettingsProfileCard userStats={userStats} avatarSrc={recycleanLogo} />
+      <SettingsImpactCard userStats={userStats} />
+      <SettingsAppPreferencesCard
+        notifications={notifications}
+        onNotificationsChange={setNotifications}
+        location={location}
+        onLocationChange={setLocation}
+        darkMode={darkMode}
+        onDarkModeChange={setDarkMode}
+        sounds={sounds}
+        onSoundsChange={setSounds}
+      />
+      <SettingsLocaleCard
+        languages={languages}
+        regions={regions}
+        language={language}
+        region={region}
+        onLanguageChange={setLanguage}
+        onRegionChange={setRegion}
+      />
+      <SettingsSupportActionsCard />
     </S.PageContainer>
   );
 }
