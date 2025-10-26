@@ -33,6 +33,6 @@ export const Thumb = styled.span<{ $checked: boolean }>`
   border-radius: ${({ theme }) => theme.radii.pill};
   background-color: ${({ theme }) => theme.colors.surface};
   box-shadow: ${({ theme }) => theme.shadows.soft};
-  transform: translateX(${({ $checked }) => ($checked ? "20px" : "4px")});
+  transform: translateX(${({ $checked }) => ($checked ? "22px" : "2px")});
   transition: transform 0.2s ease;
 `;
