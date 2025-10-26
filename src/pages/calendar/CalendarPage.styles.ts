@@ -41,41 +41,42 @@ export const DayPickerWrapper = styled.div`
   .rdp-button_previous,
   .rdp-button_next {
     border-radius: ${({ theme }) => theme.radii.full};
-    border: 1px solid ${({ theme }) => theme.colors.border};
-    background-color: ${({ theme }) => theme.colors.surfaceMuted};
-    color: ${({ theme }) => theme.colors.text};
-    transition:
+    border: none;
+    background-color: transparent;
+    color: ${({ theme }) => theme.colors.primary};
+    transition: color 120ms ease;
     width: var(--rdp-nav_button-width);
     height: var(--rdp-nav_button-height);
-      background-color 120ms ease,
-      border-color 120ms ease,
-      color 120ms ease;
+    box-shadow: none;
+    outline: none;
   }
 
   .rdp-button_previous:hover,
   .rdp-button_previous:focus-visible,
   .rdp-button_next:hover,
   .rdp-button_next:focus-visible {
-    background-color: ${({ theme }) => theme.colors.surface};
-    border-color: ${({ theme }) => theme.colors.border};
-    color: ${({ theme }) => theme.colors.text};
+    background-color: transparent;
+    border-color: transparent;
+    color: ${({ theme }) => theme.colors.highlight};
+    outline: none;
+    box-shadow: none;
   }
 
   .rdp-button_previous:active,
   .rdp-button_next:active {
+    background-color: transparent;
+  }
+
   .rdp-button_previous[disabled],
   .rdp-button_next[disabled],
   .rdp-button_previous[aria-disabled="true"],
   .rdp-button_next[aria-disabled="true"] {
-    background-color: ${({ theme }) => theme.colors.surfaceMuted};
+    background-color: transparent;
     color: ${({ theme }) => theme.colors.textMuted};
   }
 
   .rdp-chevron {
     fill: ${({ theme }) => theme.colors.primary};
-  }
-
-    background-color: ${({ theme }) => theme.colors.surfaceMuted};
   }
 
   .rdp-day {
@@ -113,14 +114,12 @@ export const DayPickerWrapper = styled.div`
     color: ${({ theme }) => theme.colors.text};
     border-radius: ${({ theme }) => theme.radii.lg};
     box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.border};
-    transition:
-      background-color 120ms ease,
-      box-shadow 120ms ease;
+    transition: box-shadow 120ms ease;
   }
 
   .calendar-selected:focus-visible,
   .calendar-selected:hover {
-    background-color: ${({ theme }) => theme.colors.surface};
+    background-color: ${({ theme }) => theme.colors.surfaceMuted};
     box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.border};
   }
 `;
