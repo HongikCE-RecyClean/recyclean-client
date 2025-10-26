@@ -22,12 +22,12 @@ export const DayPickerWrapper = styled.div`
   display: flex;
   justify-content: center;
 
-  .rdp {
+  .rdp,
+  .rdp-root {
     --rdp-cell-size: 44px;
-    --rdp-accent-color: #16a34a;
-    --rdp-background-color: rgba(34, 197, 94, 0.12);
-    --rdp-outline: 2px solid rgba(34, 197, 94, 0.35);
-    --rdp-accent-color-dark: #16a34a;
+    --rdp-accent-color: ${({ theme }) => theme.colors.primary};
+    --rdp-accent-background-color: ${({ theme }) => theme.colors.surfaceMuted};
+    --rdp-outline: 2px solid ${({ theme }) => theme.colors.border};
     --rdp-day_button-border-radius: ${({ theme }) => theme.radii.md};
     font-family: ${({ theme }) => theme.typography.family};
   }
@@ -38,25 +38,43 @@ export const DayPickerWrapper = styled.div`
     color: ${({ theme }) => theme.colors.text};
   }
 
-  .rdp-nav_button {
+  .rdp-button_previous,
+  .rdp-button_next {
     border-radius: ${({ theme }) => theme.radii.full};
     border: 1px solid ${({ theme }) => theme.colors.border};
     background-color: ${({ theme }) => theme.colors.surfaceMuted};
     color: ${({ theme }) => theme.colors.text};
     transition:
+    width: var(--rdp-nav_button-width);
+    height: var(--rdp-nav_button-height);
       background-color 120ms ease,
       border-color 120ms ease,
       color 120ms ease;
   }
 
-  .rdp-nav_button:hover,
-  .rdp-nav_button:focus-visible {
+  .rdp-button_previous:hover,
+  .rdp-button_previous:focus-visible,
+  .rdp-button_next:hover,
+  .rdp-button_next:focus-visible {
     background-color: ${({ theme }) => theme.colors.surface};
     border-color: ${({ theme }) => theme.colors.border};
     color: ${({ theme }) => theme.colors.text};
   }
 
-  .rdp-nav_button:active {
+  .rdp-button_previous:active,
+  .rdp-button_next:active {
+  .rdp-button_previous[disabled],
+  .rdp-button_next[disabled],
+  .rdp-button_previous[aria-disabled="true"],
+  .rdp-button_next[aria-disabled="true"] {
+    background-color: ${({ theme }) => theme.colors.surfaceMuted};
+    color: ${({ theme }) => theme.colors.textMuted};
+  }
+
+  .rdp-chevron {
+    fill: ${({ theme }) => theme.colors.primary};
+  }
+
     background-color: ${({ theme }) => theme.colors.surfaceMuted};
   }
 
