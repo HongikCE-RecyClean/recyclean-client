@@ -19,8 +19,7 @@ export const CalendarContent = styled(CardContent)`
 
 // DayPicker 래퍼 및 스타일 오버라이드 정의
 export const DayPickerWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  width: 100%;
 
   .rdp,
   .rdp-root {
@@ -29,7 +28,10 @@ export const DayPickerWrapper = styled.div`
     --rdp-accent-background-color: ${({ theme }) => theme.colors.surfaceMuted};
     --rdp-outline: 2px solid ${({ theme }) => theme.colors.border};
     --rdp-day_button-border-radius: ${({ theme }) => theme.radii.md};
+    --rdp-day-width: 100%;
+    --rdp-day_button-width: 100%;
     font-family: ${({ theme }) => theme.typography.family};
+    width: 100%;
   }
 
   .rdp-caption_label {
@@ -79,10 +81,29 @@ export const DayPickerWrapper = styled.div`
     fill: ${({ theme }) => theme.colors.primary};
   }
 
+  .rdp-months {
+    width: 100%;
+    max-width: none;
+  }
+
+  .rdp-month {
+    width: 100%;
+  }
+
+  .rdp-month_grid {
+    width: 100%;
+    table-layout: fixed;
+  }
+
   .rdp-day {
     font-weight: ${({ theme }) => theme.typography.weights.medium};
     color: ${({ theme }) => theme.colors.text};
     border-radius: ${({ theme }) => theme.radii.full};
+    width: 100%;
+  }
+
+  .rdp-month_grid td {
+    width: calc(100% / 7);
   }
 
   .rdp-day_today {
