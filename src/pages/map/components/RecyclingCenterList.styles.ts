@@ -41,6 +41,14 @@ export const InfoStack = styled.div`
   font-size: 0.8rem;
 `;
 
+// 정보 행 정렬 정의
+export const InfoRow = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+`;
+
 // 액션 버튼 행 정렬 정의
 export const ActionButtons = styled.div`
   display: flex;

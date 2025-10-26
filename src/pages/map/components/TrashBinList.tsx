@@ -31,9 +31,11 @@ export function TrashBinList({ bins }: TrashBinListProps) {
                 <S.BinMeta>
                   <span style={{ fontWeight: 600 }}>{bin.name}</span>
                   <span style={{ fontSize: "0.8rem", color: "#475569" }}>{bin.location}</span>
-                  <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
-                    <Clock size={12} /> {bin.lastUpdated}
-                  </span>
+                  {/* 업데이트 시각과 아이콘을 한 줄로 정렬 */}
+                  <S.BinUpdatedRow>
+                    <Clock size={12} />
+                    {bin.lastUpdated}
+                  </S.BinUpdatedRow>
                 </S.BinMeta>
               </S.BinInfo>
               <div style={{ textAlign: "right" }}>

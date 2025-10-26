@@ -50,13 +50,16 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
                 </S.MaterialChips>
 
                 <S.InfoStack>
-                  <span>
-                    <Clock size={12} /> {center.hours}
-                  </span>
+                  {/* 운영 시간 텍스트와 아이콘을 한 줄로 정렬 */}
+                  <S.InfoRow>
+                    <Clock size={12} />
+                    {center.hours}
+                  </S.InfoRow>
                   {center.phone && (
-                    <span>
-                      <Phone size={12} /> {center.phone}
-                    </span>
+                    <S.InfoRow>
+                      <Phone size={12} />
+                      {center.phone}
+                    </S.InfoRow>
                   )}
                 </S.InfoStack>
 

@@ -35,6 +35,15 @@ export const BinMeta = styled.div`
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 
+// 업데이트 시각 행 정렬 정의
+export const BinUpdatedRow = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #64748b;
+`;
+
 // 수거 품목 배치 정의
 export const AcceptedItems = styled.div`
   display: flex;
