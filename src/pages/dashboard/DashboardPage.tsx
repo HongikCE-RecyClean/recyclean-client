@@ -74,11 +74,11 @@ export function DashboardPage() {
   return (
     <S.PageContainer>
       <WelcomeOverviewCard todayStats={todayStats} userName={userName} />
-      <MonthlyProgressCard
+      {/* <MonthlyProgressCard
         totalPoints={totalPoints}
         monthlyGoal={monthlyGoal}
         progressValue={progressValue}
-      />
+      /> */}
       <TrackerCard
         totalPoints={totalPoints}
         monthlyGoal={monthlyGoal}
@@ -98,12 +98,12 @@ export function DashboardPage() {
         filteredMaterials={filteredMaterials}
       />
       {/* <GoalsCard goals={goals} /> */}
-      <TipsCard
+      {/* <TipsCard
         tips={filteredTips}
         selectedTipCategory={selectedTipCategory}
         onSelectedTipCategoryChange={setSelectedTipCategory}
         tipCategoryOptions={tipCategories}
-      />
+      /> */}
     </S.PageContainer>
   );
 }
