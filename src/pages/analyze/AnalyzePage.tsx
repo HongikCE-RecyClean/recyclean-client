@@ -7,7 +7,7 @@ import {
   AnalyzeScanningCard,
   AnalyzeTipsCard,
 } from "./components";
-import { RecognitionResult } from "./types";
+import type { RecognitionResult } from "./types";
 import * as S from "./AnalyzePage.styles";
 
 // 모의 분석 결과 리스트 정의

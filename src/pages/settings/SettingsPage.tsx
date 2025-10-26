@@ -8,7 +8,7 @@ import {
   SettingsSupportActionsCard,
 } from "./components";
 import * as S from "./SettingsPage.styles";
-import { LocaleOption, UserStats } from "./types";
+import type { LocaleOption, UserStats } from "./types";
 
 // 지원 언어 목록 정의
 const languages: LocaleOption[] = [
