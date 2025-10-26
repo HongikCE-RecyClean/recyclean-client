@@ -41,7 +41,23 @@ export const DayPickerWrapper = styled.div`
   .rdp-nav_button {
     border-radius: ${({ theme }) => theme.radii.full};
     border: 1px solid ${({ theme }) => theme.colors.border};
+    background-color: ${({ theme }) => theme.colors.surfaceMuted};
     color: ${({ theme }) => theme.colors.text};
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease,
+      color 120ms ease;
+  }
+
+  .rdp-nav_button:hover,
+  .rdp-nav_button:focus-visible {
+    background-color: ${({ theme }) => theme.colors.surface};
+    border-color: ${({ theme }) => theme.colors.border};
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  .rdp-nav_button:active {
+    background-color: ${({ theme }) => theme.colors.surfaceMuted};
   }
 
   .rdp-day {
