@@ -1,4 +1,3 @@
-import { Recycle } from "lucide-react";
 import * as S from "../DashboardPage.styles";
 import type { DashboardData } from "../../../shared/data/dashboard";
 
@@ -13,9 +12,7 @@ export function WelcomeOverviewCard({ todayStats, userName }: WelcomeOverviewCar
     <S.WelcomeCard>
       <S.WelcomeContent>
         {/* 환영 아이콘 카드 표현 */}
-        {/* <S.WelcomeIcon>
-          <Recycle size={28} color="#15803d" />
-        </S.WelcomeIcon> */}
+        {/* <S.WelcomeIcon>{아이콘 렌더링 영역}</S.WelcomeIcon> */}
         {/* 환영 메시지 영역 */}
         <S.WelcomeText>
           <h2>안녕하세요, {userName}님!</h2>

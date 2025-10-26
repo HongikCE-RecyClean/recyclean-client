@@ -1,36 +1,21 @@
 import { useEffect, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDashboardData } from "shared/api/dashboard";
-import { dashboardInitialData, tipCategories } from "shared/data/dashboard";
+import { dashboardInitialData } from "shared/data/dashboard";
 import { useDashboardStore } from "shared/state/dashboardStore";
 import { useUserStore } from "shared/state/userStore";
 import * as S from "./DashboardPage.styles";
 import {
-  AchievementsCard,
-  GoalsCard,
   MaterialSearchCard,
-  MonthlyProgressCard,
-  QuickActionsCard,
   RecentActivityCard,
-  TipsCard,
   TrackerCard,
   WelcomeOverviewCard,
 } from "./components";
 
 export function DashboardPage() {
-  const navigate = useNavigate();
   const { data } = useDashboardData();
   // 전역 상태와 스토어 제어자 로드
-  const {
-    searchTerm,
-    setSearchTerm,
-    materialCategory,
-    setMaterialCategory,
-    selectedTipCategory,
-    setSelectedTipCategory,
-    entries,
-    setEntries,
-  } = useDashboardStore();
+  const { searchTerm, setSearchTerm, materialCategory, setMaterialCategory, entries, setEntries } =
+    useDashboardStore();
   // 사용자 정보 스토어에서 이름 로드
   const { name: userName } = useUserStore();
 
@@ -43,10 +28,7 @@ export function DashboardPage() {
 
   const todayStats = data?.todayStats ?? dashboardInitialData.todayStats;
   const recentActivity = data?.recentActivity ?? dashboardInitialData.recentActivity;
-  const achievements = data?.achievements ?? dashboardInitialData.achievements;
   const materials = data?.materials ?? dashboardInitialData.materials;
-  const tips = data?.tips ?? dashboardInitialData.tips;
-  const goals = data?.goals ?? dashboardInitialData.goals;
 
   // 재질 검색 결과 필터링 수행
   const filteredMaterials = useMemo(() => {
@@ -58,12 +40,6 @@ export function DashboardPage() {
       return matchesSearch && matchesCategory;
     });
   }, [materials, searchTerm, materialCategory]);
-
-  // 팁 카테고리 필터링 수행
-  const filteredTips = useMemo(() => {
-    if (selectedTipCategory === "all") return tips;
-    return tips.filter((tip) => tip.category === selectedTipCategory);
-  }, [tips, selectedTipCategory]);
 
   const totalPoints = entries.reduce((sum, entry) => sum + entry.points, 0);
   const totalItems = entries.reduce((sum, entry) => sum + entry.amount, 0);
