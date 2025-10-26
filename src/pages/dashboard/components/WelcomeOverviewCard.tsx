@@ -13,14 +13,14 @@ export function WelcomeOverviewCard({ todayStats, userName }: WelcomeOverviewCar
     <S.WelcomeCard>
       <S.WelcomeContent>
         {/* 환영 아이콘 카드 표현 */}
-        <S.WelcomeIcon>
+        {/* <S.WelcomeIcon>
           <Recycle size={28} color="#15803d" />
-        </S.WelcomeIcon>
+        </S.WelcomeIcon> */}
         {/* 환영 메시지 영역 */}
-        <div>
+        <S.WelcomeText>
           <h2>안녕하세요, {userName}님!</h2>
           <p>오늘의 분리수거를 도와줄게요.</p>
-        </div>
+        </S.WelcomeText>
         {/* 핵심 통계 그리드 */}
         <S.StatsGrid>
           <S.StatCell>
