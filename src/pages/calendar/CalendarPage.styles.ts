@@ -28,7 +28,7 @@ export const DayPickerWrapper = styled.div`
     --rdp-background-color: rgba(34, 197, 94, 0.12);
     --rdp-outline: 2px solid rgba(34, 197, 94, 0.35);
     --rdp-accent-color-dark: #16a34a;
-    --rdp-weekday-color: ${({ theme }) => theme.colors.textMuted};
+    --rdp-day_button-border-radius: ${({ theme }) => theme.radii.md};
     font-family: ${({ theme }) => theme.typography.family};
   }
 
@@ -54,11 +54,6 @@ export const DayPickerWrapper = styled.div`
     border: 1px solid rgba(22, 163, 74, 0.45);
   }
 
-  .rdp-day_selected {
-    background-color: #16a34a;
-    color: #ffffff;
-  }
-
   .rdp-day_disabled {
     color: ${({ theme }) => theme.colors.textMuted};
   }
@@ -78,6 +73,22 @@ export const DayPickerWrapper = styled.div`
     border-radius: ${({ theme }) => theme.radii.full};
     transform: translateX(-50%);
   }
+
+  .calendar-selected {
+    background-color: ${({ theme }) => theme.colors.surfaceMuted};
+    color: ${({ theme }) => theme.colors.text};
+    border-radius: ${({ theme }) => theme.radii.lg};
+    box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.border};
+    transition:
+      background-color 120ms ease,
+      box-shadow 120ms ease;
+  }
+
+  .calendar-selected:focus-visible,
+  .calendar-selected:hover {
+    background-color: ${({ theme }) => theme.colors.surface};
+    box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.border};
+  }
 `;
 
 // 통계 카드용 그리드 정의
@@ -85,6 +96,8 @@ export const StatsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: ${({ theme }) => theme.spacing(3)};
+  justify-items: center;
+  align-items: center;
 `;
 
 // 통계 블록 스타일 정의
@@ -92,6 +105,8 @@ export const StatBlock = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
+  align-items: center;
+  text-align: center;
 `;
 
 // 통계 값 텍스트 정의
