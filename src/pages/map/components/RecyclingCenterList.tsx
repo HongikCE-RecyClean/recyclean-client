@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { Clock, MapPin, Navigation, Phone } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
@@ -6,51 +5,14 @@ import { Button } from "../../../shared/ui/Button/Button";
 import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
 import { mapMaterialColors } from "shared/api/map";
 import type { RecyclingCenter } from "shared/types/map";
+import * as S from "./RecyclingCenterList.styles";
 
 interface RecyclingCenterListProps {
   centers: RecyclingCenter[];
 }
 
-const CenterGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
-`;
-
-const CenterCard = styled(Card)`
-  overflow: hidden;
-`;
-
-const CenterMedia = styled.div`
-  position: relative;
-  height: 140px;
-`;
-
-const CenterContent = styled(CardContent)`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const MaterialChips = styled.div`
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-`;
-
-const InfoStack = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.8rem;
-`;
-
-const ActionButtons = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
 export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
+  // 재활용 센터 카드 목록 렌더링
   return (
     <Card>
       <CardHeader>
@@ -60,10 +22,10 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <CenterGrid>
+        <S.CenterGrid>
           {centers.map((center) => (
-            <CenterCard key={center.id}>
-              <CenterMedia>
+            <S.CenterCard key={center.id}>
+              <S.CenterMedia>
                 <ImageWithFallback
                   src={center.image}
                   alt={center.name}
@@ -72,22 +34,22 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
                 <div style={{ position: "absolute", top: 12, right: 12 }}>
                   <Badge variant="outline">{center.distance}</Badge>
                 </div>
-              </CenterMedia>
-              <CenterContent>
+              </S.CenterMedia>
+              <S.CenterContent>
                 <div>
                   <h3 style={{ margin: 0 }}>{center.name}</h3>
                   <div style={{ fontSize: "0.8rem", color: "#475569" }}>{center.address}</div>
                 </div>
 
-                <MaterialChips>
+                <S.MaterialChips>
                   {center.acceptedMaterials.map((material) => (
                     <Badge key={material} tone={mapMaterialColors[material] ?? "neutral"}>
                       {material}
                     </Badge>
                   ))}
-                </MaterialChips>
+                </S.MaterialChips>
 
-                <InfoStack>
+                <S.InfoStack>
                   <span>
                     <Clock size={12} /> {center.hours}
                   </span>
@@ -96,9 +58,9 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
                       <Phone size={12} /> {center.phone}
                     </span>
                   )}
-                </InfoStack>
+                </S.InfoStack>
 
-                <ActionButtons>
+                <S.ActionButtons>
                   <Button variant="outline" size="sm" style={{ flex: 1 }}>
                     <Navigation size={14} />길 찾기
                   </Button>
@@ -108,11 +70,11 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
                       전화하기
                     </Button>
                   )}
-                </ActionButtons>
-              </CenterContent>
-            </CenterCard>
+                </S.ActionButtons>
+              </S.CenterContent>
+            </S.CenterCard>
           ))}
-        </CenterGrid>
+        </S.CenterGrid>
       </CardContent>
     </Card>
   );

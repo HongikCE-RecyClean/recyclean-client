@@ -12,6 +12,10 @@ The front-end lives in `src/`, split by responsibility. Page-level shells reside
 - `styles/` for theme objects and Emotion helpers  
   Design tokens and reset styles built with Vanilla Extract remain in `src/styles`, while deployable assets sit in `public/`. Prototype artifacts (`docs/`, `resources/`, `figma-make/`) stay outside shipping bundles.
 
+### Shared UI Library Convention
+
+`src/shared/ui`에는 버튼, 카드 같은 저수준 디자인 토큰 기반 위젯만 두고, 여러 도메인이 공유하는 고수준 조립 컴포넌트는 `src/shared/components`로 분리해요. 특정 도메인에서만 쓰이는 구성요소는 해당 도메인(예: `src/pages/...`)에 유지해요.
+
 ## Architecture & State Flow
 
 The runtime is composed of layered providers initialized in `AppProviders`. Emotion’s `ThemeProvider` and `AppGlobalStyles` supply design context, while `@tanstack/react-query` handles asynchronous data with a shared `QueryClient`. Client state that must persist across routes (filters, toggles, cached entries) is centralized in zustand stores (`useDashboardStore`, `useMapStore`, `useSettingsStore`). When adding a new domain:

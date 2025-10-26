@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from "react";
-import styled from "@emotion/styled";
 import {
   AlertCircle,
   Award,
@@ -24,200 +23,7 @@ import { SelectField } from "../../shared/ui/SelectField/SelectField";
 import { useDashboardData } from "shared/api/dashboard";
 import { dashboardInitialData, resolveTipTone, tipCategories } from "shared/data/dashboard";
 import { useDashboardStore } from "shared/state/dashboardStore";
-
-const PageContainer = styled.div`
-  width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-`;
-
-const WelcomeCard = styled(Card)`
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.14), rgba(56, 189, 248, 0.16));
-  border-color: rgba(74, 222, 128, 0.45);
-`;
-
-const WelcomeContent = styled(CardContent)`
-  padding: ${({ theme }) => theme.spacing(5)};
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
-`;
-
-const WelcomeIcon = styled.div`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  margin: 0 auto;
-  border-radius: ${({ theme }) => theme.radii.lg};
-  background: rgba(34, 197, 94, 0.15);
-`;
-
-const StatsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme }) => theme.spacing(3)};
-`;
-
-const StatCell = styled.div`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StatValue = styled.span<{ $tone: "success" | "info" | "warning" }>`
-  font-size: 1.6rem;
-  font-weight: ${({ theme }) => theme.typography.weights.bold};
-  color: ${({ $tone }) =>
-    ({
-      success: "#16a34a",
-      info: "#0284c7",
-      warning: "#ea580c",
-    })[$tone]};
-`;
-
-const StatLabel = styled.span`
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.textMuted};
-`;
-
-const RecentActivityList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const ActivityRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing(3)};
-  border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.surfaceMuted};
-`;
-
-const AchievementRow = styled.div<{ $earned: boolean }>`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing(3)};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  background: ${({ theme, $earned }) =>
-    $earned ? theme.colors.successSurface : theme.colors.surfaceMuted};
-  border: 1px solid
-    ${({ theme, $earned }) => ($earned ? "rgba(34, 197, 94, 0.35)" : theme.colors.border)};
-`;
-
-const QuickActionGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const MaterialList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const MaterialItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-  padding: ${({ theme }) => theme.spacing(3)};
-  border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.surfaceMuted};
-`;
-
-const TipCard = styled(Card)`
-  overflow: hidden;
-`;
-
-const TipMedia = styled.div`
-  position: relative;
-  height: 120px;
-  width: 100%;
-`;
-
-const TipContent = styled(CardContent)`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const TipsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
-`;
-
-const GoalsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2.5)};
-`;
-
-const GoalCard = styled.div`
-  background: ${({ theme }) => theme.colors.surfaceMuted};
-  padding: ${({ theme }) => theme.spacing(3)};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const GoalProgress = styled.div`
-  height: 6px;
-  border-radius: ${({ theme }) => theme.radii.pill};
-  background: ${({ theme }) => theme.colors.surface};
-  overflow: hidden;
-`;
-
-const GoalProgressBar = styled.div<{ $value: number }>`
-  height: 100%;
-  width: ${({ $value }) => Math.min(Math.max($value, 0), 100)}%;
-  background: linear-gradient(90deg, #22c55e, #16a34a);
-  transition: width 0.3s ease;
-`;
-
-const TrackerGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme }) => theme.spacing(3)};
-  text-align: center;
-`;
-
-const TrackerStat = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const TrackerValue = styled.span`
-  font-size: 1.25rem;
-  font-weight: ${({ theme }) => theme.typography.weights.semibold};
-`;
-
-const TrackerLabel = styled.span`
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.textMuted};
-`;
-
-const HighlightBox = styled.div`
-  background: ${({ theme }) => theme.colors.successSurface};
-  color: ${({ theme }) => theme.colors.success};
-  padding: ${({ theme }) => theme.spacing(2.5)};
-  border-radius: ${({ theme }) => theme.radii.md};
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
+import * as S from "./DashboardPage.styles";
 
 const materialFilters = [
   { value: "all", label: "전체" },
@@ -279,33 +85,34 @@ export function DashboardPage() {
   const monthlyGoal = 100;
   const progressValue = (totalPoints / monthlyGoal) * 100;
 
+  // 대시보드 UI 렌더링 수행
   return (
-    <PageContainer>
-      <WelcomeCard>
-        <WelcomeContent>
-          <WelcomeIcon>
+    <S.PageContainer>
+      <S.WelcomeCard>
+        <S.WelcomeContent>
+          <S.WelcomeIcon>
             <Recycle size={28} color="#15803d" />
-          </WelcomeIcon>
+          </S.WelcomeIcon>
           <div>
             <h2>오늘도 환경을 지켜요!</h2>
             <p>꾸준한 실천으로 녹색 행성을 만드는 중이에요.</p>
           </div>
-          <StatsGrid>
-            <StatCell>
-              <StatValue $tone="success">{todayStats.itemsRecycled}</StatValue>
-              <StatLabel>오늘 처리한 아이템</StatLabel>
-            </StatCell>
-            <StatCell>
-              <StatValue $tone="info">{todayStats.pointsEarned}</StatValue>
-              <StatLabel>획득 포인트</StatLabel>
-            </StatCell>
-            <StatCell>
-              <StatValue $tone="warning">{todayStats.streakDays}</StatValue>
-              <StatLabel>연속 참여 일수</StatLabel>
-            </StatCell>
-          </StatsGrid>
-        </WelcomeContent>
-      </WelcomeCard>
+          <S.StatsGrid>
+            <S.StatCell>
+              <S.StatValue $tone="success">{todayStats.itemsRecycled}</S.StatValue>
+              <S.StatLabel>오늘 처리한 아이템</S.StatLabel>
+            </S.StatCell>
+            <S.StatCell>
+              <S.StatValue $tone="info">{todayStats.pointsEarned}</S.StatValue>
+              <S.StatLabel>획득 포인트</S.StatLabel>
+            </S.StatCell>
+            <S.StatCell>
+              <S.StatValue $tone="warning">{todayStats.streakDays}</S.StatValue>
+              <S.StatLabel>연속 참여 일수</S.StatLabel>
+            </S.StatCell>
+          </S.StatsGrid>
+        </S.WelcomeContent>
+      </S.WelcomeCard>
 
       <Card>
         <CardHeader>
@@ -337,7 +144,7 @@ export function DashboardPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <QuickActionGrid>
+          <S.QuickActionGrid>
             <Button onClick={() => navigate("/analyze")} variant="outline">
               <Camera size={18} />
               AI로 즉시 분류
@@ -350,7 +157,7 @@ export function DashboardPage() {
               <TrendingUp size={18} />
               수동 기록 추가
             </Button>
-          </QuickActionGrid>
+          </S.QuickActionGrid>
         </CardContent>
       </Card>
 
@@ -362,9 +169,9 @@ export function DashboardPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <RecentActivityList>
+          <S.RecentActivityList>
             {recentActivity.map((activity) => (
-              <ActivityRow key={activity.type}>
+              <S.ActivityRow key={activity.type}>
                 <div>
                   <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{activity.type}</div>
                   <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
@@ -372,9 +179,9 @@ export function DashboardPage() {
                   </div>
                 </div>
                 <Badge tone="primary">+{activity.points} pts</Badge>
-              </ActivityRow>
+              </S.ActivityRow>
             ))}
-          </RecentActivityList>
+          </S.RecentActivityList>
         </CardContent>
       </Card>
 
@@ -387,7 +194,7 @@ export function DashboardPage() {
         </CardHeader>
         <CardContent style={{ gap: "16px" }}>
           {achievements.map((achievement) => (
-            <AchievementRow key={achievement.title} $earned={achievement.earned}>
+            <S.AchievementRow key={achievement.title} $earned={achievement.earned}>
               <Award size={20} color={achievement.earned ? "#15803d" : "#94a3b8"} />
               <div>
                 <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{achievement.title}</div>
@@ -396,7 +203,7 @@ export function DashboardPage() {
                 </div>
               </div>
               {achievement.earned && <Badge tone="success">달성</Badge>}
-            </AchievementRow>
+            </S.AchievementRow>
           ))}
         </CardContent>
       </Card>
@@ -420,9 +227,9 @@ export function DashboardPage() {
             value={materialCategory}
             onChange={(event) => setMaterialCategory(event.target.value)}
           />
-          <MaterialList>
+          <S.MaterialList>
             {filteredMaterials.map((material) => (
-              <MaterialItem key={material.name}>
+              <S.MaterialItem key={material.name}>
                 <div
                   style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
                 >
@@ -454,14 +261,14 @@ export function DashboardPage() {
                     <span>{material.tips}</span>
                   </div>
                 )}
-              </MaterialItem>
+              </S.MaterialItem>
             ))}
             {filteredMaterials.length === 0 && (
               <p style={{ textAlign: "center", color: "#64748b", margin: 0 }}>
                 조건에 맞는 결과가 없어요.
               </p>
             )}
-          </MaterialList>
+          </S.MaterialList>
         </CardContent>
       </Card>
 
@@ -473,11 +280,11 @@ export function DashboardPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <GoalsList>
+          <S.GoalsList>
             {goals.map((goal) => {
               const percentage = Math.round((goal.current / goal.target) * 100);
               return (
-                <GoalCard key={goal.id}>
+                <S.GoalCard key={goal.id}>
                   <div
                     style={{
                       display: "flex",
@@ -501,13 +308,13 @@ export function DashboardPage() {
                     </span>
                     <span>{percentage}%</span>
                   </div>
-                  <GoalProgress>
-                    <GoalProgressBar $value={percentage} />
-                  </GoalProgress>
-                </GoalCard>
+                  <S.GoalProgress>
+                    <S.GoalProgressBar $value={percentage} />
+                  </S.GoalProgress>
+                </S.GoalCard>
               );
             })}
-          </GoalsList>
+          </S.GoalsList>
         </CardContent>
       </Card>
 
@@ -524,16 +331,16 @@ export function DashboardPage() {
             value={selectedTipCategory}
             onChange={(event) => setSelectedTipCategory(event.target.value)}
           />
-          <TipsList>
+          <S.TipsList>
             {filteredTips.map((tip) => (
-              <TipCard key={tip.id}>
-                <TipMedia>
+              <S.TipCard key={tip.id}>
+                <S.TipMedia>
                   <ImageWithFallback src={tip.image} alt={tip.title} />
                   <div style={{ position: "absolute", top: 12, left: 12 }}>
                     <Badge tone={resolveTipTone(tip.category)}>{tip.category}</Badge>
                   </div>
-                </TipMedia>
-                <TipContent>
+                </S.TipMedia>
+                <S.TipContent>
                   <div>
                     <h3 style={{ margin: 0, fontSize: "1rem" }}>{tip.title}</h3>
                     <p style={{ margin: "4px 0 0", fontSize: "0.85rem", color: "#475569" }}>
@@ -544,10 +351,10 @@ export function DashboardPage() {
                     <Badge tone="success">영향: {tip.impact}</Badge>
                     <Badge tone="info">난이도: {tip.difficulty}</Badge>
                   </div>
-                </TipContent>
-              </TipCard>
+                </S.TipContent>
+              </S.TipCard>
             ))}
-          </TipsList>
+          </S.TipsList>
         </CardContent>
       </Card>
 
@@ -571,31 +378,31 @@ export function DashboardPage() {
             </div>
           </div>
           {progressValue >= 100 && (
-            <HighlightBox>
+            <S.HighlightBox>
               <Award size={18} />
               <span style={{ fontSize: "0.85rem", fontWeight: 600 }}>목표를 달성했어요!</span>
-            </HighlightBox>
+            </S.HighlightBox>
           )}
           <Button variant="outline">
             <RotateCcw size={16} />
             활동 기록하기
           </Button>
-          <TrackerGrid>
-            <TrackerStat>
-              <TrackerValue>{entries.length}</TrackerValue>
-              <TrackerLabel>활동 건수</TrackerLabel>
-            </TrackerStat>
-            <TrackerStat>
-              <TrackerValue>{totalItems}</TrackerValue>
-              <TrackerLabel>처리 아이템</TrackerLabel>
-            </TrackerStat>
-            <TrackerStat>
-              <TrackerValue>{categoryCount}</TrackerValue>
-              <TrackerLabel>카테고리</TrackerLabel>
-            </TrackerStat>
-          </TrackerGrid>
+          <S.TrackerGrid>
+            <S.TrackerStat>
+              <S.TrackerValue>{entries.length}</S.TrackerValue>
+              <S.TrackerLabel>활동 건수</S.TrackerLabel>
+            </S.TrackerStat>
+            <S.TrackerStat>
+              <S.TrackerValue>{totalItems}</S.TrackerValue>
+              <S.TrackerLabel>처리 아이템</S.TrackerLabel>
+            </S.TrackerStat>
+            <S.TrackerStat>
+              <S.TrackerValue>{categoryCount}</S.TrackerValue>
+              <S.TrackerLabel>카테고리</S.TrackerLabel>
+            </S.TrackerStat>
+          </S.TrackerGrid>
         </CardContent>
       </Card>
-    </PageContainer>
+    </S.PageContainer>
   );
 }

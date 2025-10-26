@@ -24,7 +24,7 @@ env:
 jobs:
   deploy:
     # 포크 레포에서 실행되는 것을 차단
-    if: github.ref == 'refs/heads/main' && github.repository_owner == env.UPSTREAM_OWNER
+    if: github.ref == 'refs/heads/main' && github.repository_owner == 'HongikCE-RecyClean'
     runs-on: ubuntu-latest
 
     steps:

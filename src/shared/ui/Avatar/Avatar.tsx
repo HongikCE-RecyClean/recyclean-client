@@ -1,29 +1,6 @@
 import { useState } from "react";
 import type { ReactNode } from "react";
-import styled from "@emotion/styled";
-
-const AvatarRoot = styled.div`
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.surfaceMuted};
-  color: ${({ theme }) => theme.colors.primary};
-  overflow: hidden;
-`;
-
-const AvatarImg = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-`;
-
-const Fallback = styled.span`
-  font-size: 0.9rem;
-  font-weight: ${({ theme }) => theme.typography.weights.semibold};
-`;
+import * as S from "./Avatar.styles";
 
 interface AvatarProps {
   size?: number;
@@ -31,11 +8,8 @@ interface AvatarProps {
 }
 
 export function Avatar({ size = 48, children }: AvatarProps) {
-  return (
-    <AvatarRoot style={{ width: size, height: size }}>
-      {children}
-    </AvatarRoot>
-  );
+  // 아바타 루트 요소 렌더링
+  return <S.AvatarRoot style={{ width: size, height: size }}>{children}</S.AvatarRoot>;
 }
 
 interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -50,7 +24,7 @@ export function AvatarImage({ fallback, onError, ...rest }: AvatarImageProps) {
   }
 
   return (
-    <AvatarImg
+    <S.AvatarImg
       {...rest}
       onError={(event) => {
         setHasError(true);
@@ -65,5 +39,5 @@ interface AvatarFallbackProps {
 }
 
 export function AvatarFallback({ children }: AvatarFallbackProps) {
-  return <Fallback>{children}</Fallback>;
+  return <S.Fallback>{children}</S.Fallback>;
 }

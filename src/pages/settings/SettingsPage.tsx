@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import {
   Bell,
   Globe,
@@ -22,59 +21,7 @@ import recycleanLogo from "../../assets/recycleanLogo.svg";
 import { Separator } from "../../shared/ui/Separator/Separator";
 import { SelectField } from "../../shared/ui/SelectField/SelectField";
 import { useSettingsStore } from "shared/state/settingsStore";
-
-const PageContainer = styled.div`
-  width: 100%;
-  max-width: 420px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-`;
-
-const ProfileRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(3)};
-`;
-
-const StatGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: ${({ theme }) => theme.spacing(3)};
-  text-align: center;
-`;
-
-const SettingsItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing(3)};
-`;
-
-const SettingsLabel = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const SettingsText = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(0.5)};
-`;
-
-const SectionStack = styled(CardContent)`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
-`;
-
-const ActionList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
+import * as S from "./SettingsPage.styles";
 
 interface UserStats {
   totalPoints: number;
@@ -121,11 +68,12 @@ export function SettingsPage() {
     streakDays: 12,
   };
 
+  // 설정 페이지 전체 UI 렌더링
   return (
-    <PageContainer>
+    <S.PageContainer>
       <Card>
         <CardContent>
-          <ProfileRow>
+          <S.ProfileRow>
             <Avatar size={64}>
               <AvatarImage
                 src={recycleanLogo}
@@ -142,7 +90,7 @@ export function SettingsPage() {
                 <Badge variant="outline">{userStats.streakDays}일 연속</Badge>
               </div>
             </div>
-          </ProfileRow>
+          </S.ProfileRow>
         </CardContent>
       </Card>
 
@@ -154,7 +102,7 @@ export function SettingsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <StatGrid>
+          <S.StatGrid>
             <div>
               <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "#16a34a" }}>
                 {userStats.itemsRecycled}
@@ -167,7 +115,7 @@ export function SettingsPage() {
               </div>
               <div style={{ fontSize: "0.8rem", color: "#64748b" }}>누적 포인트</div>
             </div>
-          </StatGrid>
+          </S.StatGrid>
         </CardContent>
       </Card>
 
@@ -177,57 +125,57 @@ export function SettingsPage() {
             <SettingsIcon size={18} />앱 설정
           </CardTitle>
         </CardHeader>
-        <SectionStack>
-          <SettingsItem>
-            <SettingsLabel>
+        <S.SectionStack>
+          <S.SettingsItem>
+            <S.SettingsLabel>
               <Bell size={16} color="#64748b" />
-              <SettingsText>
+              <S.SettingsText>
                 <span style={{ fontWeight: 600 }}>알림</span>
                 <span style={{ fontSize: "0.75rem", color: "#64748b" }}>재활용 리마인더 알림</span>
-              </SettingsText>
-            </SettingsLabel>
+              </S.SettingsText>
+            </S.SettingsLabel>
             <Switch checked={notifications} onCheckedChange={setNotifications} />
-          </SettingsItem>
+          </S.SettingsItem>
 
           <Separator />
 
-          <SettingsItem>
-            <SettingsLabel>
+          <S.SettingsItem>
+            <S.SettingsLabel>
               <MapPin size={16} color="#64748b" />
-              <SettingsText>
+              <S.SettingsText>
                 <span style={{ fontWeight: 600 }}>위치 서비스</span>
                 <span style={{ fontSize: "0.75rem", color: "#64748b" }}>주변 배출함 찾기</span>
-              </SettingsText>
-            </SettingsLabel>
+              </S.SettingsText>
+            </S.SettingsLabel>
             <Switch checked={location} onCheckedChange={setLocation} />
-          </SettingsItem>
+          </S.SettingsItem>
 
           <Separator />
 
-          <SettingsItem>
-            <SettingsLabel>
+          <S.SettingsItem>
+            <S.SettingsLabel>
               {darkMode ? <Moon size={16} color="#64748b" /> : <Sun size={16} color="#64748b" />}
-              <SettingsText>
+              <S.SettingsText>
                 <span style={{ fontWeight: 600 }}>다크 모드</span>
                 <span style={{ fontSize: "0.75rem", color: "#64748b" }}>어두운 테마로 변경</span>
-              </SettingsText>
-            </SettingsLabel>
+              </S.SettingsText>
+            </S.SettingsLabel>
             <Switch checked={darkMode} onCheckedChange={setDarkMode} />
-          </SettingsItem>
+          </S.SettingsItem>
 
           <Separator />
 
-          <SettingsItem>
-            <SettingsLabel>
+          <S.SettingsItem>
+            <S.SettingsLabel>
               <Volume2 size={16} color="#64748b" />
-              <SettingsText>
+              <S.SettingsText>
                 <span style={{ fontWeight: 600 }}>사운드</span>
                 <span style={{ fontSize: "0.75rem", color: "#64748b" }}>액션 사운드 효과</span>
-              </SettingsText>
-            </SettingsLabel>
+              </S.SettingsText>
+            </S.SettingsLabel>
             <Switch checked={sounds} onCheckedChange={setSounds} />
-          </SettingsItem>
-        </SectionStack>
+          </S.SettingsItem>
+        </S.SectionStack>
       </Card>
 
       <Card>
@@ -237,7 +185,7 @@ export function SettingsPage() {
             언어 및 지역
           </CardTitle>
         </CardHeader>
-        <SectionStack>
+        <S.SectionStack>
           <div>
             <div style={{ fontWeight: 600, marginBottom: "8px", fontSize: "0.85rem" }}>언어</div>
             <SelectField
@@ -254,7 +202,7 @@ export function SettingsPage() {
               onChange={(event) => setRegion(event.target.value)}
             />
           </div>
-        </SectionStack>
+        </S.SectionStack>
       </Card>
 
       <Card>
@@ -265,7 +213,7 @@ export function SettingsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ActionList>
+          <S.ActionList>
             <Button variant="outline" style={{ justifyContent: "flex-start" }}>
               <User size={16} />
               프로필 편집
@@ -285,9 +233,9 @@ export function SettingsPage() {
               <LogOut size={16} />
               로그아웃
             </Button>
-          </ActionList>
+          </S.ActionList>
         </CardContent>
       </Card>
-    </PageContainer>
+    </S.PageContainer>
   );
 }
