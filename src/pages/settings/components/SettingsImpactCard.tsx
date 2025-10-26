@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import * as S from "../SettingsPage.styles";
-import { UserStats } from "../types";
+import type { UserStats } from "../types";
 
 // 사용자 영향력 카드 컴포넌트 정의
 interface SettingsImpactCardProps {

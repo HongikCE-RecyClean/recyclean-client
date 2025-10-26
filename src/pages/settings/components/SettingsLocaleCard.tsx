@@ -2,7 +2,7 @@ import { Globe } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import * as S from "../SettingsPage.styles";
-import { LocaleOption } from "../types";
+import type { LocaleOption } from "../types";
 
 // 언어와 지역 설정 카드 정의
 interface SettingsLocaleCardProps {

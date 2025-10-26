@@ -2,7 +2,7 @@ import { Avatar, AvatarImage } from "../../../shared/ui/Avatar/Avatar";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Card, CardContent } from "../../../shared/ui/Card/Card";
 import * as S from "../SettingsPage.styles";
-import { UserStats } from "../types";
+import type { UserStats } from "../types";
 
 // 사용자 프로필 카드 컴포넌트 정의
 interface SettingsProfileCardProps {

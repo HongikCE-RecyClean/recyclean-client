@@ -26,6 +26,17 @@ export const WelcomeContent = styled(CardContent)`
   gap: ${({ theme }) => theme.spacing(3)};
 `;
 
+// 환영 텍스트 영역 좌측 정렬 정의
+export const WelcomeText = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+  align-items: flex-start;
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
+  text-align: left;
+  width: 100%;
+`;
+
 // 환영 아이콘 컨테이너 정의
 export const WelcomeIcon = styled.div`
   display: inline-flex;
