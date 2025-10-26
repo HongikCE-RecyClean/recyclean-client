@@ -19,6 +19,9 @@ export const CalendarContent = styled(CardContent)`
 
 // DayPicker 래퍼 및 스타일 오버라이드 정의
 export const DayPickerWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+
   .rdp {
     --rdp-cell-size: 44px;
     --rdp-accent-color: #16a34a;
