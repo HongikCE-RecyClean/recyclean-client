@@ -51,7 +51,9 @@ export function CalendarOverviewCard({
             onMonthChange={(month) => onChangeMonth(month)}
             modifiers={modifiers}
             modifiersClassNames={{ hasEntry: "calendar-has-entry" }}
-            captionLayout="buttons"
+            captionLayout="label"
+            // 이전 버튼 배치를 유지하기 위해 네비게이션을 양옆으로 정렬
+            navLayout="around"
             showOutsideDays
           />
         </S.DayPickerWrapper>

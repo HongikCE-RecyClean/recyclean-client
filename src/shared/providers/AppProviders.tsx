@@ -14,7 +14,8 @@ export function AppProviders({ children }: PropsWithChildren) {
         <AppGlobalStyles />
         {children}
         {import.meta.env.DEV && (
-          <ReactQueryDevtools position="bottom-right" initialIsOpen={false} />
+          // 개발 디버그 버튼 위치를 명시적으로 유지
+          <ReactQueryDevtools buttonPosition="bottom-right" initialIsOpen={false} />
         )}
       </QueryClientProvider>
     </ThemeProvider>

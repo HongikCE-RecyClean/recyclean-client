@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 import { MapPin, Navigation, Filter } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";

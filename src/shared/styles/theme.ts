@@ -25,6 +25,8 @@ export interface AppTheme {
     sm: string;
     md: string;
     lg: string;
+    // 완전한 원형 코너 정의
+    full: string;
     pill: string;
   };
   shadows: {
@@ -70,6 +72,8 @@ export const appTheme: AppTheme = {
     sm: "8px",
     md: "12px",
     lg: "16px",
+    // 완전한 원형 코너를 위한 반경 값
+    full: "999px",
     pill: "999px",
   },
   shadows: {

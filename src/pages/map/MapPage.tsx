@@ -1,4 +1,5 @@
-import { ChangeEvent, useMemo } from "react";
+import { useMemo } from "react";
+import type { ChangeEvent } from "react";
 import { MapFilterCard } from "./components/MapFilterCard";
 import { MapPlaceholderCard } from "./components/MapPlaceholderCard";
 import { TrashBinList } from "./components/TrashBinList";
