@@ -2,11 +2,13 @@ import { Recycle } from "lucide-react";
 import * as S from "../DashboardPage.styles";
 import type { DashboardData } from "../../../shared/data/dashboard";
 
+// 환경 카드 환영 메시지에 필요한 속성 정의
 interface WelcomeOverviewCardProps {
   todayStats: DashboardData["todayStats"];
+  userName: string;
 }
 
-export function WelcomeOverviewCard({ todayStats }: WelcomeOverviewCardProps) {
+export function WelcomeOverviewCard({ todayStats, userName }: WelcomeOverviewCardProps) {
   return (
     <S.WelcomeCard>
       <S.WelcomeContent>
@@ -16,8 +18,8 @@ export function WelcomeOverviewCard({ todayStats }: WelcomeOverviewCardProps) {
         </S.WelcomeIcon>
         {/* 환영 메시지 영역 */}
         <div>
-          <h2>오늘도 환경을 지켜요!</h2>
-          <p>꾸준한 실천으로 녹색 행성을 만드는 중이에요.</p>
+          <h2>안녕하세요, {userName}님!</h2>
+          <p>오늘의 분리수거를 도와줄게요.</p>
         </div>
         {/* 핵심 통계 그리드 */}
         <S.StatsGrid>

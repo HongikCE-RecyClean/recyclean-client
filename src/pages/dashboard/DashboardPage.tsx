@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDashboardData } from "shared/api/dashboard";
 import { dashboardInitialData, tipCategories } from "shared/data/dashboard";
 import { useDashboardStore } from "shared/state/dashboardStore";
+import { useUserStore } from "shared/state/userStore";
 import * as S from "./DashboardPage.styles";
 import {
   AchievementsCard,
@@ -30,6 +31,8 @@ export function DashboardPage() {
     entries,
     setEntries,
   } = useDashboardStore();
+  // 사용자 정보 스토어에서 이름 로드
+  const { name: userName } = useUserStore();
 
   // 쿼리 결과로 스토어 동기화
   useEffect(() => {
@@ -70,7 +73,7 @@ export function DashboardPage() {
 
   return (
     <S.PageContainer>
-      <WelcomeOverviewCard todayStats={todayStats} />
+      <WelcomeOverviewCard todayStats={todayStats} userName={userName} />
       <MonthlyProgressCard
         totalPoints={totalPoints}
         monthlyGoal={monthlyGoal}
