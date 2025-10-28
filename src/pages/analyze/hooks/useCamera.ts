@@ -5,7 +5,8 @@ interface UseCameraOptions {
 }
 
 interface UseCameraResult {
-  videoRef: React.RefObject<HTMLVideoElement>;
+  // 카메라 영상 요소 참조 전달
+  videoRef: React.MutableRefObject<HTMLVideoElement | null>;
   isActive: boolean;
   isReady: boolean;
   openCamera: () => Promise<void>;

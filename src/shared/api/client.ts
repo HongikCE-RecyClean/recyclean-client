@@ -54,7 +54,12 @@ async function parseBody<TData>(response: Response): Promise<TData | null> {
 // HTTP 클라이언트 구현
 export class HttpClient {
   // 기본 요청 옵션 저장
-  constructor(private readonly defaultHeaders: HeadersInit = DEFAULT_HEADERS) {}
+  private readonly defaultHeaders: HeadersInit;
+
+  constructor(defaultHeaders: HeadersInit = DEFAULT_HEADERS) {
+    // 인스턴스 기본 헤더 초기화
+    this.defaultHeaders = defaultHeaders;
+  }
 
   // 공통 요청 처리
   async request<TResponse, TBody = unknown>(
