@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Button } from "../../shared/ui/Button/Button";
 
@@ -66,6 +67,18 @@ export const ImageWrapper = styled.div`
   overflow: hidden;
 `;
 
+// 촬영 이미지 프레임 높이 지정 클래스
+export const capturedImageFrame = css`
+  height: 220px;
+`;
+
+// 분석 소개 문단 스타일
+export const introDescriptionText = css`
+  margin: 0;
+  color: #475569;
+  font-size: 0.9rem;
+`;
+
 // 초기화 버튼 위치 지정
 export const ResetButton = styled(Button)`
   position: absolute;
@@ -111,6 +124,42 @@ export const ResultBody = styled.div`
   gap: ${({ theme }) => theme.spacing(3)};
 `;
 
+// 스캔 진행 카드 컨텐츠 정렬 스타일
+export const scanningContent = css`
+  text-align: center;
+  gap: ${({ theme }) => theme.spacing(4)};
+`;
+
+// 스캔 진행 안내 제목 스타일
+export const scanningHeadline = css`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+`;
+
+// 스캔 진행 안내 보조 텍스트 스타일
+export const scanningSubtext = css`
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.85rem;
+`;
+
+// 결과 요약 행 정렬 스타일
+export const resultSummaryRow = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+// 결과 항목 제목 스타일
+export const resultItemTitle = css`
+  margin: 0;
+`;
+
+// 결과 카테고리 설명 스타일
+export const resultCategoryText = css`
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: #475569;
+`;
+
 // 안내 콜아웃 스타일 정의
 export const Callout = styled.div`
   display: flex;
@@ -120,6 +169,19 @@ export const Callout = styled.div`
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.infoSurface};
   color: ${({ theme }) => theme.colors.info};
+`;
+
+// 처리 방법 섹션 제목 스타일
+export const resultSectionHeading = css`
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+`;
+
+// 처리 방법 본문 텍스트 스타일
+export const resultInstructionText = css`
+  margin: 0;
+  color: #1f2933;
+  font-size: 0.9rem;
 `;
 
 // 팁 리스트 목록 스타일 정의
@@ -139,4 +201,20 @@ export const ErrorMessage = styled.div`
   background: ${({ theme }) => theme.colors.dangerSurface};
   color: ${({ theme }) => theme.colors.danger};
   font-weight: ${({ theme }) => theme.typography.weights.medium};
+`;
+
+// 결과 팁 텍스트 스타일
+export const resultTipText = css`
+  font-size: 0.85rem;
+`;
+
+// 결과 액션 버튼 행 스타일
+export const resultActionsRow = css`
+  display: flex;
+  gap: 12px;
+`;
+
+// 결과 액션 버튼 폭 스타일
+export const resultActionButton = css`
+  flex: 1;
 `;

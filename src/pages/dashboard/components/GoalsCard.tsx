@@ -24,24 +24,16 @@ export function GoalsCard({ goals }: GoalsCardProps) {
             const percentage = Math.round((goal.current / goal.target) * 100);
             return (
               <S.GoalCard key={goal.id}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
-                  }}
-                >
+                {/* 목표 헤더 배치 클래스 적용 */}
+                <div className={S.goalCardHeader}>
                   <div>
-                    <div style={{ fontWeight: 600 }}>{goal.title}</div>
-                    <p style={{ margin: 0, color: "#64748b", fontSize: "0.8rem" }}>
-                      {goal.description}
-                    </p>
+                    <div className={S.goalCardTitle}>{goal.title}</div>
+                    <p className={S.goalCardDescription}>{goal.description}</p>
                   </div>
                   <Badge variant="outline">{goal.deadline}</Badge>
                 </div>
-                <div
-                  style={{ fontSize: "0.8rem", display: "flex", justifyContent: "space-between" }}
-                >
+                {/* 목표 수치 요약 행 클래스 적용 */}
+                <div className={S.goalCardStats}>
                   <span>
                     {goal.current} / {goal.target} {goal.unit}
                   </span>

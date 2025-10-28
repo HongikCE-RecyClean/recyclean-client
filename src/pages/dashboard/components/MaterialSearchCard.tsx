@@ -55,33 +55,20 @@ export function MaterialSearchCard({
         <S.MaterialList>
           {filteredMaterials.map((material) => (
             <S.MaterialItem key={material.name}>
-              <div
-                style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              {/* 재질 카드 헤더 행 클래스 적용 */}
+              <div className={S.materialHeaderRow}>
+                <div className={S.materialHeaderLeft}>
                   <Badge tone={material.recyclable ? "success" : "danger"}>
                     {material.recyclable ? "재활용 가능" : "불가"}
                   </Badge>
-                  <span style={{ fontWeight: 600 }}>{material.name}</span>
+                  <span className={S.materialNameText}>{material.name}</span>
                 </div>
                 <Badge variant="outline">{material.category}</Badge>
               </div>
-              <p style={{ margin: 0, color: "#475569", fontSize: "0.85rem" }}>
-                {material.instructions}
-              </p>
+              <p className={S.materialDescriptionText}>{material.instructions}</p>
+              {/* 재질 팁 박스 클래스 적용 */}
               {material.tips && (
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                    alignItems: "flex-start",
-                    background: "#eff6ff",
-                    borderRadius: "12px",
-                    padding: "8px 10px",
-                    color: "#1d4ed8",
-                    fontSize: "0.8rem",
-                  }}
-                >
+                <div className={S.materialTipBox}>
                   <AlertCircle size={16} />
                   <span>{material.tips}</span>
                 </div>
@@ -89,9 +76,7 @@ export function MaterialSearchCard({
             </S.MaterialItem>
           ))}
           {filteredMaterials.length === 0 && (
-            <p style={{ textAlign: "center", color: "#64748b", margin: 0 }}>
-              조건에 맞는 결과가 없어요.
-            </p>
+            <p className={S.materialEmptyMessage}>조건에 맞는 결과가 없어요.</p>
           )}
         </S.MaterialList>
       </CardContent>

@@ -5,12 +5,13 @@ import * as S from "../AnalyzePage.styles";
 export function AnalyzeScanningCard() {
   return (
     <Card>
-      <CardContent style={{ textAlign: "center", gap: "16px" }}>
+      {/* 스캔 컨텐츠 정렬 클래스 적용 */}
+      <CardContent className={S.scanningContent}>
         {/* 대기 스피너 표시 */}
         <S.Spinner />
         {/* 안내 문구 영역 */}
-        <div style={{ fontWeight: 600 }}>이미지를 분석 중이에요...</div>
-        <div style={{ color: "#64748b", fontSize: "0.85rem" }}>잠시만 기다려 주세요.</div>
+        <div className={S.scanningHeadline}>이미지를 분석 중이에요...</div>
+        <div className={S.scanningSubtext}>잠시만 기다려 주세요.</div>
       </CardContent>
     </Card>
   );

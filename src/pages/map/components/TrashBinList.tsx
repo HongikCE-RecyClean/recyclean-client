@@ -29,8 +29,9 @@ export function TrashBinList({ bins }: TrashBinListProps) {
               <S.BinInfo>
                 {bin.type === "recycling" ? <Recycle size={18} /> : <Trash2 size={18} />}
                 <S.BinMeta>
-                  <span style={{ fontWeight: 600 }}>{bin.name}</span>
-                  <span style={{ fontSize: "0.8rem", color: "#475569" }}>{bin.location}</span>
+                  {/* 배출함 기본 정보 텍스트 클래스 적용 */}
+                  <span className={S.binNameText}>{bin.name}</span>
+                  <span className={S.binLocationText}>{bin.location}</span>
                   {/* 업데이트 시각과 아이콘을 한 줄로 정렬 */}
                   <S.BinUpdatedRow>
                     <Clock size={12} />
@@ -38,9 +39,10 @@ export function TrashBinList({ bins }: TrashBinListProps) {
                   </S.BinUpdatedRow>
                 </S.BinMeta>
               </S.BinInfo>
-              <div style={{ textAlign: "right", minWidth: "70px" }}>
+              {/* 배출함 거리 정보 박스 클래스 적용 */}
+              <div className={S.binDistanceColumn}>
                 <Badge variant="outline">{bin.distance}</Badge>
-                <div style={{ marginTop: "6px" }}>
+                <div className={S.binAvailabilitySpacer}>
                   <Badge tone={mapAvailabilityTone[bin.availability]}>
                     {bin.availability === "available"
                       ? "이용 가능"
@@ -52,7 +54,7 @@ export function TrashBinList({ bins }: TrashBinListProps) {
               </div>
             </S.BinHeader>
 
-            <div style={{ marginTop: "12px" }}>
+            <div className={S.binItemsSection}>
               <S.SectionLabel>수거 품목</S.SectionLabel>
               <S.AcceptedItems>
                 {bin.acceptedItems.map((item) => (
@@ -64,10 +66,10 @@ export function TrashBinList({ bins }: TrashBinListProps) {
             </div>
 
             <S.ActionButtons>
-              <Button variant="outline" size="sm" style={{ flex: 1 }}>
+              <Button variant="outline" size="sm" className={S.binActionButton}>
                 <Navigation size={14} />길 찾기
               </Button>
-              <Button variant="outline" size="sm" style={{ flex: 1 }}>
+              <Button variant="outline" size="sm" className={S.binActionButton}>
                 상태 신고
               </Button>
             </S.ActionButtons>

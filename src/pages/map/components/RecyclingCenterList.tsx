@@ -26,19 +26,16 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
           {centers.map((center) => (
             <S.CenterCard key={center.id}>
               <S.CenterMedia>
-                <ImageWithFallback
-                  src={center.image}
-                  alt={center.name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-                <div style={{ position: "absolute", top: 12, right: 12 }}>
+                <ImageWithFallback src={center.image} alt={center.name} />
+                {/* 거리 배지 위치 클래스 적용 */}
+                <div className={S.centerBadgeContainer}>
                   <Badge variant="outline">{center.distance}</Badge>
                 </div>
               </S.CenterMedia>
               <S.CenterContent>
                 <div>
-                  <h3 style={{ margin: 0 }}>{center.name}</h3>
-                  <div style={{ fontSize: "0.8rem", color: "#475569" }}>{center.address}</div>
+                  <h3 className={S.centerNameText}>{center.name}</h3>
+                  <div className={S.centerAddressText}>{center.address}</div>
                 </div>
 
                 <S.MaterialChips>
@@ -64,11 +61,11 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
                 </S.InfoStack>
 
                 <S.ActionButtons>
-                  <Button variant="outline" size="sm" style={{ flex: 1 }}>
+                  <Button variant="outline" size="sm" className={S.centerActionButton}>
                     <Navigation size={14} />길 찾기
                   </Button>
                   {center.phone && (
-                    <Button variant="outline" size="sm" style={{ flex: 1 }}>
+                    <Button variant="outline" size="sm" className={S.centerActionButton}>
                       <Phone size={14} />
                       전화하기
                     </Button>

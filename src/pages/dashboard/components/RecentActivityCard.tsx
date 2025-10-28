@@ -23,8 +23,9 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
           {recentActivity.map((activity) => (
             <S.ActivityRow key={activity.type}>
               <div>
-                <div style={{ fontWeight: 600, fontSize: "0.9rem" }}>{activity.type}</div>
-                <div style={{ color: "#64748b", fontSize: "0.8rem" }}>
+                {/* 최근 활동 제목 클래스 적용 */}
+                <div className={S.recentActivityTitle}>{activity.type}</div>
+                <div className={S.recentActivityMeta}>
                   {activity.count}개 · {activity.time}
                 </div>
               </div>

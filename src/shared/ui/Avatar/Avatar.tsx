@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 import * as S from "./Avatar.styles";
@@ -9,7 +10,13 @@ interface AvatarProps {
 
 export function Avatar({ size = 48, children }: AvatarProps) {
   // 아바타 루트 요소 렌더링
-  return <S.AvatarRoot style={{ width: size, height: size }}>{children}</S.AvatarRoot>;
+  const rootSizeClass = css`
+    width: ${size}px;
+    height: ${size}px;
+  `;
+
+  // 아바타 크기 클래스 적용
+  return <S.AvatarRoot className={rootSizeClass}>{children}</S.AvatarRoot>;
 }
 
 interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {

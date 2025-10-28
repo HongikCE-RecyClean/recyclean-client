@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Card, CardContent } from "../../../shared/ui/Card/Card";
 
@@ -19,11 +20,29 @@ export const CenterMedia = styled.div`
   height: 140px;
 `;
 
+// 센터 거리 배지 위치 클래스
+export const centerBadgeContainer = css`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+`;
+
 // 카드 본문 레이아웃 정의
 export const CenterContent = styled(CardContent)`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+// 센터 명칭 텍스트 스타일
+export const centerNameText = css`
+  margin: 0;
+`;
+
+// 센터 주소 텍스트 스타일
+export const centerAddressText = css`
+  font-size: 0.8rem;
+  color: #475569;
 `;
 
 // 재활용 품목 칩 묶음 스타일 정의
@@ -53,4 +72,9 @@ export const InfoRow = styled.span`
 export const ActionButtons = styled.div`
   display: flex;
   gap: 8px;
+`;
+
+// 센터 액션 버튼 폭 스타일
+export const centerActionButton = css`
+  flex: 1;
 `;

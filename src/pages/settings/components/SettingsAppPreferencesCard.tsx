@@ -39,8 +39,9 @@ export function SettingsAppPreferencesCard({
           <S.SettingsLabel>
             <Bell size={16} color="#64748b" />
             <S.SettingsText>
-              <span style={{ fontWeight: 600 }}>알림</span>
-              <span style={{ fontSize: "0.75rem", color: "#64748b" }}>재활용 리마인더 알림</span>
+              {/* 설정 항목 텍스트 클래스 적용 */}
+              <span className={S.settingsItemTitle}>알림</span>
+              <span className={S.settingsItemDescription}>재활용 리마인더 알림</span>
             </S.SettingsText>
           </S.SettingsLabel>
           <Switch checked={notifications} onCheckedChange={onNotificationsChange} />
@@ -52,8 +53,8 @@ export function SettingsAppPreferencesCard({
           <S.SettingsLabel>
             <MapPin size={16} color="#64748b" />
             <S.SettingsText>
-              <span style={{ fontWeight: 600 }}>위치 서비스</span>
-              <span style={{ fontSize: "0.75rem", color: "#64748b" }}>주변 배출함 찾기</span>
+              <span className={S.settingsItemTitle}>위치 서비스</span>
+              <span className={S.settingsItemDescription}>주변 배출함 찾기</span>
             </S.SettingsText>
           </S.SettingsLabel>
           <Switch checked={location} onCheckedChange={onLocationChange} />
@@ -65,8 +66,8 @@ export function SettingsAppPreferencesCard({
           <S.SettingsLabel>
             {darkMode ? <Moon size={16} color="#64748b" /> : <Sun size={16} color="#64748b" />}
             <S.SettingsText>
-              <span style={{ fontWeight: 600 }}>다크 모드</span>
-              <span style={{ fontSize: "0.75rem", color: "#64748b" }}>어두운 테마로 변경</span>
+              <span className={S.settingsItemTitle}>다크 모드</span>
+              <span className={S.settingsItemDescription}>어두운 테마로 변경</span>
             </S.SettingsText>
           </S.SettingsLabel>
           <Switch checked={darkMode} onCheckedChange={onDarkModeChange} />
@@ -78,8 +79,8 @@ export function SettingsAppPreferencesCard({
           <S.SettingsLabel>
             <Volume2 size={16} color="#64748b" />
             <S.SettingsText>
-              <span style={{ fontWeight: 600 }}>사운드</span>
-              <span style={{ fontSize: "0.75rem", color: "#64748b" }}>액션 사운드 효과</span>
+              <span className={S.settingsItemTitle}>사운드</span>
+              <span className={S.settingsItemDescription}>액션 사운드 효과</span>
             </S.SettingsText>
           </S.SettingsLabel>
           <Switch checked={sounds} onCheckedChange={onSoundsChange} />

@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { CardContent } from "../../shared/ui/Card/Card";
 
@@ -15,6 +16,17 @@ export const PageContainer = styled.div`
 // 달력 카드 컨텐츠 래퍼 정의
 export const CalendarContent = styled(CardContent)`
   gap: ${({ theme }) => theme.spacing(4)};
+`;
+
+// 기록 목록 항목 제목 텍스트 스타일
+export const recordTypeText = css`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+`;
+
+// 기록 목록 서브 텍스트 스타일
+export const recordMetaText = css`
+  color: #64748b;
+  font-size: 0.85rem;
 `;
 
 // DayPicker 래퍼 및 스타일 오버라이드 정의
@@ -201,6 +213,30 @@ export const LegendLabel = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
   font-weight: ${({ theme }) => theme.typography.weights.medium};
   color: ${({ theme }) => theme.colors.text};
+`;
+
+// 가이드 목록 스타일
+export const guideList = css`
+  margin: 0;
+  padding-left: 1.1rem;
+  color: #475569;
+  font-size: 0.9rem;
+`;
+
+// 범례 통계 열 정렬 스타일
+export const legendStatsColumn = css`
+  text-align: right;
+`;
+
+// 범례 수량 텍스트 스타일
+export const legendCountText = css`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+`;
+
+// 범례 포인트 텍스트 스타일
+export const legendPointsText = css`
+  color: #64748b;
+  font-size: 0.8rem;
 `;
 
 // 기록 리스트 래퍼 정의

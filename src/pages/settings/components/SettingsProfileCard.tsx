@@ -17,17 +17,17 @@ export function SettingsProfileCard({ userStats, avatarSrc }: SettingsProfileCar
       <CardContent>
         <S.ProfileRow>
           <Avatar size={64}>
+            {/* 프로필 아바타 클래스 적용 */}
             <AvatarImage
               src={avatarSrc}
               alt="기본 사용자 프로필 이미지(profile image)"
-              style={{ objectFit: "contain", padding: "12px" }}
+              className={S.profileAvatarImage}
             />
           </Avatar>
-          <div style={{ flex: 1 }}>
-            <p style={{ margin: "4px 0 0", color: "#475569", fontSize: "0.85rem" }}>
-              가입일 {userStats.joinDate}
-            </p>
-            <div style={{ display: "flex", gap: "8px", marginTop: "8px" }}>
+          {/* 프로필 정보 컨테이너 클래스 적용 */}
+          <div className={S.profileInfoContainer}>
+            <p className={S.profileMetaText}>가입일 {userStats.joinDate}</p>
+            <div className={S.profileBadgeRow}>
               <Badge tone="success">{userStats.totalPoints} pts</Badge>
               <Badge variant="outline">{userStats.streakDays}일 연속</Badge>
             </div>

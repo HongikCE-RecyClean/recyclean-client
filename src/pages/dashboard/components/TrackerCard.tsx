@@ -31,19 +31,21 @@ export function TrackerCard({
       </CardHeader>
       <CardContent>
         {/* 통계 요약 표시 */}
-        <div style={{ textAlign: "center", display: "flex", flexDirection: "column", gap: "8px" }}>
-          <span style={{ fontSize: "2rem", fontWeight: 700 }}>{totalPoints}</span>
-          <span style={{ color: "#64748b", fontSize: "0.85rem" }}>이번 달 획득 포인트</span>
+        {/* 요약 박스 클래스 적용 */}
+        <div className={S.trackerSummaryBox}>
+          <span className={S.trackerPointsValue}>{totalPoints}</span>
+          <span className={S.trackerPointsLabel}>이번 달 획득 포인트</span>
           <Progress value={progressValue} />
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem" }}>
-            <span style={{ color: "#64748b" }}>목표 {monthlyGoal}pt</span>
-            <span style={{ fontWeight: 600 }}>{Math.round(progressValue)}%</span>
+          <div className={S.trackerProgressRow}>
+            <span className={S.trackerGoalText}>목표 {monthlyGoal}pt</span>
+            <span className={S.trackerPercentText}>{Math.round(progressValue)}%</span>
           </div>
         </div>
         {progressValue >= 100 && (
           <S.HighlightBox>
             <Award size={18} />
-            <span style={{ fontSize: "0.85rem", fontWeight: 600 }}>목표를 달성했어요!</span>
+            {/* 하이라이트 텍스트 클래스 적용 */}
+            <span className={S.trackerHighlightText}>목표를 달성했어요!</span>
           </S.HighlightBox>
         )}
         <Button variant="outline">

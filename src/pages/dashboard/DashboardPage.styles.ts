@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Card, CardContent } from "../../shared/ui/Card/Card";
 
@@ -99,6 +100,18 @@ export const ActivityRow = styled.div`
   background: ${({ theme }) => theme.colors.surfaceMuted};
 `;
 
+// 최근 활동 제목 텍스트 스타일
+export const recentActivityTitle = css`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  font-size: 0.9rem;
+`;
+
+// 최근 활동 서브 텍스트 스타일
+export const recentActivityMeta = css`
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.8rem;
+`;
+
 // 업적 행 스타일 정의
 export const AchievementRow = styled.div<{ $earned: boolean }>`
   display: flex;
@@ -110,6 +123,11 @@ export const AchievementRow = styled.div<{ $earned: boolean }>`
     $earned ? theme.colors.successSurface : theme.colors.surfaceMuted};
   border: 1px solid
     ${({ theme, $earned }) => ($earned ? "rgba(34, 197, 94, 0.35)" : theme.colors.border)};
+`;
+
+// 업적 카드 컨텐츠 간격 조정 스타일
+export const achievementsContent = css`
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 // 빠른 작업 버튼 그리드 정의
@@ -134,6 +152,51 @@ export const MaterialItem = styled.div`
   padding: ${({ theme }) => theme.spacing(3)};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surfaceMuted};
+`;
+
+// 재질 카드 헤더 행 스타일
+export const materialHeaderRow = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+// 재질 상태 배지 행 스타일
+export const materialHeaderLeft = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+// 재질 이름 텍스트 강조 스타일
+export const materialNameText = css`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+`;
+
+// 재질 설명 문단 스타일
+export const materialDescriptionText = css`
+  margin: 0;
+  color: #475569;
+  font-size: 0.85rem;
+`;
+
+// 재질 팁 박스 스타일
+export const materialTipBox = css`
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  background: #eff6ff;
+  border-radius: 12px;
+  padding: 8px 10px;
+  color: #1d4ed8;
+  font-size: 0.8rem;
+`;
+
+// 재질 검색 결과 없음 안내 스타일
+export const materialEmptyMessage = css`
+  text-align: center;
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin: 0;
 `;
 
 // 팁 카드 스타일 정의
@@ -162,6 +225,32 @@ export const TipsList = styled.div`
   gap: ${({ theme }) => theme.spacing(3)};
 `;
 
+// 팁 배지 포지셔닝 클래스
+export const tipBadgeContainer = css`
+  position: absolute;
+  top: 12px;
+  left: 12px;
+`;
+
+// 팁 제목 텍스트 스타일
+export const tipTitleText = css`
+  margin: 0;
+  font-size: 1rem;
+`;
+
+// 팁 설명 문단 스타일
+export const tipDescriptionText = css`
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: #475569;
+`;
+
+// 팁 배지 행 배치 스타일
+export const tipBadgeRow = css`
+  display: flex;
+  gap: 8px;
+`;
+
 // 목표 리스트 래퍼 정의
 export const GoalsList = styled.div`
   display: flex;
@@ -177,6 +266,57 @@ export const GoalCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+// 목표 카드 헤더 레이아웃 정의
+export const goalCardHeader = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
+// 목표 제목 텍스트 강조 스타일
+export const goalCardTitle = css`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+`;
+
+// 목표 설명 문단 스타일
+export const goalCardDescription = css`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.8rem;
+`;
+
+// 목표 수치 행 정렬 스타일
+export const goalCardStats = css`
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: space-between;
+`;
+
+// 월간 진행 수치 텍스트 스타일
+export const monthlyProgressValue = css`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  font-size: 1rem;
+`;
+
+// 월간 진행 부가 설명 스타일
+export const monthlyProgressSubtitle = css`
+  margin: 0;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.85rem;
+`;
+
+// 월간 진행 하단 행 정렬 스타일
+export const monthlyProgressFooter = css`
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+`;
+
+// 월간 진행 퍼센트 텍스트 색상 스타일
+export const monthlyProgressPercent = css`
+  color: ${({ theme }) => theme.colors.textMuted};
 `;
 
 // 목표 진행 바 컨테이너 정의
@@ -222,6 +362,43 @@ export const TrackerLabel = styled.span`
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
+// 활동 추적 요약 박스 스타일
+export const trackerSummaryBox = css`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+// 활동 추적 포인트 값 스타일
+export const trackerPointsValue = css`
+  font-size: 2rem;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+`;
+
+// 활동 추적 포인트 라벨 스타일
+export const trackerPointsLabel = css`
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-size: 0.85rem;
+`;
+
+// 활동 추적 진행 행 스타일
+export const trackerProgressRow = css`
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+`;
+
+// 활동 추적 목표 텍스트 스타일
+export const trackerGoalText = css`
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+// 활동 추적 퍼센트 텍스트 스타일
+export const trackerPercentText = css`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+`;
+
 // 하이라이트 박스 스타일 정의
 export const HighlightBox = styled.div`
   background: ${({ theme }) => theme.colors.successSurface};
@@ -231,4 +408,22 @@ export const HighlightBox = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+// 하이라이트 텍스트 강조 스타일
+export const trackerHighlightText = css`
+  font-size: 0.85rem;
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+`;
+
+// 업적 제목 텍스트 스타일
+export const achievementTitleText = css`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  font-size: 0.9rem;
+`;
+
+// 업적 설명 텍스트 스타일
+export const achievementDescriptionText = css`
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.textMuted};
 `;

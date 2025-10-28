@@ -33,7 +33,8 @@ export function SettingsLocaleCard({
       </CardHeader>
       <S.SectionStack>
         <div>
-          <div style={{ fontWeight: 600, marginBottom: "8px", fontSize: "0.85rem" }}>언어</div>
+          {/* 설정 필드 레이블 클래스 적용 */}
+          <div className={S.settingsFieldLabel}>언어</div>
           <SelectField
             options={languages}
             value={language}
@@ -41,7 +42,7 @@ export function SettingsLocaleCard({
           />
         </div>
         <div>
-          <div style={{ fontWeight: 600, marginBottom: "8px", fontSize: "0.85rem" }}>지역</div>
+          <div className={S.settingsFieldLabel}>지역</div>
           <SelectField
             options={regions}
             value={region}

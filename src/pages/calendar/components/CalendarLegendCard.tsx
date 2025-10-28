@@ -28,9 +28,10 @@ export function CalendarLegendCard({ items }: CalendarLegendCardProps) {
                   <Badge tone={item.tone}>{item.type}</Badge>
                 </S.LegendLabel>
                 {/* 수량과 포인트를 우측 정렬 */}
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontWeight: 600 }}>{item.count}개</div>
-                  <div style={{ color: "#64748b", fontSize: "0.8rem" }}>+{item.points} pts</div>
+                <div className={S.legendStatsColumn}>
+                  {/* 범례 수량 텍스트 클래스 적용 */}
+                  <div className={S.legendCountText}>{item.count}개</div>
+                  <div className={S.legendPointsText}>+{item.points} pts</div>
                 </div>
               </S.LegendItem>
             ))}
