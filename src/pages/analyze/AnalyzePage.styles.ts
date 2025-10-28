@@ -18,6 +18,47 @@ export const ActionsContainer = styled.div`
   gap: ${({ theme }) => theme.spacing(3)};
 `;
 
+// 카메라 카드 내부 레이아웃 정의
+export const CameraContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(3)};
+`;
+
+// 카메라 미리보기 비디오 영역 정의
+export const VideoWrapper = styled.div`
+  position: relative;
+  border-radius: ${({ theme }) => theme.radii.lg};
+  overflow: hidden;
+  background: #000000;
+
+  video {
+    width: 100%;
+    display: block;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+  }
+`;
+
+// 카메라 준비 상태 오버레이 정의
+export const VideoOverlay = styled.div`
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.55);
+  color: ${({ theme }) => theme.colors.surface};
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+`;
+
+// 카메라 제어 버튼 그룹 정의
+export const CameraControls = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
 // 이미지 영역 래퍼 스타일 정의
 export const ImageWrapper = styled.div`
   position: relative;
@@ -89,4 +130,13 @@ export const TipsList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+// 사용자 피드백 메시지 영역 정의
+export const ErrorMessage = styled.div`
+  padding: ${({ theme }) => theme.spacing(3)};
+  border-radius: ${({ theme }) => theme.radii.md};
+  background: ${({ theme }) => theme.colors.dangerSurface};
+  color: ${({ theme }) => theme.colors.danger};
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
 `;

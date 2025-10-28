@@ -7,21 +7,22 @@ import * as S from "../AnalyzePage.styles";
 interface AnalyzeActionsCardProps {
   onCapture: () => void;
   onUpload: () => void;
+  disabled?: boolean;
 }
 
-export function AnalyzeActionsCard({ onCapture, onUpload }: AnalyzeActionsCardProps) {
+export function AnalyzeActionsCard({ onCapture, onUpload, disabled }: AnalyzeActionsCardProps) {
   return (
     <Card>
       <CardContent>
         {/* 행동 버튼 배열 구성 */}
         <S.ActionsContainer>
           {/* 촬영 버튼 */}
-          <Button onClick={onCapture} size="lg">
+          <Button onClick={onCapture} size="lg" disabled={disabled}>
             <Camera size={18} />
             사진 촬영하기
           </Button>
           {/* 업로드 버튼 */}
-          <Button onClick={onUpload} variant="outline" size="lg">
+          <Button onClick={onUpload} variant="outline" size="lg" disabled={disabled}>
             <Upload size={18} />
             이미지 업로드
           </Button>
