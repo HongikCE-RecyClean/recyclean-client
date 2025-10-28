@@ -38,7 +38,7 @@ export function TrashBinList({ bins }: TrashBinListProps) {
                   </S.BinUpdatedRow>
                 </S.BinMeta>
               </S.BinInfo>
-              <div style={{ textAlign: "right" }}>
+              <div style={{ textAlign: "right", minWidth: "70px" }}>
                 <Badge variant="outline">{bin.distance}</Badge>
                 <div style={{ marginTop: "6px" }}>
                   <Badge tone={mapAvailabilityTone[bin.availability]}>
