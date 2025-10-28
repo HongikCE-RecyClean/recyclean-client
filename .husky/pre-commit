@@ -1,3 +1,8 @@
 #!/usr/bin/env sh
+set -e
+
 # 변경된 파일에 lint-staged 실행
 pnpm exec lint-staged
+
+# 전체 타입 검사 실행
+pnpm run typecheck
