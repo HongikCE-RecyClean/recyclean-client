@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
 import {
   AnalyzeActionsCard,
   AnalyzeCapturedImageCard,
@@ -8,6 +9,9 @@ import {
   AnalyzeTipsCard,
 } from "./components";
 import type { RecognitionResult } from "./types";
+import { Card, CardContent } from "../../shared/ui/Card/Card";
+import { Button } from "../../shared/ui/Button/Button";
+import { useCamera } from "./hooks/useCamera";
 import * as S from "./AnalyzePage.styles";
 
 // 모의 분석 결과 리스트 정의
@@ -38,48 +42,180 @@ const mockResults: RecognitionResult[] = [
   },
 ];
 
+// 분석 시뮬레이션 지연 시간 상수 정의
+const ANALYSIS_DELAY_MS = 2200;
+
 export function AnalyzePage() {
+  // 분석 화면 표시와 결과 상태 정의
   const [isScanning, setIsScanning] = useState(false);
   const [result, setResult] = useState<RecognitionResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  // 카메라 활성화 및 준비 상태 정의
+  const [interactionError, setInteractionError] = useState<string | null>(null);
 
-  const handleMockCapture = () => {
-    setIsScanning(true);
-    setCapturedImage(
-      "https://images.unsplash.com/photo-1579756423478-02bc82a97679?auto=format&fit=crop&w=1080&q=80",
-    );
-    window.setTimeout(() => {
+  // 업로드 입력 및 타이머 관리를 위한 ref 정의
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const objectUrlRef = useRef<string | null>(null);
+  const analysisTimeoutRef = useRef<number | null>(null);
+
+  const {
+    videoRef,
+    isActive: isCameraActive,
+    isReady: isVideoReady,
+    openCamera,
+    stopCamera,
+    handleVideoReady,
+    capturePhoto,
+  } = useCamera({ onError: setInteractionError });
+
+  // 분석 타이머 정리 함수 정의
+  const clearAnalysisTimeout = useCallback(() => {
+    if (analysisTimeoutRef.current) {
+      window.clearTimeout(analysisTimeoutRef.current);
+      analysisTimeoutRef.current = null;
+    }
+  }, []);
+
+  // 카메라 스트림 자원 정리 함수 정의
+  const revokeObjectUrl = useCallback(() => {
+    if (objectUrlRef.current) {
+      URL.revokeObjectURL(objectUrlRef.current);
+      objectUrlRef.current = null;
+    }
+  }, []);
+
+  // 모의 분석 실행 함수 정의
+  const runMockRecognition = useCallback(() => {
+    clearAnalysisTimeout();
+    analysisTimeoutRef.current = window.setTimeout(() => {
       const random = mockResults[Math.floor(Math.random() * mockResults.length)];
       setResult(random);
       setIsScanning(false);
-    }, 2500);
+    }, ANALYSIS_DELAY_MS);
+  }, [clearAnalysisTimeout]);
+
+  const startAnalysis = useCallback(
+    (imageSrc: string) => {
+      // 새로운 이미지 분석 시뮬레이션 시작 처리
+      setCapturedImage(imageSrc);
+      setResult(null);
+      setIsScanning(true);
+      runMockRecognition();
+    },
+    [runMockRecognition],
+  );
+
+  // 업로드 버튼 클릭 처리 정의
+  const handleUploadButtonClick = () => {
+    setInteractionError(null);
+    fileInputRef.current?.click();
   };
 
-  const handleMockUpload = () => {
-    setIsScanning(true);
-    setCapturedImage(
-      "https://images.unsplash.com/photo-1679046410011-b6bf7ce71f22?auto=format&fit=crop&w=1080&q=80",
-    );
-    window.setTimeout(() => {
-      const random = mockResults[Math.floor(Math.random() * mockResults.length)];
-      setResult(random);
-      setIsScanning(false);
-    }, 2000);
+  // 파일 업로드 변경 이벤트 처리 정의
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInteractionError(null);
+    const [file] = event.target.files ?? [];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      setInteractionError("이미지(image) 파일만 업로드할 수 있어요.");
+      event.target.value = "";
+      return;
+    }
+
+    revokeObjectUrl();
+    const objectUrl = URL.createObjectURL(file);
+    objectUrlRef.current = objectUrl;
+    startAnalysis(objectUrl);
+    event.target.value = "";
   };
 
+  // 카메라 프레임 캡처 처리 정의
+  const handleCaptureFromCamera = () => {
+    const dataUrl = capturePhoto();
+    if (!dataUrl) {
+      return;
+    }
+
+    stopCamera();
+    revokeObjectUrl();
+    startAnalysis(dataUrl);
+  };
+
+  // 카메라 열기 처리 정의
+  const handleOpenCamera = () => {
+    setInteractionError(null);
+    void openCamera();
+  };
+
+  // 분석 상태 초기화 처리 정의
   const reset = () => {
+    clearAnalysisTimeout();
+    revokeObjectUrl();
     setResult(null);
     setCapturedImage(null);
     setIsScanning(false);
+    setInteractionError(null);
+    stopCamera();
   };
+
+  useEffect(() => {
+    return () => {
+      clearAnalysisTimeout();
+      revokeObjectUrl();
+      stopCamera();
+    };
+  }, [clearAnalysisTimeout, revokeObjectUrl, stopCamera]);
+
+  const isBusy = isScanning || isCameraActive;
 
   // 분석 페이지 UI 렌더링 시작
   return (
     <S.PageContainer>
+      {/* 파일 업로드 입력 요소를 숨김으로 렌더링 */}
+      <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={handleFileChange} />
       <AnalyzeIntroCard />
 
       {!capturedImage && !result && (
-        <AnalyzeActionsCard onCapture={handleMockCapture} onUpload={handleMockUpload} />
+        <AnalyzeActionsCard
+          onCapture={handleOpenCamera}
+          onUpload={handleUploadButtonClick}
+          disabled={isBusy}
+        />
+      )}
+
+      {interactionError && <S.ErrorMessage role="alert">{interactionError}</S.ErrorMessage>}
+
+      {/* 카메라 촬영 카드를 조건부 렌더링 */}
+      {isCameraActive && (
+        <Card>
+          <CardContent>
+            <S.CameraContainer>
+              <S.VideoWrapper>
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  onLoadedMetadata={handleVideoReady}
+                  onCanPlay={handleVideoReady}
+                />
+                {!isVideoReady && <S.VideoOverlay>카메라를 준비하고 있어요...</S.VideoOverlay>}
+              </S.VideoWrapper>
+              <S.CameraControls>
+                <Button onClick={handleCaptureFromCamera} disabled={!isVideoReady} size="lg">
+                  사진 촬영하기
+                </Button>
+                <Button onClick={stopCamera} variant="ghost" size="lg">
+                  취소하기
+                </Button>
+              </S.CameraControls>
+            </S.CameraContainer>
+          </CardContent>
+        </Card>
       )}
 
       {capturedImage && <AnalyzeCapturedImageCard imageSrc={capturedImage} onReset={reset} />}
