@@ -29,3 +29,5 @@ figma-make/
 resources/
 .vite
 .serena/
+.claude/
+api-spec-notes/
