@@ -101,13 +101,13 @@ export const ActivityRow = styled.div`
 `;
 
 // 최근 활동 제목 텍스트 스타일
-export const recentActivityTitle = css`
+export const RecentActivityTitle = styled.div`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   font-size: 0.9rem;
 `;
 
 // 최근 활동 서브 텍스트 스타일
-export const recentActivityMeta = css`
+export const RecentActivityMeta = styled.div`
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: 0.8rem;
 `;
@@ -126,7 +126,7 @@ export const AchievementRow = styled.div<{ $earned: boolean }>`
 `;
 
 // 업적 카드 컨텐츠 간격 조정 스타일
-export const achievementsContent = css`
+export const AchievementsContent = styled(CardContent)`
   gap: ${({ theme }) => theme.spacing(4)};
 `;
 
@@ -169,7 +169,7 @@ export const materialHeaderLeft = css`
 `;
 
 // 재질 이름 텍스트 강조 스타일
-export const materialNameText = css`
+export const MaterialNameText = styled.span`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 
@@ -193,7 +193,7 @@ export const materialTipBox = css`
 `;
 
 // 재질 검색 결과 없음 안내 스타일
-export const materialEmptyMessage = css`
+export const MaterialEmptyMessage = styled.p`
   text-align: center;
   color: ${({ theme }) => theme.colors.textMuted};
   margin: 0;
@@ -276,12 +276,12 @@ export const goalCardHeader = css`
 `;
 
 // 목표 제목 텍스트 강조 스타일
-export const goalCardTitle = css`
+export const GoalCardTitle = styled.div`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 
 // 목표 설명 문단 스타일
-export const goalCardDescription = css`
+export const GoalCardDescription = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: 0.8rem;
@@ -295,13 +295,13 @@ export const goalCardStats = css`
 `;
 
 // 월간 진행 수치 텍스트 스타일
-export const monthlyProgressValue = css`
+export const MonthlyProgressValue = styled.div`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   font-size: 1rem;
 `;
 
 // 월간 진행 부가 설명 스타일
-export const monthlyProgressSubtitle = css`
+export const MonthlyProgressSubtitle = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: 0.85rem;
@@ -315,7 +315,7 @@ export const monthlyProgressFooter = css`
 `;
 
 // 월간 진행 퍼센트 텍스트 색상 스타일
-export const monthlyProgressPercent = css`
+export const MonthlyProgressPercent = styled.span`
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
@@ -363,7 +363,7 @@ export const TrackerLabel = styled.span`
 `;
 
 // 활동 추적 요약 박스 스타일
-export const trackerSummaryBox = css`
+export const TrackerSummaryBox = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -371,13 +371,13 @@ export const trackerSummaryBox = css`
 `;
 
 // 활동 추적 포인트 값 스타일
-export const trackerPointsValue = css`
+export const TrackerPointsValue = styled.span`
   font-size: 2rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
 `;
 
 // 활동 추적 포인트 라벨 스타일
-export const trackerPointsLabel = css`
+export const TrackerPointsLabel = styled.span`
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: 0.85rem;
 `;
@@ -390,12 +390,12 @@ export const trackerProgressRow = css`
 `;
 
 // 활동 추적 목표 텍스트 스타일
-export const trackerGoalText = css`
+export const TrackerGoalText = styled.span`
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
 // 활동 추적 퍼센트 텍스트 스타일
-export const trackerPercentText = css`
+export const TrackerPercentText = styled.span`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 
@@ -411,19 +411,19 @@ export const HighlightBox = styled.div`
 `;
 
 // 하이라이트 텍스트 강조 스타일
-export const trackerHighlightText = css`
+export const TrackerHighlightText = styled.span`
   font-size: 0.85rem;
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 
 // 업적 제목 텍스트 스타일
-export const achievementTitleText = css`
+export const AchievementTitleText = styled.div`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   font-size: 0.9rem;
 `;
 
 // 업적 설명 텍스트 스타일
-export const achievementDescriptionText = css`
+export const AchievementDescriptionText = styled.div`
   font-size: 0.8rem;
   color: ${({ theme }) => theme.colors.textMuted};
 `;

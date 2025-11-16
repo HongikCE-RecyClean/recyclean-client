@@ -19,7 +19,7 @@ export const CalendarContent = styled(CardContent)`
 `;
 
 // 기록 목록 항목 제목 텍스트 스타일
-export const recordTypeText = css`
+export const RecordTypeText = styled.span`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 
@@ -229,7 +229,7 @@ export const legendStatsColumn = css`
 `;
 
 // 범례 수량 텍스트 스타일
-export const legendCountText = css`
+export const LegendCountText = styled.div`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 

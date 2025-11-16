@@ -15,7 +15,7 @@ export function AnalyzeCapturedImageCard({ imageSrc, onReset }: AnalyzeCapturedI
       <CardContent>
         {/* 촬영 이미지 프리뷰 영역 */}
         {/* 촬영 이미지 프레임 클래스 적용 */}
-        <S.ImageWrapper className={S.capturedImageFrame}>
+        <S.ImageWrapper css={S.capturedImageFrame}>
           <ImageWithFallback src={imageSrc} alt="Captured" />
           {/* 초기화 버튼 오버레이 */}
           <S.ResetButton

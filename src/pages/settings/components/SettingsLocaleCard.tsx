@@ -33,8 +33,8 @@ export function SettingsLocaleCard({
       </CardHeader>
       <S.SectionStack>
         <div>
-          {/* 설정 필드 레이블 클래스 적용 */}
-          <div className={S.settingsFieldLabel}>언어</div>
+          {/* 설정 필드 레이블 컴포넌트 적용 */}
+          <S.SettingsFieldLabel>언어</S.SettingsFieldLabel>
           <SelectField
             options={languages}
             value={language}
@@ -42,7 +42,7 @@ export function SettingsLocaleCard({
           />
         </div>
         <div>
-          <div className={S.settingsFieldLabel}>지역</div>
+          <S.SettingsFieldLabel>지역</S.SettingsFieldLabel>
           <SelectField
             options={regions}
             value={region}

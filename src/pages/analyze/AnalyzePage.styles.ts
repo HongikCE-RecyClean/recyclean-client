@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Button } from "../../shared/ui/Button/Button";
+import { CardContent } from "../../shared/ui/Card/Card";
 
 // 분석 페이지 전체 레이아웃 컨테이너 정의
 export const PageContainer = styled.div`
@@ -125,18 +126,18 @@ export const ResultBody = styled.div`
 `;
 
 // 스캔 진행 카드 컨텐츠 정렬 스타일
-export const scanningContent = css`
+export const ScanningContent = styled(CardContent)`
   text-align: center;
   gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 // 스캔 진행 안내 제목 스타일
-export const scanningHeadline = css`
+export const ScanningHeadline = styled.div`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 
 // 스캔 진행 안내 보조 텍스트 스타일
-export const scanningSubtext = css`
+export const ScanningSubtext = styled.div`
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: 0.85rem;
 `;

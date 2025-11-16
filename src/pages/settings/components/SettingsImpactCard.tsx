@@ -21,13 +21,13 @@ export function SettingsImpactCard({ userStats }: SettingsImpactCardProps) {
       <CardContent>
         <S.StatGrid>
           <div>
-            {/* 영향력 통계 수치 클래스 적용 */}
-            <div className={S.impactStatValueSuccess}>{userStats.itemsRecycled}</div>
-            <div className={S.impactStatLabel}>처리한 아이템</div>
+            {/* 영향력 통계 수치 컴포넌트 적용 */}
+            <S.ImpactStatValueSuccess>{userStats.itemsRecycled}</S.ImpactStatValueSuccess>
+            <div css={S.impactStatLabel}>처리한 아이템</div>
           </div>
           <div>
-            <div className={S.impactStatValueInfo}>{userStats.totalPoints}</div>
-            <div className={S.impactStatLabel}>누적 포인트</div>
+            <S.ImpactStatValueInfo>{userStats.totalPoints}</S.ImpactStatValueInfo>
+            <div css={S.impactStatLabel}>누적 포인트</div>
           </div>
         </S.StatGrid>
       </CardContent>

@@ -35,7 +35,7 @@ export const BinMeta = styled.div`
 `;
 
 // 배출함 이름 텍스트 스타일
-export const binNameText = css`
+export const BinNameText = styled.span`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 

@@ -23,11 +23,11 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
           {recentActivity.map((activity) => (
             <S.ActivityRow key={activity.type}>
               <div>
-                {/* 최근 활동 제목 클래스 적용 */}
-                <div className={S.recentActivityTitle}>{activity.type}</div>
-                <div className={S.recentActivityMeta}>
+                {/* 최근 활동 제목 컴포넌트 적용 */}
+                <S.RecentActivityTitle>{activity.type}</S.RecentActivityTitle>
+                <S.RecentActivityMeta>
                   {activity.count}개 · {activity.time}
-                </div>
+                </S.RecentActivityMeta>
               </div>
               <Badge tone="primary">+{activity.points} pts</Badge>
             </S.ActivityRow>

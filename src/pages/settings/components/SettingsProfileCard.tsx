@@ -21,13 +21,13 @@ export function SettingsProfileCard({ userStats, avatarSrc }: SettingsProfileCar
             <AvatarImage
               src={avatarSrc}
               alt="기본 사용자 프로필 이미지(profile image)"
-              className={S.profileAvatarImage}
+              css={S.profileAvatarImage}
             />
           </Avatar>
           {/* 프로필 정보 컨테이너 클래스 적용 */}
-          <div className={S.profileInfoContainer}>
-            <p className={S.profileMetaText}>가입일 {userStats.joinDate}</p>
-            <div className={S.profileBadgeRow}>
+          <div css={S.profileInfoContainer}>
+            <p css={S.profileMetaText}>가입일 {userStats.joinDate}</p>
+            <div css={S.profileBadgeRow}>
               <Badge tone="success">{userStats.totalPoints} pts</Badge>
               <Badge variant="outline">{userStats.streakDays}일 연속</Badge>
             </div>

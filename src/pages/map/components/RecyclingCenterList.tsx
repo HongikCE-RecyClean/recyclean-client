@@ -28,14 +28,14 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
               <S.CenterMedia>
                 <ImageWithFallback src={center.image} alt={center.name} />
                 {/* 거리 배지 위치 클래스 적용 */}
-                <div className={S.centerBadgeContainer}>
+                <div css={S.centerBadgeContainer}>
                   <Badge variant="outline">{center.distance}</Badge>
                 </div>
               </S.CenterMedia>
               <S.CenterContent>
                 <div>
-                  <h3 className={S.centerNameText}>{center.name}</h3>
-                  <div className={S.centerAddressText}>{center.address}</div>
+                  <h3 css={S.centerNameText}>{center.name}</h3>
+                  <div css={S.centerAddressText}>{center.address}</div>
                 </div>
 
                 <S.MaterialChips>
@@ -61,11 +61,11 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
                 </S.InfoStack>
 
                 <S.ActionButtons>
-                  <Button variant="outline" size="sm" className={S.centerActionButton}>
+                  <Button variant="outline" size="sm" css={S.centerActionButton}>
                     <Navigation size={14} />길 찾기
                   </Button>
                   {center.phone && (
-                    <Button variant="outline" size="sm" className={S.centerActionButton}>
+                    <Button variant="outline" size="sm" css={S.centerActionButton}>
                       <Phone size={14} />
                       전화하기
                     </Button>

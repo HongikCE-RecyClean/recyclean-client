@@ -25,15 +25,15 @@ export function GoalsCard({ goals }: GoalsCardProps) {
             return (
               <S.GoalCard key={goal.id}>
                 {/* 목표 헤더 배치 클래스 적용 */}
-                <div className={S.goalCardHeader}>
+                <div css={S.goalCardHeader}>
                   <div>
-                    <div className={S.goalCardTitle}>{goal.title}</div>
-                    <p className={S.goalCardDescription}>{goal.description}</p>
+                    <S.GoalCardTitle>{goal.title}</S.GoalCardTitle>
+                    <S.GoalCardDescription>{goal.description}</S.GoalCardDescription>
                   </div>
                   <Badge variant="outline">{goal.deadline}</Badge>
                 </div>
                 {/* 목표 수치 요약 행 클래스 적용 */}
-                <div className={S.goalCardStats}>
+                <div css={S.goalCardStats}>
                   <span>
                     {goal.current} / {goal.target} {goal.unit}
                   </span>

@@ -16,7 +16,7 @@ export function Avatar({ size = 48, children }: AvatarProps) {
   `;
 
   // 아바타 크기 클래스 적용
-  return <S.AvatarRoot className={rootSizeClass}>{children}</S.AvatarRoot>;
+  return <S.AvatarRoot css={rootSizeClass}>{children}</S.AvatarRoot>;
 }
 
 interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {

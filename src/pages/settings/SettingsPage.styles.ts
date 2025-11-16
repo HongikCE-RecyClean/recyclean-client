@@ -50,7 +50,7 @@ export const SettingsText = styled.div`
 `;
 
 // 설정 항목 제목 텍스트 스타일
-export const settingsItemTitle = css`
+export const SettingsItemTitle = styled.span`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 
@@ -61,7 +61,7 @@ export const settingsItemDescription = css`
 `;
 
 // 설정 필드 레이블 텍스트 스타일
-export const settingsFieldLabel = css`
+export const SettingsFieldLabel = styled.div`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   margin-bottom: 8px;
   font-size: 0.85rem;
@@ -112,14 +112,14 @@ export const profileBadgeRow = css`
 `;
 
 // 영향력 통계 주요 수치(성공) 스타일
-export const impactStatValueSuccess = css`
+export const ImpactStatValueSuccess = styled.div`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   color: #16a34a;
 `;
 
 // 영향력 통계 주요 수치(정보) 스타일
-export const impactStatValueInfo = css`
+export const ImpactStatValueInfo = styled.div`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   color: #2563eb;

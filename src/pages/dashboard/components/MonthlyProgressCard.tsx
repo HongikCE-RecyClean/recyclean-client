@@ -26,16 +26,16 @@ export function MonthlyProgressCard({
         {/* 진행도 텍스트 영역 */}
         <div>
           {/* 진행 수치 텍스트 클래스 적용 */}
-          <div className={S.monthlyProgressValue}>
+          <S.MonthlyProgressValue>
             {totalPoints} / {monthlyGoal} 포인트
-          </div>
-          <p className={S.monthlyProgressSubtitle}>2025년 1월 기준</p>
+          </S.MonthlyProgressValue>
+          <S.MonthlyProgressSubtitle>2025년 1월 기준</S.MonthlyProgressSubtitle>
         </div>
         {/* 진행률 바 */}
         <Progress value={progressValue} />
         {/* 진행률 서브 정보 행 클래스 적용 */}
-        <div className={S.monthlyProgressFooter}>
-          <span className={S.monthlyProgressPercent}>{Math.round(progressValue)}% 달성</span>
+        <div css={S.monthlyProgressFooter}>
+          <S.MonthlyProgressPercent>{Math.round(progressValue)}% 달성</S.MonthlyProgressPercent>
           {/* TODO: 진행률 메시지 클래스를 정의한 뒤 활성화 예정 */}
         </div>
       </CardContent>

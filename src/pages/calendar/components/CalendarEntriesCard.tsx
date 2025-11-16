@@ -28,8 +28,8 @@ export function CalendarEntriesCard({ selectedDateLabel, entries }: CalendarEntr
                 {/* 항목 정보를 묶어서 정렬 */}
                 <S.RecordInfo>
                   {/* 기록 타입 텍스트 클래스 적용 */}
-                  <span className={S.recordTypeText}>{entry.type}</span>
-                  <span className={S.recordMetaText}>
+                  <S.RecordTypeText>{entry.type}</S.RecordTypeText>
+                  <span css={S.recordMetaText}>
                     {entry.amount}개 · {format(entry.date, "a h시 mm분", { locale: ko })}
                   </span>
                 </S.RecordInfo>

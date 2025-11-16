@@ -56,19 +56,19 @@ export function MaterialSearchCard({
           {filteredMaterials.map((material) => (
             <S.MaterialItem key={material.name}>
               {/* 재질 카드 헤더 행 클래스 적용 */}
-              <div className={S.materialHeaderRow}>
-                <div className={S.materialHeaderLeft}>
+              <div css={S.materialHeaderRow}>
+                <div css={S.materialHeaderLeft}>
                   <Badge tone={material.recyclable ? "success" : "danger"}>
                     {material.recyclable ? "재활용 가능" : "불가"}
                   </Badge>
-                  <span className={S.materialNameText}>{material.name}</span>
+                  <S.MaterialNameText>{material.name}</S.MaterialNameText>
                 </div>
                 <Badge variant="outline">{material.category}</Badge>
               </div>
-              <p className={S.materialDescriptionText}>{material.instructions}</p>
+              <p css={S.materialDescriptionText}>{material.instructions}</p>
               {/* 재질 팁 박스 클래스 적용 */}
               {material.tips && (
-                <div className={S.materialTipBox}>
+                <div css={S.materialTipBox}>
                   <AlertCircle size={16} />
                   <span>{material.tips}</span>
                 </div>
@@ -76,7 +76,7 @@ export function MaterialSearchCard({
             </S.MaterialItem>
           ))}
           {filteredMaterials.length === 0 && (
-            <p className={S.materialEmptyMessage}>조건에 맞는 결과가 없어요.</p>
+            <S.MaterialEmptyMessage>조건에 맞는 결과가 없어요.</S.MaterialEmptyMessage>
           )}
         </S.MaterialList>
       </CardContent>

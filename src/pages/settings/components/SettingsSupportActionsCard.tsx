@@ -17,22 +17,22 @@ export function SettingsSupportActionsCard() {
       <CardContent>
         <S.ActionList>
           {/* 지원 액션 버튼 정렬 클래스 적용 */}
-          <Button variant="outline" className={S.actionButtonAlignStart}>
+          <Button variant="outline" css={S.actionButtonAlignStart}>
             <User size={16} />
             프로필 편집
           </Button>
-          <Button variant="outline" className={S.actionButtonAlignStart}>
+          <Button variant="outline" css={S.actionButtonAlignStart}>
             <Shield size={16} />
             개인정보 보호 설정
           </Button>
-          <Button variant="outline" className={S.actionButtonAlignStart}>
+          <Button variant="outline" css={S.actionButtonAlignStart}>
             <HelpCircle size={16} />
             도움말 센터
           </Button>
-          <Button variant="outline" className={S.actionButtonAlignStart}>
+          <Button variant="outline" css={S.actionButtonAlignStart}>
             <Info size={16} />앱 정보
           </Button>
-          <Button variant="destructive" className={S.actionButtonAlignStart}>
+          <Button variant="destructive" css={S.actionButtonAlignStart}>
             <LogOut size={16} />
             로그아웃
           </Button>

@@ -39,34 +39,34 @@ export function AnalyzeResultCard({ result, onReset }: AnalyzeResultCardProps) {
         <S.ResultBody>
           {/* 항목 요약 영역 */}
           {/* 결과 요약 행 클래스 적용 */}
-          <div className={S.resultSummaryRow}>
+          <div css={S.resultSummaryRow}>
             <div>
-              <h3 className={S.resultItemTitle}>{result.item}</h3>
-              <p className={S.resultCategoryText}>재질: {result.category}</p>
+              <h3 css={S.resultItemTitle}>{result.item}</h3>
+              <p css={S.resultCategoryText}>재질: {result.category}</p>
             </div>
             {statusBadge}
           </div>
 
           {/* 처리 방법 설명 */}
           <div>
-            <h4 className={S.resultSectionHeading}>처리 방법</h4>
-            <p className={S.resultInstructionText}>{result.instructions}</p>
+            <h4 css={S.resultSectionHeading}>처리 방법</h4>
+            <p css={S.resultInstructionText}>{result.instructions}</p>
           </div>
 
           {result.tips && (
             <S.Callout>
               <AlertCircle size={18} />
-              <span className={S.resultTipText}>{result.tips}</span>
+              <span css={S.resultTipText}>{result.tips}</span>
             </S.Callout>
           )}
 
           {/* 후속 액션 버튼 */}
           {/* 후속 액션 버튼 행 클래스 적용 */}
-          <div className={S.resultActionsRow}>
-            <Button variant="outline" className={S.resultActionButton} onClick={onReset}>
+          <div css={S.resultActionsRow}>
+            <Button variant="outline" css={S.resultActionButton} onClick={onReset}>
               다시 촬영
             </Button>
-            <Button className={S.resultActionButton}>재활용 처리 기록</Button>
+            <Button css={S.resultActionButton}>재활용 처리 기록</Button>
           </div>
         </S.ResultBody>
       </CardContent>

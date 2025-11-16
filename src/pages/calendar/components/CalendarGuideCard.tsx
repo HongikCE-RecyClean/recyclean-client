@@ -14,7 +14,7 @@ export function CalendarGuideCard() {
       </CardHeader>
       <CardContent>
         {/* 가이드 목록 클래스 적용 */}
-        <ul className={S.guideList}>
+        <ul css={S.guideList}>
           <li>기록은 월별 통계에 자동 반영돼요.</li>
           <li>분석 화면에서 새 기록을 추가하면 달력에 표시돼요.</li>
           <li>기록이 많은 날은 달력 점 표시로 확인할 수 있어요.</li>

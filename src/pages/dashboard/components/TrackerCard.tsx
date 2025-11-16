@@ -31,21 +31,21 @@ export function TrackerCard({
       </CardHeader>
       <CardContent>
         {/* 통계 요약 표시 */}
-        {/* 요약 박스 클래스 적용 */}
-        <div className={S.trackerSummaryBox}>
-          <span className={S.trackerPointsValue}>{totalPoints}</span>
-          <span className={S.trackerPointsLabel}>이번 달 획득 포인트</span>
+        {/* 요약 박스 컴포넌트 적용 */}
+        <S.TrackerSummaryBox>
+          <S.TrackerPointsValue>{totalPoints}</S.TrackerPointsValue>
+          <S.TrackerPointsLabel>이번 달 획득 포인트</S.TrackerPointsLabel>
           <Progress value={progressValue} />
-          <div className={S.trackerProgressRow}>
-            <span className={S.trackerGoalText}>목표 {monthlyGoal}pt</span>
-            <span className={S.trackerPercentText}>{Math.round(progressValue)}%</span>
+          <div css={S.trackerProgressRow}>
+            <S.TrackerGoalText>목표 {monthlyGoal}pt</S.TrackerGoalText>
+            <S.TrackerPercentText>{Math.round(progressValue)}%</S.TrackerPercentText>
           </div>
-        </div>
+        </S.TrackerSummaryBox>
         {progressValue >= 100 && (
           <S.HighlightBox>
             <Award size={18} />
             {/* 하이라이트 텍스트 클래스 적용 */}
-            <span className={S.trackerHighlightText}>목표를 달성했어요!</span>
+            <S.TrackerHighlightText>목표를 달성했어요!</S.TrackerHighlightText>
           </S.HighlightBox>
         )}
         <Button variant="outline">

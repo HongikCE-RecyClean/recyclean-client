@@ -51,18 +51,18 @@ export function TipsCard({
               <S.TipMedia>
                 <ImageWithFallback src={tip.image} alt={tip.title} />
                 {/* 팁 배지 위치 클래스 적용 */}
-                <div className={S.tipBadgeContainer}>
+                <div css={S.tipBadgeContainer}>
                   <Badge tone={resolveTipTone(tip.category)}>{tip.category}</Badge>
                 </div>
               </S.TipMedia>
               <S.TipContent>
                 <div>
                   {/* 팁 제목 텍스트 클래스 적용 */}
-                  <h3 className={S.tipTitleText}>{tip.title}</h3>
-                  <p className={S.tipDescriptionText}>{tip.description}</p>
+                  <h3 css={S.tipTitleText}>{tip.title}</h3>
+                  <p css={S.tipDescriptionText}>{tip.description}</p>
                 </div>
                 {/* 팁 배지 행 클래스 적용 */}
-                <div className={S.tipBadgeRow}>
+                <div css={S.tipBadgeRow}>
                   <Badge tone="success">영향: {tip.impact}</Badge>
                   <Badge tone="info">난이도: {tip.difficulty}</Badge>
                 </div>
