@@ -6,6 +6,7 @@ export const Page = styled.div`
   background: linear-gradient(180deg, rgba(47, 133, 90, 0.06), rgba(245, 247, 250, 1));
   display: flex;
   flex-direction: column;
+  font-family: ${({ theme }) => theme.typography.family};
 `;
 
 // 헤더 영역 컨테이너 정의
@@ -50,12 +51,14 @@ export const Title = styled.h1`
   margin: 0;
   font-size: clamp(2rem, 5vw, 2.75rem);
   color: ${({ theme }) => theme.colors.text};
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 
 export const Subtitle = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: 1rem;
+  font-weight: ${({ theme }) => theme.typography.weights.regular};
 `;
 
 // 버튼을 하단에 배치하는 영역 정의
@@ -71,6 +74,7 @@ export const Footer = styled.footer`
 export const ButtonHint = styled.span`
   font-size: 0.9rem;
   color: ${({ theme }) => theme.colors.textMuted};
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
 `;
 
 export const KakaoButton = styled.button`
@@ -104,4 +108,9 @@ export const KakaoButton = styled.button`
     transform: none;
     box-shadow: none;
   }
+`;
+
+export const KakaoIcon = styled.img`
+  width: ${({ theme }) => theme.spacing(7)};
+  height: ${({ theme }) => theme.spacing(7)};
 `;

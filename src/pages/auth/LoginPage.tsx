@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef } from "react";
-import { ArrowRight } from "lucide-react";
 import { useLocation, useNavigate, type Location } from "react-router-dom";
 import { Header } from "shared/layout/Header/Header";
 import { useAuthStore } from "shared/state/authStore";
 import { useUserStore } from "shared/state/userStore";
+import kakaoIconAsset from "../../assets/kakaoIcon.svg";
 import * as S from "./LoginPage.styles";
 
 type LocationState = {
@@ -63,8 +63,8 @@ export function LoginPage() {
         </S.Hero>
         <S.Footer>
           <S.KakaoButton type="button" onClick={handleLogin} disabled={isLoading}>
+            <S.KakaoIcon src={kakaoIconAsset} alt="카카오(Kakao) 아이콘" />
             {isLoading ? "연결 중" : "카카오 로그인"}
-            <ArrowRight size={22} strokeWidth={1.6} />
           </S.KakaoButton>
           <S.ButtonHint>
             가입 시 서비스 약관 및 개인정보처리방침에 동의한 것으로 간주합니다.
