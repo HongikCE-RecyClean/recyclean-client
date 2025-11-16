@@ -66,7 +66,9 @@ export function LoginPage() {
             {isLoading ? "연결 중" : "카카오 로그인"}
             <ArrowRight size={22} strokeWidth={1.6} />
           </S.KakaoButton>
-          <S.ButtonHint>카카오 인증 완료 시 보호된 라우트로 자동 이동돼요.</S.ButtonHint>
+          <S.ButtonHint>
+            가입 시 서비스 약관 및 개인정보처리방침에 동의한 것으로 간주합니다.
+          </S.ButtonHint>
         </S.Footer>
       </S.Content>
     </S.Page>
