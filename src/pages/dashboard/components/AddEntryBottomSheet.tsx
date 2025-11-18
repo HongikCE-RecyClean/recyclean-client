@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BottomSheet } from "../../../shared/ui/BottomSheet/BottomSheet";
 import { Button } from "../../../shared/ui/Button/Button";
@@ -6,6 +6,7 @@ import { TextField } from "../../../shared/ui/TextField/TextField";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import { useActivityStore } from "../../../shared/state/activityStore";
 import { useNotificationStore } from "../../../shared/state/notificationStore";
+import type { SnackbarState } from "../../../shared/state/notificationStore";
 import { MATERIALS_BY_CATEGORY, calculatePoints } from "../../../shared/utils/recyclingPoints";
 import * as S from "./AddEntryBottomSheet.styles";
 
@@ -14,10 +15,17 @@ interface AddEntryBottomSheetProps {
   onClose: () => void;
 }
 
+type SnackbarOptions = Partial<Omit<SnackbarState, "id" | "message">>;
+interface PendingSnackbar {
+  message: string;
+  options?: SnackbarOptions;
+}
+
 export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProps) {
   const { t } = useTranslation();
   const { addEntry } = useActivityStore();
   const { showSnackbar } = useNotificationStore();
+  const pendingSnackbarRef = useRef<PendingSnackbar | null>(null);
 
   // 폼 상태
   const [category, setCategory] = useState<string>("플라스틱");
@@ -42,6 +50,36 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
     }
   };
 
+  // 폼 초기화
+  const resetForm = () => {
+    setCategory("플라스틱");
+    setMaterialType("");
+    setAmount("1");
+    setDate(new Date().toISOString().split("T")[0]);
+  };
+
+  // 바텀시트 기본 닫기
+  const closeSheet = () => {
+    resetForm();
+    onClose();
+  };
+
+  // 취소/외부 닫기를 처리
+  const handleDismiss = () => {
+    pendingSnackbarRef.current = null;
+    closeSheet();
+  };
+
+  const handleAfterClose = () => {
+    if (!pendingSnackbarRef.current) {
+      return;
+    }
+
+    const { message, options } = pendingSnackbarRef.current;
+    pendingSnackbarRef.current = null;
+    showSnackbar(message, options);
+  };
+
   // 폼 제출 처리
   const handleSubmit = () => {
     const amountNum = parseInt(amount, 10);
@@ -63,33 +101,26 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
       points,
     });
 
-    // 성공 스낵바 표시
-    showSnackbar(`활동이 기록되었어요! ${points}포인트 획득`, {
-      type: "success",
-      duration: 3000,
-    });
+    // 성공 스낵바는 바텀시트가 완전히 닫힌 뒤 표시
+    pendingSnackbarRef.current = {
+      message: t("notifications.snackbar.entrySaved", { points }),
+      options: {
+        type: "success",
+        duration: 3000,
+      },
+    };
 
     // 폼 초기화 및 닫기
-    resetForm();
-    onClose();
-  };
-
-  // 폼 초기화
-  const resetForm = () => {
-    setCategory("플라스틱");
-    setMaterialType("");
-    setAmount("1");
-    setDate(new Date().toISOString().split("T")[0]);
-  };
-
-  // 취소 시 폼 초기화
-  const handleClose = () => {
-    resetForm();
-    onClose();
+    closeSheet();
   };
 
   return (
-    <BottomSheet isOpen={isOpen} onClose={handleClose} title={t("dashboard.addEntry.title")}>
+    <BottomSheet
+      isOpen={isOpen}
+      onClose={handleDismiss}
+      onAfterClose={handleAfterClose}
+      title={t("dashboard.addEntry.title")}
+    >
       <S.Form>
         {/* 카테고리 선택 */}
         <S.FormGroup>
@@ -147,7 +178,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
 
         {/* 버튼 그룹 */}
         <S.ButtonGroup>
-          <Button variant="outline" onClick={handleClose} css={S.buttonStyle}>
+          <Button variant="outline" onClick={handleDismiss} css={S.buttonStyle}>
             {t("common.cancel")}
           </Button>
           <Button onClick={handleSubmit} css={S.buttonStyle}>

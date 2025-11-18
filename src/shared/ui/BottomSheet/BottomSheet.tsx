@@ -1,20 +1,54 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useId, type ReactNode, type TransitionEvent } from "react";
 import { useTheme } from "@emotion/react";
 import * as S from "./BottomSheet.styles";
+import { useBottomSheetStore } from "../../state/bottomSheetStore";
 
 export interface BottomSheetProps {
   // 바텀시트 열림/닫힘 상태
   isOpen: boolean;
   // 바텀시트 닫기 핸들러
   onClose: () => void;
+  // 바텀시트 닫힌 뒤 콜백
+  onAfterClose?: () => void;
   // 바텀시트 제목
   title: string;
   // 바텀시트 내용
   children: ReactNode;
 }
 
-export function BottomSheet({ isOpen, onClose, title, children }: BottomSheetProps) {
+export function BottomSheet({ isOpen, onClose, onAfterClose, title, children }: BottomSheetProps) {
   const theme = useTheme();
+  const sheetId = useId();
+  const { registerSheet, unregisterSheet } = useBottomSheetStore((state) => ({
+    registerSheet: state.registerSheet,
+    unregisterSheet: state.unregisterSheet,
+  }));
+
+  // 전역 시트 상태 등록
+  useEffect(() => {
+    if (isOpen) {
+      registerSheet(sheetId);
+    } else {
+      unregisterSheet(sheetId);
+    }
+
+    return () => {
+      unregisterSheet(sheetId);
+    };
+  }, [isOpen, registerSheet, unregisterSheet, sheetId]);
+
+  const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+    if (event.propertyName !== "transform") {
+      return;
+    }
+    if (!isOpen) {
+      onAfterClose?.();
+    }
+  };
+
   // ESC 키로 바텀시트 닫기
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -48,6 +82,7 @@ export function BottomSheet({ isOpen, onClose, title, children }: BottomSheetPro
       {/* 바텀시트 컨테이너 */}
       <S.Container
         isOpen={isOpen}
+        onTransitionEnd={handleTransitionEnd}
         style={
           {
             "--link-color": theme.colors.info,
