@@ -33,6 +33,16 @@ export const SettingsItem = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing(3)};
+
+  /* 첫 번째 항목은 위에 패딩 추가 (SectionStack gap과 동일하게) */
+  &:first-child {
+    padding-top: ${({ theme }) => theme.spacing(4)};
+  }
+
+  /* 마지막 항목은 아래에 패딩 추가 (SectionStack gap과 동일하게) */
+  &:last-child {
+    padding-bottom: ${({ theme }) => theme.spacing(4)};
+  }
 `;
 
 // 설정 라벨 정렬 정의
