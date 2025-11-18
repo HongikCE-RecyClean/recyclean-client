@@ -145,14 +145,14 @@ export function LoginPage() {
         <Header hideProfileButton />
       </S.HeaderBar>
       <S.Content>
-        <S.Hero>
+        <S.TextGroup>
           <S.Tagline>재활용이 쉬워지는 순간</S.Tagline>
           <S.Description>
             일상의 작은 환경 실천을 기록하고,
             <br />
             주변 수거함을 쉽게 찾아보세요.
           </S.Description>
-        </S.Hero>
+        </S.TextGroup>
         <S.Footer>
           <S.KakaoButton type="button" onClick={handleLogin} disabled={disableButton}>
             <S.KakaoIcon src={kakaoIconAsset} alt="카카오(Kakao) 아이콘" />

@@ -57,22 +57,14 @@ export const Content = styled.main`
   gap: ${({ theme }) => theme.spacing(12)};
 `;
 
-// 설명 블록을 카드 형태로 정렬
-export const Hero = styled.section`
+// 텍스트 그룹 (카드 배경 없이 텍스트만)
+export const TextGroup = styled.section`
   width: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => `${theme.spacing(10)} ${theme.spacing(6)}`};
-  background: rgba(255, 255, 255, 0.75);
-  border-radius: ${({ theme }) => theme.radii.lg};
-  box-shadow:
-    0 20px 50px rgba(15, 23, 42, 0.06),
-    0 1px 3px rgba(15, 23, 42, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.8);
   align-items: center;
-  backdrop-filter: blur(16px);
   animation: ${fadeIn} 0.6s ease-out;
 `;
 
@@ -84,6 +76,7 @@ export const Tagline = styled.h1`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   letter-spacing: -0.02em;
   line-height: 1.3;
+  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.8);
 `;
 
 // 상세 설명 문단을 슬림하게 보이도록 설정
@@ -96,6 +89,7 @@ export const Description = styled.p`
   margin-left: auto;
   margin-right: auto;
   font-weight: ${({ theme }) => theme.typography.weights.regular};
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.6);
 `;
 
 // 버튼을 하단에 배치하는 영역 정의
