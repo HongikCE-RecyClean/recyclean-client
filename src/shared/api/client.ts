@@ -8,6 +8,25 @@ const DEFAULT_HEADERS: HeadersInit = {
   Accept: "application/json",
 };
 
+// 인증 옵션(auth options) 타입 정의
+interface AuthOptions {
+  sendToken?: boolean;
+  retryOnAuthError?: boolean;
+}
+
+// 인증 핸들러(auth handlers) 타입 정의
+interface AuthHandlers {
+  getAccessToken?: () => string | null | undefined;
+  refreshAccessToken?: () => Promise<string | null>;
+  handleAuthFailure?: () => void;
+}
+
+// 인증 옵션 기본값 정의
+const DEFAULT_AUTH_OPTIONS: Required<AuthOptions> = {
+  sendToken: true,
+  retryOnAuthError: true,
+};
+
 // HTTP 요청 옵션 타입 정의
 export interface HttpRequestOptions<TBody = unknown> {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
@@ -15,6 +34,7 @@ export interface HttpRequestOptions<TBody = unknown> {
   headers?: HeadersInit;
   query?: ApiQueryParams;
   signal?: AbortSignal;
+  auth?: AuthOptions;
 }
 
 // 쿼리 파라미터 직렬화
@@ -55,10 +75,16 @@ async function parseBody<TData>(response: Response): Promise<TData | null> {
 export class HttpClient {
   // 기본 요청 옵션 저장
   private readonly defaultHeaders: HeadersInit;
+  private authHandlers?: AuthHandlers;
 
   constructor(defaultHeaders: HeadersInit = DEFAULT_HEADERS) {
     // 인스턴스 기본 헤더 초기화
     this.defaultHeaders = defaultHeaders;
+  }
+
+  // 인증 핸들러 주입
+  setAuthHandlers(handlers?: AuthHandlers) {
+    this.authHandlers = handlers;
   }
 
   // 공통 요청 처리
@@ -72,6 +98,18 @@ export class HttpClient {
       ...this.defaultHeaders,
       ...(options.headers ?? {}),
     });
+    const authOptions: Required<AuthOptions> = {
+      ...DEFAULT_AUTH_OPTIONS,
+      ...(options.auth ?? {}),
+    };
+
+    if (authOptions.sendToken && this.authHandlers?.getAccessToken) {
+      // 인증 토큰을 Authorization 헤더에 주입
+      const token = this.authHandlers.getAccessToken();
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+    }
 
     let body: BodyInit | undefined;
     if (options.body !== undefined && options.body !== null) {
@@ -89,6 +127,25 @@ export class HttpClient {
       signal: options.signal,
       credentials: "include",
     });
+
+    if (
+      response.status === 401 &&
+      authOptions.retryOnAuthError &&
+      this.authHandlers?.refreshAccessToken
+    ) {
+      // 401 발생 시 토큰 재발급 이후 단 한 번 재시도
+      const renewedToken = await this.authHandlers.refreshAccessToken();
+      if (renewedToken) {
+        return this.request(path, {
+          ...options,
+          auth: {
+            ...authOptions,
+            retryOnAuthError: false,
+          },
+        });
+      }
+      this.authHandlers?.handleAuthFailure?.();
+    }
 
     const data = await parseBody<TResponse>(response);
     if (!response.ok) {

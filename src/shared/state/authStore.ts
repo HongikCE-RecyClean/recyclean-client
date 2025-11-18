@@ -5,13 +5,17 @@ import { persist, createJSONStorage } from "zustand/middleware";
 const browserStorage = typeof window !== "undefined" ? window.localStorage : undefined;
 
 export type AuthMethod = "email" | "kakao";
+export type SocialType = "KAKAO";
 
-// 인증 프로필(auth profile) 구조 정의
-export interface AuthProfile {
-  id: string;
+// 인증 세션(auth session) 구조 정의
+export interface AuthSession {
+  memberId: number;
+  socialType: SocialType;
+  socialId: string;
   nickname: string;
-  email?: string;
-  avatarUrl?: string;
+  profileImageUrl?: string;
+  accessToken: string;
+  refreshToken: string;
   method: AuthMethod;
 }
 
@@ -20,9 +24,11 @@ interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;
   method?: AuthMethod;
-  profile?: AuthProfile;
+  session?: AuthSession;
   beginAuth: (method: AuthMethod) => void;
-  completeAuth: (profile: AuthProfile) => void;
+  completeAuth: (session: AuthSession) => void;
+  failAuth: () => void;
+  updateTokens: (tokens: { accessToken: string; refreshToken: string }) => void;
   logout: () => void;
 }
 
@@ -33,23 +39,37 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       isLoading: false,
       method: undefined,
-      profile: undefined,
+      session: undefined,
       beginAuth: (method) =>
         set(() => ({
           isLoading: true,
           method,
         })),
-      completeAuth: (profile) =>
+      completeAuth: (session) =>
         set(() => ({
-          profile,
+          session,
           isAuthenticated: true,
           isLoading: false,
-          method: profile.method,
+          method: session.method,
+        })),
+      failAuth: () =>
+        set(() => ({
+          isLoading: false,
+        })),
+      updateTokens: ({ accessToken, refreshToken }) =>
+        set((state) => ({
+          session: state.session
+            ? {
+                ...state.session,
+                accessToken,
+                refreshToken,
+              }
+            : state.session,
         })),
       logout: () =>
         set(() => ({
           isAuthenticated: false,
-          profile: undefined,
+          session: undefined,
           isLoading: false,
           method: undefined,
         })),
@@ -58,7 +78,7 @@ export const useAuthStore = create<AuthState>()(
       name: "recyclean-auth",
       // 로컬 스토리지(localStorage)에 인증 정보를 보존해 새로고침에도 유지
       storage: browserStorage ? createJSONStorage(() => browserStorage) : undefined,
-      version: 1,
+      version: 2,
     },
   ),
 );
