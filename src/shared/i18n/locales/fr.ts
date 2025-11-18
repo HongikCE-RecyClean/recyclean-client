@@ -561,6 +561,12 @@ export const frTranslation = {
       regionChanged: "Région définie sur {{region}}",
       darkModeEnabled: "Mode sombre activé",
       darkModeDisabled: "Mode clair activé",
+      locationPermissionRequired:
+        "Activez l'autorisation de localisation dans les Paramètres pour afficher votre position.",
+      locationUnsupported: "Cet appareil ne peut pas utiliser les services de localisation.",
+      locationPinned: "Votre position actuelle est affichée sur la carte.",
+      locationPermissionDenied: "Le navigateur a refusé l'accès à la localisation.",
+      locationError: "Impossible de récupérer votre position. Réessayez plus tard.",
     },
   },
   common: {

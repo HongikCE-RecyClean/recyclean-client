@@ -3,20 +3,36 @@ import { MapPin, Navigation } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "shared/ui/Card/Card";
 import { useNaverMapsLoader } from "shared/hooks/useNaverMapsLoader";
+import type { MapCoordinates } from "shared/state/mapStore";
 import * as S from "./MapViewCard.styles";
 
 interface MapViewCardProps {
   binCount: number;
   onUseLocationClick?: () => void;
+  userLocation?: MapCoordinates | null;
 }
 
 const DEFAULT_CENTER = { lat: 37.5666103, lng: 126.9783882 };
 const DEFAULT_ZOOM = 12;
+// 사용자 현재 위치를 표현하는 단색 마커 HTML
+const USER_MARKER_HTML = `
+  <div
+    style="
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 3px solid #ffffff;
+      background: #34d399;
+      box-shadow: 0 0 0 10px rgba(52, 211, 153, 0.25);
+    "
+  />
+`;
 
-export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) {
+export function MapViewCard({ binCount, onUseLocationClick, userLocation }: MapViewCardProps) {
   const { t } = useTranslation();
   const mapElementRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
+  const userMarkerRef = useRef<naver.maps.Marker | null>(null);
   const { status, error, maps } = useNaverMapsLoader();
   const [mapInitError, setMapInitError] = useState<string | null>(null); // 지도 초기화 오류 상태 보관
 
@@ -49,6 +65,11 @@ export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) 
       }
 
       try {
+        // 사용자 마커 제거 후 지도 해제
+        if (userMarkerRef.current) {
+          userMarkerRef.current.setMap(null);
+          userMarkerRef.current = null;
+        }
         activeMap.destroy();
       } catch (cleanupError) {
         console.warn("Failed to dispose NAVER Maps instance", cleanupError);
@@ -57,6 +78,43 @@ export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) 
       }
     };
   }, [status, maps]);
+
+  // 사용자 위치가 바뀔 때마다 마커를 반영
+  useEffect(() => {
+    if (status !== "success" || !maps) return;
+    const mapInstance = mapInstanceRef.current;
+    if (!mapInstance) return;
+
+    if (!userLocation) {
+      if (userMarkerRef.current) {
+        userMarkerRef.current.setMap(null);
+        userMarkerRef.current = null;
+      }
+      return;
+    }
+
+    const userLatLng = new maps.LatLng(userLocation.lat, userLocation.lng);
+    if (!userMarkerRef.current) {
+      // 사용자 위치를 강조하는 마커 생성
+      userMarkerRef.current = new maps.Marker({
+        position: userLatLng,
+        map: mapInstance,
+        icon: {
+          content: USER_MARKER_HTML,
+        },
+      });
+    } else {
+      userMarkerRef.current.setPosition(userLatLng);
+      if (!userMarkerRef.current.getMap()) {
+        userMarkerRef.current.setMap(mapInstance);
+      }
+    }
+
+    mapInstance.panTo(userLatLng);
+    if (mapInstance.getZoom() < 14) {
+      mapInstance.setZoom(14);
+    }
+  }, [maps, status, userLocation]);
 
   // 지도 카드 렌더링
   return (

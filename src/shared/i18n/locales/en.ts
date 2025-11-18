@@ -548,6 +548,12 @@ export const enTranslation = {
       regionChanged: "Region set to {{region}}",
       darkModeEnabled: "Dark mode enabled",
       darkModeDisabled: "Light mode enabled",
+      locationPermissionRequired:
+        "Allow location access in Settings to show your current position.",
+      locationUnsupported: "This device can't provide location services.",
+      locationPinned: "Your current location is now pinned on the map.",
+      locationPermissionDenied: "Location access was denied by the browser.",
+      locationError: "We couldn't load your location. Please try again.",
     },
   },
   common: {

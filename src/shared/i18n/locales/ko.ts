@@ -545,6 +545,11 @@ export const koTranslation = {
       regionChanged: "지역이 {{region}}로 업데이트되었어요",
       darkModeEnabled: "다크 모드를 켰어요",
       darkModeDisabled: "라이트 모드를 켰어요",
+      locationPermissionRequired: "설정에서 위치 사용을 허용해야 현재 위치를 보여줄 수 있어요",
+      locationUnsupported: "이 기기에서는 위치 서비스를 사용할 수 없어요",
+      locationPinned: "현재 위치를 지도에 표시했어요",
+      locationPermissionDenied: "브라우저에서 위치 권한이 거부되어 위치 정보를 가져올 수 없어요",
+      locationError: "위치 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요",
     },
   },
   common: {

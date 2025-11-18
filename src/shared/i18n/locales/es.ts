@@ -562,6 +562,12 @@ export const esTranslation = {
       regionChanged: "La región se configuró en {{region}}",
       darkModeEnabled: "Modo oscuro activado",
       darkModeDisabled: "Modo claro activado",
+      locationPermissionRequired:
+        "Activa el permiso de ubicación en Ajustes para mostrar tu posición actual.",
+      locationUnsupported: "Este dispositivo no puede usar servicios de ubicación.",
+      locationPinned: "Tu ubicación actual se ha marcado en el mapa.",
+      locationPermissionDenied: "El navegador rechazó el acceso a la ubicación.",
+      locationError: "No pudimos obtener tu ubicación. Inténtalo de nuevo.",
     },
   },
   common: {
