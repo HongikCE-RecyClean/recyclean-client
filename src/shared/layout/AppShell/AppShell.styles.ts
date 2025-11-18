@@ -23,7 +23,7 @@ export const Main = styled.main`
 // 메인 컨텐츠 정렬 정의
 export const Content = styled.div`
   width: 100%;
-  max-width: 960px;
+  max-width: 440px;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};

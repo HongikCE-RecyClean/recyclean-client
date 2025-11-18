@@ -34,3 +34,10 @@ export interface FilterOption {
   value: string;
   label: string;
 }
+
+// 지도 데이터 전체 묶음 타입 정의
+export interface MapData {
+  bins: TrashBin[];
+  centers: RecyclingCenter[];
+  options?: FilterOption[];
+}

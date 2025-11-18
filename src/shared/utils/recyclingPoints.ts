@@ -1,197 +1,225 @@
-// 재활용 품목별 포인트 테이블
-export const RECYCLING_POINTS_TABLE: Record<string, number> = {
-  // 플라스틱류
-  "플라스틱 병": 2,
-  PET병: 3,
-  "플라스틱 용기": 2,
-  비닐: 1,
-  스티로폼: 2,
+// 재활용 품목 및 카테고리 정의와 포인트 계산 유틸리티
 
-  // 종이류
-  종이: 1,
-  골판지: 2,
-  신문지: 1,
-  우유팩: 3,
+export type MaterialCategoryId =
+  | "plastic"
+  | "paper"
+  | "metal"
+  | "glass"
+  | "textile"
+  | "electronic"
+  | "other";
 
-  // 금속류
-  캔: 3,
-  "알루미늄 캔": 4,
-  철캔: 3,
+export type MaterialId =
+  | "plasticBottle"
+  | "petBottle"
+  | "plasticContainer"
+  | "vinyl"
+  | "styrofoam"
+  | "paper"
+  | "cardboard"
+  | "newspaper"
+  | "milkCarton"
+  | "can"
+  | "aluminumCan"
+  | "steelCan"
+  | "glassBottle"
+  | "sojuBottle"
+  | "clothes"
+  | "oldClothes"
+  | "textile"
+  | "battery"
+  | "electronics"
+  | "fluorescentLamp"
+  | "other";
 
-  // 유리류
-  유리병: 3,
-  소주병: 4,
+export const MATERIAL_CATEGORY_ORDER: MaterialCategoryId[] = [
+  "plastic",
+  "paper",
+  "metal",
+  "glass",
+  "textile",
+  "electronic",
+  "other",
+];
 
-  // 의류/섬유
-  옷: 2,
-  헌옷: 2,
-  섬유: 2,
-
-  // 전자제품
-  배터리: 5,
-  전자제품: 10,
-  형광등: 5,
-
-  // 기타
-  기타: 1,
+export const MATERIALS_BY_CATEGORY: Record<MaterialCategoryId, MaterialId[]> = {
+  plastic: ["plasticBottle", "petBottle", "plasticContainer", "vinyl", "styrofoam"],
+  paper: ["paper", "cardboard", "newspaper", "milkCarton"],
+  metal: ["can", "aluminumCan", "steelCan"],
+  glass: ["glassBottle", "sojuBottle"],
+  textile: ["clothes", "oldClothes", "textile"],
+  electronic: ["battery", "electronics", "fluorescentLamp"],
+  other: ["other"],
 };
 
-// 재질/품목 카테고리 정의
-export const MATERIAL_CATEGORIES = {
-  plastic: "플라스틱",
-  paper: "종이",
-  metal: "금속",
-  glass: "유리",
-  textile: "의류/섬유",
-  electronic: "전자제품",
-  other: "기타",
-} as const;
-
-// 카테고리별 품목 목록
-export const MATERIALS_BY_CATEGORY: Record<string, string[]> = {
-  플라스틱: ["플라스틱 병", "PET병", "플라스틱 용기", "비닐", "스티로폼"],
-  종이: ["종이", "골판지", "신문지", "우유팩"],
-  금속: ["캔", "알루미늄 캔", "철캔"],
-  유리: ["유리병", "소주병"],
-  "의류/섬유": ["옷", "헌옷", "섬유"],
-  전자제품: ["배터리", "전자제품", "형광등"],
-  기타: ["기타"],
+const RECYCLING_POINTS_TABLE: Record<MaterialId, number> = {
+  plasticBottle: 2,
+  petBottle: 3,
+  plasticContainer: 2,
+  vinyl: 1,
+  styrofoam: 2,
+  paper: 1,
+  cardboard: 2,
+  newspaper: 1,
+  milkCarton: 3,
+  can: 3,
+  aluminumCan: 4,
+  steelCan: 3,
+  glassBottle: 3,
+  sojuBottle: 4,
+  clothes: 2,
+  oldClothes: 2,
+  textile: 2,
+  battery: 5,
+  electronics: 10,
+  fluorescentLamp: 5,
+  other: 1,
 };
 
-// 모든 재활용 품목 목록 추출
-export const ALL_MATERIALS = Object.keys(RECYCLING_POINTS_TABLE);
+type MaterialMatcher = {
+  id: MaterialId;
+  keywords: string[];
+};
 
-/**
- * 재질과 수량을 기반으로 포인트 계산
- * @param type 재질/품목 이름
- * @param amount 수량
- * @returns 계산된 포인트
- */
-export function calculatePoints(type: string, amount: number): number {
-  const basePoints = RECYCLING_POINTS_TABLE[type] ?? RECYCLING_POINTS_TABLE["기타"];
-  return basePoints * amount;
+const MATERIAL_MATCHERS: MaterialMatcher[] = [
+  { id: "petBottle", keywords: ["pet", "#1", "transparent bottle"] },
+  { id: "plasticBottle", keywords: ["plastic bottle", "water bottle", "soda bottle"] },
+  { id: "plasticContainer", keywords: ["plastic container", "takeout box", "tray"] },
+  { id: "vinyl", keywords: ["vinyl", "plastic bag", "film"] },
+  { id: "styrofoam", keywords: ["styrofoam", "foam"] },
+  { id: "milkCarton", keywords: ["milk carton", "juice carton"] },
+  { id: "cardboard", keywords: ["cardboard", "pizza box", "box"] },
+  { id: "newspaper", keywords: ["newspaper", "news paper"] },
+  { id: "paper", keywords: ["paper", "paper sheet"] },
+  { id: "aluminumCan", keywords: ["aluminum can", "aluminium can"] },
+  { id: "can", keywords: ["can", "tin can"] },
+  { id: "steelCan", keywords: ["steel can"] },
+  { id: "glassBottle", keywords: ["glass bottle", "beer bottle"] },
+  { id: "sojuBottle", keywords: ["soju", "soju bottle"] },
+  { id: "battery", keywords: ["battery"] },
+  { id: "electronics", keywords: ["electronics", "device", "appliance"] },
+  { id: "fluorescentLamp", keywords: ["fluorescent", "light tube"] },
+  { id: "clothes", keywords: ["clothes", "garment"] },
+  { id: "oldClothes", keywords: ["old clothes", "used clothes"] },
+  { id: "textile", keywords: ["textile", "fabric"] },
+];
+
+const LEGACY_MATERIAL_LABEL_MAP: Record<string, MaterialId> = {
+  "\ud50c\ub77c\uc2a4\ud2f1 \ubcd1": "plasticBottle",
+  "pet\ubcd1": "petBottle",
+  "\ud50c\ub77c\uc2a4\ud2f1 \uc6a9\uae30": "plasticContainer",
+  "\ube44\ub2d0": "vinyl",
+  "\uc2a4\ud2f0\ub85c\ud3fc": "styrofoam",
+  "\uc885\uc774": "paper",
+  "\uace8\ud310\uc9c0": "cardboard",
+  "\uc2e0\ubb38\uc9c0": "newspaper",
+  "\uc6b0\uc720\ud329": "milkCarton",
+  "\uce94": "can",
+  "\uc54c\ub8e8\ubbf8\ub284 \uce94": "aluminumCan",
+  "\ucca0\uce94": "steelCan",
+  "\uc720\ub9ac\ubcd1": "glassBottle",
+  "\uc18c\uc8fc\ubcd1": "sojuBottle",
+  "\uc637": "clothes",
+  "\ud5cc\uc637": "oldClothes",
+  "\uc12c\uc720": "textile",
+  "\ubc30\ud130\ub9ac": "battery",
+  "\uc804\uc790\uc81c\ud488": "electronics",
+  "\ud615\uad11\ub4f1": "fluorescentLamp",
+  "\uae30\ud0c0": "other",
+};
+
+const LEGACY_CATEGORY_LABEL_MAP: Record<string, MaterialCategoryId> = {
+  "\ud50c\ub77c\uc2a4\ud2f1": "plastic",
+  "\uc885\uc774": "paper",
+  "\uae08\uc18d": "metal",
+  "\uc720\ub9ac": "glass",
+  "\uc758\ub958/\uc12c\uc720": "textile",
+  "\uc804\uc790\uc81c\ud488": "electronic",
+};
+
+function normalizeLegacyKey(value: string): string {
+  return value.trim().toLowerCase();
 }
 
-/**
- * 품목 이름으로 카테고리 찾기
- * @param materialType 품목 이름
- * @returns 카테고리 이름
- */
-export function getCategoryByMaterial(materialType: string): string {
-  for (const [category, materials] of Object.entries(MATERIALS_BY_CATEGORY)) {
-    if (materials.includes(materialType)) {
+export function normalizeMaterialId(value: string): MaterialId {
+  if (!value) {
+    return "other";
+  }
+  if ((RECYCLING_POINTS_TABLE as Record<string, number>)[value]) {
+    return value as MaterialId;
+  }
+  const normalized = normalizeLegacyKey(value);
+  return LEGACY_MATERIAL_LABEL_MAP[normalized] ?? "other";
+}
+
+export function calculatePoints(type: string, amount: number): number {
+  const normalizedType = normalizeMaterialId(type);
+  const basePoints = RECYCLING_POINTS_TABLE[normalizedType] ?? RECYCLING_POINTS_TABLE.other;
+  return basePoints * Math.max(1, amount);
+}
+
+export function getCategoryByMaterial(materialType: string): MaterialCategoryId {
+  const normalizedMaterial = normalizeMaterialId(materialType);
+  for (const [category, materials] of Object.entries(MATERIALS_BY_CATEGORY) as Array<
+    [MaterialCategoryId, MaterialId[]]
+  >) {
+    if (materials.includes(normalizedMaterial)) {
       return category;
     }
   }
-  return "기타";
+  return "other";
 }
 
-/**
- * 분석 결과의 카테고리를 한국어 재질 이름으로 변환
- * @param category 영문 카테고리 (예: "plastic", "paper")
- * @returns 한국어 카테고리 이름
- */
-export function translateCategory(category: string): string {
+export function translateCategory(category: string): MaterialCategoryId {
+  if (!category) {
+    return "other";
+  }
   const normalized = category.toLowerCase();
 
-  if (normalized.includes("plastic") || normalized.includes("플라스틱")) {
-    return "플라스틱";
+  if (normalized.includes("plastic") || normalized.includes("pet")) {
+    return "plastic";
   }
-  if (normalized.includes("paper") || normalized.includes("종이")) {
-    return "종이";
+  if (normalized.includes("paper") || normalized.includes("carton")) {
+    return "paper";
   }
-  if (normalized.includes("metal") || normalized.includes("금속") || normalized.includes("can")) {
-    return "금속";
+  if (normalized.includes("metal") || normalized.includes("can")) {
+    return "metal";
   }
-  if (normalized.includes("glass") || normalized.includes("유리")) {
-    return "유리";
+  if (normalized.includes("glass") || normalized.includes("bottle")) {
+    return "glass";
   }
   if (
     normalized.includes("textile") ||
-    normalized.includes("의류") ||
-    normalized.includes("섬유")
+    normalized.includes("fabric") ||
+    normalized.includes("clothes")
   ) {
-    return "의류/섬유";
+    return "textile";
   }
-  if (normalized.includes("electronic") || normalized.includes("전자")) {
-    return "전자제품";
+  if (normalized.includes("electronic") || normalized.includes("battery")) {
+    return "electronic";
   }
 
-  return "기타";
+  const legacy = LEGACY_CATEGORY_LABEL_MAP[normalizeLegacyKey(category)];
+  return legacy ?? "other";
 }
 
-/**
- * 분석 결과의 아이템 이름을 표준 재질 이름으로 매칭
- * @param item 분석된 아이템 이름 (예: "Plastic Bottle", "Pizza Box")
- * @param category 카테고리 (선택적)
- * @returns 표준 재질 이름
- */
-export function matchMaterialType(item: string, category?: string): string {
-  const normalized = item.toLowerCase();
-
-  // 플라스틱류
-  if (normalized.includes("pet") || normalized.includes("bottle")) {
-    return "PET병";
-  }
-  if (normalized.includes("plastic container") || normalized.includes("용기")) {
-    return "플라스틱 용기";
-  }
-  if (normalized.includes("plastic") || normalized.includes("플라스틱")) {
-    return "플라스틱 병";
-  }
-  if (normalized.includes("vinyl") || normalized.includes("비닐")) {
-    return "비닐";
-  }
-  if (normalized.includes("styrofoam") || normalized.includes("스티로폼")) {
-    return "스티로폼";
-  }
-
-  // 종이류
-  if (
-    normalized.includes("cardboard") ||
-    normalized.includes("골판지") ||
-    normalized.includes("box")
-  ) {
-    return "골판지";
-  }
-  if (normalized.includes("newspaper") || normalized.includes("신문")) {
-    return "신문지";
-  }
-  if (normalized.includes("milk") || normalized.includes("우유팩")) {
-    return "우유팩";
-  }
-  if (normalized.includes("paper") || normalized.includes("종이")) {
-    return "종이";
-  }
-
-  // 금속류
-  if (normalized.includes("aluminum") || normalized.includes("알루미늄")) {
-    return "알루미늄 캔";
-  }
-  if (normalized.includes("can") || normalized.includes("캔")) {
-    return "캔";
-  }
-
-  // 유리류
-  if (normalized.includes("soju") || normalized.includes("소주")) {
-    return "소주병";
-  }
-  if (
-    normalized.includes("glass") ||
-    normalized.includes("bottle") ||
-    normalized.includes("유리")
-  ) {
-    return "유리병";
-  }
-
-  // 카테고리 기반 기본값
-  if (category) {
-    const translatedCategory = translateCategory(category);
-    const materialsInCategory = MATERIALS_BY_CATEGORY[translatedCategory];
-    if (materialsInCategory && materialsInCategory.length > 0) {
-      return materialsInCategory[0]; // 카테고리의 첫 번째 품목 반환
+export function matchMaterialType(item: string, category?: string): MaterialId {
+  if (item) {
+    const normalized = item.toLowerCase();
+    for (const matcher of MATERIAL_MATCHERS) {
+      if (matcher.keywords.some((keyword) => normalized.includes(keyword))) {
+        return matcher.id;
+      }
     }
   }
 
-  return "기타";
+  if (category) {
+    const derivedCategory = translateCategory(category);
+    const fallback = MATERIALS_BY_CATEGORY[derivedCategory]?.[0];
+    if (fallback) {
+      return fallback;
+    }
+  }
+
+  return "other";
 }

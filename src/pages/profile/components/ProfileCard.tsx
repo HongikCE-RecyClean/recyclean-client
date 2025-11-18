@@ -37,6 +37,7 @@ export function ProfileCard({ userStats, avatarSrc, userName, onEditClick }: Pro
     : new Intl.DateTimeFormat(localeMap[resolvedLanguage] ?? "en-US", {
         year: "numeric",
         month: "long",
+        day: "numeric",
       }).format(joinDate);
 
   // 프로필 레이아웃과 배지 영역 구성

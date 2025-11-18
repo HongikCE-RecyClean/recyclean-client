@@ -30,7 +30,9 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
               <S.ActivityRow key={activity.type}>
                 <div>
                   {/* 최근 활동 제목 컴포넌트 적용 */}
-                  <S.RecentActivityTitle>{activity.type}</S.RecentActivityTitle>
+                  <S.RecentActivityTitle>
+                    {t(`materials.items.${activity.type}`, { defaultValue: activity.type })}
+                  </S.RecentActivityTitle>
                   <S.RecentActivityMeta>
                     {t("dashboard.recentActivity.meta", {
                       count: activity.count,

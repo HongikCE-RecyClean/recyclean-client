@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { RecyclingEntry } from "shared/types/dashboard";
+import { normalizeMaterialId } from "shared/utils/recyclingPoints";
 
 // 활동 기록 상태 타입
 interface ActivityState {
@@ -33,6 +34,7 @@ export const useActivityStore = create<ActivityState>()(
           entries: [
             {
               ...entry,
+              type: normalizeMaterialId(entry.type),
               mode: entry.mode ?? "record",
               date: normalizeDate(entry.date),
               id: generateId(),
@@ -48,7 +50,11 @@ export const useActivityStore = create<ActivityState>()(
             if (entry.id !== id) {
               return entry;
             }
-            const nextEntry = { ...entry, ...updates };
+            const nextEntry = {
+              ...entry,
+              ...updates,
+              type: updates.type ? normalizeMaterialId(updates.type) : entry.type,
+            };
             if (updates.date) {
               nextEntry.date = normalizeDate(updates.date);
             }
@@ -70,6 +76,7 @@ export const useActivityStore = create<ActivityState>()(
         set({
           entries: entries.map((entry) => ({
             ...entry,
+            type: normalizeMaterialId(entry.type),
             mode: entry.mode ?? "record",
             date: normalizeDate(entry.date),
           })),
@@ -81,16 +88,18 @@ export const useActivityStore = create<ActivityState>()(
     {
       name: "recyclean-activities",
       storage: createJSONStorage(() => localStorage),
-      version: 1,
+      version: 2,
       migrate: (persistedState, version) => {
         if (!persistedState) {
           return persistedState;
         }
-        if (version < 1 && Array.isArray((persistedState as ActivityState).entries)) {
+        const state = persistedState as ActivityState;
+        if (version < 2 && Array.isArray(state.entries)) {
           return {
             ...persistedState,
-            entries: (persistedState as ActivityState).entries.map((entry) => ({
+            entries: state.entries.map((entry) => ({
               ...entry,
+              type: normalizeMaterialId(entry.type as string),
               mode: entry.mode ?? "record",
               date: normalizeDate(entry.date),
             })),

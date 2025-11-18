@@ -116,15 +116,14 @@ export const impactStatLabel = (theme: AppTheme) => css`
 export const levelHeaderRow = css`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 12px;
 `;
 
 // 레벨 진행률 영역 레이아웃
 export const levelProgressSection = (theme: AppTheme) => css`
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing(2)};
-  margin-top: ${theme.spacing(2)};
+  margin-top: ${theme.spacing(1.5)};
 `;
 
 // 다음 레벨 안내 텍스트 스타일
@@ -132,6 +131,7 @@ export const levelProgressMeta = (theme: AppTheme) => css`
   font-size: 0.85rem;
   color: ${theme.colors.textMuted};
   text-align: right;
+  white-space: nowrap;
 `;
 
 // 카테고리 통계 리스트 스타일

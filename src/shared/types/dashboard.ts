@@ -1,8 +1,9 @@
 import type { BadgeTone } from "shared/ui/Badge/Badge";
+import type { MaterialId } from "shared/utils/recyclingPoints";
 
 // 대시보드 활동 항목 타입
 export interface RecentActivityItem {
-  type: string;
+  type: MaterialId;
   count: number;
   points: number;
   time: string;
@@ -51,7 +52,7 @@ export type EntryMode = "record" | "plan";
 
 export interface RecyclingEntry {
   id: string;
-  type: string;
+  type: MaterialId;
   amount: number;
   date: Date;
   points: number;

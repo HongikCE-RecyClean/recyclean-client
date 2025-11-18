@@ -1,4 +1,5 @@
 import { isSameDay } from "date-fns";
+import type { MaterialId } from "shared/utils/recyclingPoints";
 import type { RecyclingEntry } from "shared/types/dashboard";
 
 /**
@@ -145,7 +146,7 @@ export function calculateLevel(totalPoints: number): LevelInfo {
  * 카테고리별 통계 인터페이스
  */
 export interface CategoryStats {
-  type: string; // 재활용 품목 종류
+  type: MaterialId; // 재활용 품목 종류
   count: number; // 재활용한 개수
   points: number; // 획득한 포인트
 }
@@ -156,7 +157,7 @@ export interface CategoryStats {
  */
 export function calculateCategoryStats(entries: RecyclingEntry[]): CategoryStats[] {
   // 카테고리별로 그룹화
-  const categoryMap = new Map<string, { count: number; points: number }>();
+  const categoryMap = new Map<MaterialId, { count: number; points: number }>();
 
   entries.forEach((entry) => {
     const existing = categoryMap.get(entry.type) || { count: 0, points: 0 };

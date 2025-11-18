@@ -7,7 +7,13 @@ import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import { useActivityStore } from "../../../shared/state/activityStore";
 import { useNotificationStore } from "../../../shared/state/notificationStore";
 import type { SnackbarOptions } from "../../../shared/types/notifications";
-import { MATERIALS_BY_CATEGORY, calculatePoints } from "../../../shared/utils/recyclingPoints";
+import {
+  MATERIAL_CATEGORY_ORDER,
+  MATERIALS_BY_CATEGORY,
+  type MaterialCategoryId,
+  type MaterialId,
+  calculatePoints,
+} from "../../../shared/utils/recyclingPoints";
 import type { EntryMode } from "../../../shared/types/dashboard";
 import * as S from "./AddEntryBottomSheet.styles";
 
@@ -36,20 +42,21 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   const pendingSnackbarRef = useRef<PendingSnackbar | null>(null);
 
   // 폼 상태
-  const [category, setCategory] = useState<string>("플라스틱");
-  const [materialType, setMaterialType] = useState<string>("");
+  const [category, setCategory] = useState<MaterialCategoryId>("plastic");
+  const [materialType, setMaterialType] = useState<MaterialId | "">("");
   const [amount, setAmount] = useState<string>("1");
   const [date, setDate] = useState<string>(() => formatDateInput(new Date()));
   const [time, setTime] = useState<string>(() => formatTimeInput(new Date()));
   const [entryMode, setEntryMode] = useState<EntryMode>("record");
 
   // 카테고리별 품목 목록
-  const categoryOptions = Object.keys(MATERIALS_BY_CATEGORY);
-  const materialOptions = MATERIALS_BY_CATEGORY[category] || [];
+  const categoryOptions = MATERIAL_CATEGORY_ORDER;
+  const materialOptions = MATERIALS_BY_CATEGORY[category] ?? [];
 
   // 카테고리 변경 시 첫 번째 품목 자동 선택
   const handleCategoryChange = (value: string) => {
-    setCategory(value);
+    const nextCategory = value as MaterialCategoryId;
+    setCategory(nextCategory);
     const firstMaterial = MATERIALS_BY_CATEGORY[value]?.[0];
     if (firstMaterial) {
       setMaterialType(firstMaterial);
@@ -59,7 +66,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   // 폼 초기화
   const resetForm = () => {
     const now = new Date();
-    setCategory("플라스틱");
+    setCategory("plastic");
     setMaterialType("");
     setAmount("1");
     setDate(formatDateInput(now));
@@ -92,7 +99,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   // 폼 제출 처리
   const handleSubmit = () => {
     const amountNum = parseInt(amount, 10);
-    const type = materialType || materialOptions[0] || "기타";
+    const type = (materialType || materialOptions[0] || "other") as MaterialId;
 
     // 유효성 검사
     if (!type || amountNum <= 0 || !date || !time) {
@@ -147,7 +154,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
             onChange={(e) => handleCategoryChange(e.target.value)}
             options={categoryOptions.map((cat) => ({
               value: cat,
-              label: cat,
+              label: t(`materials.categories.${cat}`),
             }))}
           />
         </S.FormGroup>
@@ -176,10 +183,10 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
           <S.Label>{t("dashboard.addEntry.material")}</S.Label>
           <SelectField
             value={materialType || materialOptions[0]}
-            onChange={(e) => setMaterialType(e.target.value)}
+            onChange={(e) => setMaterialType(e.target.value as MaterialId)}
             options={materialOptions.map((mat) => ({
               value: mat,
-              label: mat,
+              label: t(`materials.items.${mat}`),
             }))}
           />
         </S.FormGroup>
@@ -212,7 +219,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
         <S.PointsPreview>
           {t("dashboard.addEntry.pointsPreview", {
             points: calculatePoints(
-              materialType || materialOptions[0] || "기타",
+              (materialType || materialOptions[0] || "other") as MaterialId,
               parseInt(amount, 10) || 1,
             ),
           })}
