@@ -16,10 +16,30 @@ declare global {
         zoom?: number;
       }
 
+      interface MarkerIconOptions {
+        content?: string;
+      }
+
+      interface MarkerOptions {
+        position: LatLng;
+        map?: Map | null;
+        icon?: MarkerIconOptions | string;
+      }
+
       class Map {
         constructor(container: HTMLElement | string, options?: MapOptions);
         destroy(): void;
         setCenter(latlng: LatLng): void;
+        panTo(latlng: LatLng): void;
+        getZoom(): number;
+        setZoom(zoom: number): void;
+      }
+
+      class Marker {
+        constructor(options: MarkerOptions);
+        setPosition(latlng: LatLng): void;
+        setMap(map: Map | null): void;
+        getMap(): Map | null;
       }
 
       // 네이버 지도 이벤트 핸들러 타입 정의
