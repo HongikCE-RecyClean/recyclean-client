@@ -311,6 +311,23 @@ export const enTranslation = {
       logout: "Log out",
     },
   },
+  notifications: {
+    actions: {
+      close: "Close",
+      undo: "Undo",
+    },
+    banner: {
+      welcome: {
+        message: "Welcome, {{name}}! Log your first recycling activity.",
+        cta: "Get started",
+      },
+    },
+    snackbar: {
+      entrySaved: "Activity saved! +{{points}}pt earned",
+      entryDeleted: "Activity entry deleted",
+      entryRestored: "Entry restored",
+    },
+  },
   common: {
     cancel: "Cancel",
     save: "Save",

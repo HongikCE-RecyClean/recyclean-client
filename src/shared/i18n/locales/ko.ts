@@ -311,6 +311,23 @@ export const koTranslation = {
       logout: "로그아웃",
     },
   },
+  notifications: {
+    actions: {
+      close: "닫기",
+      undo: "실행취소",
+    },
+    banner: {
+      welcome: {
+        message: "{{name}}님, 환영해요! 첫 재활용 활동을 기록해보세요",
+        cta: "시작하기",
+      },
+    },
+    snackbar: {
+      entrySaved: "활동이 기록되었어요! +{{points}}pt 획득",
+      entryDeleted: "활동 기록이 삭제되었어요",
+      entryRestored: "기록이 복구되었어요",
+    },
+  },
   common: {
     cancel: "취소",
     save: "저장",

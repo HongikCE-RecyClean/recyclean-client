@@ -44,7 +44,7 @@ function formatSelectedDateLabel(date: Date, localeTag: string) {
 }
 
 export function CalendarPage() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const language = normalizeLanguage(i18n.language);
   const localeTagMap: Record<SupportedLanguage, string> = {
     en: "en-US",
@@ -162,14 +162,14 @@ export function CalendarPage() {
       deleteEntry(id);
 
       // 실행취소 스낵바 표시
-      showSnackbar("활동 기록이 삭제되었어요", {
+      showSnackbar(t("notifications.snackbar.entryDeleted"), {
         type: "success",
         duration: 5000,
         action: {
-          label: "실행취소",
+          label: t("notifications.actions.undo"),
           onClick: () => {
             addEntry(backup);
-            showSnackbar("복구되었어요", {
+            showSnackbar(t("notifications.snackbar.entryRestored"), {
               type: "info",
               duration: 2000,
             });
@@ -177,7 +177,7 @@ export function CalendarPage() {
         },
       });
     },
-    [entries, deleteEntry, addEntry, showSnackbar],
+    [entries, deleteEntry, addEntry, showSnackbar, t],
   );
 
   return (

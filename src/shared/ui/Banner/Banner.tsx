@@ -1,4 +1,5 @@
 import { X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import type { BannerState } from "../../state/notificationStore";
 import * as S from "./Banner.styles";
 
@@ -15,6 +16,7 @@ const emojiMap = {
 };
 
 export function Banner({ type, message, action, onClose }: BannerProps) {
+  const { t } = useTranslation();
   const emoji = emojiMap[type];
 
   return (
@@ -28,7 +30,7 @@ export function Banner({ type, message, action, onClose }: BannerProps) {
         {action && <S.ActionButton onClick={action.onClick}>{action.label}</S.ActionButton>}
       </S.Content>
 
-      <S.CloseButton onClick={onClose} aria-label="닫기">
+      <S.CloseButton onClick={onClose} aria-label={t("notifications.actions.close")}>
         <X size={20} />
       </S.CloseButton>
     </S.BannerContainer>

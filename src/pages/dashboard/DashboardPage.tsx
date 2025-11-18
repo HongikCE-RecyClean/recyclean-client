@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDashboardData } from "shared/api/dashboard";
 import { useDashboardStore } from "shared/state/dashboardStore";
 import { useActivityStore } from "shared/state/activityStore";
@@ -16,6 +17,7 @@ import {
 
 export function DashboardPage() {
   const { data } = useDashboardData();
+  const { t } = useTranslation();
   // 전역 상태와 스토어 제어자 로드
   const { searchTerm, setSearchTerm, materialCategory, setMaterialCategory } = useDashboardStore();
   // 활동 기록 스토어에서 entries 로드
@@ -39,14 +41,14 @@ export function DashboardPage() {
     if (entries.length === 0 && userName) {
       showBanner({
         type: "info",
-        message: `${userName}님, 환영해요! 첫 재활용 활동을 기록해보세요`,
+        message: t("notifications.banner.welcome.message", { name: userName }),
         action: {
-          label: "시작하기",
+          label: t("notifications.banner.welcome.cta"),
           onClick: () => setIsAddEntryOpen(true),
         },
       });
     }
-  }, [entries.length, userName, showBanner]);
+  }, [entries.length, userName, showBanner, t]);
 
   const todayStats =
     data?.todayStats ??

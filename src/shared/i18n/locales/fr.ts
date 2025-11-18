@@ -303,4 +303,21 @@ export const frTranslation = {
       logout: "Se déconnecter",
     },
   },
+  notifications: {
+    actions: {
+      close: "Fermer",
+      undo: "Annuler",
+    },
+    banner: {
+      welcome: {
+        message: "Bienvenue, {{name}} ! Enregistrez votre première activité de recyclage.",
+        cta: "Commencer",
+      },
+    },
+    snackbar: {
+      entrySaved: "Activité enregistrée ! +{{points}}pt gagnés",
+      entryDeleted: "L'enregistrement a été supprimé",
+      entryRestored: "Enregistrement restauré",
+    },
+  },
 } as const;
