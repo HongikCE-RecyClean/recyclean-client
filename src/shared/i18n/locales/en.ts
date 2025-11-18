@@ -18,6 +18,8 @@ export const enTranslation = {
     description: "Track small daily eco actions.\\nFind nearby drop-off points easily.",
     cta: "Get started",
     hint: "Start living sustainably with {{appName}} now.",
+    nameRequired: "Please enter a nickname.",
+    namePlaceholder: "Enter nickname",
   },
   dashboard: {
     welcome: {
@@ -119,6 +121,56 @@ export const enTranslation = {
       date: "Date",
       time: "Time",
       pointsPreview: "Expected points: +{{points}}pt",
+    },
+    materials: {
+      plasticPetBottle: {
+        name: "Clear PET bottles (water & beverages)",
+        instructions:
+          "Empty, rinse, remove the label and cap, then compress before placing them in a clear-PET bin.",
+        tips: "Colorless, label-free bottles that are lightly crushed become higher quality recycled resin.",
+      },
+      plasticTakeoutContainer: {
+        name: "Greasy plastic takeout container",
+        instructions:
+          "If stubborn sauce or oil remains, recycling trucks reject it. When you can't clean it thoroughly, dispose of it as general waste.",
+        tips: "Only containers that are fully washed and dried can move into the plastic stream.",
+      },
+      paperCarton: {
+        name: "Milk or juice carton",
+        instructions:
+          "Empty, rinse, unfold, and dry. Remove straws, stickers, or mixed materials before bundling for pickup.",
+        tips: "Clean laminated cartons can go to dedicated carton drives or deposit programs.",
+      },
+      greasyPizzaBox: {
+        name: "Grease-stained pizza box",
+        instructions:
+          "Grease contaminates other paper, so place lightly soiled boxes in trash bags or special sacks.",
+        tips: "Separate clean sections and recycle only the unstained pieces for better efficiency.",
+      },
+      aluminumCan: {
+        name: "Aluminum beverage can",
+        instructions:
+          "Rinse to remove residue and keep foreign objects out. Remove any plastic caps before recycling.",
+        tips: "Crushing the top improves collection efficiency and stacking stability.",
+      },
+      butaneCan: {
+        name: "Butane can with leftover gas",
+        instructions:
+          "Remaining gas makes the can unsafe, so vent it completely outdoors, then place it in a special disposal sack.",
+        tips: "Pierce the can and remove labels once it's empty to recycle it with other metal items.",
+      },
+      glassBottle: {
+        name: "Soju or beer glass bottle",
+        instructions:
+          "Remove caps and labels, rinse, and recycle carefully or return it through the deposit refund program.",
+        tips: "Deposit bottles can be returned to retailers for an instant refund.",
+      },
+      heatResistantGlass: {
+        name: "Heat-resistant glass cookware",
+        instructions:
+          "Tempered or heat-resistant glass melts differently, so wrap it in newspaper and dispose of it as general waste.",
+        tips: "Clearly label sharp shards to keep collection crews safe.",
+      },
     },
   },
   analyze: {
@@ -264,6 +316,25 @@ export const enTranslation = {
     },
   },
   map: {
+    mapView: {
+      title: "Check locations on the map",
+      subtitle: "We'll highlight {{count}} nearby drop-off bins on the map.",
+      loading: "Loading the map...",
+      missingKey: {
+        title: "Map API key missing",
+        description:
+          "Add the NAVER Web Dynamic Map key in the console and reload to see the live map.",
+      },
+      loadFailed: {
+        title: "Couldn't load the map",
+        description: "Verify the network connection and domain registration, then try again.",
+      },
+      initFailed: {
+        title: "Map engine failed to initialize",
+        description:
+          "Make sure this origin is allowed in the NAVER Maps domain whitelist and API permissions.",
+      },
+    },
     filter: {
       title: "Nearby drop-off bins",
       useLocation: "Use my location",
@@ -310,6 +381,7 @@ export const enTranslation = {
       joined: "Joined {{date}}",
       points: "{{points}} pts",
       streak: "{{days}}-day streak",
+      nickname: "Nickname",
     },
     impact: {
       title: "My impact",
@@ -360,6 +432,12 @@ export const enTranslation = {
       languageLabel: "Language",
       regionLabel: "Region",
       regionHint: "Currently optimized for the Korean pilot region.",
+      languages: {
+        ko: "Korean",
+        en: "English",
+        es: "Spanish",
+        fr: "French",
+      },
       regions: {
         kr: "South Korea",
         us: "United States",
@@ -374,6 +452,8 @@ export const enTranslation = {
       helpCenter: "Help center",
       about: "About the app",
       logout: "Log out",
+      resetConfirm: "All locally stored data will be deleted. Continue?",
+      resetData: "Reset data",
     },
   },
   profile: {
@@ -408,6 +488,40 @@ export const enTranslation = {
       noData: "No category data yet.",
       items: "{{count}} items",
       points: "{{points}}pt",
+    },
+  },
+  materials: {
+    categories: {
+      plastic: "Plastic",
+      paper: "Paper",
+      metal: "Metal",
+      glass: "Glass",
+      textile: "Textiles",
+      electronic: "Electronics",
+      other: "Other",
+    },
+    items: {
+      plasticBottle: "Plastic bottle",
+      petBottle: "PET bottle",
+      plasticContainer: "Plastic container",
+      vinyl: "Plastic film/bag",
+      styrofoam: "Styrofoam",
+      paper: "Paper",
+      cardboard: "Cardboard",
+      newspaper: "Newspaper",
+      milkCarton: "Milk carton",
+      can: "Can",
+      aluminumCan: "Aluminum can",
+      steelCan: "Steel can",
+      glassBottle: "Glass bottle",
+      sojuBottle: "Soju bottle",
+      clothes: "Clothes",
+      oldClothes: "Used clothes",
+      textile: "Textiles",
+      battery: "Battery",
+      electronics: "Electronics",
+      fluorescentLamp: "Fluorescent lamp",
+      other: "Other",
     },
   },
   notifications: {

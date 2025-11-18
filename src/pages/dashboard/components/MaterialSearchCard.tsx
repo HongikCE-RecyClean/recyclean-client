@@ -106,7 +106,8 @@ export function MaterialSearchCard({
         </S.MaterialList>
         {hasHiddenMaterials && (
           <S.MaterialMoreWrapper>
-            <Button variant="ghost" size="sm" onClick={() => setShowAllMaterials((prev) => !prev)}>
+            {/* 접기/더보기 전용 텍스트 버튼 적용 */}
+            <Button variant="text" size="sm" onClick={() => setShowAllMaterials((prev) => !prev)}>
               {showAllMaterials
                 ? t("dashboard.materialSearch.showLess")
                 : t("dashboard.materialSearch.showMore")}

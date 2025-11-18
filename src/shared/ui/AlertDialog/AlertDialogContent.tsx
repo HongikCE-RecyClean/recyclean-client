@@ -133,7 +133,7 @@ export function AlertDialogContent({
         aria-modal="true"
         onClick={(e) => e.stopPropagation()}
       >
-        <CloseButton onClick={onCancel} aria-label="닫기">
+        <CloseButton onClick={onCancel} aria-label={t("notifications.actions.close")}>
           <X size={18} />
         </CloseButton>
         <IconWrapper $tone={tone}>

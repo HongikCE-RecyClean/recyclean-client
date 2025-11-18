@@ -30,7 +30,7 @@ function buildSdkUrl({ clientId, keyId, submodules }: ScriptOptions) {
   const identifier = clientId ? `ncpClientId=${clientId}` : keyId ? `ncpKeyId=${keyId}` : undefined;
 
   if (!identifier) {
-    throw new Error("NAVER Maps SDK: Client ID 또는 Key ID가 필요해요.");
+    throw new Error("NAVER Maps SDK requires either a Client ID or Key ID.");
   }
 
   const normalizedSubmodules = normalizeSubmodules(submodules);
@@ -46,7 +46,7 @@ function buildSdkUrl({ clientId, keyId, submodules }: ScriptOptions) {
 
 function loadSdk(options: ScriptOptions) {
   if (typeof window === "undefined") {
-    return Promise.reject(new Error("NAVER Maps SDK는 브라우저 환경에서만 로드할 수 있어요."));
+    return Promise.reject(new Error("NAVER Maps SDK can only load in the browser."));
   }
 
   if (window.naver?.maps) {
@@ -65,7 +65,7 @@ function loadSdk(options: ScriptOptions) {
 
       if (!maps) {
         naverMapsPromise = null;
-        reject(new Error("NAVER Maps SDK가 로드됐지만 window.naver.maps가 비어 있어요."));
+        reject(new Error("NAVER Maps SDK loaded but window.naver.maps is undefined."));
         return;
       }
 
@@ -79,7 +79,7 @@ function loadSdk(options: ScriptOptions) {
 
     const handleError = () => {
       naverMapsPromise = null;
-      reject(new Error("NAVER Maps SDK 로딩에 실패했어요."));
+      reject(new Error("Failed to load the NAVER Maps SDK."));
     };
 
     const existing = document.getElementById(NAVER_SDK_ID) as HTMLScriptElement | null;

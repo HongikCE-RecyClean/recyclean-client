@@ -58,7 +58,7 @@ export function ProfileCard({ userStats, avatarSrc, userName, onEditClick }: Pro
             {/* 닉네임과 편집 버튼 */}
             <div css={S.profileNameRow}>
               <S.ProfileName>{userName}</S.ProfileName>
-              <S.EditButton onClick={onEditClick} aria-label={t("common.edit", "편집")}>
+              <S.EditButton onClick={onEditClick} aria-label={t("common.edit")}>
                 <Edit size={16} />
               </S.EditButton>
             </div>

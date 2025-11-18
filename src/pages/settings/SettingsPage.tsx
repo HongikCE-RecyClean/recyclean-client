@@ -10,16 +10,17 @@ import * as S from "./SettingsPage.styles";
 import type { LocaleOption } from "./types";
 import { usePermissionRequests } from "./hooks/usePermissionRequests";
 
-// 지원 언어 목록 정의
-const languageOptions: LocaleOption[] = [
-  { value: "ko", label: "한국어" },
-  { value: "en", label: "English" },
-  { value: "es", label: "Español" },
-  { value: "fr", label: "Français" },
-];
-
 export function SettingsPage() {
   const { t } = useTranslation();
+  const languageOptions = useMemo<LocaleOption[]>(
+    () => [
+      { value: "ko", label: t("settings.locale.languages.ko") },
+      { value: "en", label: t("settings.locale.languages.en") },
+      { value: "es", label: t("settings.locale.languages.es") },
+      { value: "fr", label: t("settings.locale.languages.fr") },
+    ],
+    [t],
+  );
   // 사용자 설정 스토어 바인딩
   const {
     notifications,

@@ -20,7 +20,7 @@ export function OnboardingPage() {
     const trimmedName = nickname.trim();
     if (!trimmedName) {
       openAlertDialog({
-        title: t("onboarding.nameRequired", "닉네임을 입력해주세요"),
+        title: t("onboarding.nameRequired"),
         confirmLabel: t("common.confirm"),
         tone: "warning",
       });
@@ -63,7 +63,7 @@ export function OnboardingPage() {
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder={t("onboarding.namePlaceholder", "닉네임 입력")}
+            placeholder={t("onboarding.namePlaceholder")}
             maxLength={20}
             autoFocus
           />

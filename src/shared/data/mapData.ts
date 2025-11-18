@@ -1,0 +1,93 @@
+import type { MapData } from "shared/types/map";
+
+// 개발 환경에서 사용할 기본 지도 시드 데이터
+export const mapSeedData: MapData = {
+  // 수거함 목록 시드
+  bins: [
+    {
+      id: "bin-seoul-gwanghwamun",
+      type: "recycling",
+      name: "광화문 리사이클 스테이션",
+      location: "서울 종로구 세종대로 175",
+      distance: "0.6km",
+      availability: "available",
+      lastUpdated: "2025-11-15T03:00:00.000Z",
+      acceptedItems: ["플라스틱", "유리", "캔"],
+    },
+    {
+      id: "bin-seoul-hongdae",
+      type: "general",
+      name: "홍대입구 스마트 수거함",
+      location: "서울 마포구 양화로 188",
+      distance: "4.1km",
+      availability: "full",
+      lastUpdated: "2025-11-18T00:30:00.000Z",
+      acceptedItems: ["일반쓰레기", "가정용 비닐"],
+    },
+    {
+      id: "bin-seoul-jamsil",
+      type: "electronic",
+      name: "잠실 전자 폐기물함",
+      location: "서울 송파구 올림픽로 300",
+      distance: "8.3km",
+      availability: "maintenance",
+      lastUpdated: "2025-11-17T10:00:00.000Z",
+      acceptedItems: ["소형가전", "배터리"],
+    },
+    {
+      id: "bin-seoul-seongsu",
+      type: "compost",
+      name: "성수 푸드 리사이클",
+      location: "서울 성동구 연무장길 55",
+      distance: "5.2km",
+      availability: "available",
+      lastUpdated: "2025-11-16T12:15:00.000Z",
+      acceptedItems: ["음식물", "커피박"],
+    },
+  ],
+  // 재활용 센터 시드
+  centers: [
+    {
+      id: "center-green-earth",
+      name: "그린어스 자원 순환 센터",
+      address: "서울 용산구 청파로 74",
+      distance: "1.1km",
+      rating: 4.8,
+      hours: "매일 09:00-21:00",
+      phone: "02-123-4567",
+      acceptedMaterials: ["플라스틱", "종이", "금속", "유리"],
+      image: "/icons/icon-512.png",
+    },
+    {
+      id: "center-hangang",
+      name: "한강 업사이클 팩토리",
+      address: "서울 영등포구 여의대로 108",
+      distance: "3.6km",
+      rating: 4.6,
+      hours: "월-토 10:00-19:00",
+      phone: "02-987-6543",
+      acceptedMaterials: ["직물", "목재", "플라스틱"],
+      image: "/icons/icon-512-maskable.png",
+    },
+    {
+      id: "center-ecomap",
+      name: "에코맵 순환 스테이션",
+      address: "서울 강남구 테헤란로 231",
+      distance: "5.9km",
+      rating: 4.4,
+      hours: "화-일 11:00-20:00",
+      phone: "02-555-7777",
+      acceptedMaterials: ["배터리", "전자제품", "유리"],
+      image: "/icons/icon-192.png",
+    },
+  ],
+  // 필터 옵션 시드
+  options: [
+    { value: "plastic", label: "플라스틱" },
+    { value: "paper", label: "종이" },
+    { value: "metal", label: "금속" },
+    { value: "glass", label: "유리" },
+    { value: "electronics", label: "전자제품" },
+    { value: "food", label: "음식물" },
+  ],
+};

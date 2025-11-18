@@ -39,7 +39,7 @@ export function CategoryStatsCard({ categoryStats }: CategoryStatsCardProps) {
                         {t("profile.categories.topCategory")}
                       </Badge>
                     )}
-                    {category.type}
+                    {t(`materials.items.${category.type}`, { defaultValue: category.type })}
                   </S.CategoryStatName>
                 </div>
                 {/* 카테고리 메타 정보 (개수, 포인트) */}

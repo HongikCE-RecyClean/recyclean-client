@@ -93,7 +93,7 @@ export class HttpClient {
     const data = await parseBody<TResponse>(response);
     if (!response.ok) {
       throw new ApiError({
-        message: `API 요청 실패: ${response.status}`,
+        message: `API request failed with status ${response.status}`,
         status: response.status,
         body: data,
         url,

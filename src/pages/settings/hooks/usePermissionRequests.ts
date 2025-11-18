@@ -120,7 +120,7 @@ export function usePermissionRequests() {
       setNotificationStatus(granted ? "granted" : "denied");
       return granted;
     } catch (error) {
-      console.error("알림 권한 요청 실패", error);
+      console.error("Notification permission request failed", error);
       setNotificationStatus("error");
       return false;
     }
@@ -139,7 +139,7 @@ export function usePermissionRequests() {
       setLocationStatus("granted");
       return true;
     } catch (error) {
-      console.error("위치 권한 요청 실패", error);
+      console.error("Location permission request failed", error);
       const positionError = error as GeolocationPositionError | null;
       if (positionError?.code === GEO_PERMISSION_DENIED_CODE) {
         setLocationStatus("denied");

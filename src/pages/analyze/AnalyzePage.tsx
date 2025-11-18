@@ -18,21 +18,21 @@ import {
   matchMaterialType,
   calculatePoints,
   translateCategory,
+  type MaterialCategoryId,
 } from "../../shared/utils/recyclingPoints";
 import { requestAiLabeling, type AiPrediction } from "../../shared/api/analyze";
 import * as S from "./AnalyzePage.styles";
 
 type GuideKey = "plastic" | "paper" | "metal" | "glass" | "textile" | "electronic" | "other";
 
-// 번역된 카테고리명을 가이드 키로 매핑
-const CATEGORY_GUIDE_BY_LABEL: Record<string, GuideKey> = {
-  플라스틱: "plastic",
-  종이: "paper",
-  금속: "metal",
-  유리: "glass",
-  "의류/섬유": "textile",
-  전자제품: "electronic",
-  기타: "other",
+const CATEGORY_GUIDE_BY_ID: Record<MaterialCategoryId, GuideKey> = {
+  plastic: "plastic",
+  paper: "paper",
+  metal: "metal",
+  glass: "glass",
+  textile: "textile",
+  electronic: "electronic",
+  other: "other",
 };
 
 // 재활용 가능 여부 판별용 가이드 집합
@@ -45,9 +45,8 @@ const RECYCLABLE_GUIDE_KEYS = new Set<GuideKey>([
   "electronic",
 ]);
 
-function resolveGuideKey(categoryLabel: string): GuideKey {
-  // 매핑 테이블에 없으면 기타 처리
-  return CATEGORY_GUIDE_BY_LABEL[categoryLabel] ?? "other";
+function resolveGuideKey(categoryId: MaterialCategoryId): GuideKey {
+  return CATEGORY_GUIDE_BY_ID[categoryId] ?? "other";
 }
 
 function formatConfidence(confidence: number): number {
@@ -111,17 +110,21 @@ export function AnalyzePage() {
   // 백엔드 예측값을 화면 표시용 구조로 변환
   const buildRecognitionResult = useCallback(
     (prediction: AiPrediction): RecognitionResult => {
-      const translatedCategory = translateCategory(prediction.category);
-      const guideKey = resolveGuideKey(translatedCategory);
-      const item = t(`analyze.guides.${guideKey}.item`, { defaultValue: translatedCategory });
+      const categoryId = translateCategory(prediction.category);
+      const guideKey = resolveGuideKey(categoryId);
+      const categoryLabel = t(`materials.categories.${categoryId}`);
+      const item = t(`analyze.guides.${guideKey}.item`, { defaultValue: categoryLabel });
       const instructions = t(`analyze.guides.${guideKey}.instructions`, {
         defaultValue: t("analyze.result.defaultInstructions"),
       });
       const rawTips = t(`analyze.guides.${guideKey}.tips`, { defaultValue: "" });
+      const materialId = matchMaterialType(prediction.category, categoryId);
 
       return {
         item,
-        category: translatedCategory,
+        materialId,
+        categoryId,
+        category: categoryLabel,
         confidence: formatConfidence(prediction.confidence),
         recyclable: RECYCLABLE_GUIDE_KEYS.has(guideKey),
         instructions,
@@ -247,13 +250,12 @@ export function AnalyzePage() {
     }
 
     // 분석 결과를 RecyclingEntry 형식으로 변환
-    const materialType = matchMaterialType(result.item, result.category);
     const amount = 1; // 기본 수량 1개
-    const points = calculatePoints(materialType, amount);
+    const points = calculatePoints(result.materialId, amount);
 
     // activityStore에 추가
     addEntry({
-      type: materialType,
+      type: result.materialId,
       amount,
       date: new Date(),
       points,

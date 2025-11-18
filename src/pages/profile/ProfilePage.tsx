@@ -84,15 +84,15 @@ export function ProfilePage() {
       <BottomSheet
         isOpen={isEditProfileOpen}
         onClose={handleCloseEditProfile}
-        title={t("settings.support.editProfile", "프로필 편집")}
+        title={t("settings.support.editProfile")}
       >
         <S.EditProfileContent>
-          <S.EditProfileLabel>{t("settings.profile.nickname", "닉네임")}</S.EditProfileLabel>
+          <S.EditProfileLabel>{t("settings.profile.nickname")}</S.EditProfileLabel>
           <TextField
             type="text"
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
-            placeholder={t("onboarding.namePlaceholder", "닉네임 입력")}
+            placeholder={t("onboarding.namePlaceholder")}
             maxLength={20}
           />
           <Button
@@ -100,7 +100,7 @@ export function ProfilePage() {
             onClick={handleSaveProfile}
             disabled={!newName.trim() || newName.trim() === name}
           >
-            {t("common.save", "저장")}
+            {t("common.save")}
           </Button>
         </S.EditProfileContent>
       </BottomSheet>

@@ -27,7 +27,9 @@ export function CalendarLegendCard({ items }: CalendarLegendCardProps) {
               <S.LegendItem key={item.type}>
                 {/* 품목 배지를 좌측 정렬 */}
                 <S.LegendLabel>
-                  <Badge tone={item.tone}>{item.type}</Badge>
+                  <Badge tone={item.tone}>
+                    {t(`materials.items.${item.type}`, { defaultValue: item.type })}
+                  </Badge>
                 </S.LegendLabel>
                 {/* 수량과 포인트를 우측 정렬 */}
                 <div css={S.legendStatsColumn}>

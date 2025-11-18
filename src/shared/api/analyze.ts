@@ -39,7 +39,7 @@ export async function requestAiLabeling(file: Blob, signal?: AbortSignal): Promi
   });
 
   if (!response.ok) {
-    throw new Error(`AI 분석 요청 실패: ${response.status}`);
+    throw new Error(`AI labeling request failed with status ${response.status}`);
   }
 
   const payload = (await response.json()) as AiLabelingResponse;

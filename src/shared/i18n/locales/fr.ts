@@ -277,6 +277,25 @@ export const frTranslation = {
     },
   },
   map: {
+    mapView: {
+      title: "Voir les emplacements sur la carte",
+      subtitle: "Nous afficherons {{count}} points de dépôt proches sur la carte.",
+      loading: "Chargement de la carte...",
+      missingKey: {
+        title: "Clé d'API de carte manquante",
+        description:
+          "Ajoutez la clé NAVER Web Dynamic Map dans la console puis rechargez pour afficher la carte.",
+      },
+      loadFailed: {
+        title: "Impossible de charger la carte",
+        description: "Vérifiez la connexion réseau et la liste des domaines autorisés.",
+      },
+      initFailed: {
+        title: "Le moteur de carte n'a pas pu s'initialiser",
+        description:
+          "Assurez-vous que ce domaine figure dans la liste blanche et dans les autorisations de l'API.",
+      },
+    },
     filter: {
       title: "Points de dépôt à proximité",
       useLocation: "Utiliser ma position",

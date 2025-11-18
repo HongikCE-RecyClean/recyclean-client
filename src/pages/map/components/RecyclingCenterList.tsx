@@ -6,7 +6,7 @@ import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
 import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
 import { SelectField } from "shared/ui/SelectField/SelectField";
-import { mapAvailabilityTone, mapMaterialColors } from "shared/constants/mapVisuals";
+import { mapAvailabilityTone, resolveMaterialBadgeTone } from "shared/constants/mapVisuals";
 import type { RecyclingCenter, TrashBin, FilterOption } from "shared/types/map";
 import * as S from "./RecyclingCenterList.styles";
 
@@ -83,11 +83,7 @@ export function RecyclingCenterList({
                     <S.SectionHint>{t("map.bins.sectionLabel")}</S.SectionHint>
                     <S.ItemsChips>
                       {bin.acceptedItems.map((item) => (
-                        <Badge
-                          key={item}
-                          variant="soft"
-                          tone={mapMaterialColors[item] ?? "neutral"}
-                        >
+                        <Badge key={item} variant="soft" tone={resolveMaterialBadgeTone(item)}>
                           {item}
                         </Badge>
                       ))}
@@ -133,7 +129,7 @@ export function RecyclingCenterList({
 
                 <S.MaterialChips>
                   {center.acceptedMaterials.map((material) => (
-                    <Badge key={material} tone={mapMaterialColors[material] ?? "neutral"}>
+                    <Badge key={material} tone={resolveMaterialBadgeTone(material)}>
                       {material}
                     </Badge>
                   ))}

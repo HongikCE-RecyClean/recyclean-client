@@ -2,14 +2,15 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 // 바텀시트 오버레이 배경
-export const Overlay = styled.div<{ isOpen: boolean }>`
+export const Overlay = styled.div<{ isOpen: boolean; $interactive: boolean }>`
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 9998;
   transition: opacity 0.3s ease-in-out;
   opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-  pointer-events: ${({ isOpen }) => (isOpen ? "auto" : "none")};
+  pointer-events: ${({ isOpen, $interactive }) =>
+    isOpen && $interactive ? "auto" : "none"}; /* 초기 클릭 흡수를 방지 */
 `;
 
 // 바텀시트 컨테이너

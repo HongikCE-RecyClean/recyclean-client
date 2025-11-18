@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
 import type { NotificationType, SnackbarAction } from "../../types/notifications";
 import * as S from "./Snackbar.styles";
@@ -20,6 +21,7 @@ const iconMap = {
 };
 
 export function Snackbar({ type, message, duration = 4000, action, onClose }: SnackbarProps) {
+  const { t } = useTranslation();
   const Icon = iconMap[type];
 
   // 자동 닫기 타이머
@@ -50,7 +52,7 @@ export function Snackbar({ type, message, duration = 4000, action, onClose }: Sn
         </S.ActionButton>
       )}
 
-      <S.CloseButton onClick={onClose} aria-label="닫기">
+      <S.CloseButton onClick={onClose} aria-label={t("notifications.actions.close")}>
         <X size={18} />
       </S.CloseButton>
     </S.SnackbarContainer>

@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type ReactNode, type TransitionEvent } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode, type TransitionEvent } from "react";
 import { useTheme } from "@emotion/react";
 import * as S from "./BottomSheet.styles";
 import { useBottomSheetStore } from "../../state/bottomSheetStore";
@@ -22,6 +22,10 @@ export function BottomSheet({ isOpen, onClose, onAfterClose, title, children }: 
   const registerSheet = useBottomSheetStore((state) => state.registerSheet);
   const unregisterSheet = useBottomSheetStore((state) => state.unregisterSheet);
   const isRegisteredRef = useRef(false);
+  const [isOverlayInteractive, setOverlayInteractive] = useState(false);
+  const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const afterCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wasPreviouslyOpenRef = useRef(isOpen);
 
   // 전역 시트 상태 등록
   useEffect(() => {
@@ -43,6 +47,57 @@ export function BottomSheet({ isOpen, onClose, onAfterClose, title, children }: 
     };
   }, [isOpen, registerSheet, unregisterSheet, sheetId]);
 
+  // 오버레이 클릭 가능 시점을 지연해 초기 클릭을 무시
+  useEffect(() => {
+    if (overlayTimerRef.current) {
+      clearTimeout(overlayTimerRef.current);
+      overlayTimerRef.current = null;
+    }
+
+    if (isOpen) {
+      setOverlayInteractive(false);
+      overlayTimerRef.current = setTimeout(() => {
+        setOverlayInteractive(true);
+      }, 200);
+    } else {
+      setOverlayInteractive(false);
+    }
+
+    return () => {
+      if (overlayTimerRef.current) {
+        clearTimeout(overlayTimerRef.current);
+        overlayTimerRef.current = null;
+      }
+    };
+  }, [isOpen]);
+
+  // 애니메이션 미완료 시에도 onAfterClose를 보장
+  useEffect(() => {
+    if (!isOpen && wasPreviouslyOpenRef.current) {
+      if (afterCloseTimeoutRef.current) {
+        clearTimeout(afterCloseTimeoutRef.current);
+      }
+      afterCloseTimeoutRef.current = setTimeout(() => {
+        onAfterClose?.();
+        afterCloseTimeoutRef.current = null;
+      }, 350);
+    }
+
+    if (isOpen && afterCloseTimeoutRef.current) {
+      clearTimeout(afterCloseTimeoutRef.current);
+      afterCloseTimeoutRef.current = null;
+    }
+
+    wasPreviouslyOpenRef.current = isOpen;
+
+    return () => {
+      if (afterCloseTimeoutRef.current) {
+        clearTimeout(afterCloseTimeoutRef.current);
+        afterCloseTimeoutRef.current = null;
+      }
+    };
+  }, [isOpen, onAfterClose]);
+
   const handleTransitionEnd = (event: TransitionEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) {
       return;
@@ -51,6 +106,10 @@ export function BottomSheet({ isOpen, onClose, onAfterClose, title, children }: 
       return;
     }
     if (!isOpen) {
+      if (afterCloseTimeoutRef.current) {
+        clearTimeout(afterCloseTimeoutRef.current);
+        afterCloseTimeoutRef.current = null;
+      }
       onAfterClose?.();
     }
   };
@@ -83,7 +142,7 @@ export function BottomSheet({ isOpen, onClose, onAfterClose, title, children }: 
   return (
     <>
       {/* 오버레이 배경 */}
-      <S.Overlay isOpen={isOpen} onClick={onClose} />
+      <S.Overlay isOpen={isOpen} $interactive={isOverlayInteractive} onClick={onClose} />
 
       {/* 바텀시트 컨테이너 */}
       <S.Container

@@ -26,19 +26,32 @@ export const mapAvailabilityTone: Record<TrashBinAvailability, "success" | "dang
 };
 
 // 재료 배지 색상 매핑
-export const mapMaterialColors: Record<string, BadgeTone> = {
-  "플라스틱(Plastic)": "info",
-  "유리(Glass)": "success",
-  "금속(Metal)": "danger",
-  "종이(Paper)": "warning",
-  "전자제품(Electronics)": "danger",
-  "골판지(Cardboard)": "warning",
-  "음식물 쓰레기(Food Waste)": "success",
-  "텃밭 부산물(Garden Waste)": "success",
-  "종이타월(Paper Towels)": "warning",
-  "일반폐기물(General Waste)": "neutral",
-  "캔(Cans)": "info",
-  "배터리(Batteries)": "danger",
-  "휴대전화(Phone)": "danger",
-  "케이블(Cables)": "info",
+const MATERIAL_COLOR_MAP: Record<string, BadgeTone> = {
+  plastic: "info",
+  glass: "success",
+  metal: "danger",
+  paper: "warning",
+  electronics: "danger",
+  cardboard: "warning",
+  foodwaste: "success",
+  gardenwaste: "success",
+  papertowels: "warning",
+  generalwaste: "neutral",
+  cans: "info",
+  batteries: "danger",
+  phone: "danger",
+  cables: "info",
 };
+
+function normalizeMaterialLabel(label: string): string {
+  const asciiTokens = label.toLowerCase().match(/[a-z]+/g);
+  if (asciiTokens && asciiTokens.length > 0) {
+    return asciiTokens.join("");
+  }
+  return label.toLowerCase().trim();
+}
+
+export function resolveMaterialBadgeTone(label: string): BadgeTone {
+  const normalized = normalizeMaterialLabel(label);
+  return MATERIAL_COLOR_MAP[normalized] ?? "neutral";
+}

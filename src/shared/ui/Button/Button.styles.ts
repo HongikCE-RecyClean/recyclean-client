@@ -45,6 +45,17 @@ const variantStyles: Record<ButtonVariant, VariantStyle> = {
       backgroundColor: "#b91c1c",
     },
   }),
+  text: (theme) => ({
+    backgroundColor: "transparent",
+    color: theme.colors.primary,
+    boxShadow: "none",
+    borderRadius: 0,
+    "&:hover": {
+      backgroundColor: "transparent",
+      color: theme.colors.primary,
+      textDecoration: "underline",
+    },
+  }),
 };
 
 // 버튼 사이즈 변형 정의
@@ -77,6 +88,17 @@ const sizeStyles: Record<ButtonSize, SizeStyle> = {
   }),
 };
 
+// 텍스트 변형 공통 오버라이드 정의
+const textVariantOverrides = (theme: AppTheme): CSSObject => ({
+  height: "auto",
+  minHeight: "unset",
+  paddingInline: 0,
+  paddingBlock: 0,
+  borderRadius: 0,
+  boxShadow: "none",
+  gap: theme.spacing(1),
+});
+
 // 버튼 기본 스타일 정의
 export const StyledButton = styled.button<{ $variant: ButtonVariant; $size: ButtonSize }>(
   ({ theme, $variant, $size }) => ({
@@ -96,13 +118,16 @@ export const StyledButton = styled.button<{ $variant: ButtonVariant; $size: Butt
     letterSpacing: "0.01em",
     ...variantStyles[$variant](theme),
     ...sizeStyles[$size](theme),
+    ...($variant === "text" ? textVariantOverrides(theme) : {}),
     ":disabled": {
       opacity: 0.55,
       cursor: "not-allowed",
       boxShadow: "none",
+      color: $variant === "text" ? theme.colors.textMuted : undefined,
     },
     ":focus-visible": {
-      boxShadow: "0 0 0 4px rgba(34, 197, 94, 0.35)",
+      boxShadow: $variant === "text" ? "none" : "0 0 0 4px rgba(34, 197, 94, 0.35)",
+      textDecoration: $variant === "text" ? "underline" : undefined,
     },
   }),
 );

@@ -46,9 +46,9 @@ export function SettingsSupportActionsCard() {
   // 데이터 초기화 클릭
   const handleResetData = async () => {
     const confirmed = await openConfirmDialog({
-      title: t("settings.support.resetConfirm", "모든 데이터가 삭제됩니다. 계속하시겠습니까?"),
+      title: t("settings.support.resetConfirm"),
       tone: "warning",
-      confirmLabel: t("settings.support.resetData", "데이터 초기화"),
+      confirmLabel: t("settings.support.resetData"),
       cancelLabel: t("common.cancel"),
     });
 
@@ -86,7 +86,7 @@ export function SettingsSupportActionsCard() {
             </Button>
             <Button variant="destructive" css={S.actionButtonAlignStart} onClick={handleResetData}>
               <Trash2 size={16} />
-              {t("settings.support.resetData", "데이터 초기화")}
+              {t("settings.support.resetData")}
             </Button>
           </S.ActionList>
         </CardContent>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MapPin, Navigation } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "shared/ui/Card/Card";
@@ -18,17 +18,26 @@ export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) 
   const mapElementRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
   const { status, error, maps } = useNaverMapsLoader();
+  const [mapInitError, setMapInitError] = useState<string | null>(null); // 지도 초기화 오류 상태 보관
 
   useEffect(() => {
     if (status !== "success" || !maps || !mapElementRef.current) return;
 
-    const center = new maps.LatLng(DEFAULT_CENTER.lat, DEFAULT_CENTER.lng);
-    const mapInstance = new maps.Map(mapElementRef.current, {
-      center,
-      zoom: DEFAULT_ZOOM,
-    });
+    try {
+      // SDK 로딩 완료 후 실제 지도를 생성
+      setMapInitError(null);
+      const center = new maps.LatLng(DEFAULT_CENTER.lat, DEFAULT_CENTER.lng);
+      const mapInstance = new maps.Map(mapElementRef.current, {
+        center,
+        zoom: DEFAULT_ZOOM,
+      });
 
-    mapInstanceRef.current = mapInstance;
+      mapInstanceRef.current = mapInstance;
+    } catch (initializationError) {
+      console.error("NAVER 지도 초기화 실패", initializationError);
+      setMapInitError("init-failed");
+      return;
+    }
 
     return () => {
       const isNaverReady = Boolean(window?.naver?.maps?.Event);
@@ -42,7 +51,7 @@ export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) 
       try {
         activeMap.destroy();
       } catch (cleanupError) {
-        console.warn("네이버 지도 정리 중 오류", cleanupError);
+        console.warn("NAVER 지도 정리 중 오류", cleanupError);
       } finally {
         mapInstanceRef.current = null;
       }
@@ -57,8 +66,8 @@ export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) 
           <S.HeaderRow>
             <MapPin size={20} />
             <S.HeaderTexts>
-              <S.HeaderTitle>지도에서 위치 확인</S.HeaderTitle>
-              <S.HeaderSubtitle>근처 {binCount}개의 배출함을 지도에 표시해요.</S.HeaderSubtitle>
+              <S.HeaderTitle>{t("map.mapView.title")}</S.HeaderTitle>
+              <S.HeaderSubtitle>{t("map.mapView.subtitle", { count: binCount })}</S.HeaderSubtitle>
             </S.HeaderTexts>
           </S.HeaderRow>
           <S.LocationButton variant="outline" onClick={onUseLocationClick}>
@@ -67,23 +76,28 @@ export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) 
           </S.LocationButton>
         </S.HeaderSection>
 
-        {status === "success" ? (
+        {status === "success" && !mapInitError ? (
           <S.MapWrapper>
             <S.MapCanvas ref={mapElementRef} />
           </S.MapWrapper>
         ) : (
           <S.MapFallback>
             {status === "loading" || status === "idle" ? (
-              <div>지도를 불러오는 중이에요...</div>
+              <div>{t("map.mapView.loading")}</div>
             ) : error === "missing-key" ? (
               <>
-                <div>API 키가 설정되면 실제 지도를 표시해요.</div>
-                <div>콘솔에서 Web Dynamic Map 키를 등록했는지 확인해주세요.</div>
+                <div>{t("map.mapView.missingKey.title")}</div>
+                <div>{t("map.mapView.missingKey.description")}</div>
+              </>
+            ) : mapInitError ? (
+              <>
+                <div>{t("map.mapView.initFailed.title")}</div>
+                <div>{t("map.mapView.initFailed.description")}</div>
               </>
             ) : (
               <>
-                <div>지도를 불러오지 못했어요.</div>
-                <div>도메인 등록과 네트워크 상태를 확인해주세요.</div>
+                <div>{t("map.mapView.loadFailed.title")}</div>
+                <div>{t("map.mapView.loadFailed.description")}</div>
               </>
             )}
           </S.MapFallback>

@@ -277,6 +277,25 @@ export const esTranslation = {
     },
   },
   map: {
+    mapView: {
+      title: "Ver ubicaciones en el mapa",
+      subtitle: "Mostramos {{count}} contenedores cercanos en el mapa.",
+      loading: "Cargando el mapa...",
+      missingKey: {
+        title: "Falta la clave de la API del mapa",
+        description:
+          "Agrega la clave Web Dynamic Map de NAVER en la consola y vuelve a cargar para ver el mapa.",
+      },
+      loadFailed: {
+        title: "No pudimos cargar el mapa",
+        description: "Comprueba la conexión de red y la lista de dominios autorizados.",
+      },
+      initFailed: {
+        title: "El motor del mapa no se inicializó",
+        description:
+          "Verifica que este origen esté incluido en los permisos y la lista de dominios de la API.",
+      },
+    },
     filter: {
       title: "Contenedores cercanos",
       useLocation: "Usar mi ubicación",
@@ -388,6 +407,8 @@ export const esTranslation = {
       helpCenter: "Centro de ayuda",
       about: "Acerca de la app",
       logout: "Cerrar sesión",
+      resetConfirm: "Todos los datos almacenados localmente se eliminarán. ¿Continuar?",
+      resetData: "Restablecer datos",
     },
   },
   profile: {

@@ -18,6 +18,8 @@ export const koTranslation = {
     description: "일상의 작은 환경 실천을 기록하고,\\n주변 수거함을 쉽게 찾아보세요.",
     cta: "시작하기",
     hint: "지금 바로 {{appName}}과 함께 환경 실천을 시작해요.",
+    nameRequired: "닉네임을 입력해주세요.",
+    namePlaceholder: "닉네임 입력",
   },
   dashboard: {
     welcome: {
@@ -119,6 +121,56 @@ export const koTranslation = {
       date: "날짜",
       time: "시간",
       pointsPreview: "예상 포인트: +{{points}}pt",
+    },
+    materials: {
+      plasticPetBottle: {
+        name: "투명 PET병 (생수, 음료)",
+        instructions:
+          "내용물을 비우고 물로 헹군 뒤 라벨과 뚜껑을 분리해 병을 눌러 압축한 후 투명 페트 전용 수거함에 넣어요.",
+        tips: "유색 병은 일반 플라스틱류로 분류되고, 무라벨·압축 상태가 고품질 재생원료 확보에 도움이 돼요.",
+      },
+      plasticTakeoutContainer: {
+        name: "기름 묻은 배달용 플라스틱 용기",
+        instructions:
+          "마요네즈나 기름 소스처럼 세척이 어려운 오염이 남아 있으면 재활용이 거부되니 깨끗이 닦을 수 없을 때는 종량제 봉투로 배출해요.",
+        tips: "완전히 씻고 말린 용기만 플라스틱류로 전환할 수 있어요.",
+      },
+      paperCarton: {
+        name: "우유·주스 종이팩",
+        instructions:
+          "내용물을 비우고 물로 헹군 뒤 펼쳐서 말리고, 스티커·빨대 등 이물질을 제거한 후 묶어 배출해요.",
+        tips: "코팅이 남아 있어도 깨끗하면 종이팩 전용 수거함이나 보증금 회수 캠페인에 참여할 수 있어요.",
+      },
+      greasyPizzaBox: {
+        name: "기름 스며든 피자박스",
+        instructions:
+          "기름이나 음식물이 종이에 스며들면 다른 종이를 오염시키므로 소량은 종량제 봉투, 다량은 특수규격 마대로 처리해요.",
+        tips: "깨끗한 부분과 오염된 부분을 분리해 깨끗한 면만 종이류로 보내면 재활용 효율이 올라요.",
+      },
+      aluminumCan: {
+        name: "알루미늄 음료 캔",
+        instructions:
+          "내용물을 비우고 물로 헹궈 이물질을 제거한 뒤 담배꽁초 등 이물 없이 배출하고, 플라스틱 뚜껑은 분리해요.",
+        tips: "캔 입구를 눌러 찌그러뜨리면 수거 효율과 적재 안정성이 좋아져요.",
+      },
+      butaneCan: {
+        name: "잔여 가스가 남은 부탄캔",
+        instructions:
+          "내용물이 남아 있으면 폭발 위험으로 재활용 수거가 불가하니 바람 통하는 곳에서 노즐을 눌러 완전히 비운 뒤 특수규격 마대에 넣어요.",
+        tips: "구멍을 뚫고 잔여 가스를 완전히 뺀 뒤 스티커를 제거하면 금속류로 전환할 수 있어요.",
+      },
+      glassBottle: {
+        name: "소주·맥주 유리병",
+        instructions:
+          "뚜껑과 라벨을 떼고 내용물을 헹군 뒤 깨지지 않도록 분리배출하거나 빈용기 보증금 회수처에 반납해요.",
+        tips: "보증금 대상 병은 소매점에 반납하면 환급받을 수 있어요.",
+      },
+      heatResistantGlass: {
+        name: "내열 유리 조리용기",
+        instructions:
+          "강화·내열·크리스탈 유리는 일반 유리와 융점이 달라 재활용 설비가 받지 않으므로 신문지에 싸서 종량제 봉투나 특수규격 마대로 버려요.",
+        tips: "깨진 파편은 별도 표시 후 배출해 수거 작업자의 안전을 지켜요.",
+      },
     },
   },
   analyze: {
@@ -264,6 +316,23 @@ export const koTranslation = {
     },
   },
   map: {
+    mapView: {
+      title: "지도에서 위치 확인",
+      subtitle: "근처 {{count}}개의 배출함을 지도에 표시해요.",
+      loading: "지도를 불러오는 중이에요...",
+      missingKey: {
+        title: "지도 API 키가 필요해요",
+        description: "NAVER Web Dynamic Map 키를 콘솔에 등록한 뒤 새로고침해주세요.",
+      },
+      loadFailed: {
+        title: "지도를 불러오지 못했어요",
+        description: "도메인 등록과 네트워크 연결을 확인한 뒤 다시 시도해주세요.",
+      },
+      initFailed: {
+        title: "지도 엔진 초기화에 실패했어요",
+        description: "허용 도메인과 API 권한에 현재 주소가 포함되어 있는지 점검해주세요.",
+      },
+    },
     filter: {
       title: "내 주변 배출함",
       useLocation: "내 위치 사용하기",
@@ -310,6 +379,7 @@ export const koTranslation = {
       joined: "가입일 {{date}}",
       points: "{{points}} pts",
       streak: "{{days}}일 연속",
+      nickname: "닉네임",
     },
     impact: {
       title: "나의 영향력",
