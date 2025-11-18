@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import type { ChangeEvent } from "react";
 import { MapFilterCard } from "./components/MapFilterCard";
-import { MapPlaceholderCard } from "./components/MapPlaceholderCard";
+import { MapViewCard } from "./components/MapViewCard";
 import { TrashBinList } from "./components/TrashBinList";
 import { RecyclingCenterList } from "./components/RecyclingCenterList";
 import { useMapData } from "shared/api/map";
@@ -34,7 +34,7 @@ export function MapPage() {
         options={options}
         onTypeChange={handleTypeChange}
       />
-      <MapPlaceholderCard binCount={filteredBins.length} />
+      <MapViewCard binCount={filteredBins.length} />
       <TrashBinList bins={filteredBins} />
       <RecyclingCenterList centers={centers} />
     </S.PageContainer>
