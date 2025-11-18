@@ -38,7 +38,7 @@ export const koTranslation = {
       goal: "목표 {{goal}}pt",
       percent: "{{percent}}% 달성",
       highlight: "목표를 달성했어요!",
-      logAction: "활동 기록하기",
+      logAction: "활동 추가하기",
       stats: {
         entries: "활동 건수",
         items: "처리 아이템",
@@ -537,6 +537,11 @@ export const koTranslation = {
       entrySaved: "활동이 기록되었어요! +{{points}}pt 획득",
       entryDeleted: "활동 기록이 삭제되었어요",
       entryRestored: "기록이 복구되었어요",
+      profileUpdated: "프로필 이름이 업데이트되었어요",
+      languageChanged: "언어가 {{language}}로 변경되었어요",
+      regionChanged: "지역이 {{region}}로 업데이트되었어요",
+      darkModeEnabled: "다크 모드를 켰어요",
+      darkModeDisabled: "라이트 모드를 켰어요",
     },
   },
   common: {

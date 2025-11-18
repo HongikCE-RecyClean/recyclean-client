@@ -38,7 +38,7 @@ export const enTranslation = {
       goal: "Goal {{goal}}pt",
       percent: "{{percent}}% complete",
       highlight: "Goal achieved!",
-      logAction: "Log activity",
+      logAction: "Add activity",
       stats: {
         entries: "Entries",
         items: "Items",
@@ -539,6 +539,11 @@ export const enTranslation = {
       entrySaved: "Activity saved! +{{points}}pt earned",
       entryDeleted: "Activity entry deleted",
       entryRestored: "Entry restored",
+      profileUpdated: "Profile name updated",
+      languageChanged: "Language switched to {{language}}",
+      regionChanged: "Region set to {{region}}",
+      darkModeEnabled: "Dark mode enabled",
+      darkModeDisabled: "Light mode enabled",
     },
   },
   common: {

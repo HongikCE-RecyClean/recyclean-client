@@ -39,7 +39,7 @@ export const esTranslation = {
       goal: "Meta {{goal}}pt",
       percent: "{{percent}}% completado",
       highlight: "¡Meta alcanzada!",
-      logAction: "Registrar actividad",
+      logAction: "Agregar actividad",
       stats: {
         entries: "Registros",
         items: "Artículos",

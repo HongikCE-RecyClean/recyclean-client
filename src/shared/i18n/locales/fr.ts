@@ -39,7 +39,7 @@ export const frTranslation = {
       goal: "Objectif {{goal}}pt",
       percent: "{{percent}} % réalisés",
       highlight: "Objectif atteint !",
-      logAction: "Enregistrer une activité",
+      logAction: "Ajouter une activité",
       stats: {
         entries: "Enregistrements",
         items: "Objets",
