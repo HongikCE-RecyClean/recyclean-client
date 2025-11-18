@@ -539,26 +539,25 @@ The app provides a dual notification system for different types of user feedback
 
 ### Architecture Overview
 
-**State Management**: `useNotificationStore` (zustand, non-persistent)
+**State Management**: `useNotificationStore` (zustand, non-persistent) + `overlay-kit`
 
 - **Location**: `src/shared/state/notificationStore.ts`
 - **Scope**: Global, session-only (notifications are ephemeral)
 - **Store Structure**:
   ```typescript
   {
-    banner: BannerState | null,           // Single banner (replaces previous)
-    snackbars: SnackbarState[],          // Queue of snackbars (FIFO)
+    banner: BannerState | null,        // Single banner (replaces previous)
     showBanner: (banner) => void,
     closeBanner: () => void,
-    showSnackbar: (message, options?) => void,
-    closeSnackbar: (id) => void,
+    showSnackbar: (message, options?) => void, // Delegates to overlay-kit
   }
   ```
+- **Overlay Runtime**: `OverlayProvider` wraps the entire app in `AppProviders`, enabling `overlay.open` to render toast overlays at the document body level regardless of route or layout nesting.
 
 **Global Rendering**:
 
 - **BannerContainer**: Rendered in `AppShell` (below Header)
-- **SnackbarContainer**: Rendered in `AppProviders` (above BottomNav)
+- **SnackbarOverlay**: Rendered per toast through Toss `overlay-kit`, automatically stacked above BottomSheet/BottomNav without a dedicated container component.
 
 ### Banner (상단 알림)
 
@@ -617,7 +616,7 @@ closeBanner();
 
 **Purpose**: Temporary feedback for user actions
 
-**Location**: Bottom center, above BottomNav, stacked vertically (newest on top)
+**Location**: Bottom center (safe-area aware). When a BottomSheet is open, Snackbars automatically move to the top-safe-area position to avoid overlap. Rendering is handled by Toss `overlay-kit`, so each toast is a top-level overlay independent of the page DOM.
 
 **Design**:
 
@@ -668,6 +667,32 @@ showSnackbar("삭제되었어요", {
 
 - `AddEntryBottomSheet.tsx:67-70` - Success message after saving activity
 - `CalendarPage.tsx:155-181` - Delete with undo action
+
+### Overlay Dialogs (Alert & Confirm)
+
+- **Location**: `src/shared/ui/AlertDialog/AlertDialog.tsx`
+- **API**:
+
+  ```typescript
+  import { openAlertDialog, openConfirmDialog } from "shared/ui/AlertDialog";
+
+  openAlertDialog({
+    title: t("onboarding.nameRequired"),
+    tone: "warning",
+    confirmLabel: t("common.confirm"),
+  });
+
+  const confirmed = await openConfirmDialog({
+    title: t("settings.support.resetConfirm"),
+    description: t("settings.support.resetHint"),
+    tone: "warning",
+    confirmLabel: t("common.confirm"),
+    cancelLabel: t("common.cancel"),
+  });
+  ```
+
+- **Behavior**: Safe-area-aware overlay, backdrop click dismiss, tone-colored icon, shared Button components, auto unmount after 220ms animation.
+- **Use Cases**: Replace all `alert` / `window.confirm` usages; maintain consistent design for destructive or blocking flows.
 
 ### Design Tokens
 
@@ -724,22 +749,25 @@ showSnackbar("삭제되었어요", {
 ```
 src/shared/
 ├── state/
-│   └── notificationStore.ts          # Zustand store (session-only)
+│   └── notificationStore.ts          # Zustand store (session-only) + overlay-kit call sites
 ├── ui/
 │   ├── Banner/
 │   │   ├── Banner.tsx                # Banner component (emoji-based)
 │   │   ├── Banner.styles.ts          # Card-style design
 │   │   ├── BannerContainer.tsx       # Global renderer
 │   │   └── index.ts
-│   └── Snackbar/
-│       ├── Snackbar.tsx              # Snackbar component
-│       ├── Snackbar.styles.ts        # Type-specific backgrounds
-│       ├── SnackbarContainer.tsx     # Queue renderer
+│   ├── Snackbar/
+│   │   ├── Snackbar.tsx              # Snackbar component
+│   │   ├── Snackbar.styles.ts        # Type-specific backgrounds
+│   │   ├── SnackbarOverlay.tsx       # overlay-kit wrapper (safe-area aware)
+│   │   └── index.ts
+│   └── AlertDialog/
+│       ├── AlertDialog.tsx           # overlay-kit alert/confirm dialog
 │       └── index.ts
 ├── layout/AppShell/
 │   └── AppShell.tsx                  # Integrates BannerContainer
 └── providers/
-    └── AppProviders.tsx              # Integrates SnackbarContainer
+    └── AppProviders.tsx              # Wraps OverlayProvider + global context
 ```
 
 ### Future Enhancements

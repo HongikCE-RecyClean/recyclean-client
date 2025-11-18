@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import type { AppTheme } from "../../styles/theme";
-import type { NotificationType } from "../../state/notificationStore";
+import type { NotificationType } from "../../types/notifications";
 
 // 슬라이드업 애니메이션
 const slideUp = keyframes`
