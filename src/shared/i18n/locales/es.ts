@@ -252,10 +252,24 @@ export const esTranslation = {
       title: "Preferencias de la app",
       notifications: {
         title: "Notificaciones",
+        status: {
+          requesting: "Solicitando permiso al navegador…",
+          granted: "Las notificaciones están permitidas.",
+          denied: "El navegador bloqueó las notificaciones.",
+          unsupported: "Este navegador no admite notificaciones del sistema.",
+          error: "Ocurrió un error al solicitar el permiso.",
+        },
         description: "Enviar recordatorios de reciclaje",
       },
       location: {
         title: "Servicios de ubicación",
+        status: {
+          requesting: "Solicitando acceso a tu ubicación…",
+          granted: "El acceso a la ubicación está permitido.",
+          denied: "El acceso a la ubicación está bloqueado.",
+          unsupported: "Este dispositivo no puede compartir la ubicación.",
+          error: "Ocurrió un error al solicitar la ubicación.",
+        },
         description: "Encontrar contenedores cercanos",
       },
       darkMode: {

@@ -26,8 +26,8 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     (set) => ({
-      notifications: true,
-      location: true,
+      notifications: false, // 권한 허용 전 기본 비활성
+      location: false, // 위치 권한 기본 비활성
       darkMode: false,
       sounds: true,
       language: DEFAULT_LANGUAGE,

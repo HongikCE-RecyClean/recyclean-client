@@ -8,6 +8,6 @@ interface UserState {
 
 // 사용자 이름 기본값과 갱신 함수 제공
 export const useUserStore = create<UserState>((set) => ({
-  name: "사용자",
+  name: "",
   setName: (value) => set({ name: value }),
 }));

@@ -5,13 +5,18 @@ import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Separator } from "../../../shared/ui/Separator/Separator";
 import { Switch } from "../../../shared/ui/Switch/Switch";
 import * as S from "../SettingsPage.styles";
+import type { PermissionRequestStatus } from "../hooks/usePermissionRequests";
 
 // 앱 기본 설정 토글 카드 정의
 interface SettingsAppPreferencesCardProps {
   notifications: boolean;
   onNotificationsChange: (checked: boolean) => void;
+  notificationsSupported: boolean;
+  notificationStatus: PermissionRequestStatus;
   location: boolean;
   onLocationChange: (checked: boolean) => void;
+  locationSupported: boolean;
+  locationStatus: PermissionRequestStatus;
   darkMode: boolean;
   onDarkModeChange: (checked: boolean) => void;
   sounds: boolean;
@@ -21,8 +26,12 @@ interface SettingsAppPreferencesCardProps {
 export function SettingsAppPreferencesCard({
   notifications,
   onNotificationsChange,
+  notificationsSupported,
+  notificationStatus,
   location,
   onLocationChange,
+  locationSupported,
+  locationStatus,
   darkMode,
   onDarkModeChange,
   sounds,
@@ -31,6 +40,20 @@ export function SettingsAppPreferencesCard({
   // 테마 객체 가져오기
   const theme = useTheme();
   const { t } = useTranslation();
+
+  const statusVariantMap: Record<PermissionRequestStatus, "success" | "info" | "warning"> = {
+    idle: "info",
+    requesting: "info",
+    granted: "success",
+    denied: "warning",
+    unsupported: "warning",
+    error: "warning",
+  };
+
+  const renderNotificationStatus = notificationStatus !== "idle";
+  const renderLocationStatus = locationStatus !== "idle";
+  const notificationDisabled = !notificationsSupported || notificationStatus === "requesting";
+  const locationDisabled = !locationSupported || locationStatus === "requesting";
 
   // 개별 설정 항목을 Switch로 연결
   return (
@@ -53,9 +76,18 @@ export function SettingsAppPreferencesCard({
               <span css={S.settingsItemDescription(theme)}>
                 {t("settings.preferences.notifications.description")}
               </span>
+              {renderNotificationStatus && (
+                <S.PermissionStatusText $variant={statusVariantMap[notificationStatus]}>
+                  {t(`settings.preferences.notifications.status.${notificationStatus}`)}
+                </S.PermissionStatusText>
+              )}
             </S.SettingsText>
           </S.SettingsLabel>
-          <Switch checked={notifications} onCheckedChange={onNotificationsChange} />
+          <Switch
+            checked={notifications}
+            onCheckedChange={onNotificationsChange}
+            disabled={notificationDisabled}
+          />
         </S.SettingsItem>
 
         <Separator />
@@ -68,9 +100,18 @@ export function SettingsAppPreferencesCard({
               <span css={S.settingsItemDescription(theme)}>
                 {t("settings.preferences.location.description")}
               </span>
+              {renderLocationStatus && (
+                <S.PermissionStatusText $variant={statusVariantMap[locationStatus]}>
+                  {t(`settings.preferences.location.status.${locationStatus}`)}
+                </S.PermissionStatusText>
+              )}
             </S.SettingsText>
           </S.SettingsLabel>
-          <Switch checked={location} onCheckedChange={onLocationChange} />
+          <Switch
+            checked={location}
+            onCheckedChange={onLocationChange}
+            disabled={locationDisabled}
+          />
         </S.SettingsItem>
 
         <Separator />

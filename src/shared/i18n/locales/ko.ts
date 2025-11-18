@@ -252,10 +252,24 @@ export const koTranslation = {
       notifications: {
         title: "알림",
         description: "재활용 리마인더 알림",
+        status: {
+          requesting: "브라우저에 권한을 요청하는 중이에요.",
+          granted: "알림 권한이 허용되었어요.",
+          denied: "브라우저에서 알림 권한이 거부되었어요.",
+          unsupported: "이 브라우저는 시스템 알림을 지원하지 않아요.",
+          error: "권한을 요청하는 중 문제가 발생했어요.",
+        },
       },
       location: {
         title: "위치 서비스",
         description: "주변 배출함 찾기",
+        status: {
+          requesting: "기기 위치 권한을 요청하는 중이에요.",
+          granted: "위치 권한이 허용되었어요.",
+          denied: "위치 권한이 거부되었어요.",
+          unsupported: "이 기기에서 위치 서비스를 사용할 수 없어요.",
+          error: "위치 권한 요청 중 문제가 발생했어요.",
+        },
       },
       darkMode: {
         title: "다크 모드",

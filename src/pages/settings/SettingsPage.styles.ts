@@ -3,6 +3,13 @@ import styled from "@emotion/styled";
 import { CardContent } from "../../shared/ui/Card/Card";
 import type { AppTheme } from "../../shared/styles/theme";
 
+// 권한 상태 뱃지 색상 계산 헬퍼
+const permissionStatusColor = (theme: AppTheme, variant: "success" | "warning" | "info") => {
+  if (variant === "success") return theme.colors.success;
+  if (variant === "info") return theme.colors.info;
+  return theme.colors.warning;
+};
+
 // 설정 페이지 전체 컨테이너 정의
 export const PageContainer = styled.div`
   width: 100%;
@@ -69,6 +76,24 @@ export const SettingsItemTitle = styled.span`
 export const settingsItemDescription = (theme: AppTheme) => css`
   font-size: 0.75rem;
   color: ${theme.colors.textMuted};
+`;
+
+// 권한 상태 텍스트 스타일 정의
+export const PermissionStatusText = styled.span<{ $variant: "success" | "warning" | "info" }>`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+  font-size: 0.75rem;
+  margin-top: ${({ theme }) => theme.spacing(0.5)};
+  color: ${({ theme, $variant }) => permissionStatusColor(theme, $variant)};
+
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: ${({ theme }) => theme.radii.full};
+    background-color: ${({ theme, $variant }) => permissionStatusColor(theme, $variant)};
+  }
 `;
 
 // 설정 필드 레이블 텍스트 스타일

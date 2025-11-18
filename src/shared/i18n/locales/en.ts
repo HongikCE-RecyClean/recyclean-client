@@ -252,10 +252,24 @@ export const enTranslation = {
       notifications: {
         title: "Notifications",
         description: "Send recycling reminders",
+        status: {
+          requesting: "Requesting permission from your browser…",
+          granted: "Notifications are allowed.",
+          denied: "Notifications are blocked in your browser.",
+          unsupported: "This browser does not support system notifications.",
+          error: "Something went wrong while requesting permission.",
+        },
       },
       location: {
         title: "Location services",
         description: "Find nearby drop-off bins",
+        status: {
+          requesting: "Requesting access to your location…",
+          granted: "Location access is allowed.",
+          denied: "Location access is blocked.",
+          unsupported: "This device cannot share its location.",
+          error: "Something went wrong while requesting location access.",
+        },
       },
       darkMode: {
         title: "Dark mode",

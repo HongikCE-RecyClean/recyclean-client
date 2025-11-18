@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import recycleanLogo from "../../assets/recycleanLogo.svg";
 import { useSettingsStore } from "shared/state/settingsStore";
@@ -11,6 +11,7 @@ import {
 } from "./components";
 import * as S from "./SettingsPage.styles";
 import type { LocaleOption, UserStats } from "./types";
+import { usePermissionRequests } from "./hooks/usePermissionRequests";
 
 // 지원 언어 목록 정의
 const languageOptions: LocaleOption[] = [
@@ -37,6 +38,56 @@ export function SettingsPage() {
     region,
     setRegion,
   } = useSettingsStore();
+  const {
+    supportsNotifications,
+    supportsGeolocation,
+    notificationStatus,
+    locationStatus,
+    requestNotificationPermission,
+    requestLocationPermission,
+    resetNotificationStatus,
+    resetLocationStatus,
+  } = usePermissionRequests();
+
+  useEffect(() => {
+    if (!supportsNotifications && notifications) {
+      setNotifications(false);
+    }
+  }, [notifications, setNotifications, supportsNotifications]);
+
+  useEffect(() => {
+    if (!supportsGeolocation && location) {
+      setLocation(false);
+    }
+  }, [location, setLocation, supportsGeolocation]);
+
+  const handleNotificationsChange = useCallback(
+    async (checked: boolean) => {
+      if (!checked) {
+        setNotifications(false);
+        resetNotificationStatus();
+        return;
+      }
+
+      const granted = await requestNotificationPermission();
+      setNotifications(granted);
+    },
+    [requestNotificationPermission, resetNotificationStatus, setNotifications],
+  );
+
+  const handleLocationChange = useCallback(
+    async (checked: boolean) => {
+      if (!checked) {
+        setLocation(false);
+        resetLocationStatus();
+        return;
+      }
+
+      const granted = await requestLocationPermission();
+      setLocation(granted);
+    },
+    [requestLocationPermission, resetLocationStatus, setLocation],
+  );
 
   // 지역 옵션 (현재는 대한민국만 지원)
   const regions: LocaleOption[] = useMemo(
@@ -58,13 +109,17 @@ export function SettingsPage() {
       <SettingsImpactCard userStats={userStats} />
       <SettingsAppPreferencesCard
         notifications={notifications}
-        onNotificationsChange={setNotifications}
+        onNotificationsChange={handleNotificationsChange}
         location={location}
-        onLocationChange={setLocation}
+        onLocationChange={handleLocationChange}
         darkMode={darkMode}
         onDarkModeChange={setDarkMode}
         sounds={sounds}
         onSoundsChange={setSounds}
+        notificationsSupported={supportsNotifications}
+        notificationStatus={notificationStatus}
+        locationSupported={supportsGeolocation}
+        locationStatus={locationStatus}
       />
       <SettingsLocaleCard
         languages={languageOptions}
