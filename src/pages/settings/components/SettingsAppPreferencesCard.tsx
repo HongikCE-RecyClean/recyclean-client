@@ -1,4 +1,4 @@
-import { Bell, MapPin, Moon, Settings as SettingsIcon, Sun, Volume2 } from "lucide-react";
+import { Bell, MapPin, Moon, Settings as SettingsIcon, Sun } from "lucide-react";
 import { useTheme } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
@@ -19,8 +19,8 @@ interface SettingsAppPreferencesCardProps {
   locationStatus: PermissionRequestStatus;
   darkMode: boolean;
   onDarkModeChange: (checked: boolean) => void;
-  sounds: boolean;
-  onSoundsChange: (checked: boolean) => void;
+  // sounds: boolean;
+  // onSoundsChange: (checked: boolean) => void;
 }
 
 export function SettingsAppPreferencesCard({
@@ -34,8 +34,8 @@ export function SettingsAppPreferencesCard({
   locationStatus,
   darkMode,
   onDarkModeChange,
-  sounds,
-  onSoundsChange,
+  // sounds,
+  // onSoundsChange,
 }: SettingsAppPreferencesCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
@@ -133,6 +133,7 @@ export function SettingsAppPreferencesCard({
           <Switch checked={darkMode} onCheckedChange={onDarkModeChange} />
         </S.SettingsItem>
 
+        {/* 사운드 설정은 권한 정책을 재정립할 때까지 비활성화
         <Separator />
 
         <S.SettingsItem>
@@ -147,6 +148,7 @@ export function SettingsAppPreferencesCard({
           </S.SettingsLabel>
           <Switch checked={sounds} onCheckedChange={onSoundsChange} />
         </S.SettingsItem>
+        */}
       </S.SectionStack>
     </Card>
   );

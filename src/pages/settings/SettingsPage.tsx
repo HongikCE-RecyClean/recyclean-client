@@ -31,8 +31,8 @@ export function SettingsPage() {
     setLocation,
     darkMode,
     setDarkMode,
-    sounds,
-    setSounds,
+    // sounds,
+    // setSounds,
     language,
     setLanguage,
     region,
@@ -114,8 +114,6 @@ export function SettingsPage() {
         onLocationChange={handleLocationChange}
         darkMode={darkMode}
         onDarkModeChange={setDarkMode}
-        sounds={sounds}
-        onSoundsChange={setSounds}
         notificationsSupported={supportsNotifications}
         notificationStatus={notificationStatus}
         locationSupported={supportsGeolocation}
