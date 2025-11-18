@@ -3,7 +3,7 @@ import { format, isSameMonth, startOfMonth, type Locale } from "date-fns";
 import { enUS, es, fr, ko as koLocale } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 import type { BadgeTone } from "../../shared/ui/Badge/Badge";
-import { useDashboardStore } from "../../shared/state/dashboardStore";
+import { useActivityStore } from "../../shared/state/activityStore";
 import type { RecyclingEntry } from "../../shared/types/dashboard";
 import * as S from "./CalendarPage.styles";
 import {
@@ -60,7 +60,8 @@ export function CalendarPage() {
   const intlLocale = localeTagMap[language];
   const dateLocale = dateLocaleMap[language];
 
-  const entries = useDashboardStore((state) => state.entries);
+  // 활동 기록 스토어에서 entries 로드
+  const entries = useActivityStore((state) => state.entries);
   const [currentMonth, setCurrentMonth] = useState<Date>(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
 

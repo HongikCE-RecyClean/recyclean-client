@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useDashboardData } from "shared/api/dashboard";
 import { useDashboardStore } from "shared/state/dashboardStore";
+import { useActivityStore } from "shared/state/activityStore";
 import { useUserStore } from "shared/state/userStore";
 import type { DashboardData } from "shared/types/dashboard";
 import * as S from "./DashboardPage.styles";
@@ -14,17 +15,18 @@ import {
 export function DashboardPage() {
   const { data } = useDashboardData();
   // 전역 상태와 스토어 제어자 로드
-  const { searchTerm, setSearchTerm, materialCategory, setMaterialCategory, entries, setEntries } =
-    useDashboardStore();
+  const { searchTerm, setSearchTerm, materialCategory, setMaterialCategory } = useDashboardStore();
+  // 활동 기록 스토어에서 entries 로드
+  const { entries, setEntries } = useActivityStore();
   // 사용자 정보 스토어에서 이름 로드
   const { name: userName } = useUserStore();
 
-  // 쿼리 결과로 스토어 동기화
+  // 초기 데이터 로드: activityStore가 비어있고 API 데이터가 있으면 초기 데이터로 사용
   useEffect(() => {
-    if (data?.entries && entries !== data.entries) {
+    if (entries.length === 0 && data?.entries && data.entries.length > 0) {
       setEntries(data.entries);
     }
-  }, [data?.entries, entries, setEntries]);
+  }, [data?.entries, entries.length, setEntries]);
 
   const todayStats =
     data?.todayStats ??

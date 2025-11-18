@@ -18,12 +18,125 @@ The front-end lives in `src/`, split by responsibility. Page-level shells reside
 
 ## Architecture & State Flow
 
-The runtime is composed of layered providers initialized in `AppProviders`. Emotion’s `ThemeProvider` and `AppGlobalStyles` supply design context, while `@tanstack/react-query` handles asynchronous data with a shared `QueryClient`. Client state that must persist across routes (filters, toggles, cached entries) is centralized in zustand stores (`useDashboardStore`, `useMapStore`, `useSettingsStore`). When adding a new domain:
+The runtime is composed of layered providers initialized in `AppProviders`. Emotion's `ThemeProvider` and `AppGlobalStyles` supply design context, while `@tanstack/react-query` handles asynchronous data with a shared `QueryClient`. Client state that must persist across routes (filters, toggles, cached entries) is centralized in zustand stores (`useDashboardStore`, `useMapStore`, `useSettingsStore`). When adding a new domain:
 
 1. Create query keys in `src/shared/api/queryKeys.ts`.
 2. Draft fetcher hooks inside `src/shared/api/`.
 3. Add optional seed data in `src/shared/data/` until real endpoints exist.
 4. Expose mutations or derived state through a store in `src/shared/state/`.
+
+## Local-First Data Management
+
+The app follows a **local-first** approach powered by localStorage, enabling full offline functionality without authentication. This hybrid architecture combines persistent local data with optional server-side features via React Query.
+
+### Data Storage Strategy
+
+**Persistent Stores** (zustand + persist middleware):
+
+- **`useUserStore`** (`recyclean-user`): User profile data
+  - `name`: User's nickname (required for onboarding)
+  - `region`: Preferred region (default: "kr")
+  - `joinedAt`: ISO timestamp of first setup
+  - `clearUserData()`: Wipes profile and triggers re-onboarding
+
+- **`useActivityStore`** (`recyclean-activities`): Recycling activity records
+  - `entries`: Array of `RecyclingEntry[]` with id, type, amount, date, points
+  - `addEntry(entry)`: Appends new activity with auto-generated ID
+  - `updateEntry(id, updates)`: Modifies existing entry
+  - `deleteEntry(id)`: Removes single entry
+  - `clearAllEntries()`: Wipes all activity data
+
+- **`useSettingsStore`** (`recyclean-settings`): App preferences (existing)
+  - Notifications, location, dark mode, language, region settings
+
+**Session-Only Stores** (no persist):
+
+- **`useDashboardStore`**: UI state only (search terms, filters, selected categories)
+- **`useMapStore`**: Map filters and viewport state
+
+### Onboarding Flow
+
+First-time users must complete onboarding before accessing the app:
+
+1. **Guard Check**: `OnboardingGuard` in `App.tsx` checks `useUserStore().name`
+2. **Redirect**: If name is empty, navigate to `/onboarding`
+3. **Nickname Entry**: User enters nickname via `OnboardingPage`
+4. **Persist**: `setName(nickname)` triggers localStorage write and sets `joinedAt`
+5. **Navigation**: Redirect to dashboard (`/`) on completion
+
+**Key Files**:
+
+- `src/App.tsx`: Contains `OnboardingGuard` wrapper
+- `src/pages/onboarding/OnboardingPage.tsx`: Nickname input form
+- `src/shared/state/userStore.ts`: Persist configuration
+
+### Data Reset & Profile Management
+
+Users can manage their local data through Settings:
+
+- **Profile Editing**: Settings → Edit Profile → Update nickname via BottomSheet
+- **Data Reset**: Settings → Reset Data → Confirms, clears all stores, navigates to onboarding
+  - Implementation: `SettingsSupportActionsCard.tsx`
+  - Clears: `userStore`, `activityStore` (settings remain intact)
+
+### Hybrid Server Integration
+
+While the app operates fully offline, React Query remains available for server-dependent features:
+
+- **Image Analysis**: `/analyze` endpoint for AI-powered recycling classification
+- **Map Data**: Dynamic recycling center locations
+- **Initial Seed Data**: API responses populate `activityStore` on first load if empty
+
+**Data Sync Pattern**:
+
+```typescript
+// Load initial data from API if local store is empty
+useEffect(() => {
+  if (entries.length === 0 && data?.entries?.length > 0) {
+    setEntries(data.entries); // Seed local store once
+  }
+}, [data?.entries, entries.length, setEntries]);
+```
+
+**Best Practices**:
+
+- Never rely on React Query for core CRUD operations on local data
+- Use `activityStore` actions directly for all user-generated activities
+- Reserve API calls for server-computed features (analytics, ML inference)
+
+### localStorage Schema
+
+```
+recyclean-user          → { name, region, joinedAt }
+recyclean-activities    → { entries: RecyclingEntry[] }
+recyclean-settings      → { notifications, location, darkMode, language, region }
+```
+
+**Storage Limits**: Browser localStorage typically caps at 5-10MB. For image-heavy features, consider IndexedDB or server upload.
+
+### Migration & Versioning
+
+When updating store schemas:
+
+1. Add a `version` field to the persist config
+2. Implement migration logic in the store definition:
+   ```typescript
+   persist(
+     (set) => ({
+       /* state */
+     }),
+     {
+       name: "recyclean-user",
+       version: 2,
+       migrate: (persistedState: any, version: number) => {
+         if (version < 2) {
+           // Transform old schema
+         }
+         return persistedState;
+       },
+     },
+   );
+   ```
 
 ## Styling & Theming
 

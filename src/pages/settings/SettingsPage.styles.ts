@@ -166,3 +166,43 @@ export const impactStatLabel = (theme: AppTheme) => css`
   font-size: 0.8rem;
   color: ${theme.colors.textMuted};
 `;
+
+// 프로필 편집 컨텐츠 컨테이너
+export const EditProfileContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(2)};
+`;
+
+// 프로필 편집 라벨
+export const EditProfileLabel = styled.label`
+  font-size: 0.875rem;
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+// 프로필 편집 입력 필드
+export const EditProfileInput = styled.input`
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing(3)};
+  font-size: 1rem;
+  font-weight: ${({ theme }) => theme.typography.weights.regular};
+  color: ${({ theme }) => theme.colors.text};
+  background: ${({ theme }) => theme.colors.surfaceMuted};
+  border: 2px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.md};
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary}20;
+  }
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textMuted};
+  }
+`;

@@ -127,6 +127,33 @@ export const Footer = styled.footer`
   animation: ${fadeInDelayed} 0.6s ease-out 0.3s both;
 `;
 
+// 닉네임 입력 필드
+export const NameInput = styled.input`
+  width: 100%;
+  max-width: 400px;
+  padding: ${({ theme }) => `${theme.spacing(3)} ${theme.spacing(4)}`};
+  font-size: 1.05rem;
+  font-weight: ${({ theme }) => theme.typography.weights.regular};
+  color: ${({ theme }) => theme.colors.text};
+  background: ${({ theme }) => theme.colors.surface};
+  border: 2px solid ${({ theme }) => theme.colors.border};
+  border-radius: 14px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  text-align: center;
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.primary}20;
+  }
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textMuted};
+  }
+`;
+
 export const ButtonHint = styled.span`
   font-size: 0.875rem;
   color: ${({ theme }) => theme.colors.textMuted};
