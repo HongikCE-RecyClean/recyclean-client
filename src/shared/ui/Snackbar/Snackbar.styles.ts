@@ -3,6 +3,8 @@ import { keyframes } from "@emotion/react";
 import type { AppTheme } from "../../styles/theme";
 import type { NotificationType } from "../../types/notifications";
 
+export const SNACKBAR_EXIT_DURATION = 260;
+
 // 슬라이드업 애니메이션
 const slideUp = keyframes`
   from {
@@ -12,6 +14,18 @@ const slideUp = keyframes`
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+`;
+
+// 슬라이드다운 애니메이션
+const slideDown = keyframes`
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20%);
   }
 `;
 
@@ -39,23 +53,27 @@ const typeColors: Record<
 };
 
 // 스낵바 컨테이너
-export const SnackbarContainer = styled.div<{ $type: NotificationType }>(({ theme, $type }) => ({
-  display: "flex",
-  alignItems: "center",
-  gap: theme.spacing(3),
-  minHeight: theme.spacing(14),
-  padding: `${theme.spacing(3)} ${theme.spacing(4)}`,
-  backgroundColor: typeColors[$type].background(theme),
-  borderRadius: theme.radii.md,
-  boxShadow: theme.shadows.medium,
-  animation: `${slideUp} 0.3s ease-out`,
-  marginBottom: theme.spacing(2),
-  maxWidth: "500px",
-  width: "calc(100vw - 32px)", // 양쪽 16px 여백
+export const SnackbarContainer = styled.div<{ $type: NotificationType; $isClosing: boolean }>(
+  ({ theme, $type, $isClosing }) => ({
+    display: "flex",
+    alignItems: "center",
+    gap: theme.spacing(3),
+    minHeight: theme.spacing(14),
+    padding: `${theme.spacing(3)} ${theme.spacing(4)}`,
+    backgroundColor: typeColors[$type].background(theme),
+    borderRadius: theme.radii.md,
+    boxShadow: theme.shadows.medium,
+    animation: $isClosing
+      ? `${slideDown} ${SNACKBAR_EXIT_DURATION}ms ease-in forwards`
+      : `${slideUp} 300ms ease-out`,
+    marginBottom: theme.spacing(2),
+    maxWidth: "500px",
+    width: "calc(100vw - 32px)", // 양쪽 16px 여백
 
-  // 다크모드 대응 - 배경 불투명도 증가
-  backdropFilter: "blur(8px)",
-}));
+    // 다크모드 대응 - 배경 불투명도 증가
+    backdropFilter: "blur(8px)",
+  }),
+);
 
 // 아이콘 래퍼
 export const IconWrapper = styled.div<{ $type: NotificationType }>(({ theme, $type }) => ({

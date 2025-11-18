@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from "lucide-react";
 import type { NotificationType, SnackbarAction } from "../../types/notifications";
@@ -23,18 +23,54 @@ const iconMap = {
 export function Snackbar({ type, message, duration = 4000, action, onClose }: SnackbarProps) {
   const { t } = useTranslation();
   const Icon = iconMap[type];
+  const [isClosing, setIsClosing] = useState(false); // 종료 애니메이션 상태 추적
+  const autoHideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null); // 자동 닫기 타이머 ref
+  const exitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null); // 종료 애니메이션 완료 타이머 ref
+  const isClosingRef = useRef(false); // 중복 닫기 방지 ref
 
-  // 자동 닫기 타이머
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  // 종료 애니메이션이 끝난 뒤 실제 언마운트 요청
+  const requestClose = useCallback(() => {
+    if (isClosingRef.current) {
+      return;
+    }
+    isClosingRef.current = true;
+    setIsClosing(true);
+    exitTimerRef.current = setTimeout(() => {
       onClose();
+    }, S.SNACKBAR_EXIT_DURATION);
+  }, [onClose]);
+
+  // 자동 닫기 타이머 설정
+  useEffect(() => {
+    if (autoHideTimerRef.current) {
+      clearTimeout(autoHideTimerRef.current);
+    }
+    autoHideTimerRef.current = setTimeout(() => {
+      requestClose();
     }, duration);
 
-    return () => clearTimeout(timer);
-  }, [duration, onClose, message, type]);
+    return () => {
+      if (autoHideTimerRef.current) {
+        clearTimeout(autoHideTimerRef.current);
+        autoHideTimerRef.current = null;
+      }
+    };
+  }, [duration, message, type, requestClose]);
+
+  // 컴포넌트 언마운트 시 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (autoHideTimerRef.current) {
+        clearTimeout(autoHideTimerRef.current);
+      }
+      if (exitTimerRef.current) {
+        clearTimeout(exitTimerRef.current);
+      }
+    };
+  }, []);
 
   return (
-    <S.SnackbarContainer $type={type}>
+    <S.SnackbarContainer $type={type} $isClosing={isClosing}>
       <S.IconWrapper $type={type}>
         <Icon size={20} />
       </S.IconWrapper>
@@ -45,14 +81,14 @@ export function Snackbar({ type, message, duration = 4000, action, onClose }: Sn
         <S.ActionButton
           onClick={() => {
             action.onClick();
-            onClose();
+            requestClose();
           }}
         >
           {action.label}
         </S.ActionButton>
       )}
 
-      <S.CloseButton onClick={onClose} aria-label={t("notifications.actions.close")}>
+      <S.CloseButton onClick={requestClose} aria-label={t("notifications.actions.close")}>
         <X size={18} />
       </S.CloseButton>
     </S.SnackbarContainer>
