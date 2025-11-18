@@ -552,6 +552,11 @@ export const frTranslation = {
       entrySaved: "Activité enregistrée ! +{{points}}pt gagnés",
       entryDeleted: "L'enregistrement a été supprimé",
       entryRestored: "Enregistrement restauré",
+      profileUpdated: "Nom de profil mis à jour",
+      languageChanged: "La langue est passée à {{language}}",
+      regionChanged: "Région définie sur {{region}}",
+      darkModeEnabled: "Mode sombre activé",
+      darkModeDisabled: "Mode clair activé",
     },
   },
   common: {

@@ -50,6 +50,8 @@ export function SettingsSupportActionsCard() {
       tone: "warning",
       confirmLabel: t("settings.support.resetData"),
       cancelLabel: t("common.cancel"),
+      showToneIcon: false,
+      confirmVariant: "destructive",
     });
 
     if (confirmed) {

@@ -12,14 +12,14 @@ const variantStyles: Record<ButtonVariant, VariantStyle> = {
     backgroundColor: theme.colors.primary,
     color: theme.colors.primaryContrast,
     "&:hover": {
-      backgroundColor: "#276749",
+      backgroundColor: theme.colors.primaryHover,
     },
   }),
   secondary: (theme) => ({
     backgroundColor: theme.colors.secondary,
     color: theme.colors.primaryContrast,
     "&:hover": {
-      backgroundColor: "#0a3c58",
+      backgroundColor: theme.colors.secondaryHover,
     },
   }),
   outline: (theme) => ({
@@ -42,7 +42,7 @@ const variantStyles: Record<ButtonVariant, VariantStyle> = {
     backgroundColor: theme.colors.danger,
     color: theme.colors.primaryContrast,
     "&:hover": {
-      backgroundColor: "#b91c1c",
+      backgroundColor: theme.colors.dangerHover,
     },
   }),
   text: (theme) => ({
@@ -126,7 +126,7 @@ export const StyledButton = styled.button<{ $variant: ButtonVariant; $size: Butt
       color: $variant === "text" ? theme.colors.textMuted : undefined,
     },
     ":focus-visible": {
-      boxShadow: $variant === "text" ? "none" : "0 0 0 4px rgba(34, 197, 94, 0.35)",
+      boxShadow: $variant === "text" ? "none" : `0 0 0 4px ${theme.colors.focusRing}`,
       textDecoration: $variant === "text" ? "underline" : undefined,
     },
   }),

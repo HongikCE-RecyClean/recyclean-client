@@ -1,4 +1,5 @@
 import type { NotificationType } from "../../types/notifications";
+import type { ButtonVariant } from "../Button/Button";
 
 export interface BaseDialogOptions {
   title: string;
@@ -6,6 +7,8 @@ export interface BaseDialogOptions {
   tone?: NotificationType;
   confirmLabel?: string;
   cancelLabel?: string;
+  showToneIcon?: boolean;
+  confirmVariant?: ButtonVariant;
 }
 
 export interface AlertDialogOptions extends BaseDialogOptions {

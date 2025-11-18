@@ -26,7 +26,7 @@ export const StyledInput = styled.input<{ $hasIcon: boolean }>`
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+    box-shadow: 0 0 0 3px ${({ theme }) => theme.colors.focusRing};
     outline: none;
   }
 

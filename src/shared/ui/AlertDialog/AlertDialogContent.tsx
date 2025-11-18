@@ -110,6 +110,8 @@ export function AlertDialogContent({
   confirmLabel,
   cancelLabel,
   showCancel,
+  showToneIcon = true,
+  confirmVariant = "primary",
   onConfirm,
   onCancel,
   onExited,
@@ -136,9 +138,11 @@ export function AlertDialogContent({
         <CloseButton onClick={onCancel} aria-label={t("notifications.actions.close")}>
           <X size={18} />
         </CloseButton>
-        <IconWrapper $tone={tone}>
-          <Icon size={24} />
-        </IconWrapper>
+        {showToneIcon && (
+          <IconWrapper $tone={tone}>
+            <Icon size={24} />
+          </IconWrapper>
+        )}
         <div>
           <Title>{title}</Title>
           {description && <Description>{description}</Description>}
@@ -149,7 +153,7 @@ export function AlertDialogContent({
               {cancelLabel ?? t("common.cancel")}
             </Button>
           )}
-          <Button variant="primary" onClick={onConfirm} type="button">
+          <Button variant={confirmVariant} onClick={onConfirm} type="button">
             {confirmLabel ?? t("common.confirm")}
           </Button>
         </Actions>

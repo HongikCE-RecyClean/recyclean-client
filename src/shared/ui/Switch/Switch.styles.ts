@@ -22,7 +22,7 @@ export const SwitchRoot = styled.button<{ $checked: boolean }>`
   }
 
   &:focus-visible {
-    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+    box-shadow: 0 0 0 4px ${({ theme }) => theme.colors.focusRing};
   }
 `;
 

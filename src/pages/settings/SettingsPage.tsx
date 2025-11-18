@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSettingsStore } from "shared/state/settingsStore";
+import { useNotificationStore } from "shared/state/notificationStore";
 import {
   SettingsAppPreferencesCard,
   SettingsLocaleCard,
@@ -9,6 +10,7 @@ import {
 import * as S from "./SettingsPage.styles";
 import type { LocaleOption } from "./types";
 import { usePermissionRequests } from "./hooks/usePermissionRequests";
+import type { SupportedLanguage } from "shared/i18n/supportedLanguages";
 
 export function SettingsPage() {
   const { t } = useTranslation();
@@ -38,6 +40,7 @@ export function SettingsPage() {
     monthlyGoal,
     setMonthlyGoal,
   } = useSettingsStore();
+  const { showSnackbar } = useNotificationStore();
   const {
     supportsNotifications,
     supportsGeolocation,
@@ -95,6 +98,52 @@ export function SettingsPage() {
     [t],
   );
 
+  const findLabel = useCallback((options: LocaleOption[], value: string) => {
+    return options.find((option) => option.value === value)?.label ?? value;
+  }, []);
+
+  const handleLanguageChangeWithToast = useCallback(
+    (value: SupportedLanguage) => {
+      setLanguage(value);
+      const label = findLabel(languageOptions, value);
+      showSnackbar(t("notifications.snackbar.languageChanged", { language: label }), {
+        type: "info",
+        duration: 2200,
+      });
+    },
+    [findLabel, languageOptions, setLanguage, showSnackbar, t],
+  );
+
+  const handleRegionChangeWithToast = useCallback(
+    (value: string) => {
+      setRegion(value);
+      const label = findLabel(regions, value);
+      showSnackbar(t("notifications.snackbar.regionChanged", { region: label }), {
+        type: "info",
+        duration: 2200,
+      });
+    },
+    [findLabel, regions, setRegion, showSnackbar, t],
+  );
+
+  const handleDarkModeChange = useCallback(
+    (checked: boolean) => {
+      setDarkMode(checked);
+      showSnackbar(
+        t(
+          checked
+            ? "notifications.snackbar.darkModeEnabled"
+            : "notifications.snackbar.darkModeDisabled",
+        ),
+        {
+          type: "info",
+          duration: 2000,
+        },
+      );
+    },
+    [setDarkMode, showSnackbar, t],
+  );
+
   // 설정 페이지 섹션 컴포넌트 조합
   return (
     <S.PageContainer>
@@ -104,7 +153,7 @@ export function SettingsPage() {
         location={location}
         onLocationChange={handleLocationChange}
         darkMode={darkMode}
-        onDarkModeChange={setDarkMode}
+        onDarkModeChange={handleDarkModeChange}
         monthlyGoal={monthlyGoal}
         onMonthlyGoalChange={setMonthlyGoal}
         notificationsSupported={supportsNotifications}
@@ -117,8 +166,8 @@ export function SettingsPage() {
         regions={regions}
         language={language}
         region={region}
-        onLanguageChange={setLanguage}
-        onRegionChange={setRegion}
+        onLanguageChange={handleLanguageChangeWithToast}
+        onRegionChange={handleRegionChangeWithToast}
       />
       <SettingsSupportActionsCard />
     </S.PageContainer>

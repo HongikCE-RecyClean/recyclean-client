@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import { useUserStore } from "shared/state/userStore";
 import { useActivityStore } from "shared/state/activityStore";
+import { useNotificationStore } from "shared/state/notificationStore";
 import { calculateUserStats, calculateCategoryStats } from "shared/utils/userStats";
 import { ProfileCard, ImpactCard, LevelProgressCard, CategoryStatsCard } from "./components";
 import { BottomSheet } from "shared/ui/BottomSheet";
@@ -21,6 +22,7 @@ export function ProfilePage() {
     })),
   ); // zustand selector 안정화로 무한 렌더링 방지 목적
   const entries = useActivityStore((state) => state.entries); // 필요한 조각만 구독
+  const { showSnackbar } = useNotificationStore();
   const { t } = useTranslation();
 
   // 프로필 편집 BottomSheet 상태 관리
@@ -48,6 +50,10 @@ export function ProfilePage() {
     const trimmedName = newName.trim();
     if (trimmedName && trimmedName !== name) {
       setName(trimmedName);
+      showSnackbar(t("notifications.snackbar.profileUpdated"), {
+        type: "success",
+        duration: 2500,
+      });
     }
     setIsEditProfileOpen(false);
     setNewName("");
