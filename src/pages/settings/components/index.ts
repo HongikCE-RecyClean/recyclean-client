@@ -4,3 +4,6 @@ export { SettingsImpactCard } from "./SettingsImpactCard";
 export { SettingsAppPreferencesCard } from "./SettingsAppPreferencesCard";
 export { SettingsLocaleCard } from "./SettingsLocaleCard";
 export { SettingsSupportActionsCard } from "./SettingsSupportActionsCard";
+export { PrivacyContent } from "./PrivacyContent";
+export { HelpContent } from "./HelpContent";
+export { AppInfoContent } from "./AppInfoContent";

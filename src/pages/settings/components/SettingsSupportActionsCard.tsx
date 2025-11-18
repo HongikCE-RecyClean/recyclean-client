@@ -1,43 +1,104 @@
+import { useState } from "react";
 import { HelpCircle, Info, LogOut, Shield, User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "../../../shared/ui/Button/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
+import { BottomSheet } from "../../../shared/ui/BottomSheet";
+import { AppInfoContent, HelpContent, PrivacyContent } from ".";
 import * as S from "../SettingsPage.styles";
+
+// 바텀시트 타입 정의
+type BottomSheetType = "privacy" | "help" | "appInfo" | null;
 
 // 계정과 지원 버튼 카드 정의
 export function SettingsSupportActionsCard() {
+  // 바텀시트 열림 상태 관리
+  const [openSheet, setOpenSheet] = useState<BottomSheetType>(null);
+  const { t } = useTranslation();
+
+  // 바텀시트 닫기 핸들러
+  const handleCloseSheet = () => {
+    setOpenSheet(null);
+  };
+
+  // 개인정보 보호 설정 클릭
+  const handlePrivacyClick = () => {
+    setOpenSheet("privacy");
+  };
+
+  // 도움말 센터 클릭
+  const handleHelpClick = () => {
+    setOpenSheet("help");
+  };
+
+  // 앱 정보 클릭
+  const handleAppInfoClick = () => {
+    setOpenSheet("appInfo");
+  };
+
   // 지원 관련 액션 버튼 리스트 구성
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          <Shield size={18} />
-          계정 및 지원
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <S.ActionList>
-          {/* 지원 액션 버튼 정렬 클래스 적용 */}
-          <Button variant="outline" css={S.actionButtonAlignStart}>
-            <User size={16} />
-            프로필 편집
-          </Button>
-          <Button variant="outline" css={S.actionButtonAlignStart}>
-            <Shield size={16} />
-            개인정보 보호 설정
-          </Button>
-          <Button variant="outline" css={S.actionButtonAlignStart}>
-            <HelpCircle size={16} />
-            도움말 센터
-          </Button>
-          <Button variant="outline" css={S.actionButtonAlignStart}>
-            <Info size={16} />앱 정보
-          </Button>
-          <Button variant="destructive" css={S.actionButtonAlignStart}>
-            <LogOut size={16} />
-            로그아웃
-          </Button>
-        </S.ActionList>
-      </CardContent>
-    </Card>
+    <>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            <Shield size={18} />
+            {t("settings.support.title")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <S.ActionList>
+            {/* 지원 액션 버튼 정렬 클래스 적용 */}
+            <Button variant="outline" css={S.actionButtonAlignStart}>
+              <User size={16} />
+              {t("settings.support.editProfile")}
+            </Button>
+            <Button variant="outline" css={S.actionButtonAlignStart} onClick={handlePrivacyClick}>
+              <Shield size={16} />
+              {t("settings.support.privacy")}
+            </Button>
+            <Button variant="outline" css={S.actionButtonAlignStart} onClick={handleHelpClick}>
+              <HelpCircle size={16} />
+              {t("settings.support.helpCenter")}
+            </Button>
+            <Button variant="outline" css={S.actionButtonAlignStart} onClick={handleAppInfoClick}>
+              <Info size={16} />
+              {t("settings.support.about")}
+            </Button>
+            <Button variant="destructive" css={S.actionButtonAlignStart}>
+              <LogOut size={16} />
+              {t("settings.support.logout")}
+            </Button>
+          </S.ActionList>
+        </CardContent>
+      </Card>
+
+      {/* 개인정보 보호 바텀시트 */}
+      <BottomSheet
+        isOpen={openSheet === "privacy"}
+        onClose={handleCloseSheet}
+        title={t("settings.support.privacy")}
+      >
+        <PrivacyContent />
+      </BottomSheet>
+
+      {/* 도움말 센터 바텀시트 */}
+      <BottomSheet
+        isOpen={openSheet === "help"}
+        onClose={handleCloseSheet}
+        title={t("settings.support.helpCenter")}
+      >
+        <HelpContent />
+      </BottomSheet>
+
+      {/* 앱 정보 바텀시트 */}
+      <BottomSheet
+        isOpen={openSheet === "appInfo"}
+        onClose={handleCloseSheet}
+        title={t("settings.support.about")}
+      >
+        <AppInfoContent />
+      </BottomSheet>
+    </>
   );
 }
