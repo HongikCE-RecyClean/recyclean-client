@@ -61,6 +61,7 @@ export const enTranslation = {
       title: "Recent activity",
       meta: "{{count}} items · {{time}}",
       points: "+{{points}} pts",
+      empty: "No activities recorded yet. Start logging your first recycling activity!",
     },
     monthlyProgress: {
       title: "Monthly goal progress",
@@ -322,6 +323,20 @@ export const enTranslation = {
       title: "My Impact",
       items: "Items Recycled",
       points: "Total Points",
+    },
+    level: {
+      title: "Level Progress",
+      currentLevel: "Level {{level}}",
+      nextLevel: "To next level",
+      pointsNeeded: "{{points}}pt needed",
+      maxLevel: "Max level achieved!",
+    },
+    categories: {
+      title: "Category Statistics",
+      topCategory: "Most Recycled",
+      noData: "No category data yet.",
+      items: "{{count}} items",
+      points: "{{points}}pt",
     },
   },
   notifications: {

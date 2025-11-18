@@ -61,6 +61,7 @@ export const koTranslation = {
       title: "최근 활동",
       meta: "{{count}}개 · {{time}}",
       points: "+{{points}} pts",
+      empty: "아직 기록된 활동이 없어요. 첫 재활용 활동을 기록해보세요!",
     },
     monthlyProgress: {
       title: "월간 목표 진행도",
@@ -322,6 +323,20 @@ export const koTranslation = {
       title: "나의 영향력",
       items: "처리한 아이템",
       points: "누적 포인트",
+    },
+    level: {
+      title: "레벨 진행도",
+      currentLevel: "레벨 {{level}}",
+      nextLevel: "다음 레벨까지",
+      pointsNeeded: "{{points}}pt 필요",
+      maxLevel: "최고 레벨 달성!",
+    },
+    categories: {
+      title: "카테고리별 통계",
+      topCategory: "가장 많이 재활용",
+      noData: "아직 카테고리별 데이터가 없어요.",
+      items: "{{count}}개",
+      points: "{{points}}pt",
     },
   },
   notifications: {

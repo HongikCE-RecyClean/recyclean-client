@@ -9,6 +9,9 @@ export interface UserStats {
   itemsRecycled: number; // 재활용한 아이템 수
   joinDate: string; // 가입 날짜 (ISO 문자열)
   streakDays: number; // 연속 기록 일수
+  level: number; // 현재 레벨
+  nextLevelPoints: number; // 다음 레벨까지 필요한 포인트
+  levelProgress: number; // 현재 레벨 내 진행률 (0-100)
 }
 
 /**
@@ -104,17 +107,91 @@ export function calculateTodayStats(entries: RecyclingEntry[]): TodayStats {
 }
 
 /**
+ * 레벨 정보 인터페이스
+ */
+export interface LevelInfo {
+  level: number; // 현재 레벨
+  nextLevelPoints: number; // 다음 레벨까지 필요한 포인트
+  levelProgress: number; // 현재 레벨 내 진행률 (0-100)
+}
+
+/**
+ * 포인트 기반 레벨 계산
+ * 100pt = 1레벨 기준으로 계산
+ */
+export function calculateLevel(totalPoints: number): LevelInfo {
+  const POINTS_PER_LEVEL = 100;
+
+  // 현재 레벨 계산 (정수 부분)
+  const level = Math.floor(totalPoints / POINTS_PER_LEVEL);
+
+  // 현재 레벨에서의 포인트 (나머지)
+  const pointsInCurrentLevel = totalPoints % POINTS_PER_LEVEL;
+
+  // 다음 레벨까지 필요한 포인트
+  const nextLevelPoints = POINTS_PER_LEVEL - pointsInCurrentLevel;
+
+  // 현재 레벨 내 진행률 (0-100)
+  const levelProgress = (pointsInCurrentLevel / POINTS_PER_LEVEL) * 100;
+
+  return {
+    level,
+    nextLevelPoints,
+    levelProgress,
+  };
+}
+
+/**
+ * 카테고리별 통계 인터페이스
+ */
+export interface CategoryStats {
+  type: string; // 재활용 품목 종류
+  count: number; // 재활용한 개수
+  points: number; // 획득한 포인트
+}
+
+/**
+ * 카테고리별 통계 계산
+ * entries를 카테고리별로 그룹화하여 개수와 포인트 집계
+ */
+export function calculateCategoryStats(entries: RecyclingEntry[]): CategoryStats[] {
+  // 카테고리별로 그룹화
+  const categoryMap = new Map<string, { count: number; points: number }>();
+
+  entries.forEach((entry) => {
+    const existing = categoryMap.get(entry.type) || { count: 0, points: 0 };
+    categoryMap.set(entry.type, {
+      count: existing.count + entry.amount,
+      points: existing.points + entry.points,
+    });
+  });
+
+  // Map을 배열로 변환하고 포인트 기준 내림차순 정렬
+  return Array.from(categoryMap.entries())
+    .map(([type, stats]) => ({
+      type,
+      count: stats.count,
+      points: stats.points,
+    }))
+    .sort((a, b) => b.points - a.points);
+}
+
+/**
  * 사용자 전체 통계 계산
  * entries와 가입 날짜를 기반으로 UserStats 객체 생성
  */
 export function calculateUserStats(entries: RecyclingEntry[], joinDate: string | null): UserStats {
   const { totalPoints, itemsRecycled } = calculateTotalStats(entries);
   const streakDays = calculateStreakDays(entries);
+  const { level, nextLevelPoints, levelProgress } = calculateLevel(totalPoints);
 
   return {
     totalPoints,
     itemsRecycled,
     joinDate: joinDate || new Date().toISOString(),
     streakDays,
+    level,
+    nextLevelPoints,
+    levelProgress,
   };
 }

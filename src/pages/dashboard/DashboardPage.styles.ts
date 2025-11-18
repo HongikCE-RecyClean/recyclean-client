@@ -226,6 +226,15 @@ export const MaterialEmptyMessage = styled.p`
   margin: 0;
 `;
 
+// 최근 활동 빈 상태 메시지 스타일
+export const EmptyStateMessage = styled.p`
+  text-align: center;
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin: 0;
+  padding: ${({ theme }) => theme.spacing(4)} 0;
+  font-size: 0.9rem;
+`;
+
 // 팁 카드 스타일 정의
 export const TipCard = styled(Card)`
   overflow: hidden;

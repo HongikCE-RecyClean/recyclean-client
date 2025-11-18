@@ -62,6 +62,8 @@ export const esTranslation = {
       title: "Actividad reciente",
       meta: "{{count}} artículos · {{time}}",
       points: "+{{points}} pts",
+      empty:
+        "Aún no hay actividades registradas. ¡Comienza a registrar tu primera actividad de reciclaje!",
     },
     monthlyProgress: {
       title: "Progreso de la meta mensual",
@@ -314,6 +316,20 @@ export const esTranslation = {
       title: "Mi Impacto",
       items: "Artículos Reciclados",
       points: "Puntos Totales",
+    },
+    level: {
+      title: "Progreso de Nivel",
+      currentLevel: "Nivel {{level}}",
+      nextLevel: "Al siguiente nivel",
+      pointsNeeded: "{{points}}pt necesarios",
+      maxLevel: "¡Nivel máximo alcanzado!",
+    },
+    categories: {
+      title: "Estadísticas por Categoría",
+      topCategory: "Más Reciclado",
+      noData: "Aún no hay datos de categorías.",
+      items: "{{count}} artículos",
+      points: "{{points}}pt",
     },
   },
   notifications: {

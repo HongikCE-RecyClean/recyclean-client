@@ -11,37 +11,20 @@ import { AppInfoContent, HelpContent, PrivacyContent } from ".";
 import * as S from "../SettingsPage.styles";
 
 // 바텀시트 타입 정의
-type BottomSheetType = "privacy" | "help" | "appInfo" | "editProfile" | null;
+type BottomSheetType = "privacy" | "help" | "appInfo" | null;
 
 // 계정과 지원 버튼 카드 정의
 export function SettingsSupportActionsCard() {
   // 바텀시트 열림 상태 관리
   const [openSheet, setOpenSheet] = useState<BottomSheetType>(null);
-  const [newName, setNewName] = useState("");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { name, setName, clearUserData } = useUserStore();
+  const { clearUserData } = useUserStore();
   const { clearAllEntries } = useActivityStore();
 
   // 바텀시트 닫기 핸들러
   const handleCloseSheet = () => {
     setOpenSheet(null);
-    setNewName("");
-  };
-
-  // 프로필 편집 클릭
-  const handleEditProfileClick = () => {
-    setNewName(name);
-    setOpenSheet("editProfile");
-  };
-
-  // 프로필 저장
-  const handleSaveProfile = () => {
-    const trimmedName = newName.trim();
-    if (trimmedName && trimmedName !== name) {
-      setName(trimmedName);
-    }
-    handleCloseSheet();
   };
 
   // 개인정보 보호 설정 클릭
