@@ -67,7 +67,7 @@ export const esTranslation = {
       meta: "{{count}} artículos · {{time}}",
       points: "+{{points}} pts",
       empty:
-        "Aún no hay actividades registradas. ¡Comienza a registrar tu primera actividad de reciclaje!",
+        "Aún no hay actividades registradas.\n¡Comienza a registrar tu primera actividad de reciclaje!",
     },
     monthlyProgress: {
       title: "Progreso de la meta mensual",

@@ -65,7 +65,7 @@ export const koTranslation = {
       title: "최근 활동",
       meta: "{{count}}개 · {{time}}",
       points: "+{{points}} pts",
-      empty: "아직 기록된 활동이 없어요. 첫 재활용 활동을 기록해보세요!",
+      empty: "아직 기록된 활동이 없어요.\n첫 재활용 활동을 기록해보세요!",
     },
     monthlyProgress: {
       title: "월간 목표 진행도",

@@ -65,7 +65,7 @@ export const enTranslation = {
       title: "Recent activity",
       meta: "{{count}} items · {{time}}",
       points: "+{{points}} pts",
-      empty: "No activities recorded yet. Start logging your first recycling activity!",
+      empty: "No activities recorded yet.\nStart logging your first recycling activity!",
     },
     monthlyProgress: {
       title: "Monthly goal progress",

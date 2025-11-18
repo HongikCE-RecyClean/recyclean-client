@@ -40,6 +40,8 @@ export const StyledBadge = styled.span<{ $variant: BadgeVariant; $tone: BadgeTon
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap; /* 칩 텍스트 단일 행 유지 */
+  flex-shrink: 0; /* 칩 폭 축소 방지 */
   padding: ${({ theme }) => `${theme.spacing(1)} ${theme.spacing(2)}`};
   border-radius: ${({ theme }) => theme.radii.pill};
   font-size: 0.75rem;

@@ -67,7 +67,7 @@ export const frTranslation = {
       meta: "{{count}} objets · {{time}}",
       points: "+{{points}} pts",
       empty:
-        "Aucune activité enregistrée pour le moment. Commencez par enregistrer votre première activité de recyclage !",
+        "Aucune activité enregistrée pour le moment.\nCommencez par enregistrer votre première activité de recyclage !",
     },
     monthlyProgress: {
       title: "Progression de l'objectif mensuel",

@@ -243,6 +243,7 @@ export const EmptyStateMessage = styled.p`
   margin: 0;
   padding: ${({ theme }) => theme.spacing(4)} 0;
   font-size: 0.9rem;
+  white-space: pre-line; /* 번역 줄바꿈 유지 */
 `;
 
 // 팁 카드 스타일 정의

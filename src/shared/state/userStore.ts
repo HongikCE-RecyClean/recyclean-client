@@ -9,32 +9,39 @@ interface UserState {
   name: string;
   region: string;
   joinedAt: string | null; // ISO 날짜 문자열
+  isOnboarded: boolean;
   setName: (value: string) => void;
   setRegion: (value: string) => void;
+  completeOnboarding: () => void;
   clearUserData: () => void; // 데이터 초기화용
 }
+
+const createDefaultState = () => ({
+  name: DEFAULT_USER_NAME,
+  region: "kr",
+  joinedAt: null,
+  isOnboarded: false,
+});
 
 // 사용자 정보 zustand 스토어 (localStorage 지속성 포함)
 export const useUserStore = create<UserState>()(
   persist(
     (set) => ({
-      name: DEFAULT_USER_NAME,
-      region: "kr",
-      joinedAt: getNowIsoString(),
+      ...createDefaultState(),
       setName: (value) =>
         set((state) => ({
           name: value,
-          // 첫 이름 설정 시 joinedAt 자동 설정
-          joinedAt: state.joinedAt || new Date().toISOString(),
+          // 닉네임 변경 시 가입 일자 없으면 현재 시각 기록
+          joinedAt: state.joinedAt || getNowIsoString(),
         })),
       setRegion: (value) => set({ region: value }),
+      completeOnboarding: () =>
+        set((state) => ({
+          isOnboarded: true,
+          joinedAt: state.joinedAt || getNowIsoString(),
+        })),
       // 사용자 데이터 초기화 (기본 상태로 복귀)
-      clearUserData: () =>
-        set({
-          name: DEFAULT_USER_NAME,
-          region: "kr",
-          joinedAt: getNowIsoString(),
-        }),
+      clearUserData: () => set(createDefaultState()),
     }),
     {
       name: "recyclean-user",

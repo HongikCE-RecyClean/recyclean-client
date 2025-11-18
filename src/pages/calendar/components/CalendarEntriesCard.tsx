@@ -59,6 +59,8 @@ export function CalendarEntriesCard({
                           tone: "warning",
                           confirmLabel: t("common.delete"),
                           cancelLabel: t("common.cancel"),
+                          showToneIcon: false,
+                          confirmVariant: "destructive",
                         });
                         if (confirmed) {
                           onDelete(entry.id);
