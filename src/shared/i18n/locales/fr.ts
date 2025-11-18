@@ -308,7 +308,7 @@ export const frTranslation = {
   profile: {
     card: {
       avatarAlt: "Image de profil de l'utilisateur",
-      joined: "Inscrit {{date}}",
+      joined: "Depuis {{date}}",
       points: "{{points}} pts",
       streak: "Série de {{days}} jours",
     },

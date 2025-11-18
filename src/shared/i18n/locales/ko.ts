@@ -315,7 +315,7 @@ export const koTranslation = {
   profile: {
     card: {
       avatarAlt: "사용자 프로필 이미지",
-      joined: "가입일 {{date}}",
+      joined: "시작일 {{date}}",
       points: "{{points}} pts",
       streak: "{{days}}일 연속",
     },
