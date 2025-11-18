@@ -30,4 +30,5 @@ resources/
 .vite
 .serena/
 .claude/
-api-spec-notes/
+#api-spec-notes/
+.env
