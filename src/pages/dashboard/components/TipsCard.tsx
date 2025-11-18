@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Car
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
-import { resolveTipTone } from "../../../shared/data/dashboard";
+import { resolveTipTone } from "../../../shared/types/dashboard";
 import * as S from "../DashboardPage.styles";
-import type { TipData } from "../../../shared/data/dashboard";
+import type { TipData } from "../../../shared/types/dashboard";
 
 interface TipCategoryOption {
   value: string;

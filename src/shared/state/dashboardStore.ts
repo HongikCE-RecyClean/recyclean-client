@@ -1,6 +1,5 @@
 import { create } from "zustand";
-import type { RecyclingEntry } from "shared/data/dashboard";
-import { dashboardInitialData } from "shared/data/dashboard";
+import type { RecyclingEntry } from "shared/types/dashboard";
 
 // 대시보드 상태 타입
 interface DashboardState {
@@ -19,7 +18,7 @@ export const useDashboardStore = create<DashboardState>((set) => ({
   searchTerm: "",
   materialCategory: "all",
   selectedTipCategory: "all",
-  entries: dashboardInitialData.entries,
+  entries: [],
   setSearchTerm: (value) => set({ searchTerm: value }),
   setMaterialCategory: (value) => set({ materialCategory: value }),
   setSelectedTipCategory: (value) => set({ selectedTipCategory: value }),

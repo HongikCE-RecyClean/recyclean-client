@@ -2,7 +2,7 @@ import { Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../DashboardPage.styles";
-import type { GoalData } from "../../../shared/data/dashboard";
+import type { GoalData } from "../../../shared/types/dashboard";
 
 interface GoalsCardProps {
   goals: GoalData[];

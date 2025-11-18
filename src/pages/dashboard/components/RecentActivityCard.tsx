@@ -2,7 +2,7 @@ import { Calendar } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../DashboardPage.styles";
-import type { RecentActivityItem } from "../../../shared/data/dashboard";
+import type { RecentActivityItem } from "../../../shared/types/dashboard";
 
 interface RecentActivityCardProps {
   recentActivity: RecentActivityItem[];

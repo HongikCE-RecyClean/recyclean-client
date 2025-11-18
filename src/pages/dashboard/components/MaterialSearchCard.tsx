@@ -5,7 +5,7 @@ import { TextField } from "../../../shared/ui/TextField/TextField";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../DashboardPage.styles";
-import type { MaterialItemData } from "../../../shared/data/dashboard";
+import type { MaterialItemData } from "../../../shared/types/dashboard";
 
 interface MaterialSearchCardProps {
   searchTerm: string;

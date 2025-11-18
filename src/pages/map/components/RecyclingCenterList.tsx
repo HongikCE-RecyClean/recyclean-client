@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Car
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
 import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
-import { mapMaterialColors } from "shared/api/map";
+import { mapMaterialColors } from "shared/constants/mapVisuals";
 import type { RecyclingCenter } from "shared/types/map";
 import * as S from "./RecyclingCenterList.styles";
 

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { format, isSameMonth, startOfMonth } from "date-fns";
 import type { BadgeTone } from "../../shared/ui/Badge/Badge";
 import { useDashboardStore } from "../../shared/state/dashboardStore";
-import type { RecyclingEntry } from "../../shared/data/dashboard";
+import type { RecyclingEntry } from "../../shared/types/dashboard";
 import * as S from "./CalendarPage.styles";
 import {
   CalendarEntriesCard,

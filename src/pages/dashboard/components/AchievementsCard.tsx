@@ -2,7 +2,7 @@ import { Award } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import * as S from "../DashboardPage.styles";
 import { Badge } from "../../../shared/ui/Badge/Badge";
-import type { AchievementItem } from "../../../shared/data/dashboard";
+import type { AchievementItem } from "../../../shared/types/dashboard";
 
 interface AchievementsCardProps {
   achievements: AchievementItem[];

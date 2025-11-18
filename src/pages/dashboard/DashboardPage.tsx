@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { useDashboardData } from "shared/api/dashboard";
-import { dashboardInitialData } from "shared/data/dashboard";
 import { useDashboardStore } from "shared/state/dashboardStore";
 import { useUserStore } from "shared/state/userStore";
+import type { DashboardData } from "shared/types/dashboard";
 import * as S from "./DashboardPage.styles";
 import {
   MaterialSearchCard,
@@ -26,9 +26,15 @@ export function DashboardPage() {
     }
   }, [data?.entries, entries, setEntries]);
 
-  const todayStats = data?.todayStats ?? dashboardInitialData.todayStats;
-  const recentActivity = data?.recentActivity ?? dashboardInitialData.recentActivity;
-  const materials = data?.materials ?? dashboardInitialData.materials;
+  const todayStats =
+    data?.todayStats ??
+    ({
+      itemsRecycled: 0,
+      pointsEarned: 0,
+      streakDays: 0,
+    } satisfies DashboardData["todayStats"]);
+  const recentActivity = data?.recentActivity ?? [];
+  const materials = data?.materials ?? [];
 
   // 재질 검색 결과 필터링 수행
   const filteredMaterials = useMemo(() => {

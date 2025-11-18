@@ -40,25 +40,37 @@ export const Hero = styled.section`
   gap: ${({ theme }) => theme.spacing(4)};
 `;
 
-export const Logo = styled.div`
-  font-size: 3rem;
-  font-weight: ${({ theme }) => theme.typography.weights.bold};
-  color: ${({ theme }) => theme.colors.primary};
-  letter-spacing: 0.08em;
+export const BrandMark = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
-export const Title = styled.h1`
+export const BrandSymbol = styled.img`
+  width: 48px;
+  height: 48px;
+`;
+
+export const BrandTitle = styled.span`
+  font-size: clamp(2.5rem, 5vw, 3rem);
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  letter-spacing: 0.08em;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+export const Tagline = styled.h1`
   margin: 0;
-  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
   color: ${({ theme }) => theme.colors.text};
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
 `;
 
-export const Subtitle = styled.p`
+export const Description = styled.p`
   margin: 0;
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: 1rem;
-  font-weight: ${({ theme }) => theme.typography.weights.regular};
+  line-height: 1.6;
 `;
 
 // 버튼을 하단에 배치하는 영역 정의

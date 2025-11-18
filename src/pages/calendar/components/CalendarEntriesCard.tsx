@@ -2,7 +2,7 @@ import { ListTodo } from "lucide-react";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
-import type { RecyclingEntry } from "../../../shared/data/dashboard";
+import type { RecyclingEntry } from "../../../shared/types/dashboard";
 import * as S from "../CalendarPage.styles";
 
 type CalendarEntriesCardProps = {

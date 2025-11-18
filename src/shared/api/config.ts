@@ -10,22 +10,6 @@ export function getApiBaseUrl(): string {
   return DEFAULT_BASE_URL;
 }
 
-// 목 데이터 사용 여부 판단
-export function isMockApiEnabled(): boolean {
-  const flag = import.meta.env?.VITE_API_USE_MOCKS;
-  if (typeof flag !== "string") {
-    return true;
-  }
-  const normalized = flag.trim().toLowerCase();
-  if (normalized === "false" || normalized === "0") {
-    return false;
-  }
-  if (normalized === "true" || normalized === "1") {
-    return true;
-  }
-  return true;
-}
-
 // API 경로와 기본 URL 결합
 export function buildApiUrl(path: string): string {
   const baseUrl = getApiBaseUrl();

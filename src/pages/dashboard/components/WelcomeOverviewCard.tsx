@@ -1,5 +1,5 @@
 import * as S from "../DashboardPage.styles";
-import type { DashboardData } from "../../../shared/data/dashboard";
+import type { DashboardData } from "../../../shared/types/dashboard";
 
 // 환경 카드 환영 메시지에 필요한 속성 정의
 interface WelcomeOverviewCardProps {
