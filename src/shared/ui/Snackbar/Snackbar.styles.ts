@@ -3,6 +3,7 @@ import { keyframes } from "@emotion/react";
 import type { AppTheme } from "../../styles/theme";
 import type { NotificationType } from "../../types/notifications";
 
+export const SNACKBAR_MAX_WIDTH = 408;
 export const SNACKBAR_EXIT_DURATION = 260;
 
 // 슬라이드업 애니메이션
@@ -67,8 +68,8 @@ export const SnackbarContainer = styled.div<{ $type: NotificationType; $isClosin
       ? `${slideDown} ${SNACKBAR_EXIT_DURATION}ms ease-in forwards`
       : `${slideUp} 300ms ease-out`,
     marginBottom: theme.spacing(2),
-    maxWidth: "500px",
-    width: "calc(100vw - 32px)", // 양쪽 16px 여백
+    width: "100%",
+    maxWidth: `${SNACKBAR_MAX_WIDTH}px`,
 
     // 다크모드 대응 - 배경 불투명도 증가
     backdropFilter: "blur(8px)",
