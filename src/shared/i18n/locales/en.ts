@@ -286,6 +286,12 @@ export const enTranslation = {
         title: "Dark mode",
         description: "Switch to the dark theme",
       },
+      monthlyGoal: {
+        title: "Monthly point goal",
+        description: "Used for dashboard progress tracking",
+        placeholder: "e.g. 200",
+        helper: "Enter at least 10pt to save.",
+      },
       sounds: {
         title: "Sounds",
         description: "Play action sound effects",
@@ -327,8 +333,7 @@ export const enTranslation = {
     level: {
       title: "Level Progress",
       currentLevel: "Level {{level}}",
-      nextLevel: "To next level",
-      pointsNeeded: "{{points}}pt needed",
+      pointsNeeded: "{{points}}pt needed to next level",
       maxLevel: "Max level achieved!",
     },
     categories: {

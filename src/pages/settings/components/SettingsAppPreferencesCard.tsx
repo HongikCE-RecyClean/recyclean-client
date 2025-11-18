@@ -1,9 +1,11 @@
+import { useEffect, useState } from "react";
 import { Bell, MapPin, Moon, Settings as SettingsIcon, Sun } from "lucide-react";
 import { useTheme } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Separator } from "../../../shared/ui/Separator/Separator";
 import { Switch } from "../../../shared/ui/Switch/Switch";
+import { TextField } from "../../../shared/ui/TextField/TextField";
 import * as S from "../SettingsPage.styles";
 import type { PermissionRequestStatus } from "../hooks/usePermissionRequests";
 
@@ -19,6 +21,8 @@ interface SettingsAppPreferencesCardProps {
   locationStatus: PermissionRequestStatus;
   darkMode: boolean;
   onDarkModeChange: (checked: boolean) => void;
+  monthlyGoal: number;
+  onMonthlyGoalChange: (value: number) => void;
   // sounds: boolean;
   // onSoundsChange: (checked: boolean) => void;
 }
@@ -34,12 +38,28 @@ export function SettingsAppPreferencesCard({
   locationStatus,
   darkMode,
   onDarkModeChange,
+  monthlyGoal,
+  onMonthlyGoalChange,
   // sounds,
   // onSoundsChange,
 }: SettingsAppPreferencesCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
   const { t } = useTranslation();
+  const [monthlyGoalInput, setMonthlyGoalInput] = useState(stringifyGoal(monthlyGoal));
+
+  useEffect(() => {
+    setMonthlyGoalInput(stringifyGoal(monthlyGoal));
+  }, [monthlyGoal]);
+
+  function stringifyGoal(value: number) {
+    return Number.isFinite(value) ? value.toString() : "";
+  }
+
+  const commitMonthlyGoal = () => {
+    const parsed = Number(monthlyGoalInput);
+    onMonthlyGoalChange(Number.isFinite(parsed) ? parsed : 0);
+  };
 
   const statusVariantMap: Record<PermissionRequestStatus, "success" | "info" | "warning"> = {
     idle: "info",
@@ -131,6 +151,41 @@ export function SettingsAppPreferencesCard({
             </S.SettingsText>
           </S.SettingsLabel>
           <Switch checked={darkMode} onCheckedChange={onDarkModeChange} />
+        </S.SettingsItem>
+
+        <Separator />
+
+        <S.SettingsItem>
+          <S.SettingsLabel>
+            <S.SettingsText>
+              <S.SettingsItemTitle>
+                {t("settings.preferences.monthlyGoal.title")}
+              </S.SettingsItemTitle>
+              <span css={S.settingsItemDescription(theme)}>
+                {t("settings.preferences.monthlyGoal.description")}
+              </span>
+            </S.SettingsText>
+          </S.SettingsLabel>
+          <S.SettingsInputColumn>
+            <TextField
+              type="number"
+              min="10"
+              step="10"
+              value={monthlyGoalInput}
+              onChange={(event) => setMonthlyGoalInput(event.target.value)}
+              onBlur={commitMonthlyGoal}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  commitMonthlyGoal();
+                }
+              }}
+              placeholder={t("settings.preferences.monthlyGoal.placeholder")}
+              inputMode="numeric"
+            />
+            <S.SettingsHelperText>
+              {t("settings.preferences.monthlyGoal.helper")}
+            </S.SettingsHelperText>
+          </S.SettingsInputColumn>
         </S.SettingsItem>
 
         {/* 사운드 설정은 권한 정책을 재정립할 때까지 비활성화

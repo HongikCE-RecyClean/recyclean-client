@@ -286,6 +286,12 @@ export const koTranslation = {
         title: "다크 모드",
         description: "어두운 테마로 변경",
       },
+      monthlyGoal: {
+        title: "월간 포인트 목표",
+        description: "대시보드 진행률 계산 기준",
+        placeholder: "예: 200",
+        helper: "10pt 이상 입력하면 저장돼요.",
+      },
       sounds: {
         title: "사운드",
         description: "액션 사운드 효과",
@@ -327,8 +333,7 @@ export const koTranslation = {
     level: {
       title: "레벨 진행도",
       currentLevel: "레벨 {{level}}",
-      nextLevel: "다음 레벨까지",
-      pointsNeeded: "{{points}}pt 필요",
+      pointsNeeded: "다음 레벨까지 {{points}}pt 필요",
       maxLevel: "최고 레벨 달성!",
     },
     categories: {

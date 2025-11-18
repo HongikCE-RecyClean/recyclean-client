@@ -4,8 +4,9 @@ import { useDashboardData } from "shared/api/dashboard";
 import { useDashboardStore } from "shared/state/dashboardStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useUserStore } from "shared/state/userStore";
+import { useSettingsStore } from "shared/state/settingsStore";
 import { useNotificationStore } from "shared/state/notificationStore";
-import type { DashboardData } from "shared/types/dashboard";
+import { calculateTodayStats, calculateTotalStats } from "shared/utils/userStats";
 import * as S from "./DashboardPage.styles";
 import {
   AddEntryBottomSheet,
@@ -24,6 +25,7 @@ export function DashboardPage() {
   const { entries, setEntries } = useActivityStore();
   // 사용자 정보 스토어에서 이름 로드
   const { name: userName } = useUserStore();
+  const monthlyGoal = useSettingsStore((state) => state.monthlyGoal);
   // 알림 스토어에서 배너 제어 로드
   const { showBanner } = useNotificationStore();
   // 활동 추가 BottomSheet 상태
@@ -50,13 +52,19 @@ export function DashboardPage() {
     }
   }, [entries.length, userName, showBanner, t]);
 
-  const todayStats =
-    data?.todayStats ??
-    ({
-      itemsRecycled: 0,
-      pointsEarned: 0,
-      streakDays: 0,
-    } satisfies DashboardData["todayStats"]);
+  // activityStore의 entries를 기반으로 오늘의 통계 실시간 계산
+  const todayStats = useMemo(() => {
+    return calculateTodayStats(entries);
+  }, [entries]);
+
+  const {
+    totalPoints,
+    itemsRecycled: totalItems,
+    categoryCount,
+  } = useMemo(() => {
+    return calculateTotalStats(entries);
+  }, [entries]);
+
   const recentActivity = data?.recentActivity ?? [];
 
   // 재질 검색 결과 필터링 수행
@@ -71,11 +79,7 @@ export function DashboardPage() {
     });
   }, [data?.materials, searchTerm, materialCategory]);
 
-  const totalPoints = entries.reduce((sum, entry) => sum + entry.points, 0);
-  const totalItems = entries.reduce((sum, entry) => sum + entry.amount, 0);
-  const categoryCount = new Set(entries.map((entry) => entry.type)).size;
-  const monthlyGoal = 100;
-  const progressValue = (totalPoints / monthlyGoal) * 100;
+  const progressValue = monthlyGoal > 0 ? (totalPoints / monthlyGoal) * 100 : 0;
 
   return (
     <S.PageContainer>

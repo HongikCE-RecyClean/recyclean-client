@@ -34,6 +34,8 @@ export function SettingsPage() {
     setLanguage,
     region,
     setRegion,
+    monthlyGoal,
+    setMonthlyGoal,
   } = useSettingsStore();
   const {
     supportsNotifications,
@@ -102,6 +104,8 @@ export function SettingsPage() {
         onLocationChange={handleLocationChange}
         darkMode={darkMode}
         onDarkModeChange={setDarkMode}
+        monthlyGoal={monthlyGoal}
+        onMonthlyGoalChange={setMonthlyGoal}
         notificationsSupported={supportsNotifications}
         notificationStatus={notificationStatus}
         locationSupported={supportsGeolocation}

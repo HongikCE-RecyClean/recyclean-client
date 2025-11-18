@@ -53,6 +53,19 @@ export const SettingsItem = styled.div`
   }
 `;
 
+export const SettingsInputColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: ${({ theme }) => theme.spacing(1)};
+  min-width: 140px;
+`;
+
+export const SettingsHelperText = styled.span`
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
 // 설정 라벨 정렬 정의
 export const SettingsLabel = styled.div`
   display: flex;

@@ -14,12 +14,14 @@ interface SettingsState {
   sounds: boolean;
   language: SupportedLanguage;
   region: string;
+  monthlyGoal: number;
   setNotifications: (value: boolean) => void;
   setLocation: (value: boolean) => void;
   setDarkMode: (value: boolean) => void;
   setSounds: (value: boolean) => void;
   setLanguage: (value: SupportedLanguage | string) => void;
   setRegion: (value: string) => void;
+  setMonthlyGoal: (value: number) => void;
 }
 
 // 사용자 설정 zustand 스토어 (localStorage 지속성 포함)
@@ -32,12 +34,17 @@ export const useSettingsStore = create<SettingsState>()(
       sounds: true,
       language: DEFAULT_LANGUAGE,
       region: "kr",
+      monthlyGoal: 100,
       setNotifications: (value) => set({ notifications: value }),
       setLocation: (value) => set({ location: value }),
       setDarkMode: (value) => set({ darkMode: value }),
       setSounds: (value) => set({ sounds: value }),
       setLanguage: (value) => set({ language: normalizeLanguage(value) }),
       setRegion: (value) => set({ region: value }),
+      setMonthlyGoal: (value) =>
+        set({
+          monthlyGoal: Number.isFinite(value) && value > 0 ? Math.max(10, Math.round(value)) : 100,
+        }),
     }),
     {
       name: "recyclean-settings",

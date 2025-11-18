@@ -106,6 +106,20 @@ export const esTranslation = {
         hard: "Difícil",
       },
     },
+    addEntry: {
+      // 활동 추가 섹션 제목 문구
+      title: "Agregar actividad",
+      // 카테고리 필드 레이블
+      category: "Categoría",
+      // 재질(품목) 입력 레이블
+      material: "Material",
+      // 수량 입력 레이블
+      amount: "Cantidad",
+      // 날짜 선택 레이블
+      date: "Fecha",
+      // 포인트 미리보기 문구
+      pointsPreview: "Puntos estimados: +{{points}}pt",
+    },
   },
   analyze: {
     introTitle: "Clasificación de reciclaje con IA",
@@ -196,6 +210,8 @@ export const esTranslation = {
       meta: "{{count}} artículos · {{time}}",
       points: "+{{points}} pts",
       empty: "No hay registros este día.",
+      // 삭제 확인 모달 메시지
+      confirmDelete: "¿Seguro que quieres eliminar este registro?",
     },
     guide: {
       title: "Guía de registro",
@@ -279,6 +295,12 @@ export const esTranslation = {
         title: "Modo oscuro",
         description: "Usar el tema oscuro",
       },
+      monthlyGoal: {
+        title: "Meta mensual de puntos",
+        description: "Se usa para el progreso del panel",
+        placeholder: "p. ej. 200",
+        helper: "Ingresa al menos 10 pt para guardarlo.",
+      },
       sounds: {
         title: "Sonidos",
         description: "Reproducir efectos de sonido",
@@ -320,8 +342,7 @@ export const esTranslation = {
     level: {
       title: "Progreso de Nivel",
       currentLevel: "Nivel {{level}}",
-      nextLevel: "Al siguiente nivel",
-      pointsNeeded: "{{points}}pt necesarios",
+      pointsNeeded: "{{points}}pt necesarios para el siguiente nivel",
       maxLevel: "¡Nivel máximo alcanzado!",
     },
     categories: {
@@ -348,5 +369,17 @@ export const esTranslation = {
       entryDeleted: "El registro de actividad se eliminó",
       entryRestored: "El registro se restauró",
     },
+  },
+  common: {
+    // 취소 버튼 공통 문구
+    cancel: "Cancelar",
+    // 저장 버튼 공통 문구
+    save: "Guardar",
+    // 삭제 버튼 공통 문구
+    delete: "Eliminar",
+    // 편집 버튼 공통 문구
+    edit: "Editar",
+    // 확인 버튼 공통 문구
+    confirm: "Confirmar",
   },
 } as const;

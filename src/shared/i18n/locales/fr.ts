@@ -106,6 +106,20 @@ export const frTranslation = {
         hard: "Difficile",
       },
     },
+    addEntry: {
+      // 활동 추가 섹션 제목 문구
+      title: "Ajouter une activité",
+      // 카테고리 입력 레이블
+      category: "Catégorie",
+      // 재질 입력 레이블
+      material: "Matériau",
+      // 수량 입력 레이블
+      amount: "Quantité",
+      // 날짜 선택 레이블
+      date: "Date",
+      // 포인트 미리보기 문구
+      pointsPreview: "Points estimés : +{{points}}pt",
+    },
   },
   analyze: {
     introTitle: "Classification de recyclage par IA",
@@ -196,6 +210,8 @@ export const frTranslation = {
       meta: "{{count}} objets · {{time}}",
       points: "+{{points}} pts",
       empty: "Aucun enregistrement ce jour-là.",
+      // 삭제 확인 모달 문구
+      confirmDelete: "Voulez-vous vraiment supprimer cet enregistrement ?",
     },
     guide: {
       title: "Guide de suivi",
@@ -279,6 +295,12 @@ export const frTranslation = {
         title: "Mode sombre",
         description: "Passer au thème sombre",
       },
+      monthlyGoal: {
+        title: "Objectif mensuel de points",
+        description: "Utilisé pour le suivi sur le tableau de bord",
+        placeholder: "ex. 200",
+        helper: "Saisissez au moins 10 pt pour enregistrer.",
+      },
       sounds: {
         title: "Sons",
         description: "Jouer les effets sonores",
@@ -320,8 +342,7 @@ export const frTranslation = {
     level: {
       title: "Progression de Niveau",
       currentLevel: "Niveau {{level}}",
-      nextLevel: "Jusqu'au prochain niveau",
-      pointsNeeded: "{{points}}pt nécessaires",
+      pointsNeeded: "{{points}}pt nécessaires jusqu'au prochain niveau",
       maxLevel: "Niveau maximum atteint !",
     },
     categories: {
@@ -348,5 +369,17 @@ export const frTranslation = {
       entryDeleted: "L'enregistrement a été supprimé",
       entryRestored: "Enregistrement restauré",
     },
+  },
+  common: {
+    // 취소 버튼 공통 문구
+    cancel: "Annuler",
+    // 저장 버튼 공통 문구
+    save: "Enregistrer",
+    // 삭제 버튼 공통 문구
+    delete: "Supprimer",
+    // 편집 버튼 공통 문구
+    edit: "Modifier",
+    // 확인 버튼 공통 문구
+    confirm: "Confirmer",
   },
 } as const;
