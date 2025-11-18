@@ -9,6 +9,7 @@ import { queryClient } from "./queryClient";
 import { useSettingsStore } from "../state/settingsStore";
 import { i18n } from "../i18n";
 import { LanguageSync } from "../i18n/LanguageSync";
+import { SnackbarContainer } from "../ui/Snackbar/SnackbarContainer";
 
 // 앱 전역 프로바이더 래퍼
 export function AppProviders({ children }: PropsWithChildren) {
@@ -25,6 +26,7 @@ export function AppProviders({ children }: PropsWithChildren) {
           <AppGlobalStyles />
           <LanguageSync />
           {children}
+          <SnackbarContainer />
           {import.meta.env.DEV && (
             // 개발 디버그 버튼 위치를 명시적으로 유지
             <ReactQueryDevtools buttonPosition="bottom-right" initialIsOpen={false} />

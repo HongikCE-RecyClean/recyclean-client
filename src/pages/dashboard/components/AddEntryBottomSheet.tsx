@@ -5,6 +5,7 @@ import { Button } from "../../../shared/ui/Button/Button";
 import { TextField } from "../../../shared/ui/TextField/TextField";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import { useActivityStore } from "../../../shared/state/activityStore";
+import { useNotificationStore } from "../../../shared/state/notificationStore";
 import { MATERIALS_BY_CATEGORY, calculatePoints } from "../../../shared/utils/recyclingPoints";
 import * as S from "./AddEntryBottomSheet.styles";
 
@@ -16,6 +17,7 @@ interface AddEntryBottomSheetProps {
 export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProps) {
   const { t } = useTranslation();
   const { addEntry } = useActivityStore();
+  const { showSnackbar } = useNotificationStore();
 
   // 폼 상태
   const [category, setCategory] = useState<string>("플라스틱");
@@ -59,6 +61,12 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
       amount: amountNum,
       date: new Date(date),
       points,
+    });
+
+    // 성공 스낵바 표시
+    showSnackbar(`활동이 기록되었어요! ${points}포인트 획득`, {
+      type: "success",
+      duration: 3000,
     });
 
     // 폼 초기화 및 닫기

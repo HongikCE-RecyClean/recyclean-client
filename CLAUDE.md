@@ -18,7 +18,7 @@ The front-end lives in `src/`, split by responsibility. Page-level shells reside
 
 ## Architecture & State Flow
 
-The runtime is composed of layered providers initialized in `AppProviders`. Emotion's `ThemeProvider` and `AppGlobalStyles` supply design context, while `@tanstack/react-query` handles asynchronous data with a shared `QueryClient`. Client state that must persist across routes (filters, toggles, cached entries) is centralized in zustand stores (`useDashboardStore`, `useMapStore`, `useSettingsStore`). When adding a new domain:
+The runtime is composed of layered providers initialized in `AppProviders`. Emotion's `ThemeProvider` and `AppGlobalStyles` supply design context, while `@tanstack/react-query` handles asynchronous data with a shared `QueryClient`. Client state that must persist across routes (filters, toggles, cached entries) is centralized in zustand stores (`useDashboardStore`, `useMapStore`, `useSettingsStore`). Session-only UI state (notifications, modals) uses non-persistent stores (`useNotificationStore`). When adding a new domain:
 
 1. Create query keys in `src/shared/api/queryKeys.ts`.
 2. Draft fetcher hooks inside `src/shared/api/`.
@@ -53,6 +53,11 @@ The app follows a **local-first** approach powered by localStorage, enabling ful
 
 - **`useDashboardStore`**: UI state only (search terms, filters, selected categories)
 - **`useMapStore`**: Map filters and viewport state
+- **`useNotificationStore`**: Global notification state (banners, snackbars)
+  - `banner`: Current banner (single, replaces previous)
+  - `snackbars`: Queue of snackbars (FIFO, auto-dismiss)
+  - `showBanner(banner)`: Display persistent top banner
+  - `showSnackbar(message, options?)`: Show temporary bottom toast
 
 ### Onboarding Flow
 
@@ -473,12 +478,14 @@ inner   inset 0 1px 2px rgba(0, 0, 0, 0.3)
 
 - **Avatar**: 사용자 프로필 이미지 (원형)
 - **Badge**: 상태 표시, 카테고리 태그 (알약 모양)
+- **Banner**: 상단 알림 배너 (중요 정보, 경고, 환영 메시지)
 - **BottomSheet**: 모바일 하단 시트 (설정 메뉴에서 사용)
 - **Button**: 주요 액션 버튼 (primary, secondary, ghost 변형)
 - **Card**: 콘텐츠 컨테이너 (기본 레이아웃 단위)
 - **Progress**: 진행률 표시 (선형 바)
 - **SelectField**: 드롭다운 선택 입력
 - **Separator**: 수평/수직 구분선
+- **Snackbar**: 하단 토스트 알림 (액션 결과 피드백)
 - **Switch**: 토글 스위치 (설정 ON/OFF)
 - **TextField**: 텍스트 입력 필드
 
@@ -525,6 +532,223 @@ import { Home, Camera, Calendar, MapPin, Settings } from "lucide-react";
 - Large: 24px (헤더, 주요 액션)
 
 - Document usage in component comments or this guide
+
+## Notification System (Banner & Snackbar)
+
+The app provides a dual notification system for different types of user feedback: **Banner** for persistent important messages and **Snackbar** for temporary action feedback.
+
+### Architecture Overview
+
+**State Management**: `useNotificationStore` (zustand, non-persistent)
+
+- **Location**: `src/shared/state/notificationStore.ts`
+- **Scope**: Global, session-only (notifications are ephemeral)
+- **Store Structure**:
+  ```typescript
+  {
+    banner: BannerState | null,           // Single banner (replaces previous)
+    snackbars: SnackbarState[],          // Queue of snackbars (FIFO)
+    showBanner: (banner) => void,
+    closeBanner: () => void,
+    showSnackbar: (message, options?) => void,
+    closeSnackbar: (id) => void,
+  }
+  ```
+
+**Global Rendering**:
+
+- **BannerContainer**: Rendered in `AppShell` (below Header)
+- **SnackbarContainer**: Rendered in `AppProviders` (above BottomNav)
+
+### Banner (상단 알림)
+
+**Purpose**: Persistent, important information that requires user acknowledgment
+
+**Location**: Top of page, below Header, with horizontal margins
+
+**Design**:
+
+- Card-style appearance (surface background, border, shadow)
+- Emoji-based type indicators (✅ success, ❌ error, ⚠️ warning, 💡 info)
+- Optional action button
+- Manual dismiss via close button (X icon with rotation animation)
+
+**Usage Pattern**:
+
+```typescript
+import { useNotificationStore } from "shared/state/notificationStore";
+
+const { showBanner, closeBanner } = useNotificationStore();
+
+// Simple info banner
+showBanner({
+  type: "info",
+  message: "환영해요! 첫 재활용 활동을 기록해보세요",
+});
+
+// Banner with action
+showBanner({
+  type: "warning",
+  message: "오늘 놓친 일정이 3개 있어요",
+  action: {
+    label: "확인하기",
+    onClick: () => navigate("/calendar"),
+  },
+});
+
+// Programmatic close
+closeBanner();
+```
+
+**When to Use Banner**:
+
+- ✅ First-time user welcome messages
+- ✅ System status changes (offline/online mode)
+- ✅ Important warnings or alerts
+- ✅ Feature announcements
+- ✅ Milestone celebrations (e.g., "100 points achieved!")
+- ❌ **NOT for**: Quick action feedback (use Snackbar instead)
+
+**Current Implementation**:
+
+- `DashboardPage.tsx:38-49` - Welcome banner for first-time users (0 entries)
+
+### Snackbar (하단 토스트)
+
+**Purpose**: Temporary feedback for user actions
+
+**Location**: Bottom center, above BottomNav, stacked vertically (newest on top)
+
+**Design**:
+
+- Compact, minimal card with type-specific background colors
+- Auto-dismiss after configurable duration (default 4 seconds)
+- Optional action button (e.g., "Undo")
+- Slide-up animation on appear
+
+**Usage Pattern**:
+
+```typescript
+import { useNotificationStore } from "shared/state/notificationStore";
+
+const { showSnackbar } = useNotificationStore();
+
+// Simple success message
+showSnackbar("활동이 기록되었어요!");
+
+// With custom duration
+showSnackbar("저장되었어요", {
+  type: "success",
+  duration: 3000,
+});
+
+// With undo action
+showSnackbar("삭제되었어요", {
+  type: "success",
+  duration: 5000,
+  action: {
+    label: "실행취소",
+    onClick: () => {
+      restoreEntry(backup);
+      showSnackbar("복구되었어요", { type: "info" });
+    },
+  },
+});
+```
+
+**When to Use Snackbar**:
+
+- ✅ Action confirmations ("Saved", "Deleted", "Updated")
+- ✅ Quick status updates
+- ✅ Error messages that don't require immediate action
+- ✅ Undo/redo feedback
+- ❌ **NOT for**: Critical errors or important warnings (use Banner instead)
+
+**Current Implementation**:
+
+- `AddEntryBottomSheet.tsx:67-70` - Success message after saving activity
+- `CalendarPage.tsx:155-181` - Delete with undo action
+
+### Design Tokens
+
+**Banner**:
+
+- Height: `min-height: theme.spacing(16)` (64px)
+- Padding: `theme.spacing(4)` (16px)
+- Margin: `0 theme.spacing(4)`, `marginTop: theme.spacing(3)`
+- Border radius: `theme.radii.lg` (16px)
+- Shadow: Card-style dual shadow
+
+**Snackbar**:
+
+- Min-height: `theme.spacing(14)` (56px)
+- Padding: `theme.spacing(3) theme.spacing(4)`
+- Max-width: `500px`
+- Border radius: `theme.radii.md` (12px)
+- Gap between multiple: `theme.spacing(2)` (8px)
+
+**Emoji Indicators**:
+
+- Success: ✅
+- Error: ❌
+- Warning: ⚠️
+- Info: 💡
+- Size: `1.5rem`, margin-right: `0.75rem`
+
+### Best Practices
+
+1. **Banner vs Snackbar Decision Tree**:
+   - Does it require user action? → Banner with action button
+   - Is it system-critical? → Banner
+   - Is it temporary feedback? → Snackbar
+   - Can it auto-dismiss? → Snackbar
+   - Should it persist until acknowledged? → Banner
+
+2. **Avoid Notification Fatigue**:
+   - Don't show banners on every page load
+   - Use localStorage flags to track "seen" states
+   - Batch multiple related updates into single notification
+
+3. **Accessibility**:
+   - Both components use semantic HTML and ARIA labels
+   - Close buttons have `aria-label="닫기"`
+   - Keyboard navigation supported
+
+4. **Mobile Considerations**:
+   - Snackbar positioning accounts for `safe-area-inset-bottom`
+   - Banner has responsive padding (`@media (max-width: 768px)`)
+   - Touch targets meet 44px minimum
+
+### File Structure
+
+```
+src/shared/
+├── state/
+│   └── notificationStore.ts          # Zustand store (session-only)
+├── ui/
+│   ├── Banner/
+│   │   ├── Banner.tsx                # Banner component (emoji-based)
+│   │   ├── Banner.styles.ts          # Card-style design
+│   │   ├── BannerContainer.tsx       # Global renderer
+│   │   └── index.ts
+│   └── Snackbar/
+│       ├── Snackbar.tsx              # Snackbar component
+│       ├── Snackbar.styles.ts        # Type-specific backgrounds
+│       ├── SnackbarContainer.tsx     # Queue renderer
+│       └── index.ts
+├── layout/AppShell/
+│   └── AppShell.tsx                  # Integrates BannerContainer
+└── providers/
+    └── AppProviders.tsx              # Integrates SnackbarContainer
+```
+
+### Future Enhancements
+
+- [ ] Add notification sound effects (respect `useSettingsStore().sounds`)
+- [ ] Implement notification history/center
+- [ ] Support rich content (images, links)
+- [ ] Add swipe-to-dismiss gesture for mobile
+- [ ] Connect to PWA push notifications when backend is ready
 
 ## Internationalization & Localization
 

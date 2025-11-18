@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Header } from "../Header/Header";
 import { BottomNav } from "../../navigation/BottomNav/BottomNav";
+import { BannerContainer } from "../../ui/Banner/BannerContainer";
 import * as S from "./AppShell.styles";
 
 export function AppShell() {
@@ -8,6 +9,7 @@ export function AppShell() {
   return (
     <S.Shell>
       <Header />
+      <BannerContainer />
       <S.Main>
         <S.Content>
           <Outlet />

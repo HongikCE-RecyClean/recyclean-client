@@ -3,6 +3,7 @@ import { useDashboardData } from "shared/api/dashboard";
 import { useDashboardStore } from "shared/state/dashboardStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useUserStore } from "shared/state/userStore";
+import { useNotificationStore } from "shared/state/notificationStore";
 import type { DashboardData } from "shared/types/dashboard";
 import * as S from "./DashboardPage.styles";
 import {
@@ -21,6 +22,8 @@ export function DashboardPage() {
   const { entries, setEntries } = useActivityStore();
   // 사용자 정보 스토어에서 이름 로드
   const { name: userName } = useUserStore();
+  // 알림 스토어에서 배너 제어 로드
+  const { showBanner } = useNotificationStore();
   // 활동 추가 BottomSheet 상태
   const [isAddEntryOpen, setIsAddEntryOpen] = useState(false);
 
@@ -30,6 +33,20 @@ export function DashboardPage() {
       setEntries(data.entries);
     }
   }, [data?.entries, entries.length, setEntries]);
+
+  // 첫 방문 환영 배너 표시 (데모용 - 엔트리가 0개일 때)
+  useEffect(() => {
+    if (entries.length === 0 && userName) {
+      showBanner({
+        type: "info",
+        message: `${userName}님, 환영해요! 첫 재활용 활동을 기록해보세요`,
+        action: {
+          label: "시작하기",
+          onClick: () => setIsAddEntryOpen(true),
+        },
+      });
+    }
+  }, [entries.length, userName, showBanner]);
 
   const todayStats =
     data?.todayStats ??

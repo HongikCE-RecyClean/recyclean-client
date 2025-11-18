@@ -4,6 +4,7 @@ import { enUS, es, fr, ko as koLocale } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 import type { BadgeTone } from "../../shared/ui/Badge/Badge";
 import { useActivityStore } from "../../shared/state/activityStore";
+import { useNotificationStore } from "../../shared/state/notificationStore";
 import type { RecyclingEntry } from "../../shared/types/dashboard";
 import * as S from "./CalendarPage.styles";
 import {
@@ -61,7 +62,8 @@ export function CalendarPage() {
   const dateLocale = dateLocaleMap[language];
 
   // 활동 기록 스토어에서 entries와 deleteEntry 로드
-  const { entries, deleteEntry } = useActivityStore();
+  const { entries, deleteEntry, addEntry } = useActivityStore();
+  const { showSnackbar } = useNotificationStore();
   const [currentMonth, setCurrentMonth] = useState<Date>(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
 
@@ -149,6 +151,35 @@ export function CalendarPage() {
     setCurrentMonth(startOfMonth(month));
   }, []);
 
+  // 삭제 처리 with 실행취소 스낵바
+  const handleDelete = useCallback(
+    (id: string) => {
+      // 삭제 전 백업
+      const backup = entries.find((e) => e.id === id);
+      if (!backup) return;
+
+      // 삭제 실행
+      deleteEntry(id);
+
+      // 실행취소 스낵바 표시
+      showSnackbar("활동 기록이 삭제되었어요", {
+        type: "success",
+        duration: 5000,
+        action: {
+          label: "실행취소",
+          onClick: () => {
+            addEntry(backup);
+            showSnackbar("복구되었어요", {
+              type: "info",
+              duration: 2000,
+            });
+          },
+        },
+      });
+    },
+    [entries, deleteEntry, addEntry, showSnackbar],
+  );
+
   return (
     <S.PageContainer>
       {/* 달력과 월간 요약을 전담 카드로 분리 */}
@@ -170,7 +201,7 @@ export function CalendarPage() {
         selectedDateLabel={selectedDateLabel}
         entries={selectedEntries}
         timeLocale={dateLocale}
-        onDelete={deleteEntry}
+        onDelete={handleDelete}
       />
 
       {/* 안내 문구를 전용 카드로 유지 */}
