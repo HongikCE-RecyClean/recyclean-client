@@ -140,6 +140,7 @@ export const esTranslation = {
       instructionsTitle: "Pasos de manejo",
       retry: "Volver a tomar",
       logAction: "Registrar reciclaje",
+      saveSuccess: "✅ ¡Añadido a tu registro de actividades!",
     },
     tips: {
       title: "Consejos de captura",

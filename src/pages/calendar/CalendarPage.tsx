@@ -60,8 +60,8 @@ export function CalendarPage() {
   const intlLocale = localeTagMap[language];
   const dateLocale = dateLocaleMap[language];
 
-  // 활동 기록 스토어에서 entries 로드
-  const entries = useActivityStore((state) => state.entries);
+  // 활동 기록 스토어에서 entries와 deleteEntry 로드
+  const { entries, deleteEntry } = useActivityStore();
   const [currentMonth, setCurrentMonth] = useState<Date>(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
 
@@ -170,6 +170,7 @@ export function CalendarPage() {
         selectedDateLabel={selectedDateLabel}
         entries={selectedEntries}
         timeLocale={dateLocale}
+        onDelete={deleteEntry}
       />
 
       {/* 안내 문구를 전용 카드로 유지 */}

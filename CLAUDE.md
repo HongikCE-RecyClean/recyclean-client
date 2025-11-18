@@ -138,6 +138,68 @@ When updating store schemas:
    );
    ```
 
+### Activity Recording Workflows
+
+Users can add recycling activities through three entry points:
+
+**1. AI Analysis** (`AnalyzePage.tsx`):
+
+- Capture photo or upload image → AI classification → "재활용 처리 기록" button
+- Only recyclable items can be saved (result.recyclable === true)
+- Automatically matches material type and calculates points
+- Shows success notification on save
+
+**2. Manual Entry** (`AddEntryBottomSheet`):
+
+- Triggered from DashboardPage → TrackerCard → "활동 기록하기" button
+- Form fields: Category → Material → Amount → Date
+- Real-time points preview before saving
+- Immediate localStorage sync via activityStore.addEntry()
+
+**3. Calendar Management** (`CalendarPage.tsx`):
+
+- View: Daily activity list with date grouping
+- Delete: Trash icon → confirmation dialog → activityStore.deleteEntry()
+- Stats auto-update across all pages
+
+**Implementation Files**:
+
+- `src/pages/dashboard/components/AddEntryBottomSheet.tsx`: Manual entry form
+- `src/pages/analyze/AnalyzePage.tsx`: AI result save handler (handleSaveEntry)
+- `src/pages/calendar/components/CalendarEntriesCard.tsx`: Delete button integration
+
+## Recycling Points & Material Classification
+
+### Points Calculation System
+
+**Location**: `src/shared/utils/recyclingPoints.ts`
+
+**Core utilities**:
+
+- `RECYCLING_POINTS_TABLE`: 23개 재활용 품목의 포인트 테이블 (1-10pt)
+- `MATERIALS_BY_CATEGORY`: 카테고리별 품목 분류 (플라스틱, 종이, 금속, 유리 등)
+- `calculatePoints(type, amount)`: 품목과 수량 기반 포인트 계산
+- `matchMaterialType(item, category)`: AI 분석 결과를 표준 품목명으로 매칭
+- `translateCategory(category)`: 영문 카테고리를 한국어로 변환
+
+**Usage Pattern**:
+
+```typescript
+import { calculatePoints, matchMaterialType } from "shared/utils/recyclingPoints";
+
+// AI 분석 결과 처리
+const materialType = matchMaterialType("Plastic Bottle", "Plastic");
+const points = calculatePoints(materialType, 1); // "PET병", 3pt
+```
+
+**Points Table**:
+
+- 플라스틱류: 1-3pt (비닐 1pt, PET병 3pt)
+- 종이류: 1-3pt (종이 1pt, 우유팩 3pt)
+- 금속류: 3-4pt (캔 3pt, 알루미늄 캔 4pt)
+- 유리류: 3-4pt (유리병 3pt, 소주병 4pt)
+- 전자제품: 5-10pt (배터리 5pt, 전자제품 10pt)
+
 ## Styling & Theming
 
 Global typography, spacing, and color tokens originate from Vanilla Extract modules (`src/styles/tokens`). Emotion is responsible for component-level styling; prefer styled components for page-specific layouts and keep theme-aware utilities (spacing, radii) consistent. New global styles should extend `AppGlobalStyles` rather than authoring additional CSS entry points.
@@ -472,6 +534,107 @@ import { Home, Camera, Calendar, MapPin, Settings } from "lucide-react";
 - **Persistence**: `useSettingsStore` is persisted via zustand's `persist` middleware using `localStorage`, so language/dark-mode/region choices are stored per device (PWA-friendly). Any new setting added to this store must remain serializable.
 - **Adding Copy**: Whenever UI text is introduced, add keys to **all** locale files in the same structure. English serves as the schema reference; use descriptive key paths (`section.feature.label`) and mirror them across languages to avoid drift.
 - **Region/Locale Controls**: `SettingsLocaleCard` shows contextual hints (e.g., limited-region notice) via `settings.locale.regionHint`. When expanding support to new regions, update both the locale select options and each translation file.
+
+## Activity Store CRUD Quick Reference
+
+This section provides quick code examples for common activity store operations.
+
+### Create
+
+**Method 1: From AI analysis**
+
+```typescript
+import { useActivityStore } from "shared/state/activityStore";
+import { matchMaterialType, calculatePoints } from "shared/utils/recyclingPoints";
+
+const { addEntry } = useActivityStore();
+
+// AI 분석 결과를 활동 기록으로 변환
+const materialType = matchMaterialType(result.item, result.category);
+const points = calculatePoints(materialType, 1);
+
+addEntry({
+  type: materialType,
+  amount: 1,
+  date: new Date(),
+  points,
+});
+```
+
+**Method 2: Manual entry**
+
+```typescript
+const { addEntry } = useActivityStore();
+
+addEntry({
+  type: "PET병",
+  amount: 5,
+  date: new Date("2025-01-15"),
+  points: 15,
+});
+```
+
+### Read
+
+**Get all entries**
+
+```typescript
+const entries = useActivityStore((state) => state.entries);
+```
+
+**Filter by date**
+
+```typescript
+import { isSameDay } from "date-fns";
+
+const entries = useActivityStore((state) => state.entries);
+const todayEntries = entries.filter((e) => isSameDay(e.date, new Date()));
+```
+
+**Compute statistics**
+
+```typescript
+const entries = useActivityStore((state) => state.entries);
+
+const totalPoints = entries.reduce((sum, entry) => sum + entry.points, 0);
+const totalItems = entries.reduce((sum, entry) => sum + entry.amount, 0);
+const categoryCount = new Set(entries.map((entry) => entry.type)).size;
+```
+
+### Update
+
+```typescript
+const { updateEntry } = useActivityStore();
+
+// 수량과 포인트 업데이트
+updateEntry(entryId, {
+  amount: 10,
+  points: 30,
+});
+
+// 날짜 수정
+updateEntry(entryId, {
+  date: new Date("2025-01-20"),
+});
+```
+
+### Delete
+
+```typescript
+const { deleteEntry } = useActivityStore();
+
+// 단일 항목 삭제 (즉시 localStorage 동기화)
+deleteEntry(entryId);
+```
+
+### Clear All
+
+```typescript
+const { clearAllEntries } = useActivityStore();
+
+// 모든 활동 기록 삭제 (주의: 복구 불가능)
+clearAllEntries();
+```
 
 ## Development Workflow & Tooling
 

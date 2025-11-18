@@ -287,6 +287,41 @@ export const RecordPoints = styled.span`
   color: #16a34a;
 `;
 
+// 기록 액션 행 스타일
+export const recordActionsRow = css`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+// 삭제 버튼 스타일
+export const DeleteButton = styled.button`
+  background: none;
+  border: none;
+  padding: ${({ theme }) => theme.spacing(1)};
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.textMuted};
+  transition: color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${({ theme }) => theme.radii.sm};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.danger};
+    background: ${({ theme }) => theme.colors.dangerSurface};
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.danger};
+    outline-offset: 2px;
+  }
+`;
+
 // 빈 상태 메시지 정의
 export const EmptyState = styled.div`
   padding: ${({ theme }) => theme.spacing(4)};

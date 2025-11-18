@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDashboardData } from "shared/api/dashboard";
 import { useDashboardStore } from "shared/state/dashboardStore";
 import { useActivityStore } from "shared/state/activityStore";
@@ -6,6 +6,7 @@ import { useUserStore } from "shared/state/userStore";
 import type { DashboardData } from "shared/types/dashboard";
 import * as S from "./DashboardPage.styles";
 import {
+  AddEntryBottomSheet,
   MaterialSearchCard,
   RecentActivityCard,
   TrackerCard,
@@ -20,6 +21,8 @@ export function DashboardPage() {
   const { entries, setEntries } = useActivityStore();
   // 사용자 정보 스토어에서 이름 로드
   const { name: userName } = useUserStore();
+  // 활동 추가 BottomSheet 상태
+  const [isAddEntryOpen, setIsAddEntryOpen] = useState(false);
 
   // 초기 데이터 로드: activityStore가 비어있고 API 데이터가 있으면 초기 데이터로 사용
   useEffect(() => {
@@ -36,10 +39,10 @@ export function DashboardPage() {
       streakDays: 0,
     } satisfies DashboardData["todayStats"]);
   const recentActivity = data?.recentActivity ?? [];
-  const materials = data?.materials ?? [];
 
   // 재질 검색 결과 필터링 수행
   const filteredMaterials = useMemo(() => {
+    const materials = data?.materials ?? [];
     return materials.filter((material) => {
       const matchesSearch =
         material.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -47,7 +50,7 @@ export function DashboardPage() {
       const matchesCategory = materialCategory === "all" || material.category === materialCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [materials, searchTerm, materialCategory]);
+  }, [data?.materials, searchTerm, materialCategory]);
 
   const totalPoints = entries.reduce((sum, entry) => sum + entry.points, 0);
   const totalItems = entries.reduce((sum, entry) => sum + entry.amount, 0);
@@ -70,6 +73,7 @@ export function DashboardPage() {
         entriesCount={entries.length}
         totalItems={totalItems}
         categoryCount={categoryCount}
+        onLogAction={() => setIsAddEntryOpen(true)}
       />
       {/* <QuickActionsCard onAnalyze={() => navigate("/analyze")} onOpenMap={() => navigate("/map")} /> */}
       <RecentActivityCard recentActivity={recentActivity} />
@@ -88,6 +92,9 @@ export function DashboardPage() {
         onSelectedTipCategoryChange={setSelectedTipCategory}
         tipCategoryOptions={tipCategories}
       /> */}
+
+      {/* 활동 추가 BottomSheet */}
+      <AddEntryBottomSheet isOpen={isAddEntryOpen} onClose={() => setIsAddEntryOpen(false)} />
     </S.PageContainer>
   );
 }

@@ -10,9 +10,10 @@ import * as S from "../AnalyzePage.styles";
 interface AnalyzeResultCardProps {
   result: RecognitionResult;
   onReset: () => void;
+  onSave?: () => void; // 기록 저장 콜백
 }
 
-export function AnalyzeResultCard({ result, onReset }: AnalyzeResultCardProps) {
+export function AnalyzeResultCard({ result, onReset, onSave }: AnalyzeResultCardProps) {
   const { t } = useTranslation();
   // 재활용 가능 여부 배지 계산
   const statusBadge = result.recyclable ? (
@@ -72,7 +73,13 @@ export function AnalyzeResultCard({ result, onReset }: AnalyzeResultCardProps) {
             <Button variant="outline" css={S.resultActionButton} onClick={onReset}>
               {t("analyze.result.retry")}
             </Button>
-            <Button css={S.resultActionButton}>{t("analyze.result.logAction")}</Button>
+            <Button
+              css={S.resultActionButton}
+              onClick={onSave}
+              disabled={!result.recyclable || !onSave}
+            >
+              {t("analyze.result.logAction")}
+            </Button>
           </div>
         </S.ResultBody>
       </CardContent>

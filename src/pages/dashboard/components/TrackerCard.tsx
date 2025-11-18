@@ -12,6 +12,7 @@ interface TrackerCardProps {
   entriesCount: number;
   totalItems: number;
   categoryCount: number;
+  onLogAction?: () => void; // 활동 기록 버튼 클릭 핸들러
 }
 
 export function TrackerCard({
@@ -21,6 +22,7 @@ export function TrackerCard({
   entriesCount,
   totalItems,
   categoryCount,
+  onLogAction,
 }: TrackerCardProps) {
   const { t } = useTranslation();
   return (
@@ -54,7 +56,7 @@ export function TrackerCard({
             <S.TrackerHighlightText>{t("dashboard.tracker.highlight")}</S.TrackerHighlightText>
           </S.HighlightBox>
         )}
-        <Button variant="outline">
+        <Button variant="outline" onClick={onLogAction}>
           <RotateCcw size={16} />
           {t("dashboard.tracker.logAction")}
         </Button>

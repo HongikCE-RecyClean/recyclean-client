@@ -7,3 +7,4 @@ export { MaterialSearchCard } from "./MaterialSearchCard";
 export { GoalsCard } from "./GoalsCard";
 export { TipsCard } from "./TipsCard";
 export { TrackerCard } from "./TrackerCard";
+export { AddEntryBottomSheet } from "./AddEntryBottomSheet";

@@ -1,4 +1,4 @@
-import { ListTodo } from "lucide-react";
+import { ListTodo, Trash2 } from "lucide-react";
 import { format, type Locale } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
@@ -9,12 +9,14 @@ type CalendarEntriesCardProps = {
   selectedDateLabel: string;
   entries: RecyclingEntry[];
   timeLocale: Locale;
+  onDelete?: (id: string) => void; // 삭제 핸들러
 };
 
 export function CalendarEntriesCard({
   selectedDateLabel,
   entries,
   timeLocale,
+  onDelete,
 }: CalendarEntriesCardProps) {
   const { t } = useTranslation();
   // 날짜별 기록 리스트 출력을 카드로 분리
@@ -42,9 +44,24 @@ export function CalendarEntriesCard({
                     })}
                   </span>
                 </S.RecordInfo>
-                <S.RecordPoints>
-                  {t("calendar.entries.points", { points: entry.points })}
-                </S.RecordPoints>
+                <div css={S.recordActionsRow}>
+                  <S.RecordPoints>
+                    {t("calendar.entries.points", { points: entry.points })}
+                  </S.RecordPoints>
+                  {onDelete && (
+                    <S.DeleteButton
+                      onClick={() => {
+                        if (window.confirm(t("calendar.entries.confirmDelete"))) {
+                          onDelete(entry.id);
+                        }
+                      }}
+                      aria-label={t("common.delete")}
+                      title={t("common.delete")}
+                    >
+                      <Trash2 size={16} />
+                    </S.DeleteButton>
+                  )}
+                </div>
               </S.RecordItem>
             ))}
           </S.RecordList>

@@ -140,6 +140,7 @@ export const frTranslation = {
       instructionsTitle: "Étapes de traitement",
       retry: "Reprendre",
       logAction: "Enregistrer le recyclage",
+      saveSuccess: "✅ Ajouté à votre journal d'activités !",
     },
     tips: {
       title: "Conseils de prise de vue",

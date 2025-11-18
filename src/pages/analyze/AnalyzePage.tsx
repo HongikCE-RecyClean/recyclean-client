@@ -13,6 +13,8 @@ import type { RecognitionResult } from "./types";
 import { Card, CardContent } from "../../shared/ui/Card/Card";
 import { Button } from "../../shared/ui/Button/Button";
 import { useCamera } from "./hooks/useCamera";
+import { useActivityStore } from "../../shared/state/activityStore";
+import { matchMaterialType, calculatePoints } from "../../shared/utils/recyclingPoints";
 import * as S from "./AnalyzePage.styles";
 
 // 모의 분석 결과 리스트 정의
@@ -27,6 +29,7 @@ const ANALYSIS_DELAY_MS = 2200;
 
 export function AnalyzePage() {
   const { t } = useTranslation();
+  const { addEntry } = useActivityStore();
   const mockResults = useMemo(
     () =>
       mockResultPresets.map((preset) => ({
@@ -45,6 +48,8 @@ export function AnalyzePage() {
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   // 카메라 활성화 및 준비 상태 정의
   const [interactionError, setInteractionError] = useState<string | null>(null);
+  // 기록 저장 성공 메시지 상태
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // 업로드 입력 및 타이머 관리를 위한 ref 정의
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -144,6 +149,34 @@ export function AnalyzePage() {
     void openCamera();
   };
 
+  // 분석 결과를 활동 기록으로 저장
+  const handleSaveEntry = useCallback(() => {
+    if (!result || !result.recyclable) {
+      return;
+    }
+
+    // 분석 결과를 RecyclingEntry 형식으로 변환
+    const materialType = matchMaterialType(result.item, result.category);
+    const amount = 1; // 기본 수량 1개
+    const points = calculatePoints(materialType, amount);
+
+    // activityStore에 추가
+    addEntry({
+      type: materialType,
+      amount,
+      date: new Date(),
+      points,
+    });
+
+    // 성공 메시지 표시
+    setSaveSuccess(true);
+
+    // 3초 후 성공 메시지 숨김
+    setTimeout(() => {
+      setSaveSuccess(false);
+    }, 3000);
+  }, [result, addEntry]);
+
   // 분석 상태 초기화 처리 정의
   const reset = () => {
     clearAnalysisTimeout();
@@ -152,6 +185,7 @@ export function AnalyzePage() {
     setCapturedImage(null);
     setIsScanning(false);
     setInteractionError(null);
+    setSaveSuccess(false);
     stopCamera();
   };
 
@@ -215,7 +249,13 @@ export function AnalyzePage() {
 
       {isScanning && <AnalyzeScanningCard />}
 
-      {result && !isScanning && <AnalyzeResultCard result={result} onReset={reset} />}
+      {result && !isScanning && (
+        <AnalyzeResultCard result={result} onReset={reset} onSave={handleSaveEntry} />
+      )}
+
+      {saveSuccess && (
+        <S.SuccessMessage role="alert">{t("analyze.result.saveSuccess")}</S.SuccessMessage>
+      )}
 
       <AnalyzeTipsCard />
     </S.PageContainer>

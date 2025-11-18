@@ -103,6 +103,14 @@ export const koTranslation = {
         hard: "어려움",
       },
     },
+    addEntry: {
+      title: "활동 기록 추가",
+      category: "카테고리",
+      material: "품목",
+      amount: "수량",
+      date: "날짜",
+      pointsPreview: "예상 포인트: +{{points}}pt",
+    },
   },
   analyze: {
     introTitle: "AI 재활용 분류",
@@ -139,6 +147,7 @@ export const koTranslation = {
       instructionsTitle: "처리 방법",
       retry: "다시 촬영",
       logAction: "재활용 처리 기록",
+      saveSuccess: "✅ 활동 기록에 추가되었어요!",
     },
     tips: {
       title: "촬영 팁",
@@ -192,6 +201,7 @@ export const koTranslation = {
       meta: "{{count}}개 · {{time}}",
       points: "+{{points}} pts",
       empty: "선택한 날짜에는 기록이 없어요.",
+      confirmDelete: "이 기록을 삭제하시겠어요?",
     },
     guide: {
       title: "기록 관리 가이드",
@@ -300,5 +310,12 @@ export const koTranslation = {
       about: "앱 정보",
       logout: "로그아웃",
     },
+  },
+  common: {
+    cancel: "취소",
+    save: "저장",
+    delete: "삭제",
+    edit: "수정",
+    confirm: "확인",
   },
 } as const;

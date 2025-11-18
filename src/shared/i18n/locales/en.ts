@@ -103,6 +103,14 @@ export const enTranslation = {
         hard: "Hard",
       },
     },
+    addEntry: {
+      title: "Add Activity",
+      category: "Category",
+      material: "Material",
+      amount: "Amount",
+      date: "Date",
+      pointsPreview: "Expected points: +{{points}}pt",
+    },
   },
   analyze: {
     introTitle: "AI recycling classification",
@@ -139,6 +147,7 @@ export const enTranslation = {
       instructionsTitle: "Handling steps",
       retry: "Retake",
       logAction: "Log recycling",
+      saveSuccess: "✅ Added to your activity log!",
     },
     tips: {
       title: "Shooting tips",
@@ -192,6 +201,7 @@ export const enTranslation = {
       meta: "{{count}} items · {{time}}",
       points: "+{{points}} pts",
       empty: "No entries on this day.",
+      confirmDelete: "Are you sure you want to delete this record?",
     },
     guide: {
       title: "Tracking guide",
@@ -300,5 +310,12 @@ export const enTranslation = {
       about: "About the app",
       logout: "Log out",
     },
+  },
+  common: {
+    cancel: "Cancel",
+    save: "Save",
+    delete: "Delete",
+    edit: "Edit",
+    confirm: "Confirm",
   },
 } as const;
