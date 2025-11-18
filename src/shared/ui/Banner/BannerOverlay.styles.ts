@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 // 배너 최대 폭 고정 상수
-const MAX_BANNER_WIDTH = 440;
+const MAX_BANNER_WIDTH = 408;
 
 // 배너를 화면 상단에 띄우는 오버레이 래퍼
 export const OverlayWrapper = styled.div`
@@ -11,13 +11,9 @@ export const OverlayWrapper = styled.div`
   right: 0;
   display: flex;
   justify-content: center;
-  padding: 0 ${({ theme }) => theme.spacing(3)};
+  padding: 0 ${({ theme }) => theme.spacing(4)};
   pointer-events: none;
   z-index: 1200;
-
-  @media (max-width: 768px) {
-    padding: 0 ${({ theme }) => theme.spacing(2)};
-  }
 `;
 
 // 배너 컨텐츠에만 상호작용 허용
