@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+const DEFAULT_USER_NAME = "사용자"; // 기본 닉네임 상수로 유지
+const getNowIsoString = () => new Date().toISOString(); // 현재 시각 ISO 문자열 헬퍼
+
 // 사용자 정보 zustand 스토어 정의
 interface UserState {
   name: string;
@@ -15,9 +18,9 @@ interface UserState {
 export const useUserStore = create<UserState>()(
   persist(
     (set) => ({
-      name: "",
+      name: DEFAULT_USER_NAME,
       region: "kr",
-      joinedAt: null,
+      joinedAt: getNowIsoString(),
       setName: (value) =>
         set((state) => ({
           name: value,
@@ -25,12 +28,12 @@ export const useUserStore = create<UserState>()(
           joinedAt: state.joinedAt || new Date().toISOString(),
         })),
       setRegion: (value) => set({ region: value }),
-      // 사용자 데이터 초기화 (온보딩으로 돌아가기)
+      // 사용자 데이터 초기화 (기본 상태로 복귀)
       clearUserData: () =>
         set({
-          name: "",
+          name: DEFAULT_USER_NAME,
           region: "kr",
-          joinedAt: null,
+          joinedAt: getNowIsoString(),
         }),
     }),
     {

@@ -57,7 +57,7 @@ export function SettingsSupportActionsCard() {
     if (confirmed) {
       clearUserData();
       clearAllEntries();
-      navigate("/onboarding", { replace: true });
+      navigate("/profile", { replace: true });
     }
   };
 

@@ -27,7 +27,8 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
           // 최근 활동 리스트
           <S.RecentActivityList>
             {recentActivity.map((activity) => (
-              <S.ActivityRow key={activity.type}>
+              // 항목 id로 안정적인 키(key) 보장
+              <S.ActivityRow key={activity.id}>
                 <div>
                   {/* 최근 활동 제목 컴포넌트 적용 */}
                   <S.RecentActivityTitle>

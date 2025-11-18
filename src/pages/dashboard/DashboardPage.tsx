@@ -123,6 +123,8 @@ export function DashboardPage() {
       .map((entry) => {
         const entryDate = entry.date instanceof Date ? entry.date : new Date(entry.date);
         return {
+          // 리스트 키(key)로 사용할 항목 id
+          id: entry.id,
           type: entry.type,
           count: entry.amount,
           points: entry.points,

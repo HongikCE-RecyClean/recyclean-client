@@ -3,6 +3,8 @@ import type { MaterialId } from "shared/utils/recyclingPoints";
 
 // 대시보드 활동 항목 타입
 export interface RecentActivityItem {
+  // 항목 고유 식별자
+  id: string;
   type: MaterialId;
   count: number;
   points: number;

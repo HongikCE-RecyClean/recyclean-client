@@ -59,28 +59,26 @@ The app follows a **local-first** approach powered by localStorage, enabling ful
   - `showBanner(banner)`: Display persistent top banner
   - `showSnackbar(message, options?)`: Show temporary bottom toast
 
-### Onboarding Flow
+### 초기 프로필 처리(Initial Profile Defaults)
 
-First-time users must complete onboarding before accessing the app:
+첫 방문 시 온보딩 입력 없이 기본 닉네임이 설정돼요:
 
-1. **Guard Check**: `OnboardingGuard` in `App.tsx` checks `useUserStore().name`
-2. **Redirect**: If name is empty, navigate to `/onboarding`
-3. **Nickname Entry**: User enters nickname via `OnboardingPage`
-4. **Persist**: `setName(nickname)` triggers localStorage write and sets `joinedAt`
-5. **Navigation**: Redirect to dashboard (`/`) on completion
+1. **자동 기본값**: `useUserStore`가 앱 로드 시 닉네임을 "사용자"로 세팅하고 `joinedAt`를 현재 시각으로 기록해요.
+2. **즉시 접근**: 온보딩 가드나 `/onboarding` 경로 없이 곧바로 `AppShell` 라우트가 렌더링돼요.
+3. **프로필 편집**: 사용자는 ProfilePage의 바텀시트에서 닉네임을 변경하고 localStorage에 저장해요.
 
 **Key Files**:
 
-- `src/App.tsx`: Contains `OnboardingGuard` wrapper
-- `src/pages/onboarding/OnboardingPage.tsx`: Nickname input form
-- `src/shared/state/userStore.ts`: Persist configuration
+- `src/App.tsx`: 루트 라우터(온보딩 가드 제거)
+- `src/pages/profile/ProfilePage.tsx`: 닉네임 편집 바텀시트
+- `src/shared/state/userStore.ts`: 기본 닉네임과 persist 설정
 
 ### Data Reset & Profile Management
 
 Users can manage their local data through Settings:
 
 - **Profile Editing**: Settings → Edit Profile → Update nickname via BottomSheet
-- **Data Reset**: Settings → Reset Data → Confirms, clears all stores, navigates to onboarding
+- **Data Reset**: Settings → Reset Data → Confirm 후 모든 스토어를 비우고 기본 닉네임(“사용자”)으로 다시 세팅하며 ProfilePage로 이동
   - Implementation: `SettingsSupportActionsCard.tsx`
   - Clears: `userStore`, `activityStore` (settings remain intact)
 
