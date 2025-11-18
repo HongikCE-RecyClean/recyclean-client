@@ -40,7 +40,7 @@ export async function fetchMapData(client = apiClient): Promise<MapData> {
     return response.data;
   } catch (error) {
     if (shouldFallbackToSeed(error)) {
-      console.warn("[map] API 요청 실패로 로컬 시드 데이터를 사용해요", error);
+      console.warn("[map] Falling back to local seed data because the API request failed", error);
       return mapSeedData;
     }
     throw error;

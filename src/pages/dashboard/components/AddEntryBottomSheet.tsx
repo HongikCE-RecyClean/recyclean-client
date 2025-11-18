@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { BottomSheet } from "../../../shared/ui/BottomSheet/BottomSheet";
 import { Button } from "../../../shared/ui/Button/Button";
@@ -97,7 +97,10 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   };
 
   // 폼 제출 처리
-  const handleSubmit = () => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // 폼 기본 제출에 의한 전체 페이지 리로드 방지
+    event.stopPropagation(); // 다른 핸들러로 이벤트 버블링되는 상황 차단
+
     const amountNum = parseInt(amount, 10);
     const type = (materialType || materialOptions[0] || "other") as MaterialId;
 
@@ -145,7 +148,8 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
       onAfterClose={handleAfterClose}
       title={t("dashboard.addEntry.title")}
     >
-      <S.Form>
+      {/* 폼 제출을 단일 핸들러로 묶어 기본 동작 제어 */}
+      <S.Form onSubmit={handleSubmit}>
         {/* 카테고리 선택 */}
         <S.FormGroup>
           <S.Label>{t("dashboard.addEntry.category")}</S.Label>
@@ -227,10 +231,12 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
 
         {/* 버튼 그룹 */}
         <S.ButtonGroup>
-          <Button variant="outline" onClick={handleDismiss} css={S.buttonStyle}>
+          {/* 취소 버튼은 폼 제출과 무관하게 닫기만 수행 */}
+          <Button type="button" variant="outline" onClick={handleDismiss} css={S.buttonStyle}>
             {t("common.cancel")}
           </Button>
-          <Button onClick={handleSubmit} css={S.buttonStyle}>
+          {/* 저장 버튼은 폼 제출을 트리거하여 handleSubmit 실행 */}
+          <Button type="submit" css={S.buttonStyle}>
             {t("common.save")}
           </Button>
         </S.ButtonGroup>

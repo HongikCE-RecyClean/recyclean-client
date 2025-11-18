@@ -19,6 +19,8 @@ export const frTranslation = {
       "Consignez vos petits gestes écolo au quotidien.\\nTrouvez facilement les points de dépôt proches.",
     cta: "Commencer",
     hint: "Commencez à agir pour la planète avec {{appName}} dès maintenant.",
+    nameRequired: "Veuillez saisir un pseudo.",
+    namePlaceholder: "Saisir un pseudo",
   },
   dashboard: {
     welcome: {
@@ -127,6 +129,56 @@ export const frTranslation = {
       time: "Heure",
       // 포인트 미리보기 문구
       pointsPreview: "Points estimés : +{{points}}pt",
+    },
+    materials: {
+      plasticPetBottle: {
+        name: "Bouteilles PET transparentes (eau et boissons)",
+        instructions:
+          "Videz, rincez, retirez l'étiquette et le bouchon, puis compressez la bouteille avant de la déposer dans le bac dédié au PET transparent.",
+        tips: "Les bouteilles incolores, sans étiquette et légèrement compressées offrent une meilleure qualité de résine recyclée.",
+      },
+      plasticTakeoutContainer: {
+        name: "Barquette plastique de livraison graisseuse",
+        instructions:
+          "Si des sauces ou huiles restent incrustées, le tri est refusé ; lorsqu'il est impossible de nettoyer correctement, jetez-la avec les ordures ménagères.",
+        tips: "Seules les barquettes parfaitement lavées et sèches peuvent rejoindre la filière plastique.",
+      },
+      paperCarton: {
+        name: "Brique de lait ou de jus",
+        instructions:
+          "Videz, rincez, ouvrez et laissez sécher. Retirez pailles, autocollants ou autres matériaux avant de les regrouper.",
+        tips: "Même laminées, les briques propres peuvent être déposées dans les collectes dédiées ou programmes de consigne.",
+      },
+      greasyPizzaBox: {
+        name: "Boîte à pizza graisseuse",
+        instructions:
+          "La graisse contamine les autres papiers : placez les parties tachées dans un sac poubelle ou un sac spécifique.",
+        tips: "Séparez le couvercle propre et recyclez uniquement cette partie pour de meilleurs résultats.",
+      },
+      aluminumCan: {
+        name: "Canette en aluminium",
+        instructions:
+          "Rincez pour éliminer les résidus et évitez tout corps étranger ; retirez les capuchons plastiques avant le tri.",
+        tips: "Écraser légèrement la canette améliore l'efficacité de collecte et l'empilage.",
+      },
+      butaneCan: {
+        name: "Cartouche de butane avec gaz restant",
+        instructions:
+          "Si du gaz subsiste, elle est refusée ; purgez-la complètement à l'extérieur puis placez-la dans un sac spécial.",
+        tips: "Percez la cartouche et retirez les étiquettes une fois vide pour l'envoyer au tri métallique.",
+      },
+      glassBottle: {
+        name: "Bouteille en verre (soju/bière)",
+        instructions:
+          "Retirez bouchons et étiquettes, rincez puis recyclez avec précaution ou rapportez-la via la consigne.",
+        tips: "Les bouteilles consignées peuvent être rendues en magasin pour récupérer le dépôt.",
+      },
+      heatResistantGlass: {
+        name: "Plat en verre résistant à la chaleur",
+        instructions:
+          "Le verre trempé a un point de fusion différent ; emballez-le dans du papier journal et jetez-le avec les ordures ménagères.",
+        tips: "Indiquez clairement les éclats tranchants pour protéger les équipes de collecte.",
+      },
     },
   },
   analyze: {
@@ -342,6 +394,7 @@ export const frTranslation = {
       joined: "Inscrit le {{date}}",
       points: "{{points}} pts",
       streak: "{{days}} jours d'affilée",
+      nickname: "Pseudo",
     },
     impact: {
       title: "Mon impact",
@@ -392,6 +445,12 @@ export const frTranslation = {
       languageLabel: "Langue",
       regionLabel: "Région",
       regionHint: "Actuellement seule la région pilote Corée est disponible.",
+      languages: {
+        ko: "Coréen",
+        en: "Anglais",
+        es: "Espagnol",
+        fr: "Français",
+      },
       regions: {
         kr: "Corée du Sud",
         us: "États-Unis",
@@ -406,6 +465,8 @@ export const frTranslation = {
       helpCenter: "Centre d'aide",
       about: "À propos de l'application",
       logout: "Se déconnecter",
+      resetConfirm: "Toutes les données stockées localement seront supprimées. Continuer ?",
+      resetData: "Réinitialiser les données",
     },
   },
   profile: {
@@ -440,6 +501,40 @@ export const frTranslation = {
       noData: "Aucune donnée de catégorie pour le moment.",
       items: "{{count}} articles",
       points: "{{points}}pt",
+    },
+  },
+  materials: {
+    categories: {
+      plastic: "Plastique",
+      paper: "Papier",
+      metal: "Métal",
+      glass: "Verre",
+      textile: "Textiles",
+      electronic: "Électronique",
+      other: "Autres",
+    },
+    items: {
+      plasticBottle: "Bouteille en plastique",
+      petBottle: "Bouteille PET",
+      plasticContainer: "Barquette plastique",
+      vinyl: "Film/sac plastique",
+      styrofoam: "Polystyrène",
+      paper: "Papier",
+      cardboard: "Carton",
+      newspaper: "Journal",
+      milkCarton: "Brique de lait",
+      can: "Canette",
+      aluminumCan: "Canette en aluminium",
+      steelCan: "Boîte en acier",
+      glassBottle: "Bouteille en verre",
+      sojuBottle: "Bouteille de soju",
+      clothes: "Vêtements",
+      oldClothes: "Vieux vêtements",
+      textile: "Textile",
+      battery: "Batterie",
+      electronics: "Électronique",
+      fluorescentLamp: "Tube fluorescent",
+      other: "Autre",
     },
   },
   notifications: {

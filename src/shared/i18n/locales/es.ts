@@ -19,6 +19,8 @@ export const esTranslation = {
       "Registra pequeños gestos ecológicos diarios.\\nEncuentra puntos de entrega cercanos con facilidad.",
     cta: "Comenzar",
     hint: "Empieza a actuar por el planeta con {{appName}} ahora.",
+    nameRequired: "Ingresa un apodo.",
+    namePlaceholder: "Ingresa tu apodo",
   },
   dashboard: {
     welcome: {
@@ -127,6 +129,56 @@ export const esTranslation = {
       time: "Hora",
       // 포인트 미리보기 문구
       pointsPreview: "Puntos estimados: +{{points}}pt",
+    },
+    materials: {
+      plasticPetBottle: {
+        name: "Botellas PET transparentes (agua y bebidas)",
+        instructions:
+          "Vacía, enjuaga, retira la etiqueta y la tapa, y luego comprime la botella antes de depositarla en el contenedor exclusivo para PET transparente.",
+        tips: "Las botellas incoloras, sin etiqueta y comprimidas producen resina reciclada de mejor calidad.",
+      },
+      plasticTakeoutContainer: {
+        name: "Envase plástico de comida con grasa",
+        instructions:
+          "Si quedan salsas u aceites difíciles de limpiar, el reciclaje se rechaza; cuando no puedas limpiarlo bien, tíralo como residuo general.",
+        tips: "Solo los envases totalmente lavados y secos pueden enviarse al flujo de plásticos.",
+      },
+      paperCarton: {
+        name: "Cartón de leche o jugo",
+        instructions:
+          "Vacía, enjuaga, abre y seca. Retira pajillas, pegatinas u otros materiales antes de agruparlos.",
+        tips: "Incluso los cartonados laminados pueden reciclarse si están limpios; entrégalos en campañas o contenedores especiales.",
+      },
+      greasyPizzaBox: {
+        name: "Caja de pizza con grasa",
+        instructions:
+          "La grasa contamina otros papeles, así que tira las partes manchadas en bolsas de basura o sacos especiales.",
+        tips: "Separa la tapa limpia y recicla solo esa sección para mejorar el rendimiento.",
+      },
+      aluminumCan: {
+        name: "Lata de aluminio",
+        instructions:
+          "Enjuaga para quitar residuos y evita objetos extraños; retira cualquier tapa plástica antes de reciclarla.",
+        tips: "Aplastar la parte superior mejora la eficiencia de recolección y el apilado.",
+      },
+      butaneCan: {
+        name: "Lata de butano con gas restante",
+        instructions:
+          "Si aún queda gas, no se acepta; ventílala por completo al aire libre y deposítala en un saco especial.",
+        tips: "Perfora la lata y retira las etiquetas una vez vacía para reciclarla como metal.",
+      },
+      glassBottle: {
+        name: "Botella de vidrio de soju o cerveza",
+        instructions:
+          "Retira tapas y etiquetas, enjuaga y recicla con cuidado o devuélvela mediante el programa de depósito.",
+        tips: "Las botellas con depósito pueden devolverse a las tiendas para obtener el reembolso.",
+      },
+      heatResistantGlass: {
+        name: "Utensilio de vidrio resistente al calor",
+        instructions:
+          "El vidrio templado tiene otro punto de fusión; envuélvelo en papel periódico y deséchalo como residuo general.",
+        tips: "Marca claramente los fragmentos afilados para proteger al personal de recolección.",
+      },
     },
   },
   analyze: {
@@ -341,6 +393,7 @@ export const esTranslation = {
     profile: {
       avatarAlt: "Imagen de perfil predeterminada",
       joined: "Se unió el {{date}}",
+      nickname: "Apodo",
       points: "{{points}} pts",
       streak: "Racha de {{days}} días",
     },
@@ -393,6 +446,12 @@ export const esTranslation = {
       languageLabel: "Idioma",
       regionLabel: "Región",
       regionHint: "Por ahora solo está disponible la región piloto de Corea.",
+      languages: {
+        ko: "Coreano",
+        en: "Inglés",
+        es: "Español",
+        fr: "Francés",
+      },
       regions: {
         kr: "Corea del Sur",
         us: "Estados Unidos",
@@ -443,6 +502,40 @@ export const esTranslation = {
       noData: "Aún no hay datos de categorías.",
       items: "{{count}} artículos",
       points: "{{points}}pt",
+    },
+  },
+  materials: {
+    categories: {
+      plastic: "Plástico",
+      paper: "Papel",
+      metal: "Metal",
+      glass: "Vidrio",
+      textile: "Textiles",
+      electronic: "Electrónica",
+      other: "Otros",
+    },
+    items: {
+      plasticBottle: "Botella de plástico",
+      petBottle: "Botella PET",
+      plasticContainer: "Envase plástico",
+      vinyl: "Bolsa/película plástica",
+      styrofoam: "Espuma de poliestireno",
+      paper: "Papel",
+      cardboard: "Cartón",
+      newspaper: "Periódico",
+      milkCarton: "Cartón de leche",
+      can: "Lata",
+      aluminumCan: "Lata de aluminio",
+      steelCan: "Lata de acero",
+      glassBottle: "Botella de vidrio",
+      sojuBottle: "Botella de soju",
+      clothes: "Ropa",
+      oldClothes: "Ropa usada",
+      textile: "Textil",
+      battery: "Batería",
+      electronics: "Electrónicos",
+      fluorescentLamp: "Tubo fluorescente",
+      other: "Otro",
     },
   },
   notifications: {

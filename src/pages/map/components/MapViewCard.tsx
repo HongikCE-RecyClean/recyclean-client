@@ -34,7 +34,7 @@ export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) 
 
       mapInstanceRef.current = mapInstance;
     } catch (initializationError) {
-      console.error("NAVER 지도 초기화 실패", initializationError);
+      console.error("Failed to initialize NAVER Maps", initializationError);
       setMapInitError("init-failed");
       return;
     }
@@ -51,7 +51,7 @@ export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) 
       try {
         activeMap.destroy();
       } catch (cleanupError) {
-        console.warn("NAVER 지도 정리 중 오류", cleanupError);
+        console.warn("Failed to dispose NAVER Maps instance", cleanupError);
       } finally {
         mapInstanceRef.current = null;
       }

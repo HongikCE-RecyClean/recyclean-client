@@ -205,9 +205,6 @@ export function CalendarPage() {
         monthlyStats={monthlyStats}
       />
 
-      {/* 월별 범례 정보를 하위 컴포넌트로 전달 */}
-      <CalendarLegendCard items={materialLegend} />
-
       {/* 선택 날짜의 기록 상세를 독립 카드로 표현 */}
       <CalendarEntriesCard
         selectedDateLabel={selectedDateLabel}
@@ -215,6 +212,9 @@ export function CalendarPage() {
         timeLocale={dateLocale}
         onDelete={handleDelete}
       />
+
+      {/* 월별 범례 정보를 페이지 하단에 배치 */}
+      <CalendarLegendCard items={materialLegend} />
     </S.PageContainer>
   );
 }

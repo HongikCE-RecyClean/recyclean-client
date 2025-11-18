@@ -3,11 +3,11 @@ import type { BadgeTone } from "shared/ui/Badge/Badge";
 
 // 지도 필터 옵션 기본값
 export const defaultMapFilterOptions: FilterOption[] = [
-  { value: "all", label: "전체 유형" },
-  { value: "recycling", label: "재활용" },
-  { value: "general", label: "일반" },
-  { value: "electronic", label: "전자제품" },
-  { value: "compost", label: "퇴비" },
+  { value: "all", label: "All types" },
+  { value: "recycling", label: "Recycling" },
+  { value: "general", label: "General" },
+  { value: "electronic", label: "Electronics" },
+  { value: "compost", label: "Compost" },
 ];
 
 // 쓰레기통 유형 강조색 매핑
