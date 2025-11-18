@@ -335,6 +335,10 @@ export const enTranslation = {
           "Make sure this origin is allowed in the NAVER Maps domain whitelist and API permissions.",
       },
     },
+    guide: {
+      bannerMessage:
+        'Map tip 🧭 Turn on "Use my location" to highlight nearby drop-off bins first.',
+    },
     filter: {
       title: "Nearby drop-off bins",
       useLocation: "Use my location",

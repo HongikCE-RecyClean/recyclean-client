@@ -333,6 +333,9 @@ export const koTranslation = {
         description: "허용 도메인과 API 권한에 현재 주소가 포함되어 있는지 점검해주세요.",
       },
     },
+    guide: {
+      bannerMessage: '지도 팁 🧭 "내 위치 사용하기"를 켜면 주변 배출함을 우선으로 보여줘요.',
+    },
     filter: {
       title: "내 주변 배출함",
       useLocation: "내 위치 사용하기",

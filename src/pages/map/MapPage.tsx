@@ -1,10 +1,11 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import type { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { MapViewCard } from "./components/MapViewCard";
 import { RecyclingCenterList } from "./components/RecyclingCenterList";
 import { useMapData } from "shared/api/map";
 import { useMapStore } from "shared/state/mapStore";
+import { useNotificationStore } from "shared/state/notificationStore";
 import { defaultMapFilterOptions } from "shared/constants/mapVisuals";
 import { Button } from "shared/ui/Button/Button";
 import * as S from "./MapPage.styles";
@@ -12,6 +13,7 @@ import * as S from "./MapPage.styles";
 export function MapPage() {
   const { t } = useTranslation();
   const { selectedType, setSelectedType } = useMapStore();
+  const { showBanner, closeBanner } = useNotificationStore();
   const { data, error, isError, isFetching, refetch } = useMapData();
   const options = data?.options ?? defaultMapFilterOptions;
   const centers = data?.centers ?? [];
@@ -31,6 +33,17 @@ export function MapPage() {
   const handleRetry = () => {
     void refetch();
   };
+
+  useEffect(() => {
+    const bannerId = showBanner({
+      type: "info",
+      message: t("map.guide.bannerMessage"),
+    });
+
+    return () => {
+      closeBanner(bannerId);
+    };
+  }, [showBanner, closeBanner, t]);
 
   // 지도 페이지 레이아웃 구성
   return (

@@ -348,6 +348,10 @@ export const esTranslation = {
           "Verifica que este origen esté incluido en los permisos y la lista de dominios de la API.",
       },
     },
+    guide: {
+      bannerMessage:
+        'Tip del mapa 🧭 Activa "Usar mi ubicación" para ver primero los puntos de entrega cercanos.',
+    },
     filter: {
       title: "Contenedores cercanos",
       useLocation: "Usar mi ubicación",

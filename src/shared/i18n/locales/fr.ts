@@ -348,6 +348,10 @@ export const frTranslation = {
           "Assurez-vous que ce domaine figure dans la liste blanche et dans les autorisations de l'API.",
       },
     },
+    guide: {
+      bannerMessage:
+        'Astuce carte 🧭 Activez "Utiliser ma position" pour afficher en priorité les points de dépôt proches.',
+    },
     filter: {
       title: "Points de dépôt à proximité",
       useLocation: "Utiliser ma position",
