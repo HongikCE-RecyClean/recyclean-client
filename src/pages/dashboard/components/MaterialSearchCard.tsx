@@ -1,6 +1,8 @@
 import type { ChangeEvent } from "react";
+import { useMemo } from "react";
 import { useTheme } from "@emotion/react";
 import { AlertCircle, Leaf, Lightbulb } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { TextField } from "../../../shared/ui/TextField/TextField";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
@@ -16,13 +18,7 @@ interface MaterialSearchCardProps {
   filteredMaterials: MaterialItemData[];
 }
 
-const materialFilters = [
-  { value: "all", label: "전체" },
-  { value: "Plastic", label: "Plastic" },
-  { value: "Glass", label: "Glass" },
-  { value: "Metal", label: "Metal" },
-  { value: "Paper", label: "Paper" },
-];
+const materialFilterKeys = ["all", "Plastic", "Glass", "Metal", "Paper"] as const;
 
 export function MaterialSearchCard({
   searchTerm,
@@ -33,19 +29,28 @@ export function MaterialSearchCard({
 }: MaterialSearchCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
+  const { t } = useTranslation();
+  const materialFilters = useMemo(
+    () =>
+      materialFilterKeys.map((value) => ({
+        value,
+        label: t(`dashboard.materialSearch.filters.${value}`),
+      })),
+    [t],
+  );
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>
           <Lightbulb size={18} />
-          재활용 정보 검색
+          {t("dashboard.materialSearch.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
         {/* 검색 입력 영역 */}
         <TextField
-          placeholder="재질 또는 물품명을 검색해요"
+          placeholder={t("dashboard.materialSearch.placeholder")}
           value={searchTerm}
           onChange={onSearchTermChange}
           startIcon={<Leaf size={16} />}
@@ -63,7 +68,9 @@ export function MaterialSearchCard({
               <div css={S.materialHeaderRow}>
                 <div css={S.materialHeaderLeft}>
                   <Badge tone={material.recyclable ? "success" : "danger"}>
-                    {material.recyclable ? "재활용 가능" : "불가"}
+                    {material.recyclable
+                      ? t("dashboard.materialSearch.recyclable")
+                      : t("dashboard.materialSearch.notRecyclable")}
                   </Badge>
                   <S.MaterialNameText>{material.name}</S.MaterialNameText>
                 </div>
@@ -80,7 +87,7 @@ export function MaterialSearchCard({
             </S.MaterialItem>
           ))}
           {filteredMaterials.length === 0 && (
-            <S.MaterialEmptyMessage>조건에 맞는 결과가 없어요.</S.MaterialEmptyMessage>
+            <S.MaterialEmptyMessage>{t("dashboard.materialSearch.empty")}</S.MaterialEmptyMessage>
           )}
         </S.MaterialList>
       </CardContent>

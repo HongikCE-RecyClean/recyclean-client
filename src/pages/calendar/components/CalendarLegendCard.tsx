@@ -1,4 +1,5 @@
 import { PieChart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../CalendarPage.styles";
@@ -9,13 +10,14 @@ type CalendarLegendCardProps = {
 };
 
 export function CalendarLegendCard({ items }: CalendarLegendCardProps) {
+  const { t } = useTranslation();
   // 품목 범례 표시를 독립 컴포넌트로 구성
   return (
     <Card>
       <CardHeader>
         <CardTitle>
           <PieChart size={18} />
-          품목 범례
+          {t("calendar.legend.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -30,14 +32,18 @@ export function CalendarLegendCard({ items }: CalendarLegendCardProps) {
                 {/* 수량과 포인트를 우측 정렬 */}
                 <div css={S.legendStatsColumn}>
                   {/* 범례 수량 텍스트 컴포넌트 적용 */}
-                  <S.LegendCountText>{item.count}개</S.LegendCountText>
-                  <div css={S.legendPointsText}>+{item.points} pts</div>
+                  <S.LegendCountText>
+                    {t("calendar.legend.count", { count: item.count })}
+                  </S.LegendCountText>
+                  <div css={S.legendPointsText}>
+                    {t("calendar.legend.points", { points: item.points })}
+                  </div>
                 </div>
               </S.LegendItem>
             ))}
           </S.LegendList>
         ) : (
-          <S.EmptyState>이 달에는 아직 기록이 없어요.</S.EmptyState>
+          <S.EmptyState>{t("calendar.legend.empty")}</S.EmptyState>
         )}
       </CardContent>
     </Card>

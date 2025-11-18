@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import recycleanLogo from "../../assets/recycleanLogo.svg";
 import { useSettingsStore } from "shared/state/settingsStore";
 import {
@@ -11,22 +13,15 @@ import * as S from "./SettingsPage.styles";
 import type { LocaleOption, UserStats } from "./types";
 
 // 지원 언어 목록 정의
-const languages: LocaleOption[] = [
+const languageOptions: LocaleOption[] = [
   { value: "ko", label: "한국어" },
   { value: "en", label: "English" },
   { value: "es", label: "Español" },
   { value: "fr", label: "Français" },
 ];
 
-// 지원 지역 목록 정의
-const regions: LocaleOption[] = [
-  { value: "kr", label: "대한민국" },
-  { value: "us", label: "United States" },
-  { value: "ca", label: "Canada" },
-  { value: "uk", label: "United Kingdom" },
-];
-
 export function SettingsPage() {
+  const { t } = useTranslation();
   // 사용자 설정 스토어 바인딩
   const {
     notifications,
@@ -43,10 +38,16 @@ export function SettingsPage() {
     setRegion,
   } = useSettingsStore();
 
+  // 지역 옵션 (현재는 대한민국만 지원)
+  const regions: LocaleOption[] = useMemo(
+    () => [{ value: "kr", label: t("settings.locale.regions.kr") }],
+    [t],
+  );
+
   const userStats: UserStats = {
     totalPoints: 287,
     itemsRecycled: 156,
-    joinDate: "2024년 1월",
+    joinDate: "2024-01-01",
     streakDays: 12,
   };
 
@@ -66,7 +67,7 @@ export function SettingsPage() {
         onSoundsChange={setSounds}
       />
       <SettingsLocaleCard
-        languages={languages}
+        languages={languageOptions}
         regions={regions}
         language={language}
         region={region}

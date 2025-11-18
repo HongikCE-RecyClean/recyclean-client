@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 import {
   AnalyzeActionsCard,
   AnalyzeCapturedImageCard,
@@ -15,37 +16,29 @@ import { useCamera } from "./hooks/useCamera";
 import * as S from "./AnalyzePage.styles";
 
 // 모의 분석 결과 리스트 정의
-const mockResults: RecognitionResult[] = [
-  {
-    item: "Plastic Water Bottle",
-    confidence: 95,
-    recyclable: true,
-    category: "Plastic #1 (PET)",
-    instructions: "라벨과 뚜껑을 제거하고 깨끗이 헹군 뒤 배출해요.",
-    tips: "바닥의 재활용 기호 #1을 확인해요.",
-  },
-  {
-    item: "Pizza Box",
-    confidence: 88,
-    recyclable: false,
-    category: "Contaminated Paper",
-    instructions: "기름과 음식물이 묻어 재활용이 어려워요.",
-    tips: "깨끗한 부분만 분리 배출하고 나머지는 일반쓰레기로 버려요.",
-  },
-  {
-    item: "Aluminum Can",
-    confidence: 92,
-    recyclable: true,
-    category: "Aluminum",
-    instructions: "물을 헹군 뒤 눌러서 부피를 줄여요.",
-    tips: "금속류 중에서도 재활용 가치가 높아요.",
-  },
-];
+const mockResultPresets = [
+  { key: "plasticBottle", confidence: 95, recyclable: true },
+  { key: "pizzaBox", confidence: 88, recyclable: false },
+  { key: "aluminumCan", confidence: 92, recyclable: true },
+] as const;
 
 // 분석 시뮬레이션 지연 시간 상수 정의
 const ANALYSIS_DELAY_MS = 2200;
 
 export function AnalyzePage() {
+  const { t } = useTranslation();
+  const mockResults = useMemo(
+    () =>
+      mockResultPresets.map((preset) => ({
+        confidence: preset.confidence,
+        recyclable: preset.recyclable,
+        item: t(`analyze.mockResults.${preset.key}.item`),
+        category: t(`analyze.mockResults.${preset.key}.category`),
+        instructions: t(`analyze.mockResults.${preset.key}.instructions`),
+        tips: t(`analyze.mockResults.${preset.key}.tips`),
+      })) as RecognitionResult[],
+    [t],
+  );
   // 분석 화면 표시와 결과 상태 정의
   const [isScanning, setIsScanning] = useState(false);
   const [result, setResult] = useState<RecognitionResult | null>(null);
@@ -92,7 +85,7 @@ export function AnalyzePage() {
       setResult(random);
       setIsScanning(false);
     }, ANALYSIS_DELAY_MS);
-  }, [clearAnalysisTimeout]);
+  }, [clearAnalysisTimeout, mockResults]);
 
   const startAnalysis = useCallback(
     (imageSrc: string) => {
@@ -121,7 +114,7 @@ export function AnalyzePage() {
     }
 
     if (!file.type.startsWith("image/")) {
-      setInteractionError("이미지(image) 파일만 업로드할 수 있어요.");
+      setInteractionError(t("analyze.errors.onlyImages"));
       event.target.value = "";
       return;
     }
@@ -203,14 +196,14 @@ export function AnalyzePage() {
                   onLoadedMetadata={handleVideoReady}
                   onCanPlay={handleVideoReady}
                 />
-                {!isVideoReady && <S.VideoOverlay>카메라를 준비하고 있어요...</S.VideoOverlay>}
+                {!isVideoReady && <S.VideoOverlay>{t("analyze.camera.overlay")}</S.VideoOverlay>}
               </S.VideoWrapper>
               <S.CameraControls>
                 <Button onClick={handleCaptureFromCamera} disabled={!isVideoReady} size="lg">
-                  사진 촬영하기
+                  {t("analyze.actions.capture")}
                 </Button>
                 <Button onClick={stopCamera} variant="ghost" size="lg">
-                  취소하기
+                  {t("analyze.actions.cancel")}
                 </Button>
               </S.CameraControls>
             </S.CameraContainer>

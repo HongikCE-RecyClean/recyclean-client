@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface UseCameraOptions {
   onError?: (message: string | null) => void;
@@ -22,6 +23,7 @@ export function useCamera({ onError }: UseCameraOptions = {}): UseCameraResult {
   const streamRef = useRef<MediaStream | null>(null);
   const [isActive, setIsActive] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const { t } = useTranslation();
 
   const reportError = useCallback(
     (message: string | null) => {
@@ -45,7 +47,7 @@ export function useCamera({ onError }: UseCameraOptions = {}): UseCameraResult {
     reportError(null);
 
     if (!navigator.mediaDevices?.getUserMedia) {
-      reportError("브라우저가 카메라 접근을 지원하지 않아요.");
+      reportError(t("analyze.errors.unsupported"));
       return;
     }
 
@@ -60,9 +62,9 @@ export function useCamera({ onError }: UseCameraOptions = {}): UseCameraResult {
       setIsReady(false);
       setIsActive(true);
     } catch {
-      reportError("카메라 권한을 확인해주세요.");
+      reportError(t("analyze.errors.permission"));
     }
-  }, [releaseStream, reportError]);
+  }, [releaseStream, reportError, t]);
 
   const stopCamera = useCallback(() => {
     releaseStream();
@@ -80,26 +82,26 @@ export function useCamera({ onError }: UseCameraOptions = {}): UseCameraResult {
     const playPromise = video.play();
     if (playPromise) {
       playPromise.catch(() => {
-        reportError("카메라 영상을 재생하지 못했어요.");
+        reportError(t("analyze.errors.playback"));
       });
     }
 
     if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
       setIsReady(true);
     }
-  }, [reportError]);
+  }, [reportError, t]);
 
   const capturePhoto = useCallback(() => {
     reportError(null);
     const video = videoRef.current;
 
     if (!video) {
-      reportError("카메라 영상이 준비되지 않았어요.");
+      reportError(t("analyze.errors.notReady"));
       return null;
     }
 
     if (!video.videoWidth || !video.videoHeight) {
-      reportError("카메라가 아직 초기화 중이에요. 잠시 후 다시 시도해주세요.");
+      reportError(t("analyze.errors.stillInitializing"));
       return null;
     }
 
@@ -109,13 +111,13 @@ export function useCamera({ onError }: UseCameraOptions = {}): UseCameraResult {
 
     const context = canvas.getContext("2d");
     if (!context) {
-      reportError("이미지(image)를 캡처하지 못했어요.");
+      reportError(t("analyze.errors.captureFailed"));
       return null;
     }
 
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     return canvas.toDataURL("image/jpeg", 0.92);
-  }, [reportError]);
+  }, [reportError, t]);
 
   useEffect(() => {
     if (isActive && streamRef.current && videoRef.current) {

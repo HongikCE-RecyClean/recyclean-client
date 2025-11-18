@@ -1,4 +1,5 @@
 import { Clock, MapPin, Navigation, Phone } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
@@ -12,13 +13,14 @@ interface RecyclingCenterListProps {
 }
 
 export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
+  const { t } = useTranslation();
   // 재활용 센터 카드 목록 렌더링
   return (
     <Card>
       <CardHeader>
         <CardTitle>
           <MapPin size={18} />
-          재활용 센터
+          {t("map.centers.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -62,12 +64,13 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
 
                 <S.ActionButtons>
                   <Button variant="outline" size="sm" css={S.centerActionButton}>
-                    <Navigation size={14} />길 찾기
+                    <Navigation size={14} />
+                    {t("map.centers.directions")}
                   </Button>
                   {center.phone && (
                     <Button variant="outline" size="sm" css={S.centerActionButton}>
                       <Phone size={14} />
-                      전화하기
+                      {t("map.centers.call")}
                     </Button>
                   )}
                 </S.ActionButtons>

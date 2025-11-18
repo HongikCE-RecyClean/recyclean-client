@@ -1,4 +1,5 @@
 import { Clock, Navigation, Recycle, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
@@ -11,10 +12,11 @@ interface TrashBinListProps {
 }
 
 export function TrashBinList({ bins }: TrashBinListProps) {
+  const { t } = useTranslation();
   if (bins.length === 0) {
     return (
       <Card>
-        <S.EmptyStateCard>선택한 조건에 맞는 배출함이 없어요.</S.EmptyStateCard>
+        <S.EmptyStateCard>{t("map.bins.empty")}</S.EmptyStateCard>
       </Card>
     );
   }
@@ -44,18 +46,14 @@ export function TrashBinList({ bins }: TrashBinListProps) {
                 <Badge variant="outline">{bin.distance}</Badge>
                 <div css={S.binAvailabilitySpacer}>
                   <Badge tone={mapAvailabilityTone[bin.availability]}>
-                    {bin.availability === "available"
-                      ? "이용 가능"
-                      : bin.availability === "full"
-                        ? "가득 참"
-                        : "점검 중"}
+                    {t(`map.availability.${bin.availability}`)}
                   </Badge>
                 </div>
               </div>
             </S.BinHeader>
 
             <div css={S.binItemsSection}>
-              <S.SectionLabel>수거 품목</S.SectionLabel>
+              <S.SectionLabel>{t("map.bins.sectionLabel")}</S.SectionLabel>
               <S.AcceptedItems>
                 {bin.acceptedItems.map((item) => (
                   <Badge key={item} variant="soft" tone={mapMaterialColors[item] ?? "neutral"}>
@@ -67,10 +65,11 @@ export function TrashBinList({ bins }: TrashBinListProps) {
 
             <S.ActionButtons>
               <Button variant="outline" size="sm" css={S.binActionButton}>
-                <Navigation size={14} />길 찾기
+                <Navigation size={14} />
+                {t("map.bins.directions")}
               </Button>
               <Button variant="outline" size="sm" css={S.binActionButton}>
-                상태 신고
+                {t("map.bins.report")}
               </Button>
             </S.ActionButtons>
           </CardContent>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import * as S from "../DashboardPage.styles";
 import type { DashboardData } from "../../../shared/types/dashboard";
 
@@ -8,6 +9,10 @@ interface WelcomeOverviewCardProps {
 }
 
 export function WelcomeOverviewCard({ todayStats, userName }: WelcomeOverviewCardProps) {
+  const { t } = useTranslation();
+  const trimmedName = userName?.trim();
+  const displayName =
+    trimmedName && trimmedName.length > 0 ? trimmedName : t("dashboard.welcome.defaultName");
   return (
     <S.WelcomeCard>
       <S.WelcomeContent>
@@ -15,22 +20,22 @@ export function WelcomeOverviewCard({ todayStats, userName }: WelcomeOverviewCar
         {/* <S.WelcomeIcon>{아이콘 렌더링 영역}</S.WelcomeIcon> */}
         {/* 환영 메시지 영역 */}
         <S.WelcomeText>
-          <h2>안녕하세요, {userName}님!</h2>
-          <p>오늘의 분리수거를 도와줄게요.</p>
+          <h2>{t("dashboard.welcome.greeting", { name: displayName })}</h2>
+          <p>{t("dashboard.welcome.helper")}</p>
         </S.WelcomeText>
         {/* 핵심 통계 그리드 */}
         <S.StatsGrid>
           <S.StatCell>
             <S.StatValue $tone="success">{todayStats.itemsRecycled}</S.StatValue>
-            <S.StatLabel>오늘 처리한 아이템</S.StatLabel>
+            <S.StatLabel>{t("dashboard.welcome.stats.items")}</S.StatLabel>
           </S.StatCell>
           <S.StatCell>
             <S.StatValue $tone="info">{todayStats.pointsEarned}</S.StatValue>
-            <S.StatLabel>획득 포인트</S.StatLabel>
+            <S.StatLabel>{t("dashboard.welcome.stats.points")}</S.StatLabel>
           </S.StatCell>
           <S.StatCell>
             <S.StatValue $tone="warning">{todayStats.streakDays}</S.StatValue>
-            <S.StatLabel>연속 참여 일수</S.StatLabel>
+            <S.StatLabel>{t("dashboard.welcome.stats.streak")}</S.StatLabel>
           </S.StatCell>
         </S.StatsGrid>
       </S.WelcomeContent>

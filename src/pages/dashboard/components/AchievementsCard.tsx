@@ -1,4 +1,5 @@
 import { Award } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import * as S from "../DashboardPage.styles";
 import { Badge } from "../../../shared/ui/Badge/Badge";
@@ -9,12 +10,13 @@ interface AchievementsCardProps {
 }
 
 export function AchievementsCard({ achievements }: AchievementsCardProps) {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
         <CardTitle>
           <Award size={18} />
-          업적 모음
+          {t("dashboard.achievements.title")}
         </CardTitle>
       </CardHeader>
       {/* 업적 카드 컨텐츠 간격 컴포넌트 적용 */}
@@ -28,7 +30,9 @@ export function AchievementsCard({ achievements }: AchievementsCardProps) {
               <S.AchievementTitleText>{achievement.title}</S.AchievementTitleText>
               <S.AchievementDescriptionText>{achievement.description}</S.AchievementDescriptionText>
             </div>
-            {achievement.earned && <Badge tone="success">달성</Badge>}
+            {achievement.earned && (
+              <Badge tone="success">{t("dashboard.achievements.earned")}</Badge>
+            )}
           </S.AchievementRow>
         ))}
       </S.AchievementsContent>

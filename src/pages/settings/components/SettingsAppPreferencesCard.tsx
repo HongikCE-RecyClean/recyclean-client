@@ -1,4 +1,6 @@
 import { Bell, MapPin, Moon, Settings as SettingsIcon, Sun, Volume2 } from "lucide-react";
+import { useTheme } from "@emotion/react";
+import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Separator } from "../../../shared/ui/Separator/Separator";
 import { Switch } from "../../../shared/ui/Switch/Switch";
@@ -26,22 +28,31 @@ export function SettingsAppPreferencesCard({
   sounds,
   onSoundsChange,
 }: SettingsAppPreferencesCardProps) {
+  // 테마 객체 가져오기
+  const theme = useTheme();
+  const { t } = useTranslation();
+
   // 개별 설정 항목을 Switch로 연결
   return (
     <Card>
       <CardHeader>
         <CardTitle>
-          <SettingsIcon size={18} />앱 설정
+          <SettingsIcon size={18} />
+          {t("settings.preferences.title")}
         </CardTitle>
       </CardHeader>
       <S.SectionStack>
         <S.SettingsItem>
           <S.SettingsLabel>
-            <Bell size={16} color="#64748b" />
+            <Bell size={16} color={theme.colors.textMuted} />
             <S.SettingsText>
               {/* 설정 항목 텍스트 클래스 적용 */}
-              <S.SettingsItemTitle>알림</S.SettingsItemTitle>
-              <span css={S.settingsItemDescription}>재활용 리마인더 알림</span>
+              <S.SettingsItemTitle>
+                {t("settings.preferences.notifications.title")}
+              </S.SettingsItemTitle>
+              <span css={S.settingsItemDescription(theme)}>
+                {t("settings.preferences.notifications.description")}
+              </span>
             </S.SettingsText>
           </S.SettingsLabel>
           <Switch checked={notifications} onCheckedChange={onNotificationsChange} />
@@ -51,10 +62,12 @@ export function SettingsAppPreferencesCard({
 
         <S.SettingsItem>
           <S.SettingsLabel>
-            <MapPin size={16} color="#64748b" />
+            <MapPin size={16} color={theme.colors.textMuted} />
             <S.SettingsText>
-              <S.SettingsItemTitle>위치 서비스</S.SettingsItemTitle>
-              <span css={S.settingsItemDescription}>주변 배출함 찾기</span>
+              <S.SettingsItemTitle>{t("settings.preferences.location.title")}</S.SettingsItemTitle>
+              <span css={S.settingsItemDescription(theme)}>
+                {t("settings.preferences.location.description")}
+              </span>
             </S.SettingsText>
           </S.SettingsLabel>
           <Switch checked={location} onCheckedChange={onLocationChange} />
@@ -64,10 +77,16 @@ export function SettingsAppPreferencesCard({
 
         <S.SettingsItem>
           <S.SettingsLabel>
-            {darkMode ? <Moon size={16} color="#64748b" /> : <Sun size={16} color="#64748b" />}
+            {darkMode ? (
+              <Moon size={16} color={theme.colors.textMuted} />
+            ) : (
+              <Sun size={16} color={theme.colors.textMuted} />
+            )}
             <S.SettingsText>
-              <S.SettingsItemTitle>다크 모드</S.SettingsItemTitle>
-              <span css={S.settingsItemDescription}>어두운 테마로 변경</span>
+              <S.SettingsItemTitle>{t("settings.preferences.darkMode.title")}</S.SettingsItemTitle>
+              <span css={S.settingsItemDescription(theme)}>
+                {t("settings.preferences.darkMode.description")}
+              </span>
             </S.SettingsText>
           </S.SettingsLabel>
           <Switch checked={darkMode} onCheckedChange={onDarkModeChange} />
@@ -77,10 +96,12 @@ export function SettingsAppPreferencesCard({
 
         <S.SettingsItem>
           <S.SettingsLabel>
-            <Volume2 size={16} color="#64748b" />
+            <Volume2 size={16} color={theme.colors.textMuted} />
             <S.SettingsText>
-              <S.SettingsItemTitle>사운드</S.SettingsItemTitle>
-              <span css={S.settingsItemDescription}>액션 사운드 효과</span>
+              <S.SettingsItemTitle>{t("settings.preferences.sounds.title")}</S.SettingsItemTitle>
+              <span css={S.settingsItemDescription(theme)}>
+                {t("settings.preferences.sounds.description")}
+              </span>
             </S.SettingsText>
           </S.SettingsLabel>
           <Switch checked={sounds} onCheckedChange={onSoundsChange} />

@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
-import { format, isSameMonth, startOfMonth } from "date-fns";
+import { format, isSameMonth, startOfMonth, type Locale } from "date-fns";
+import { enUS, es, fr, ko as koLocale } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 import type { BadgeTone } from "../../shared/ui/Badge/Badge";
 import { useDashboardStore } from "../../shared/state/dashboardStore";
 import type { RecyclingEntry } from "../../shared/types/dashboard";
@@ -12,6 +14,7 @@ import {
   type CalendarLegendItem,
   type CalendarMonthlyStats,
 } from "./components";
+import { normalizeLanguage, type SupportedLanguage } from "shared/i18n/supportedLanguages";
 
 // 범례 배지 색상 순서를 정의
 const tonePalette: BadgeTone[] = ["primary", "success", "info", "warning", "danger"];
@@ -21,17 +24,17 @@ function formatDateKey(date: Date) {
   return format(date, "yyyy-MM-dd");
 }
 
-// 월과 연도를 한국어 문자열로 변환하는 함수 정의
-function formatMonthLabel(month: Date) {
-  return new Intl.DateTimeFormat("ko-KR", {
+// 월과 연도를 현지화 문자열로 변환하는 함수 정의
+function formatMonthLabel(month: Date, localeTag: string) {
+  return new Intl.DateTimeFormat(localeTag, {
     year: "numeric",
     month: "long",
   }).format(month);
 }
 
 // 선택 일자를 전체 형식 문자열로 변환하는 함수 정의
-function formatSelectedDateLabel(date: Date) {
-  return new Intl.DateTimeFormat("ko-KR", {
+function formatSelectedDateLabel(date: Date, localeTag: string) {
+  return new Intl.DateTimeFormat(localeTag, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -40,6 +43,23 @@ function formatSelectedDateLabel(date: Date) {
 }
 
 export function CalendarPage() {
+  const { i18n } = useTranslation();
+  const language = normalizeLanguage(i18n.language);
+  const localeTagMap: Record<SupportedLanguage, string> = {
+    en: "en-US",
+    ko: "ko-KR",
+    es: "es-ES",
+    fr: "fr-FR",
+  };
+  const dateLocaleMap: Record<SupportedLanguage, Locale> = {
+    en: enUS,
+    ko: koLocale,
+    es,
+    fr,
+  };
+  const intlLocale = localeTagMap[language];
+  const dateLocale = dateLocaleMap[language];
+
   const entries = useDashboardStore((state) => state.entries);
   const [currentMonth, setCurrentMonth] = useState<Date>(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
@@ -114,8 +134,8 @@ export function CalendarPage() {
     [daysWithEntries],
   );
 
-  const selectedDateLabel = formatSelectedDateLabel(selectedDate);
-  const currentMonthLabel = formatMonthLabel(currentMonth);
+  const selectedDateLabel = formatSelectedDateLabel(selectedDate, intlLocale);
+  const currentMonthLabel = formatMonthLabel(currentMonth, intlLocale);
 
   // 날짜 선택에 따른 상태 갱신 처리
   const handleSelectDate = useCallback((date: Date) => {
@@ -145,7 +165,11 @@ export function CalendarPage() {
       <CalendarLegendCard items={materialLegend} />
 
       {/* 선택 날짜의 기록 상세를 독립 카드로 표현 */}
-      <CalendarEntriesCard selectedDateLabel={selectedDateLabel} entries={selectedEntries} />
+      <CalendarEntriesCard
+        selectedDateLabel={selectedDateLabel}
+        entries={selectedEntries}
+        timeLocale={dateLocale}
+      />
 
       {/* 안내 문구를 전용 카드로 유지 */}
       <CalendarGuideCard />

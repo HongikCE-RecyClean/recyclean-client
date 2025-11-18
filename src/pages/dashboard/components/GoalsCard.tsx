@@ -1,4 +1,5 @@
 import { Target } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../DashboardPage.styles";
@@ -9,12 +10,13 @@ interface GoalsCardProps {
 }
 
 export function GoalsCard({ goals }: GoalsCardProps) {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
         <CardTitle>
           <Target size={18} />
-          지속가능성 목표
+          {t("dashboard.goals.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>

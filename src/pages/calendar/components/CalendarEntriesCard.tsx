@@ -1,6 +1,6 @@
 import { ListTodo } from "lucide-react";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
+import { format, type Locale } from "date-fns";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import type { RecyclingEntry } from "../../../shared/types/dashboard";
 import * as S from "../CalendarPage.styles";
@@ -8,16 +8,22 @@ import * as S from "../CalendarPage.styles";
 type CalendarEntriesCardProps = {
   selectedDateLabel: string;
   entries: RecyclingEntry[];
+  timeLocale: Locale;
 };
 
-export function CalendarEntriesCard({ selectedDateLabel, entries }: CalendarEntriesCardProps) {
+export function CalendarEntriesCard({
+  selectedDateLabel,
+  entries,
+  timeLocale,
+}: CalendarEntriesCardProps) {
+  const { t } = useTranslation();
   // 날짜별 기록 리스트 출력을 카드로 분리
   return (
     <Card>
       <CardHeader>
         <CardTitle>
           <ListTodo size={18} />
-          {selectedDateLabel} 기록
+          {t("calendar.entries.title", { date: selectedDateLabel })}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -30,15 +36,20 @@ export function CalendarEntriesCard({ selectedDateLabel, entries }: CalendarEntr
                   {/* 기록 타입 텍스트 클래스 적용 */}
                   <S.RecordTypeText>{entry.type}</S.RecordTypeText>
                   <span css={S.recordMetaText}>
-                    {entry.amount}개 · {format(entry.date, "a h시 mm분", { locale: ko })}
+                    {t("calendar.entries.meta", {
+                      count: entry.amount,
+                      time: format(entry.date, "p", { locale: timeLocale }),
+                    })}
                   </span>
                 </S.RecordInfo>
-                <S.RecordPoints>+{entry.points} pts</S.RecordPoints>
+                <S.RecordPoints>
+                  {t("calendar.entries.points", { points: entry.points })}
+                </S.RecordPoints>
               </S.RecordItem>
             ))}
           </S.RecordList>
         ) : (
-          <S.EmptyState>선택한 날짜에는 기록이 없어요.</S.EmptyState>
+          <S.EmptyState>{t("calendar.entries.empty")}</S.EmptyState>
         )}
       </CardContent>
     </Card>

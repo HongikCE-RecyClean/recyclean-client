@@ -1,6 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useTheme } from "@emotion/react";
 import { Lightbulb } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
@@ -29,6 +30,7 @@ export function TipsCard({
 }: TipsCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
+  const { t } = useTranslation();
 
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
     onSelectedTipCategoryChange(event.target.value);
@@ -39,12 +41,12 @@ export function TipsCard({
       <CardHeader>
         <CardTitle>
           <Lightbulb size={18} />
-          친환경 실천 아이디어
+          {t("dashboard.tips.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <SelectField
-          options={[{ value: "all", label: "전체" }, ...tipCategoryOptions]}
+          options={[{ value: "all", label: t("dashboard.tips.all") }, ...tipCategoryOptions]}
           value={selectedTipCategory}
           onChange={handleCategoryChange}
         />
@@ -56,7 +58,9 @@ export function TipsCard({
                 <ImageWithFallback src={tip.image} alt={tip.title} />
                 {/* 팁 배지 위치 클래스 적용 */}
                 <div css={S.tipBadgeContainer}>
-                  <Badge tone={resolveTipTone(tip.category)}>{tip.category}</Badge>
+                  <Badge tone={resolveTipTone(tip.category)}>
+                    {t(`dashboard.tips.categories.${tip.category}`)}
+                  </Badge>
                 </div>
               </S.TipMedia>
               <S.TipContent>
@@ -67,8 +71,16 @@ export function TipsCard({
                 </div>
                 {/* 팁 배지 행 클래스 적용 */}
                 <div css={S.tipBadgeRow}>
-                  <Badge tone="success">영향: {tip.impact}</Badge>
-                  <Badge tone="info">난이도: {tip.difficulty}</Badge>
+                  <Badge tone="success">
+                    {t("dashboard.tips.impactLabel", {
+                      value: t(`dashboard.tips.impact.${tip.impact}`),
+                    })}
+                  </Badge>
+                  <Badge tone="info">
+                    {t("dashboard.tips.difficultyLabel", {
+                      value: t(`dashboard.tips.difficulty.${tip.difficulty}`),
+                    })}
+                  </Badge>
                 </div>
               </S.TipContent>
             </S.TipCard>

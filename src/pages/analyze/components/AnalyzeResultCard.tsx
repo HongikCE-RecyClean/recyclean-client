@@ -1,4 +1,5 @@
 import { AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
 import { Card, CardContent, CardHeader } from "../../../shared/ui/Card/Card";
@@ -12,11 +13,12 @@ interface AnalyzeResultCardProps {
 }
 
 export function AnalyzeResultCard({ result, onReset }: AnalyzeResultCardProps) {
+  const { t } = useTranslation();
   // 재활용 가능 여부 배지 계산
   const statusBadge = result.recyclable ? (
-    <Badge tone="success">재활용 가능 ♻️</Badge>
+    <Badge tone="success">{t("analyze.status.recyclable")}</Badge>
   ) : (
-    <Badge tone="danger">재활용 불가 ❌</Badge>
+    <Badge tone="danger">{t("analyze.status.notRecyclable")}</Badge>
   );
 
   return (
@@ -30,9 +32,11 @@ export function AnalyzeResultCard({ result, onReset }: AnalyzeResultCardProps) {
             ) : (
               <XCircle size={20} color="#dc2626" />
             )}
-            <span>분류 결과</span>
+            <span>{t("analyze.result.title")}</span>
           </S.ResultTitle>
-          <Badge variant="outline">{result.confidence}% 확신</Badge>
+          <Badge variant="outline">
+            {t("analyze.result.confidence", { value: result.confidence })}
+          </Badge>
         </S.ResultHeader>
       </CardHeader>
       <CardContent>
@@ -42,14 +46,16 @@ export function AnalyzeResultCard({ result, onReset }: AnalyzeResultCardProps) {
           <div css={S.resultSummaryRow}>
             <div>
               <h3 css={S.resultItemTitle}>{result.item}</h3>
-              <p css={S.resultCategoryText}>재질: {result.category}</p>
+              <p css={S.resultCategoryText}>
+                {t("analyze.result.material", { category: result.category })}
+              </p>
             </div>
             {statusBadge}
           </div>
 
           {/* 처리 방법 설명 */}
           <div>
-            <h4 css={S.resultSectionHeading}>처리 방법</h4>
+            <h4 css={S.resultSectionHeading}>{t("analyze.result.instructionsTitle")}</h4>
             <p css={S.resultInstructionText}>{result.instructions}</p>
           </div>
 
@@ -64,9 +70,9 @@ export function AnalyzeResultCard({ result, onReset }: AnalyzeResultCardProps) {
           {/* 후속 액션 버튼 행 클래스 적용 */}
           <div css={S.resultActionsRow}>
             <Button variant="outline" css={S.resultActionButton} onClick={onReset}>
-              다시 촬영
+              {t("analyze.result.retry")}
             </Button>
-            <Button css={S.resultActionButton}>재활용 처리 기록</Button>
+            <Button css={S.resultActionButton}>{t("analyze.result.logAction")}</Button>
           </div>
         </S.ResultBody>
       </CardContent>

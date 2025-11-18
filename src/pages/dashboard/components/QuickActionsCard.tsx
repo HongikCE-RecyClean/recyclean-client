@@ -1,4 +1,5 @@
 import { Camera, MapPin, TrendingUp } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Button } from "../../../shared/ui/Button/Button";
 import * as S from "../DashboardPage.styles";
@@ -10,12 +11,13 @@ interface QuickActionsCardProps {
 }
 
 export function QuickActionsCard({ onAnalyze, onOpenMap, onManualRecord }: QuickActionsCardProps) {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
         <CardTitle>
           <Camera size={18} />
-          빠른 작업
+          {t("dashboard.quickActions.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -23,15 +25,15 @@ export function QuickActionsCard({ onAnalyze, onOpenMap, onManualRecord }: Quick
         <S.QuickActionGrid>
           <Button onClick={onAnalyze} variant="outline">
             <Camera size={18} />
-            AI로 즉시 분류
+            {t("dashboard.quickActions.analyze")}
           </Button>
           <Button onClick={onOpenMap} variant="outline">
             <MapPin size={18} />
-            주변 배출함 찾기
+            {t("dashboard.quickActions.map")}
           </Button>
           <Button onClick={onManualRecord} variant="outline">
             <TrendingUp size={18} />
-            수동 기록 추가
+            {t("dashboard.quickActions.record")}
           </Button>
         </S.QuickActionGrid>
       </CardContent>

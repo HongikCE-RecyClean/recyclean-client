@@ -2,6 +2,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { Calendar } from "lucide-react";
 import type { DayPickerProps } from "react-day-picker";
+import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import * as S from "../CalendarPage.styles";
 import type { CalendarMonthlyStats } from "./types";
@@ -25,13 +26,14 @@ export function CalendarOverviewCard({
   modifiers,
   monthlyStats,
 }: CalendarOverviewCardProps) {
+  const { t } = useTranslation();
   // 카드 전체 구조를 캡슐화하여 상위 페이지 단순화
   return (
     <Card>
       <CardHeader>
         <CardTitle>
           <Calendar size={18} />
-          {currentMonthLabel} 기록 달력
+          {t("calendar.overviewTitle", { month: currentMonthLabel })}
         </CardTitle>
       </CardHeader>
       <S.CalendarContent>
@@ -65,15 +67,15 @@ export function CalendarOverviewCard({
         <S.StatsGrid>
           <S.StatBlock>
             <S.StatValue>{monthlyStats.totalRecords}</S.StatValue>
-            <S.StatLabel>총 기록 수</S.StatLabel>
+            <S.StatLabel>{t("calendar.stats.records")}</S.StatLabel>
           </S.StatBlock>
           <S.StatBlock>
             <S.StatValue>{monthlyStats.totalItems}</S.StatValue>
-            <S.StatLabel>총 수거량</S.StatLabel>
+            <S.StatLabel>{t("calendar.stats.items")}</S.StatLabel>
           </S.StatBlock>
           <S.StatBlock>
             <S.StatValue>{monthlyStats.totalPoints} pts</S.StatValue>
-            <S.StatLabel>획득 포인트</S.StatLabel>
+            <S.StatLabel>{t("calendar.stats.points")}</S.StatLabel>
           </S.StatBlock>
         </S.StatsGrid>
       </S.CalendarContent>

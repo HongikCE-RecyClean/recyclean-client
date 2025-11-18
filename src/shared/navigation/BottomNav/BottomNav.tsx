@@ -1,22 +1,28 @@
 import type { ComponentType } from "react";
 import { Camera, CalendarDays, Home, MapPin, Settings } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import * as S from "./BottomNav.styles";
 
 interface NavItem {
   to: string;
-  label: string;
+  labelKey: string;
   icon: ComponentType<{ size?: number }>;
 }
 
 const navItems: NavItem[] = [
-  { to: "/", label: "홈", icon: (props) => <Home {...props} /> },
-  { to: "/analyze", label: "분석", icon: (props) => <Camera {...props} /> },
-  { to: "/calendar", label: "달력", icon: (props) => <CalendarDays {...props} /> },
-  { to: "/map", label: "지도", icon: (props) => <MapPin {...props} /> },
-  { to: "/settings", label: "설정", icon: (props) => <Settings {...props} /> },
+  { to: "/", labelKey: "navigation.home", icon: (props) => <Home {...props} /> },
+  { to: "/analyze", labelKey: "navigation.analyze", icon: (props) => <Camera {...props} /> },
+  {
+    to: "/calendar",
+    labelKey: "navigation.calendar",
+    icon: (props) => <CalendarDays {...props} />,
+  },
+  { to: "/map", labelKey: "navigation.map", icon: (props) => <MapPin {...props} /> },
+  { to: "/settings", labelKey: "navigation.settings", icon: (props) => <Settings {...props} /> },
 ];
 
 export function BottomNav() {
+  const { t } = useTranslation();
   // 하단 내비게이션 항목 렌더링
   return (
     <S.NavBar>
@@ -26,7 +32,7 @@ export function BottomNav() {
           return (
             <S.NavButton key={item.to} to={item.to} end={item.to === "/"}>
               <Icon size={20} />
-              {item.label}
+              {t(item.labelKey)}
             </S.NavButton>
           );
         })}

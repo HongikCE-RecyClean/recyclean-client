@@ -1,4 +1,5 @@
 import { MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "../../../shared/ui/Card/Card";
 import * as S from "./MapPlaceholderCard.styles";
 
@@ -7,15 +8,16 @@ interface MapPlaceholderCardProps {
 }
 
 export function MapPlaceholderCard({ binCount }: MapPlaceholderCardProps) {
+  const { t } = useTranslation();
   // 지도 준비 상태 안내 렌더링
   return (
     <Card>
       <CardContent>
         <S.PlaceholderContainer>
           <MapPin size={28} />
-          <S.PlaceholderTitle>지도 준비 중</S.PlaceholderTitle>
+          <S.PlaceholderTitle>{t("map.placeholder.title")}</S.PlaceholderTitle>
           <S.PlaceholderSubtitle>
-            근처 {binCount}개의 배출함을 표시할 예정이에요.
+            {t("map.placeholder.subtitle", { count: binCount })}
           </S.PlaceholderSubtitle>
         </S.PlaceholderContainer>
       </CardContent>

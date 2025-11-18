@@ -1,4 +1,5 @@
 import { Calendar } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../DashboardPage.styles";
@@ -9,12 +10,13 @@ interface RecentActivityCardProps {
 }
 
 export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
         <CardTitle>
           <Calendar size={18} />
-          최근 활동
+          {t("dashboard.recentActivity.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -26,10 +28,15 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
                 {/* 최근 활동 제목 컴포넌트 적용 */}
                 <S.RecentActivityTitle>{activity.type}</S.RecentActivityTitle>
                 <S.RecentActivityMeta>
-                  {activity.count}개 · {activity.time}
+                  {t("dashboard.recentActivity.meta", {
+                    count: activity.count,
+                    time: activity.time,
+                  })}
                 </S.RecentActivityMeta>
               </div>
-              <Badge tone="primary">+{activity.points} pts</Badge>
+              <Badge tone="primary">
+                {t("dashboard.recentActivity.points", { points: activity.points })}
+              </Badge>
             </S.ActivityRow>
           ))}
         </S.RecentActivityList>
