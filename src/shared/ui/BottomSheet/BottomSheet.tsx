@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from "react";
+import { useTheme } from "@emotion/react";
 import * as S from "./BottomSheet.styles";
 
 export interface BottomSheetProps {
@@ -13,6 +14,7 @@ export interface BottomSheetProps {
 }
 
 export function BottomSheet({ isOpen, onClose, title, children }: BottomSheetProps) {
+  const theme = useTheme();
   // ESC 키로 바텀시트 닫기
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -44,7 +46,14 @@ export function BottomSheet({ isOpen, onClose, title, children }: BottomSheetPro
       <S.Overlay isOpen={isOpen} onClick={onClose} />
 
       {/* 바텀시트 컨테이너 */}
-      <S.Container isOpen={isOpen}>
+      <S.Container
+        isOpen={isOpen}
+        style={
+          {
+            "--link-color": theme.colors.info,
+          } as React.CSSProperties
+        }
+      >
         {/* 헤더 영역 */}
         <S.Header>
           {/* 드래그 핸들 */}

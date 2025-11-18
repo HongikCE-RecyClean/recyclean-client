@@ -18,14 +18,14 @@ export const Container = styled.div<{ isOpen: boolean }>`
   bottom: 0;
   left: 50%;
   z-index: 9999;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.lg} ${({ theme }) => theme.radii.lg} 0 0;
   max-height: 85vh;
   width: 100%;
   max-width: 440px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: ${({ theme }) => theme.shadows.medium};
   transition: transform 0.3s ease-in-out;
   transform: translateX(-50%) translateY(${({ isOpen }) => (isOpen ? "0" : "100%")});
 `;
@@ -100,7 +100,7 @@ export const SectionTitle = styled.h3`
 export const SectionText = styled.p`
   font-size: 0.9rem;
   line-height: 1.6;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textMuted};
   margin: 0 0 ${({ theme }) => theme.spacing(2)} 0;
 
   &:last-child {
@@ -119,7 +119,7 @@ export const List = styled.ul`
 export const ListItem = styled.li`
   font-size: 0.9rem;
   line-height: 1.6;
-  color: ${({ theme }) => theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textMuted};
   margin-bottom: ${({ theme }) => theme.spacing(1)};
 
   &:last-child {
@@ -135,11 +135,12 @@ export const HighlightText = styled.span`
 
 // 링크 스타일
 export const linkStyle = css`
-  color: #2563eb;
+  color: var(--link-color);
   text-decoration: underline;
   cursor: pointer;
+  transition: opacity 0.2s ease;
 
   &:hover {
-    color: #1d4ed8;
+    opacity: 0.8;
   }
 `;
