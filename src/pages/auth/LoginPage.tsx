@@ -146,6 +146,7 @@ export function LoginPage() {
       </S.HeaderBar>
       <S.Content>
         <S.TextGroup>
+          <S.BrandName>RecyClean</S.BrandName>
           <S.Tagline>재활용이 쉬워지는 순간</S.Tagline>
           <S.Description>
             일상의 작은 환경 실천을 기록하고,

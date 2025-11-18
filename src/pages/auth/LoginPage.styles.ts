@@ -63,25 +63,37 @@ export const TextGroup = styled.section`
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
+  gap: ${({ theme }) => theme.spacing(3)};
   align-items: center;
   animation: ${fadeIn} 0.6s ease-out;
 `;
 
-// 핵심 안내 한 줄 텍스트 스타일
-export const Tagline = styled.h1`
+// 브랜드명 스타일
+export const BrandName = styled.h1`
   margin: 0;
-  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
   color: ${({ theme }) => theme.colors.primary};
-  font-weight: ${({ theme }) => theme.typography.weights.semibold};
-  letter-spacing: -0.02em;
-  line-height: 1.3;
-  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.8);
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-shadow: 0 2px 16px rgba(255, 255, 255, 0.9);
+`;
+
+// 태그라인 스타일 (서브타이틀)
+export const Tagline = styled.p`
+  margin: 0;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.6);
 `;
 
 // 상세 설명 문단을 슬림하게 보이도록 설정
 export const Description = styled.p`
   margin: 0;
+  margin-top: ${({ theme }) => theme.spacing(2)};
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: clamp(0.95rem, 2.5vw, 1.05rem);
   line-height: 1.8;
