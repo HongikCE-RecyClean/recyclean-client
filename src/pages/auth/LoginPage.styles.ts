@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
+import { hexToRgba } from "../../shared/styles/colorUtils";
 
 // 애니메이션 키프레임 정의
 const fadeIn = keyframes`
@@ -25,10 +26,11 @@ const fadeInDelayed = keyframes`
 // 전체 페이지를 헤더 + 콘텐츠로 구성하는 래퍼 정의
 export const Page = styled.div`
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(47, 133, 90, 0.08), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.06), transparent 50%),
-    linear-gradient(180deg, rgba(47, 133, 90, 0.04), rgba(245, 247, 250, 1));
+  background: ${({ theme }) => `
+      radial-gradient(circle at 20% 20%, ${hexToRgba(theme.colors.primary, 0.08)}, transparent 50%),
+      radial-gradient(circle at 80% 80%, ${hexToRgba(theme.colors.accent, 0.06)}, transparent 50%),
+      linear-gradient(180deg, ${hexToRgba(theme.colors.primary, 0.04)}, ${theme.colors.background})
+    `};
   display: flex;
   flex-direction: column;
   font-family: ${({ theme }) => theme.typography.family};
@@ -131,7 +133,7 @@ export const StartButton = styled.button`
   border: none;
   border-radius: 14px;
   background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.primaryContrast};
   padding: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(5)}`};
   display: inline-flex;
   align-items: center;
@@ -140,9 +142,10 @@ export const StartButton = styled.button`
   cursor: pointer;
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   font-size: 1.05rem;
-  box-shadow:
-    0 8px 20px rgba(47, 133, 90, 0.3),
-    0 2px 8px rgba(15, 23, 42, 0.15);
+  box-shadow: ${({ theme }) => `
+      0 8px 20px ${hexToRgba(theme.colors.primary, 0.3)},
+      0 2px 8px ${hexToRgba(theme.colors.border, 0.4)}
+    `};
   transition:
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
@@ -150,25 +153,36 @@ export const StartButton = styled.button`
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow:
-      0 12px 28px rgba(47, 133, 90, 0.4),
-      0 4px 12px rgba(15, 23, 42, 0.2);
-    background: #276749;
+    background: ${({ theme }) => theme.colors.primaryHover};
+    box-shadow: ${({ theme }) => `
+        0 12px 28px ${hexToRgba(theme.colors.primary, 0.4)},
+        0 4px 12px ${hexToRgba(theme.colors.border, 0.45)}
+      `};
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: ${({ theme }) => `
+        0 0 0 4px ${theme.colors.focusRing},
+        0 8px 20px ${hexToRgba(theme.colors.primary, 0.3)}
+      `};
   }
 
   &:active:not(:disabled) {
     transform: translateY(0);
-    box-shadow:
-      0 4px 12px rgba(47, 133, 90, 0.3),
-      0 2px 6px rgba(15, 23, 42, 0.15);
+    box-shadow: ${({ theme }) => `
+        0 4px 12px ${hexToRgba(theme.colors.primary, 0.3)},
+        0 2px 6px ${hexToRgba(theme.colors.border, 0.4)}
+      `};
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
-    box-shadow:
-      0 4px 12px rgba(47, 133, 90, 0.2),
-      0 2px 6px rgba(15, 23, 42, 0.1);
+    box-shadow: ${({ theme }) => `
+        0 4px 12px ${hexToRgba(theme.colors.primary, 0.2)},
+        0 2px 6px ${hexToRgba(theme.colors.border, 0.3)}
+      `};
   }
 `;

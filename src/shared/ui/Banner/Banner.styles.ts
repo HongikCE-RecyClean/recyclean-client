@@ -95,9 +95,14 @@ export const ActionButton = styled.button(({ theme }) => ({
   letterSpacing: "-0.01em",
 
   "&:hover": {
-    backgroundColor: "#276749",
+    backgroundColor: theme.colors.primaryHover,
     boxShadow: "0 2px 6px rgba(0, 0, 0, 0.15)",
     transform: "translateY(-1px)",
+  },
+
+  "&:focus-visible": {
+    outline: "none",
+    boxShadow: `0 0 0 4px ${theme.colors.focusRing}`,
   },
 
   "&:active": {
