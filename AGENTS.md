@@ -98,6 +98,37 @@ When extending the theme system:
 - Use semantic names (e.g., `accentHover` not `green400`)
 - Test in both light and dark modes to ensure sufficient contrast
 
+## PWA Architecture & Capabilities
+
+Our RecyClean web app is deployed as a Progressive Web App to unlock installability, offline fallback, and push-friendly capabilities. Follow these guardrails whenever you touch the PWA surface:
+
+### Manifest & Install Surface
+
+- **Source of truth**: `public/manifest.webmanifest` defines the install card. Keep `name`, `short_name`, and `description` localized using Korean copy first, then mirror into other locales when marketing asks.
+- **Icons**: Update all sizes (`/public/icons`) together. Any new PNG must include `purpose: "maskable"` to avoid clipping on Android launchers.
+- **Theme/Background colors**: Match `theme_color` to `theme.colors.primary` and `background_color` to `theme.colors.background` to prevent flash-of-unstyled backgrounds when the splash screen shows.
+- **Start scope**: Leave `start_url` and `scope` at `/` unless we move to multi-origin hosting. Changing them without routing changes will break deep links on installed builds.
+
+### Service Worker & Caching
+
+- **File location**: `public/sw.js` is a hand-rolled App Shell cache. Update `CACHE_VERSION` whenever you change the pre-cache array so old assets are purged on activate.
+- **App shell list**: Keep `/index.html`, top-level icons, and any offline-critical fonts/assets in `APP_SHELL`. Do not list API endpoints—service workers should never cache mutating calls.
+- **Fetch strategy**: Navigation requests use network-first fallback-to-shell; static assets are cache-first with background refresh. When adjusting logic, preserve this split to keep SPA routing resilient while avoiding stale API data.
+- **Registration**: `src/main.tsx` registers `/sw.js` only in production. During local QA you must run `pnpm build && pnpm preview` to validate SW changes because `pnpm dev` skips registration.
+
+### Permissions & Device Capabilities
+
+- **Notification & location toggles**: `usePermissionRequests` (under `src/pages/settings/hooks`) centralizes capability prompts. Any new hardware permission (camera, Bluetooth, etc.) must follow the same pattern: capability detection, status sync, user-initiated request, and UI feedback in `SettingsAppPreferencesCard`.
+- **PWA install hooks**: When implementing custom install prompts, listen to `beforeinstallprompt` at a shared provider (e.g., `AppProviders`) and store the event in zustand so Settings or onboarding screens can trigger it in response to explicit user actions.
+- **Capability persistence**: Only set zustand flags (`useSettingsStore`) to true when the browser reports `granted`. On `unsupported` or `denied`, automatically revert the toggle and surface a status helper text (see current Korean copy for phrasing).
+
+### Build & Deployment Checklist
+
+- Run `pnpm build` to emit production assets and make sure the generated `/dist/manifest.webmanifest` contains your updates.
+- Inspect the Lighthouse PWA audit (Chrome DevTools → Lighthouse → PWA) on a preview build to confirm installability, offline readiness, and HTTPS.
+- After shipping, bump `CACHE_VERSION` again if emergency patches require clients to drop outdated caches immediately.
+- Document any new push endpoints, background sync, or periodic sync registrations inside this section so future agents understand server dependencies.
+
 ## Design System Reference
 
 This section provides concrete values for all design tokens used throughout the application.
