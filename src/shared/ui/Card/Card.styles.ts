@@ -64,7 +64,7 @@ export const CardContent = styled.div`
 
 // 카드 푸터 스타일 정의
 export const CardFooter = styled.footer`
-  padding: ${({ theme }) => theme.spacing(3)} ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(4)};
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
