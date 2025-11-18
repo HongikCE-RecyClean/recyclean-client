@@ -31,46 +31,39 @@ export const Content = styled.main`
   gap: ${({ theme }) => theme.spacing(10)};
 `;
 
-// 로고와 텍스트를 담는 히어로 섹션 정의
+// 설명 블록을 카드 형태로 정렬
 export const Hero = styled.section`
   width: 100%;
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-`;
-
-export const BrandMark = styled.div`
-  display: inline-flex;
+  gap: ${({ theme }) => theme.spacing(3)};
+  padding: ${({ theme }) => `${theme.spacing(6)} ${theme.spacing(4)}`};
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: ${({ theme }) => theme.radii.lg};
+  box-shadow: 0 25px 60px rgba(15, 23, 42, 0.08);
   align-items: center;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing(2)};
+  backdrop-filter: blur(6px);
 `;
 
-export const BrandSymbol = styled.img`
-  width: 48px;
-  height: 48px;
-`;
-
-export const BrandTitle = styled.span`
-  font-size: clamp(2.5rem, 5vw, 3rem);
-  font-weight: ${({ theme }) => theme.typography.weights.semibold};
-  letter-spacing: 0.08em;
-  color: ${({ theme }) => theme.colors.text};
-`;
-
+// 핵심 안내 한 줄 텍스트 스타일
 export const Tagline = styled.h1`
   margin: 0;
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
-  color: ${({ theme }) => theme.colors.text};
-  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  font-size: clamp(1.25rem, 3vw, 1.85rem);
+  color: ${({ theme }) => theme.colors.primary};
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+  letter-spacing: -0.01em;
 `;
 
+// 상세 설명 문단을 슬림하게 보이도록 설정
 export const Description = styled.p`
   margin: 0;
-  color: ${({ theme }) => theme.colors.textMuted};
-  font-size: 1rem;
-  line-height: 1.6;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  line-height: 1.7;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 // 버튼을 하단에 배치하는 영역 정의

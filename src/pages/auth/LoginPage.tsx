@@ -6,7 +6,6 @@ import { buildKakaoAuthorizeUrl, isKakaoConfigReady } from "shared/config/kakao"
 import { useAuthStore } from "shared/state/authStore";
 import { useUserStore } from "shared/state/userStore";
 import kakaoIconAsset from "../../assets/kakaoIcon.svg";
-import recycleanLogoAsset from "../../assets/recycleanLogo.svg";
 import * as S from "./LoginPage.styles";
 
 type LocationState = {
@@ -120,14 +119,10 @@ export function LoginPage() {
   return (
     <S.Page>
       <S.HeaderBar>
-        <Header />
+        <Header hideProfileButton />
       </S.HeaderBar>
       <S.Content>
         <S.Hero>
-          <S.BrandMark>
-            <S.BrandSymbol src={recycleanLogoAsset} alt="RecyClean 로고(logo)" />
-            <S.BrandTitle>RECYCLEAN</S.BrandTitle>
-          </S.BrandMark>
           <S.Tagline>재활용 데이터와 지도를 한곳에서 확인해요.</S.Tagline>
           <S.Description>
             수거함 상태, 도시별 순환 계획, 커뮤니티 챌린지를 하나의 대시보드에서 추적해요.
