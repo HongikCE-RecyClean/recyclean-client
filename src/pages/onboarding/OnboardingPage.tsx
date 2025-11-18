@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { Header } from "shared/layout/Header/Header";
-import * as S from "./LoginPage.styles";
+import * as S from "./OnboardingPage.styles";
 
-// 앱 소개와 시작하기 버튼을 제공하는 랜딩 페이지
-export function LoginPage() {
+// 앱 소개와 시작하기 버튼을 제공하는 온보딩 페이지
+export function OnboardingPage() {
   const navigate = useNavigate();
 
   // 시작하기 버튼 클릭 시 대시보드로 이동
