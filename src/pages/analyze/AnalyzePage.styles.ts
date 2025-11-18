@@ -10,14 +10,14 @@ export const PageContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
+  gap: ${({ theme }) => theme.spacing(5)};
 `;
 
 // 분석 액션 영역 정렬 정의
 export const ActionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 // 카메라 카드 내부 레이아웃 정의
@@ -122,7 +122,7 @@ export const ResultTitle = styled.div`
 export const ResultBody = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 // 스캔 진행 카드 컨텐츠 정렬 스타일
@@ -170,6 +170,14 @@ export const Callout = styled.div`
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.infoSurface};
   color: ${({ theme }) => theme.colors.info};
+  transition:
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  }
 `;
 
 // 처리 방법 섹션 제목 스타일

@@ -9,7 +9,7 @@ export const PageContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
+  gap: ${({ theme }) => theme.spacing(5)};
   padding-bottom: ${({ theme }) => theme.spacing(6)};
 `;
 
@@ -161,7 +161,7 @@ export const DayPickerWrapper = styled.div`
 export const StatsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
   justify-items: center;
   align-items: center;
 `;
@@ -192,7 +192,7 @@ export const StatLabel = styled.span`
 export const LegendList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(3)};
 `;
 
 // 범례 아이템 행 정의
@@ -204,6 +204,16 @@ export const LegendItem = styled.div`
   padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(3)};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.surfaceMuted};
+  transition:
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: ${({ theme }) => theme.colors.surface};
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  }
 `;
 
 // 범례 레이블 영역 정의
@@ -243,7 +253,7 @@ export const legendPointsText = css`
 export const RecordList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(3)};
 `;
 
 // 기록 아이템 행 정의
@@ -254,6 +264,14 @@ export const RecordItem = styled.div`
   padding: ${({ theme }) => theme.spacing(3)};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.surfaceMuted};
+  transition:
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.15s ease;
+
+  &:hover {
+    transform: translateX(4px);
+    background: ${({ theme }) => theme.colors.surface};
+  }
 `;
 
 // 기록 정보 영역 정의

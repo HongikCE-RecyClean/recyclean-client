@@ -6,7 +6,7 @@ import { Card, CardContent } from "../../../shared/ui/Card/Card";
 export const BinList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 // 쓰레기통 카드 프레임 스타일 정의

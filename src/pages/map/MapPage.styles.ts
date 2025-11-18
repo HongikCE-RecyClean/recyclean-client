@@ -7,5 +7,5 @@ export const PageContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
+  gap: ${({ theme }) => theme.spacing(5)};
 `;

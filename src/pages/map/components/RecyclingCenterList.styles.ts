@@ -6,7 +6,7 @@ import { Card, CardContent } from "../../../shared/ui/Card/Card";
 export const CenterGrid = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 // 센터 카드 컴포넌트 스타일 정의

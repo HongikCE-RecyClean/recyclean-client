@@ -9,7 +9,7 @@ export const PageContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
+  gap: ${({ theme }) => theme.spacing(5)};
 `;
 
 // 프로필 행 정렬 정의
@@ -23,7 +23,7 @@ export const ProfileRow = styled.div`
 export const StatGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
   text-align: center;
 `;
 
@@ -71,14 +71,14 @@ export const SettingsFieldLabel = styled.div`
 export const SectionStack = styled(CardContent)`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 // 행동 버튼 목록 정의
 export const ActionList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(3)};
 `;
 
 // 지원 액션 버튼 정렬 스타일
