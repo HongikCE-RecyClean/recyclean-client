@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useSearchParams, type Location } from "react-
 import { Header } from "shared/layout/Header/Header";
 import { useKakaoLoginMutation } from "shared/api/auth";
 import { buildKakaoAuthorizeUrl, isKakaoConfigReady } from "shared/config/kakao";
+import { buildMockAuthSession, isAuthMockEnabled } from "shared/config/auth";
 import { useAuthStore } from "shared/state/authStore";
 import { useUserStore } from "shared/state/userStore";
 import kakaoIconAsset from "../../assets/kakaoIcon.svg";
@@ -21,6 +22,7 @@ export function LoginPage() {
   const { setName } = useUserStore();
   const [message, setMessage] = useState<string | null>(null);
   const redirectTargetRef = useRef<string>("/");
+  const authMockEnabled = isAuthMockEnabled();
 
   const kakaoCode = searchParams.get("code");
   const kakaoState = searchParams.get("state");
@@ -75,6 +77,9 @@ export function LoginPage() {
   });
 
   useEffect(() => {
+    if (authMockEnabled) {
+      return;
+    }
     if (!kakaoCode) {
       return;
     }
@@ -84,9 +89,12 @@ export function LoginPage() {
     setMessage("카카오 인증 정보를 확인 중이에요...");
     beginAuth("kakao");
     kakaoLoginMutation.mutate(kakaoCode);
-  }, [beginAuth, kakaoCode, kakaoLoginMutation]);
+  }, [authMockEnabled, beginAuth, kakaoCode, kakaoLoginMutation]);
 
   useEffect(() => {
+    if (authMockEnabled) {
+      return;
+    }
     if (!kakaoError) {
       return;
     }
@@ -94,27 +102,42 @@ export function LoginPage() {
     const hint = kakaoErrorDescription ?? "카카오 로그인 요청이 취소됐어요.";
     setMessage(hint);
     navigate("/login", { replace: true });
-  }, [failAuth, kakaoError, kakaoErrorDescription, navigate]);
+  }, [authMockEnabled, failAuth, kakaoError, kakaoErrorDescription, navigate]);
 
   const handleLogin = useCallback(() => {
+    if (authMockEnabled) {
+      beginAuth("kakao");
+      const mockSession = buildMockAuthSession();
+      completeAuth(mockSession);
+      setName(mockSession.nickname);
+      const target = defaultRedirectTarget || "/";
+      navigate(target, { replace: true });
+      return;
+    }
     const target = defaultRedirectTarget;
     const encodedState = encodeURIComponent(target);
     const authorizeUrl = buildKakaoAuthorizeUrl(encodedState);
     window.location.assign(authorizeUrl);
-  }, [defaultRedirectTarget]);
+  }, [authMockEnabled, beginAuth, completeAuth, defaultRedirectTarget, navigate, setName]);
 
   const kakaoConfigReady = isKakaoConfigReady();
-  const disableButton = isLoading || kakaoLoginMutation.isPending || !kakaoConfigReady;
-  const buttonLabel = !kakaoConfigReady
-    ? "카카오 로그인 준비 중"
-    : kakaoLoginMutation.isPending
-      ? "카카오 인증 처리 중"
-      : isLoading
-        ? "연결 중"
-        : "카카오 로그인";
-  const helperText = !kakaoConfigReady
-    ? "카카오 로그인을 준비 중이에요. 잠시 후 다시 시도해 주세요."
-    : (message ?? "가입 시 서비스 약관 및 개인정보처리방침에 동의한 것으로 간주합니다.");
+  const disableButton = authMockEnabled
+    ? isLoading
+    : isLoading || kakaoLoginMutation.isPending || !kakaoConfigReady;
+  const buttonLabel = authMockEnabled
+    ? "모의 로그인"
+    : !kakaoConfigReady
+      ? "카카오 로그인 준비 중"
+      : kakaoLoginMutation.isPending
+        ? "카카오 인증 처리 중"
+        : isLoading
+          ? "연결 중"
+          : "카카오 로그인";
+  const helperText = authMockEnabled
+    ? "UI 개발을 위해 모의 로그인 모드로 동작해요."
+    : !kakaoConfigReady
+      ? "카카오 로그인을 준비 중이에요. 잠시 후 다시 시도해 주세요."
+      : (message ?? "가입 시 서비스 약관 및 개인정보처리방침에 동의한 것으로 간주합니다.");
 
   return (
     <S.Page>
