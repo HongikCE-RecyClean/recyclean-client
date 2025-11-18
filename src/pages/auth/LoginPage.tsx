@@ -1,143 +1,15 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useLocation, useNavigate, useSearchParams, type Location } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Header } from "shared/layout/Header/Header";
-import { useKakaoLoginMutation } from "shared/api/auth";
-import { buildKakaoAuthorizeUrl, isKakaoConfigReady } from "shared/config/kakao";
-import { buildMockAuthSession, isAuthMockEnabled } from "shared/config/auth";
-import { useAuthStore } from "shared/state/authStore";
-import { useUserStore } from "shared/state/userStore";
-import kakaoIconAsset from "../../assets/kakaoIcon.svg";
 import * as S from "./LoginPage.styles";
 
-type LocationState = {
-  from?: Location;
-};
-
-// 로고 아래 로그인 버튼 하나만 두는 초간단 페이지
+// 앱 소개와 시작하기 버튼을 제공하는 랜딩 페이지
 export function LoginPage() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const { beginAuth, completeAuth, failAuth, isLoading } = useAuthStore();
-  const { setName } = useUserStore();
-  const [message, setMessage] = useState<string | null>(null);
-  const redirectTargetRef = useRef<string>("/");
-  const authMockEnabled = isAuthMockEnabled();
 
-  const kakaoCode = searchParams.get("code");
-  const kakaoState = searchParams.get("state");
-  const kakaoError = searchParams.get("error");
-  const kakaoErrorDescription = searchParams.get("error_description");
-
-  const defaultRedirectTarget = useMemo(() => {
-    const state = location.state as LocationState | undefined;
-    const from = state?.from;
-    if (!from) {
-      return "/";
-    }
-    const search = from.search ?? "";
-    const hash = from.hash ?? "";
-    return `${from.pathname}${search}${hash}`;
-  }, [location.state]);
-
-  useEffect(() => {
-    if (kakaoState) {
-      try {
-        redirectTargetRef.current = decodeURIComponent(kakaoState);
-      } catch {
-        redirectTargetRef.current = kakaoState;
-      }
-    } else {
-      redirectTargetRef.current = defaultRedirectTarget;
-    }
-  }, [kakaoState, defaultRedirectTarget]);
-
-  const kakaoLoginMutation = useKakaoLoginMutation({
-    onSuccess: (data) => {
-      completeAuth({
-        memberId: data.memberId,
-        socialType: data.socialType,
-        socialId: data.socialId,
-        nickname: data.nickname,
-        profileImageUrl: data.profileImageUrl,
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-        method: "kakao",
-      });
-      setName(data.nickname);
-      const target = redirectTargetRef.current || "/";
-      navigate(target, { replace: true });
-    },
-    onError: (error) => {
-      console.error("카카오 로그인 실패", error);
-      failAuth();
-      setMessage("카카오 로그인에 실패했어요. 다시 시도해 주세요.");
-      navigate("/login", { replace: true });
-    },
-  });
-
-  useEffect(() => {
-    if (authMockEnabled) {
-      return;
-    }
-    if (!kakaoCode) {
-      return;
-    }
-    if (kakaoLoginMutation.isPending) {
-      return;
-    }
-    setMessage("카카오 인증 정보를 확인 중이에요...");
-    beginAuth("kakao");
-    kakaoLoginMutation.mutate(kakaoCode);
-  }, [authMockEnabled, beginAuth, kakaoCode, kakaoLoginMutation]);
-
-  useEffect(() => {
-    if (authMockEnabled) {
-      return;
-    }
-    if (!kakaoError) {
-      return;
-    }
-    failAuth();
-    const hint = kakaoErrorDescription ?? "카카오 로그인 요청이 취소됐어요.";
-    setMessage(hint);
-    navigate("/login", { replace: true });
-  }, [authMockEnabled, failAuth, kakaoError, kakaoErrorDescription, navigate]);
-
-  const handleLogin = useCallback(() => {
-    if (authMockEnabled) {
-      beginAuth("kakao");
-      const mockSession = buildMockAuthSession();
-      completeAuth(mockSession);
-      setName(mockSession.nickname);
-      const target = defaultRedirectTarget || "/";
-      navigate(target, { replace: true });
-      return;
-    }
-    const target = defaultRedirectTarget;
-    const encodedState = encodeURIComponent(target);
-    const authorizeUrl = buildKakaoAuthorizeUrl(encodedState);
-    window.location.assign(authorizeUrl);
-  }, [authMockEnabled, beginAuth, completeAuth, defaultRedirectTarget, navigate, setName]);
-
-  const kakaoConfigReady = isKakaoConfigReady();
-  const disableButton = authMockEnabled
-    ? isLoading
-    : isLoading || kakaoLoginMutation.isPending || !kakaoConfigReady;
-  const buttonLabel = authMockEnabled
-    ? "모의 로그인"
-    : !kakaoConfigReady
-      ? "카카오 로그인 준비 중"
-      : kakaoLoginMutation.isPending
-        ? "카카오 인증 처리 중"
-        : isLoading
-          ? "연결 중"
-          : "카카오 로그인";
-  const helperText = authMockEnabled
-    ? "UI 개발을 위해 모의 로그인 모드로 동작해요."
-    : !kakaoConfigReady
-      ? "카카오 로그인을 준비 중이에요. 잠시 후 다시 시도해 주세요."
-      : (message ?? "가입 시 서비스 약관 및 개인정보처리방침에 동의한 것으로 간주합니다.");
+  // 시작하기 버튼 클릭 시 대시보드로 이동
+  const handleStart = () => {
+    navigate("/", { replace: true });
+  };
 
   return (
     <S.Page>
@@ -155,11 +27,10 @@ export function LoginPage() {
           </S.Description>
         </S.TextGroup>
         <S.Footer>
-          <S.KakaoButton type="button" onClick={handleLogin} disabled={disableButton}>
-            <S.KakaoIcon src={kakaoIconAsset} alt="카카오(Kakao) 아이콘" />
-            {buttonLabel}
-          </S.KakaoButton>
-          <S.ButtonHint>{helperText}</S.ButtonHint>
+          <S.StartButton type="button" onClick={handleStart}>
+            시작하기
+          </S.StartButton>
+          <S.ButtonHint>지금 바로 RecyClean과 함께 환경 실천을 시작해요.</S.ButtonHint>
         </S.Footer>
       </S.Content>
     </S.Page>

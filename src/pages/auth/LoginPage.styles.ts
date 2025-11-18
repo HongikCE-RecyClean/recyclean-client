@@ -124,13 +124,14 @@ export const ButtonHint = styled.span`
   max-width: 28rem;
 `;
 
-export const KakaoButton = styled.button`
+// 시작하기 버튼 스타일 (테마 primary 색상 사용)
+export const StartButton = styled.button`
   width: 100%;
   max-width: 400px;
   border: none;
   border-radius: 14px;
-  background: #fee500;
-  color: #3a1d1d;
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.surface};
   padding: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(5)}`};
   display: inline-flex;
   align-items: center;
@@ -140,8 +141,8 @@ export const KakaoButton = styled.button`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   font-size: 1.05rem;
   box-shadow:
-    0 8px 20px rgba(254, 229, 0, 0.3),
-    0 2px 8px rgba(58, 29, 29, 0.15);
+    0 8px 20px rgba(47, 133, 90, 0.3),
+    0 2px 8px rgba(15, 23, 42, 0.15);
   transition:
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
@@ -150,16 +151,16 @@ export const KakaoButton = styled.button`
   &:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow:
-      0 12px 28px rgba(254, 229, 0, 0.4),
-      0 4px 12px rgba(58, 29, 29, 0.2);
-    background: #ffed14;
+      0 12px 28px rgba(47, 133, 90, 0.4),
+      0 4px 12px rgba(15, 23, 42, 0.2);
+    background: #276749;
   }
 
   &:active:not(:disabled) {
     transform: translateY(0);
     box-shadow:
-      0 4px 12px rgba(254, 229, 0, 0.3),
-      0 2px 6px rgba(58, 29, 29, 0.15);
+      0 4px 12px rgba(47, 133, 90, 0.3),
+      0 2px 6px rgba(15, 23, 42, 0.15);
   }
 
   &:disabled {
@@ -167,13 +168,7 @@ export const KakaoButton = styled.button`
     cursor: not-allowed;
     transform: none;
     box-shadow:
-      0 4px 12px rgba(254, 229, 0, 0.2),
-      0 2px 6px rgba(58, 29, 29, 0.1);
+      0 4px 12px rgba(47, 133, 90, 0.2),
+      0 2px 6px rgba(15, 23, 42, 0.1);
   }
-`;
-
-export const KakaoIcon = styled.img`
-  width: ${({ theme }) => theme.spacing(6)};
-  height: ${({ theme }) => theme.spacing(6)};
-  flex-shrink: 0;
 `;
