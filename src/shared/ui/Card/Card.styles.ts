@@ -5,9 +5,21 @@ export const Card = styled.section`
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.lg};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  box-shadow: ${({ theme }) => theme.shadows.soft};
+  box-shadow:
+    0 2px 8px rgba(15, 23, 42, 0.06),
+    0 1px 3px rgba(15, 23, 42, 0.04);
   overflow: hidden;
   position: relative;
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 8px 20px rgba(15, 23, 42, 0.08),
+      0 2px 6px rgba(15, 23, 42, 0.06);
+  }
 `;
 
 // 카드 본문 스타일 정의

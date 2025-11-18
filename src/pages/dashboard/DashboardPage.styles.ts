@@ -9,13 +9,13 @@ export const PageContainer = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
+  gap: ${({ theme }) => theme.spacing(5)};
 `;
 
 // 환영 카드 스타일 정의
 export const WelcomeCard = styled(Card)`
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.14), rgba(56, 189, 248, 0.16));
-  border-color: rgba(74, 222, 128, 0.45);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(56, 189, 248, 0.1));
+  border-color: rgba(74, 222, 128, 0.3);
 `;
 
 // 환영 카드 컨텐츠 정렬 정의
@@ -54,7 +54,7 @@ export const WelcomeIcon = styled.div`
 export const StatsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 // 통계 셀 정렬 정의
@@ -87,7 +87,7 @@ export const StatLabel = styled.span`
 export const RecentActivityList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(3)};
 `;
 
 // 활동 행 스타일 정의
@@ -98,6 +98,14 @@ export const ActivityRow = styled.div`
   padding: ${({ theme }) => theme.spacing(3)};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surfaceMuted};
+  transition:
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.15s ease;
+
+  &:hover {
+    transform: translateX(4px);
+    background: ${({ theme }) => theme.colors.surface};
+  }
 `;
 
 // 최근 활동 제목 텍스트 스타일
@@ -123,6 +131,14 @@ export const AchievementRow = styled.div<{ $earned: boolean }>`
     $earned ? theme.colors.successSurface : theme.colors.surfaceMuted};
   border: 1px solid
     ${({ theme, $earned }) => ($earned ? "rgba(34, 197, 94, 0.35)" : theme.colors.border)};
+  transition:
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  }
 `;
 
 // 업적 카드 컨텐츠 간격 조정 스타일
@@ -141,7 +157,7 @@ export const QuickActionGrid = styled.div`
 export const MaterialList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(3)};
 `;
 
 // 재질 카드 아이템 정의
@@ -152,6 +168,16 @@ export const MaterialItem = styled.div`
   padding: ${({ theme }) => theme.spacing(3)};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surfaceMuted};
+  transition:
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: ${({ theme }) => theme.colors.surface};
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  }
 `;
 
 // 재질 카드 헤더 행 스타일
@@ -222,7 +248,7 @@ export const TipContent = styled(CardContent)`
 export const TipsList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 // 팁 배지 포지셔닝 클래스
@@ -255,7 +281,7 @@ export const tipBadgeRow = css`
 export const GoalsList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2.5)};
+  gap: ${({ theme }) => theme.spacing(3)};
 `;
 
 // 목표 카드 스타일 정의
@@ -266,6 +292,14 @@ export const GoalCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+  transition:
+    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: ${({ theme }) => theme.colors.surface};
+  }
 `;
 
 // 목표 카드 헤더 레이아웃 정의
@@ -339,7 +373,7 @@ export const GoalProgressBar = styled.div<{ $value: number }>`
 export const TrackerGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
   text-align: center;
 `;
 
