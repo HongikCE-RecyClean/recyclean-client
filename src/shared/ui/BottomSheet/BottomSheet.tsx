@@ -1,4 +1,4 @@
-import { useEffect, useId, type ReactNode, type TransitionEvent } from "react";
+import { useEffect, useId, useRef, type ReactNode, type TransitionEvent } from "react";
 import { useTheme } from "@emotion/react";
 import * as S from "./BottomSheet.styles";
 import { useBottomSheetStore } from "../../state/bottomSheetStore";
@@ -19,21 +19,27 @@ export interface BottomSheetProps {
 export function BottomSheet({ isOpen, onClose, onAfterClose, title, children }: BottomSheetProps) {
   const theme = useTheme();
   const sheetId = useId();
-  const { registerSheet, unregisterSheet } = useBottomSheetStore((state) => ({
-    registerSheet: state.registerSheet,
-    unregisterSheet: state.unregisterSheet,
-  }));
+  const registerSheet = useBottomSheetStore((state) => state.registerSheet);
+  const unregisterSheet = useBottomSheetStore((state) => state.unregisterSheet);
+  const isRegisteredRef = useRef(false);
 
   // 전역 시트 상태 등록
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !isRegisteredRef.current) {
       registerSheet(sheetId);
-    } else {
+      isRegisteredRef.current = true;
+    }
+
+    if (!isOpen && isRegisteredRef.current) {
       unregisterSheet(sheetId);
+      isRegisteredRef.current = false;
     }
 
     return () => {
-      unregisterSheet(sheetId);
+      if (isRegisteredRef.current) {
+        unregisterSheet(sheetId);
+        isRegisteredRef.current = false;
+      }
     };
   }, [isOpen, registerSheet, unregisterSheet, sheetId]);
 
