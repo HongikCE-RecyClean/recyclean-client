@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Card, CardContent } from "../../shared/ui/Card/Card";
+import type { AppTheme } from "../../shared/styles/theme";
 
 // 대시보드 페이지 컨테이너 정의
 export const PageContainer = styled.div`
@@ -69,11 +70,11 @@ export const StatCell = styled.div`
 export const StatValue = styled.span<{ $tone: "success" | "info" | "warning" }>`
   font-size: 1.6rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
-  color: ${({ $tone }) =>
+  color: ${({ theme, $tone }) =>
     ({
-      success: "#16a34a",
-      info: "#0284c7",
-      warning: "#ea580c",
+      success: theme.colors.success,
+      info: theme.colors.info,
+      warning: theme.colors.warning,
     })[$tone]};
 `;
 
@@ -200,21 +201,21 @@ export const MaterialNameText = styled.span`
 `;
 
 // 재질 설명 문단 스타일
-export const materialDescriptionText = css`
+export const materialDescriptionText = (theme: AppTheme) => css`
   margin: 0;
-  color: #475569;
+  color: ${theme.colors.textMuted};
   font-size: 0.85rem;
 `;
 
 // 재질 팁 박스 스타일
-export const materialTipBox = css`
+export const materialTipBox = (theme: AppTheme) => css`
   display: flex;
   gap: 8px;
   align-items: flex-start;
-  background: #eff6ff;
+  background: ${theme.colors.infoSurface};
   border-radius: 12px;
   padding: 8px 10px;
-  color: #1d4ed8;
+  color: ${theme.colors.info};
   font-size: 0.8rem;
 `;
 
@@ -265,10 +266,10 @@ export const tipTitleText = css`
 `;
 
 // 팁 설명 문단 스타일
-export const tipDescriptionText = css`
+export const tipDescriptionText = (theme: AppTheme) => css`
   margin: 4px 0 0;
   font-size: 0.85rem;
-  color: #475569;
+  color: ${theme.colors.textMuted};
 `;
 
 // 팁 배지 행 배치 스타일

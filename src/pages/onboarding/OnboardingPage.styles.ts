@@ -25,10 +25,10 @@ const fadeInDelayed = keyframes`
 // 전체 페이지를 헤더 + 콘텐츠로 구성하는 래퍼 정의
 export const Page = styled.div`
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(47, 133, 90, 0.08), transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.06), transparent 50%),
-    linear-gradient(180deg, rgba(47, 133, 90, 0.04), rgba(245, 247, 250, 1));
+  background: ${({ theme }) => theme.colors.background};
+  background-image:
+    radial-gradient(circle at 20% 20%, ${({ theme }) => theme.colors.primary}20, transparent 50%),
+    radial-gradient(circle at 80% 80%, ${({ theme }) => theme.colors.accent}15, transparent 50%);
   display: flex;
   flex-direction: column;
   font-family: ${({ theme }) => theme.typography.family};
@@ -37,7 +37,7 @@ export const Page = styled.div`
 // 헤더 영역 컨테이너 정의
 export const HeaderBar = styled.div`
   background: ${({ theme }) => theme.colors.surface};
-  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
+  box-shadow: ${({ theme }) => theme.shadows.soft};
   position: sticky;
   top: 0;
   z-index: 1;
@@ -76,7 +76,6 @@ export const BrandName = styled.h1`
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   letter-spacing: -0.03em;
   line-height: 1.1;
-  text-shadow: 0 2px 16px rgba(255, 255, 255, 0.9);
   /* 좌측 패딩 60px 정렬 */
   text-align: left;
   padding-left: 32px;
@@ -92,7 +91,6 @@ export const Tagline = styled.p`
   font-weight: ${({ theme }) => theme.typography.weights.medium};
   letter-spacing: -0.01em;
   line-height: 1.4;
-  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.6);
   /* 브랜드명에 맞춘 좌측 정렬 */
   text-align: left;
   padding-left: 32px;
@@ -111,7 +109,6 @@ export const Description = styled.p`
   margin-left: auto;
   margin-right: 0;
   font-weight: ${({ theme }) => theme.typography.weights.regular};
-  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.6);
   /* 우측 패딩 60px 정렬 */
   text-align: right;
   padding-right: 32px;
@@ -146,7 +143,7 @@ export const StartButton = styled.button`
   border: none;
   border-radius: 14px;
   background: ${({ theme }) => theme.colors.primary};
-  color: ${({ theme }) => theme.colors.surface};
+  color: ${({ theme }) => theme.colors.primaryContrast};
   padding: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(5)}`};
   display: inline-flex;
   align-items: center;
@@ -155,35 +152,29 @@ export const StartButton = styled.button`
   cursor: pointer;
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   font-size: 1.05rem;
-  box-shadow:
-    0 8px 20px rgba(47, 133, 90, 0.3),
-    0 2px 8px rgba(15, 23, 42, 0.15);
+  box-shadow: ${({ theme }) => theme.shadows.medium};
   transition:
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.2s ease;
+    filter 0.2s ease;
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow:
-      0 12px 28px rgba(47, 133, 90, 0.4),
-      0 4px 12px rgba(15, 23, 42, 0.2);
-    background: #276749;
+    filter: brightness(0.9);
+    box-shadow: ${({ theme }) => theme.shadows.medium};
   }
 
   &:active:not(:disabled) {
     transform: translateY(0);
-    box-shadow:
-      0 4px 12px rgba(47, 133, 90, 0.3),
-      0 2px 6px rgba(15, 23, 42, 0.15);
+    filter: brightness(0.85);
+    box-shadow: ${({ theme }) => theme.shadows.soft};
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;
-    box-shadow:
-      0 4px 12px rgba(47, 133, 90, 0.2),
-      0 2px 6px rgba(15, 23, 42, 0.1);
+    filter: none;
+    box-shadow: ${({ theme }) => theme.shadows.soft};
   }
 `;

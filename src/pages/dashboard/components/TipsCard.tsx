@@ -1,4 +1,5 @@
 import type { ChangeEvent } from "react";
+import { useTheme } from "@emotion/react";
 import { Lightbulb } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
@@ -26,6 +27,9 @@ export function TipsCard({
   onSelectedTipCategoryChange,
   tipCategoryOptions,
 }: TipsCardProps) {
+  // 테마 객체 가져오기
+  const theme = useTheme();
+
   const handleCategoryChange = (event: ChangeEvent<HTMLSelectElement>) => {
     onSelectedTipCategoryChange(event.target.value);
   };
@@ -59,7 +63,7 @@ export function TipsCard({
                 <div>
                   {/* 팁 제목 텍스트 클래스 적용 */}
                   <h3 css={S.tipTitleText}>{tip.title}</h3>
-                  <p css={S.tipDescriptionText}>{tip.description}</p>
+                  <p css={S.tipDescriptionText(theme)}>{tip.description}</p>
                 </div>
                 {/* 팁 배지 행 클래스 적용 */}
                 <div css={S.tipBadgeRow}>

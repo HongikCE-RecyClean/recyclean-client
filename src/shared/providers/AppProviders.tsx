@@ -2,14 +2,21 @@ import type { PropsWithChildren } from "react";
 import { ThemeProvider } from "@emotion/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { appTheme } from "../styles/theme";
+import { lightTheme, darkTheme } from "../styles/theme";
 import { AppGlobalStyles } from "../styles/GlobalStyles";
 import { queryClient } from "./queryClient";
+import { useSettingsStore } from "../state/settingsStore";
 
 // 앱 전역 프로바이더 래퍼
 export function AppProviders({ children }: PropsWithChildren) {
+  // 설정 스토어에서 다크 모드 상태 구독
+  const darkMode = useSettingsStore((state) => state.darkMode);
+
+  // 다크 모드 상태에 따라 테마 선택
+  const currentTheme = darkMode ? darkTheme : lightTheme;
+
   return (
-    <ThemeProvider theme={appTheme}>
+    <ThemeProvider theme={currentTheme}>
       <QueryClientProvider client={queryClient}>
         <AppGlobalStyles />
         {children}

@@ -4,12 +4,12 @@ import styled from "@emotion/styled";
 export const PlaceholderContainer = styled.div`
   height: 200px;
   border-radius: 16px;
-  background: linear-gradient(135deg, #e2e8f0, #cbd5f5);
+  background: ${({ theme }) => theme.colors.surfaceMuted};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #475569;
+  color: ${({ theme }) => theme.colors.textMuted};
   gap: 8px;
 `;
 

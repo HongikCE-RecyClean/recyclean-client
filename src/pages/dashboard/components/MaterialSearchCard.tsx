@@ -1,4 +1,5 @@
 import type { ChangeEvent } from "react";
+import { useTheme } from "@emotion/react";
 import { AlertCircle, Leaf, Lightbulb } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { TextField } from "../../../shared/ui/TextField/TextField";
@@ -30,6 +31,9 @@ export function MaterialSearchCard({
   onMaterialCategoryChange,
   filteredMaterials,
 }: MaterialSearchCardProps) {
+  // 테마 객체 가져오기
+  const theme = useTheme();
+
   return (
     <Card>
       <CardHeader>
@@ -65,10 +69,10 @@ export function MaterialSearchCard({
                 </div>
                 <Badge variant="outline">{material.category}</Badge>
               </div>
-              <p css={S.materialDescriptionText}>{material.instructions}</p>
+              <p css={S.materialDescriptionText(theme)}>{material.instructions}</p>
               {/* 재질 팁 박스 클래스 적용 */}
               {material.tips && (
-                <div css={S.materialTipBox}>
+                <div css={S.materialTipBox(theme)}>
                   <AlertCircle size={16} />
                   <span>{material.tips}</span>
                 </div>

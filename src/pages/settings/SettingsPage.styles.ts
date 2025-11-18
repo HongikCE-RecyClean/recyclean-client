@@ -1,6 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { CardContent } from "../../shared/ui/Card/Card";
+import type { AppTheme } from "../../shared/styles/theme";
 
 // 설정 페이지 전체 컨테이너 정의
 export const PageContainer = styled.div`
@@ -65,9 +66,9 @@ export const SettingsItemTitle = styled.span`
 `;
 
 // 설정 항목 설명 텍스트 스타일
-export const settingsItemDescription = css`
+export const settingsItemDescription = (theme: AppTheme) => css`
   font-size: 0.75rem;
-  color: #64748b;
+  color: ${theme.colors.textMuted};
 `;
 
 // 설정 필드 레이블 텍스트 스타일
@@ -108,9 +109,9 @@ export const profileInfoContainer = css`
 `;
 
 // 프로필 메타 텍스트 스타일
-export const profileMetaText = css`
+export const profileMetaText = (theme: AppTheme) => css`
   margin: 4px 0 0;
-  color: #475569;
+  color: ${theme.colors.textMuted};
   font-size: 0.85rem;
 `;
 
@@ -125,18 +126,18 @@ export const profileBadgeRow = css`
 export const ImpactStatValueSuccess = styled.div`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
-  color: #16a34a;
+  color: ${({ theme }) => theme.colors.success};
 `;
 
 // 영향력 통계 주요 수치(정보) 스타일
 export const ImpactStatValueInfo = styled.div`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
-  color: #2563eb;
+  color: ${({ theme }) => theme.colors.info};
 `;
 
 // 영향력 통계 라벨 텍스트 스타일
-export const impactStatLabel = css`
+export const impactStatLabel = (theme: AppTheme) => css`
   font-size: 0.8rem;
-  color: #64748b;
+  color: ${theme.colors.textMuted};
 `;

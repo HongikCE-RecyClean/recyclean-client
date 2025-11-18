@@ -7,7 +7,8 @@ export const NavBar = styled.nav`
   bottom: 0;
   z-index: 90;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: ${({ theme }) => theme.colors.surface};
+  opacity: 0.98;
   backdrop-filter: blur(14px);
 `;
 

@@ -45,7 +45,30 @@ export interface AppTheme {
   };
 }
 
-export const appTheme: AppTheme = {
+// 공통 테마 속성 (라이트/다크 모두 동일)
+const commonTheme = {
+  spacing: (step: number) => `${step * 4}px`,
+  radii: {
+    sm: "8px",
+    md: "12px",
+    lg: "16px",
+    full: "999px",
+    pill: "999px",
+  },
+  typography: {
+    family: "'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+    weights: {
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700,
+    },
+  },
+};
+
+// 라이트 모드 테마
+export const lightTheme: AppTheme = {
+  ...commonTheme,
   colors: {
     background: "#f5f7fa",
     surface: "#ffffff",
@@ -67,30 +90,46 @@ export const appTheme: AppTheme = {
     infoSurface: "#dbeafe",
     highlight: "#22c55e",
   },
-  spacing: (step: number) => `${step * 4}px`,
-  radii: {
-    sm: "8px",
-    md: "12px",
-    lg: "16px",
-    // 완전한 원형 코너를 위한 반경 값
-    full: "999px",
-    pill: "999px",
-  },
   shadows: {
     soft: "0 4px 16px rgba(15, 23, 42, 0.08)",
     medium: "0 12px 32px rgba(15, 23, 42, 0.12)",
     inner: "inset 0 1px 2px rgba(15, 23, 42, 0.08)",
   },
-  typography: {
-    family: "'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-    weights: {
-      regular: 400,
-      medium: 500,
-      semibold: 600,
-      bold: 700,
-    },
+};
+
+// 다크 모드 테마
+export const darkTheme: AppTheme = {
+  ...commonTheme,
+  colors: {
+    background: "#0f172a",
+    surface: "#1e293b",
+    surfaceMuted: "#334155",
+    primary: "#34d399",
+    primaryContrast: "#0f172a",
+    secondary: "#38bdf8",
+    accent: "#2dd4bf",
+    text: "#f1f5f9",
+    textMuted: "#94a3b8",
+    border: "#334155",
+    success: "#22c55e",
+    successSurface: "#065f46",
+    warning: "#f59e0b",
+    warningSurface: "#78350f",
+    danger: "#ef4444",
+    dangerSurface: "#7f1d1d",
+    info: "#60a5fa",
+    infoSurface: "#1e3a8a",
+    highlight: "#4ade80",
+  },
+  shadows: {
+    soft: "0 4px 16px rgba(0, 0, 0, 0.3)",
+    medium: "0 12px 32px rgba(0, 0, 0, 0.5)",
+    inner: "inset 0 1px 2px rgba(0, 0, 0, 0.3)",
   },
 };
+
+// 기본 테마 (라이트 모드)
+export const appTheme = lightTheme;
 
 declare module "@emotion/react" {
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
