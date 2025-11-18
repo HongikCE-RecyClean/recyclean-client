@@ -1,4 +1,4 @@
-const CACHE_VERSION = "recyclean-shell-v3";
+const CACHE_VERSION = "recyclean-shell-v4";
 const APP_SHELL = [
   "/",
   "/index.html",
