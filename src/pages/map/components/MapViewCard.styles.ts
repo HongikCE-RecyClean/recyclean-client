@@ -37,10 +37,16 @@ export const MapWrapper = styled.div`
   background: ${({ theme }) => theme.colors.surfaceMuted};
 `;
 
+// 실제 네이버 지도가 마운트될 캔버스
+export const MapCanvas = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
 // 키 미설정 시 노출하는 안내 영역
 export const MapFallback = styled.div`
   width: 100%;
-  height: 200px;
+  height: 320px;
   border-radius: 16px;
   background: ${({ theme }) => theme.colors.surfaceMuted};
   display: flex;

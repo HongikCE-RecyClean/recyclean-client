@@ -1,10 +1,8 @@
-import { useMemo } from "react";
 import type { PropsWithChildren } from "react";
 import { ThemeProvider } from "@emotion/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { I18nextProvider } from "react-i18next";
-import { NavermapsProvider } from "react-naver-maps";
 import { lightTheme, darkTheme } from "../styles/theme";
 import { AppGlobalStyles } from "../styles/GlobalStyles";
 import { queryClient } from "./queryClient";
@@ -21,54 +19,17 @@ export function AppProviders({ children }: PropsWithChildren) {
   // 다크 모드 상태에 따라 테마 선택
   const currentTheme = darkMode ? darkTheme : lightTheme;
 
-  const ncpKeyId = import.meta.env.VITE_NAVER_MAP_KEY_ID as string | undefined;
-  const ncpClientId = import.meta.env.VITE_NAVER_MAP_CLIENT_ID as string | undefined;
-  const submodules = import.meta.env.VITE_NAVER_MAP_SUBMODULES as string | undefined;
-
-  const navermapsOptions = useMemo(() => {
-    const parsedSubmodules = submodules
-      ?.split(",")
-      .map((module) => module.trim())
-      .filter((module) => module.length > 0);
-
-    if (ncpKeyId) {
-      return {
-        ncpKeyId,
-        submodules: parsedSubmodules,
-      } as const;
-    }
-
-    if (ncpClientId) {
-      return {
-        ncpClientId,
-        submodules: parsedSubmodules,
-      } as const;
-    }
-
-    return null;
-  }, [ncpKeyId, ncpClientId, submodules]);
-
-  const appShell = (
-    <>
-      <AppGlobalStyles />
-      <LanguageSync />
-      {children}
-      <SnackbarContainer />
-      {import.meta.env.DEV && (
-        // 개발 디버그 버튼 위치를 명시적으로 유지
-        <ReactQueryDevtools buttonPosition="bottom-right" initialIsOpen={false} />
-      )}
-    </>
-  );
-
   return (
     <I18nextProvider i18n={i18n}>
       <ThemeProvider theme={currentTheme}>
         <QueryClientProvider client={queryClient}>
-          {navermapsOptions ? (
-            <NavermapsProvider {...navermapsOptions}>{appShell}</NavermapsProvider>
-          ) : (
-            appShell
+          <AppGlobalStyles />
+          <LanguageSync />
+          {children}
+          <SnackbarContainer />
+          {import.meta.env.DEV && (
+            // 개발 디버그 버튼 위치를 명시적으로 유지
+            <ReactQueryDevtools buttonPosition="bottom-right" initialIsOpen={false} />
           )}
         </QueryClientProvider>
       </ThemeProvider>
