@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { AlertCircle, Leaf, Lightbulb } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Car
 import { TextField } from "../../../shared/ui/TextField/TextField";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import { Badge } from "../../../shared/ui/Badge/Badge";
+import { Button } from "../../../shared/ui/Button/Button";
 import * as S from "../DashboardPage.styles";
 import type { MaterialItemData } from "../../../shared/types/dashboard";
 
@@ -19,6 +20,7 @@ interface MaterialSearchCardProps {
 }
 
 const materialFilterKeys = ["all", "Plastic", "Glass", "Metal", "Paper"] as const;
+const MATERIAL_PREVIEW_COUNT = 3;
 
 export function MaterialSearchCard({
   searchTerm,
@@ -30,6 +32,7 @@ export function MaterialSearchCard({
   // 테마 객체 가져오기
   const theme = useTheme();
   const { t } = useTranslation();
+  const [showAllMaterials, setShowAllMaterials] = useState(false);
   const materialFilters = useMemo(
     () =>
       materialFilterKeys.map((value) => ({
@@ -38,6 +41,17 @@ export function MaterialSearchCard({
       })),
     [t],
   );
+  const visibleMaterials = useMemo(() => {
+    if (showAllMaterials) {
+      return filteredMaterials;
+    }
+    return filteredMaterials.slice(0, MATERIAL_PREVIEW_COUNT);
+  }, [filteredMaterials, showAllMaterials]);
+  const hasHiddenMaterials = filteredMaterials.length > MATERIAL_PREVIEW_COUNT;
+
+  useEffect(() => {
+    setShowAllMaterials(false);
+  }, [filteredMaterials]);
 
   return (
     <Card>
@@ -62,7 +76,7 @@ export function MaterialSearchCard({
         />
         {/* 재질 정보 리스트 */}
         <S.MaterialList>
-          {filteredMaterials.map((material) => (
+          {visibleMaterials.map((material) => (
             <S.MaterialItem key={material.name}>
               {/* 재질 카드 헤더 행 클래스 적용 */}
               <div css={S.materialHeaderRow}>
@@ -90,6 +104,15 @@ export function MaterialSearchCard({
             <S.MaterialEmptyMessage>{t("dashboard.materialSearch.empty")}</S.MaterialEmptyMessage>
           )}
         </S.MaterialList>
+        {hasHiddenMaterials && (
+          <S.MaterialMoreWrapper>
+            <Button variant="ghost" size="sm" onClick={() => setShowAllMaterials((prev) => !prev)}>
+              {showAllMaterials
+                ? t("dashboard.materialSearch.showLess")
+                : t("dashboard.materialSearch.showMore")}
+            </Button>
+          </S.MaterialMoreWrapper>
+        )}
       </CardContent>
     </Card>
   );

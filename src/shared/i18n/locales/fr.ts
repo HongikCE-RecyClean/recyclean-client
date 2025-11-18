@@ -57,6 +57,8 @@ export const frTranslation = {
       recyclable: "Recyclable",
       notRecyclable: "Non admis",
       empty: "Aucun résultat pour ce filtre.",
+      showMore: "Afficher plus",
+      showLess: "Afficher moins",
     },
     recentActivity: {
       title: "Activité récente",
@@ -109,6 +111,11 @@ export const frTranslation = {
     addEntry: {
       // 활동 추가 섹션 제목 문구
       title: "Ajouter une activité",
+      modeLabel: "Type d'ajout",
+      modeOptions: {
+        record: "Enregistrer une activité",
+        plan: "Planifier une activité",
+      },
       // 카테고리 입력 레이블
       category: "Catégorie",
       // 재질 입력 레이블
@@ -117,6 +124,7 @@ export const frTranslation = {
       amount: "Quantité",
       // 날짜 선택 레이블
       date: "Date",
+      time: "Heure",
       // 포인트 미리보기 문구
       pointsPreview: "Points estimés : +{{points}}pt",
     },
@@ -170,6 +178,7 @@ export const frTranslation = {
         "Assurez-vous que le symbole de recyclage soit visible.",
         "Cadrez l'objet de face si possible.",
       ],
+      bannerMessage: "Astuce photo ✨ Lumière douce et fond net rendent l'IA bien plus précise.",
     },
     captured: {
       alt: "Aperçu de l'image capturée",
@@ -263,6 +272,8 @@ export const frTranslation = {
         "Les nouveaux scans apparaissent aussitôt sur le calendrier.",
         "Les journées chargées affichent un point sur le calendrier.",
       ],
+      bannerMessage:
+        "Astuce calendrier 🗓️ Touchez une date pour consulter ou modifier vos entrées.",
     },
   },
   map: {
@@ -293,9 +304,17 @@ export const frTranslation = {
       maintenance: "En maintenance",
     },
     centers: {
-      title: "Centres de recyclage",
+      title: "Centres de recyclage & points de dépôt",
+      sectionTitle: "Centres de recyclage",
       directions: "Itinéraire",
       call: "Appeler",
+    },
+    errors: {
+      title: "Impossible de charger les données de la carte",
+      description: "Vérifiez la connexion serveur ou la configuration SSL, puis réessayez.",
+      detail: "Message d'erreur : {{message}}",
+      action: "Réessayer",
+      retrying: "Nouvelle tentative...",
     },
   },
   settings: {
@@ -340,7 +359,7 @@ export const frTranslation = {
       },
       monthlyGoal: {
         title: "Objectif mensuel de points",
-        description: "Utilisé pour le suivi sur le tableau de bord",
+        description: "Base de calcul de la progression",
         placeholder: "ex. 200",
         helper: "Saisissez au moins 10 pt pour enregistrer.",
       },
@@ -388,6 +407,14 @@ export const frTranslation = {
       pointsNeeded: "{{points}}pt nécessaires jusqu'au prochain niveau",
       maxLevel: "Niveau maximum atteint !",
     },
+    monthlyGoal: {
+      title: "Objectif de points mensuels",
+      description: "Définissez combien de points atteindre ce mois-ci.",
+      placeholder: "ex. 250",
+      helper: "Entrez une valeur supérieure à 10 points pour l'enregistrer automatiquement.",
+      cta: "Enregistrer l'objectif",
+      usage: "Alimente les cartes de progression et le tracker du tableau de bord.",
+    },
     categories: {
       title: "Statistiques par Catégorie",
       topCategory: "Le Plus Recyclé",
@@ -403,8 +430,8 @@ export const frTranslation = {
     },
     banner: {
       welcome: {
-        message: "Bienvenue, {{name}} ! Enregistrez votre première activité de recyclage.",
-        cta: "Commencer",
+        message: "Bonjour {{name}} ! On ajoute un nouveau geste de tri aujourd'hui ?",
+        cta: "Ajouter un enregistrement",
       },
     },
     snackbar: {

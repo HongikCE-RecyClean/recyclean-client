@@ -67,12 +67,10 @@ export function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
 
   useEffect(() => {
-    // 달력 가이드 문구를 상단 배너로 노출
-    const guideItems = t("calendar.guide.items", { returnObjects: true }) as string[];
-    const guideMessage = [t("calendar.guide.title"), ...guideItems].join(" · ");
+    // 달력 가이드 요약 배너
     const bannerId = showBanner({
       type: "info",
-      message: guideMessage,
+      message: t("calendar.guide.bannerMessage"),
     });
 
     return () => {

@@ -1,11 +1,18 @@
 import styled from "@emotion/styled";
+import { Button } from "shared/ui/Button/Button";
+
+export const HeaderSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(3)};
+  margin-bottom: ${({ theme }) => theme.spacing(3)};
+`;
 
 // 지도 카드 상단 안내 행
 export const HeaderRow = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
 `;
 
 // 안내 텍스트 묶음
@@ -25,6 +32,10 @@ export const HeaderTitle = styled.div`
 export const HeaderSubtitle = styled.div`
   font-size: 0.85rem;
   color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+export const LocationButton = styled(Button)`
+  width: 100%;
 `;
 
 // 지도 캔버스 컨테이너

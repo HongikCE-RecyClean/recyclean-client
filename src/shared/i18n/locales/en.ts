@@ -56,6 +56,8 @@ export const enTranslation = {
       recyclable: "Recyclable",
       notRecyclable: "Not allowed",
       empty: "No matches for the current filters.",
+      showMore: "Show more",
+      showLess: "Show less",
     },
     recentActivity: {
       title: "Recent activity",
@@ -106,10 +108,16 @@ export const enTranslation = {
     },
     addEntry: {
       title: "Add Activity",
+      modeLabel: "Entry type",
+      modeOptions: {
+        record: "Record activity",
+        plan: "Plan activity",
+      },
       category: "Category",
       material: "Material",
       amount: "Amount",
       date: "Date",
+      time: "Time",
       pointsPreview: "Expected points: +{{points}}pt",
     },
   },
@@ -161,6 +169,7 @@ export const enTranslation = {
         "Make sure the recycling symbol is visible.",
         "Capture the item straight on when possible.",
       ],
+      bannerMessage: "Photo tip ✨ Bright light plus a clean, front view keeps the AI spot on.",
     },
     captured: {
       alt: "Captured image preview",
@@ -251,6 +260,7 @@ export const enTranslation = {
         "New scans appear on the calendar instantly.",
         "Busy days show a dot indicator on the calendar.",
       ],
+      bannerMessage: "Calendar tip 🗓️ Tap any date to instantly review or edit its logs.",
     },
   },
   map: {
@@ -281,9 +291,17 @@ export const enTranslation = {
       maintenance: "Under maintenance",
     },
     centers: {
-      title: "Recycling centers",
+      title: "Recycling centers & bins",
+      sectionTitle: "Recycling centers",
       directions: "Directions",
       call: "Call",
+    },
+    errors: {
+      title: "Unable to load map data",
+      description: "Check the server connection or SSL settings, then try again.",
+      detail: "Error message: {{message}}",
+      action: "Retry",
+      retrying: "Retrying...",
     },
   },
   settings: {
@@ -328,7 +346,7 @@ export const enTranslation = {
       },
       monthlyGoal: {
         title: "Monthly point goal",
-        description: "Used for dashboard progress tracking",
+        description: "Progress calculation basis",
         placeholder: "e.g. 200",
         helper: "Enter at least 10pt to save.",
       },
@@ -376,6 +394,14 @@ export const enTranslation = {
       pointsNeeded: "{{points}}pt needed to next level",
       maxLevel: "Max level achieved!",
     },
+    monthlyGoal: {
+      title: "Monthly points target",
+      description: "Set the number of points you want to hit this month.",
+      placeholder: "e.g. 250",
+      helper: "Enter any value above 10 points to save automatically.",
+      cta: "Save target",
+      usage: "Used by the dashboard progress widgets and tracker card.",
+    },
     categories: {
       title: "Category Statistics",
       topCategory: "Most Recycled",
@@ -391,8 +417,8 @@ export const enTranslation = {
     },
     banner: {
       welcome: {
-        message: "Welcome, {{name}}! Log your first recycling activity.",
-        cta: "Get started",
+        message: "Hi {{name}}! Ready to log one more recycling win today?",
+        cta: "Log activity",
       },
     },
     snackbar: {

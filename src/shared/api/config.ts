@@ -1,12 +1,24 @@
 // API 기본 설정 관련 유틸
 const DEFAULT_BASE_URL = "/api";
+const DEV_PROXY_BASE_URL = "/api";
+
+const shouldUseDevProxy =
+  Boolean(import.meta.env?.DEV) && import.meta.env?.VITE_DISABLE_DEV_PROXY !== "true";
 
 // API 기본 URL 반환
 export function getApiBaseUrl(): string {
-  const baseUrl = import.meta.env?.VITE_API_BASE_URL;
-  if (typeof baseUrl === "string" && baseUrl.trim().length > 0) {
-    return baseUrl;
+  if (shouldUseDevProxy) {
+    return DEV_PROXY_BASE_URL;
   }
+
+  const baseUrl = import.meta.env?.VITE_API_BASE_URL;
+  if (typeof baseUrl === "string") {
+    const trimmed = baseUrl.trim();
+    if (trimmed.length > 0) {
+      return trimmed;
+    }
+  }
+
   return DEFAULT_BASE_URL;
 }
 

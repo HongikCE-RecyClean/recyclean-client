@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useShallow } from "zustand/react/shallow";
 import { useUserStore } from "shared/state/userStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { calculateUserStats, calculateCategoryStats } from "shared/utils/userStats";
@@ -12,8 +13,14 @@ import * as S from "./ProfilePage.styles";
 
 export function ProfilePage() {
   // 사용자 정보 및 활동 기록 로드
-  const { name, setName, joinedAt } = useUserStore();
-  const { entries } = useActivityStore();
+  const { name, setName, joinedAt } = useUserStore(
+    useShallow((state) => ({
+      name: state.name,
+      setName: state.setName,
+      joinedAt: state.joinedAt,
+    })),
+  ); // zustand selector 안정화로 무한 렌더링 방지 목적
+  const entries = useActivityStore((state) => state.entries); // 필요한 조각만 구독
   const { t } = useTranslation();
 
   // 프로필 편집 BottomSheet 상태 관리

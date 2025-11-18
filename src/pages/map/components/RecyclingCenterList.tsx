@@ -1,20 +1,40 @@
-import { Clock, MapPin, Navigation, Phone } from "lucide-react";
+import { useMemo, type ChangeEvent } from "react";
+import { Clock, Filter, MapPin, Navigation, Phone, Recycle, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
 import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
-import { mapMaterialColors } from "shared/constants/mapVisuals";
-import type { RecyclingCenter } from "shared/types/map";
+import { SelectField } from "shared/ui/SelectField/SelectField";
+import { mapAvailabilityTone, mapMaterialColors } from "shared/constants/mapVisuals";
+import type { RecyclingCenter, TrashBin, FilterOption } from "shared/types/map";
 import * as S from "./RecyclingCenterList.styles";
 
 interface RecyclingCenterListProps {
   centers: RecyclingCenter[];
+  bins: TrashBin[];
+  options: FilterOption[];
+  selectedType: string;
+  onTypeChange: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
+export function RecyclingCenterList({
+  centers,
+  bins,
+  options,
+  selectedType,
+  onTypeChange,
+}: RecyclingCenterListProps) {
   const { t } = useTranslation();
-  // 재활용 센터 카드 목록 렌더링
+  const localizedOptions = useMemo(
+    () =>
+      options.map((option) => ({
+        ...option,
+        label: t(`map.filter.options.${option.value}`, { defaultValue: option.label }),
+      })),
+    [options, t],
+  );
+
   return (
     <Card>
       <CardHeader>
@@ -24,12 +44,83 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
+        <S.SectionHeader>
+          <S.SectionLabel>
+            <Filter size={16} />
+            {t("map.filter.title")}
+          </S.SectionLabel>
+          <SelectField options={localizedOptions} value={selectedType} onChange={onTypeChange} />
+        </S.SectionHeader>
+
+        <S.BinSection>
+          {bins.length === 0 ? (
+            <S.EmptyState>{t("map.bins.empty")}</S.EmptyState>
+          ) : (
+            <S.BinList>
+              {bins.map((bin) => (
+                <S.BinItem key={bin.id}>
+                  <S.BinHeader>
+                    <S.BinInfo>
+                      {bin.type === "recycling" ? <Recycle size={18} /> : <Trash2 size={18} />}
+                      <S.BinTexts>
+                        <S.BinName>{bin.name}</S.BinName>
+                        <S.BinLocation>{bin.location}</S.BinLocation>
+                        <S.BinUpdated>
+                          <Clock size={12} />
+                          {bin.lastUpdated}
+                        </S.BinUpdated>
+                      </S.BinTexts>
+                    </S.BinInfo>
+                    <S.BinStatus>
+                      <Badge variant="outline">{bin.distance}</Badge>
+                      <Badge tone={mapAvailabilityTone[bin.availability]}>
+                        {t(`map.availability.${bin.availability}`)}
+                      </Badge>
+                    </S.BinStatus>
+                  </S.BinHeader>
+
+                  <S.ItemsSection>
+                    <S.SectionHint>{t("map.bins.sectionLabel")}</S.SectionHint>
+                    <S.ItemsChips>
+                      {bin.acceptedItems.map((item) => (
+                        <Badge
+                          key={item}
+                          variant="soft"
+                          tone={mapMaterialColors[item] ?? "neutral"}
+                        >
+                          {item}
+                        </Badge>
+                      ))}
+                    </S.ItemsChips>
+                  </S.ItemsSection>
+
+                  <S.BinActions>
+                    <Button variant="outline" size="sm">
+                      <Navigation size={14} />
+                      {t("map.bins.directions")}
+                    </Button>
+                    <Button variant="outline" size="sm">
+                      {t("map.bins.report")}
+                    </Button>
+                  </S.BinActions>
+                </S.BinItem>
+              ))}
+            </S.BinList>
+          )}
+        </S.BinSection>
+
+        <S.SectionDivider />
+
+        <S.SectionLabel>
+          <MapPin size={16} />
+          {t("map.centers.sectionTitle", { defaultValue: t("map.centers.title") })}
+        </S.SectionLabel>
+
         <S.CenterGrid>
           {centers.map((center) => (
             <S.CenterCard key={center.id}>
               <S.CenterMedia>
                 <ImageWithFallback src={center.image} alt={center.name} />
-                {/* 거리 배지 위치 클래스 적용 */}
                 <div css={S.centerBadgeContainer}>
                   <Badge variant="outline">{center.distance}</Badge>
                 </div>
@@ -49,7 +140,6 @@ export function RecyclingCenterList({ centers }: RecyclingCenterListProps) {
                 </S.MaterialChips>
 
                 <S.InfoStack>
-                  {/* 운영 시간 텍스트와 아이콘을 한 줄로 정렬 */}
                   <S.InfoRow>
                     <Clock size={12} />
                     {center.hours}

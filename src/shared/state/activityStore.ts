@@ -17,6 +17,10 @@ function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
+function normalizeDate(value: Date | string): Date {
+  return value instanceof Date ? value : new Date(value);
+}
+
 // 활동 기록 zustand 스토어 (localStorage 지속성 포함)
 export const useActivityStore = create<ActivityState>()(
   persist(
@@ -29,6 +33,8 @@ export const useActivityStore = create<ActivityState>()(
           entries: [
             {
               ...entry,
+              mode: entry.mode ?? "record",
+              date: normalizeDate(entry.date),
               id: generateId(),
             },
             ...state.entries,
@@ -38,9 +44,19 @@ export const useActivityStore = create<ActivityState>()(
       // 활동 수정
       updateEntry: (id, updates) =>
         set((state) => ({
-          entries: state.entries.map((entry) =>
-            entry.id === id ? { ...entry, ...updates } : entry,
-          ),
+          entries: state.entries.map((entry) => {
+            if (entry.id !== id) {
+              return entry;
+            }
+            const nextEntry = { ...entry, ...updates };
+            if (updates.date) {
+              nextEntry.date = normalizeDate(updates.date);
+            }
+            if (!nextEntry.mode) {
+              nextEntry.mode = "record";
+            }
+            return nextEntry;
+          }),
         })),
 
       // 활동 삭제
@@ -50,7 +66,14 @@ export const useActivityStore = create<ActivityState>()(
         })),
 
       // 전체 활동 교체 (초기 데이터 로드 등에 사용)
-      setEntries: (entries) => set({ entries }),
+      setEntries: (entries) =>
+        set({
+          entries: entries.map((entry) => ({
+            ...entry,
+            mode: entry.mode ?? "record",
+            date: normalizeDate(entry.date),
+          })),
+        }),
 
       // 모든 활동 삭제 (데이터 초기화)
       clearAllEntries: () => set({ entries: [] }),
@@ -58,6 +81,23 @@ export const useActivityStore = create<ActivityState>()(
     {
       name: "recyclean-activities",
       storage: createJSONStorage(() => localStorage),
+      version: 1,
+      migrate: (persistedState, version) => {
+        if (!persistedState) {
+          return persistedState;
+        }
+        if (version < 1 && Array.isArray((persistedState as ActivityState).entries)) {
+          return {
+            ...persistedState,
+            entries: (persistedState as ActivityState).entries.map((entry) => ({
+              ...entry,
+              mode: entry.mode ?? "record",
+              date: normalizeDate(entry.date),
+            })),
+          };
+        }
+        return persistedState;
+      },
     },
   ),
 );

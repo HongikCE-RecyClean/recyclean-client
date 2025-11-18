@@ -1,5 +1,6 @@
-const DEFAULT_AI_LABELING_ENDPOINT =
-  "https://ec2-3-37-55-37.ap-northeast-2.compute.amazonaws.com:8080/api/ai/labeling";
+import { buildApiUrl } from "./config";
+
+const DEFAULT_AI_LABELING_PATH = "/ai/labeling";
 
 // AI 라벨링 API 응답 타입 정의
 export interface AiPrediction {
@@ -13,12 +14,17 @@ export interface AiLabelingResponse {
 }
 
 function getAiLabelingEndpoint(): string {
-  // 환경 변수 우선 적용 후 기본값 사용
   const envEndpoint = import.meta.env?.VITE_AI_LABELING_ENDPOINT as string | undefined;
-  if (envEndpoint && envEndpoint.trim().length > 0) {
-    return envEndpoint;
+  if (envEndpoint) {
+    const trimmed = envEndpoint.trim();
+    if (trimmed.length > 0) {
+      if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+        return trimmed;
+      }
+      return buildApiUrl(trimmed);
+    }
   }
-  return DEFAULT_AI_LABELING_ENDPOINT;
+  return buildApiUrl(DEFAULT_AI_LABELING_PATH);
 }
 
 export async function requestAiLabeling(file: Blob, signal?: AbortSignal): Promise<AiPrediction[]> {

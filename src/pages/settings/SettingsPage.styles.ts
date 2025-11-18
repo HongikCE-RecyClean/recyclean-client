@@ -43,12 +43,12 @@ export const SettingsItem = styled.div`
   gap: ${({ theme }) => theme.spacing(3)};
 
   /* 첫 번째 항목은 위에 패딩 추가 (SectionStack gap과 동일하게) */
-  &:first-child {
+  &:first-of-type {
     padding-top: ${({ theme }) => theme.spacing(4)};
   }
 
   /* 마지막 항목은 아래에 패딩 추가 (SectionStack gap과 동일하게) */
-  &:last-child {
+  &:last-of-type {
     padding-bottom: ${({ theme }) => theme.spacing(4)};
   }
 `;
@@ -58,6 +58,9 @@ export const SettingsInputColumn = styled.div`
   flex-direction: column;
   align-items: flex-end;
   gap: ${({ theme }) => theme.spacing(1)};
+  flex: 0 0 50%;
+  width: 50%;
+  max-width: 40%;
   min-width: 140px;
 `;
 

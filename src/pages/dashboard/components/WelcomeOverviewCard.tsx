@@ -1,10 +1,10 @@
 import { useTranslation } from "react-i18next";
 import * as S from "../DashboardPage.styles";
-import type { DashboardData } from "../../../shared/types/dashboard";
+import type { TodayStats } from "shared/utils/userStats";
 
 // 환경 카드 환영 메시지에 필요한 속성 정의
 interface WelcomeOverviewCardProps {
-  todayStats: DashboardData["todayStats"];
+  todayStats: TodayStats;
   userName: string;
 }
 

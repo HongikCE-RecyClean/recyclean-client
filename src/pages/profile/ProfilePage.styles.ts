@@ -119,12 +119,19 @@ export const levelHeaderRow = css`
   margin-bottom: 12px;
 `;
 
-// 레벨 카드 푸터 텍스트 스타일
-export const levelFooterText = (theme: AppTheme) => css`
-  margin-top: 12px;
-  font-size: 0.875rem;
+// 레벨 진행률 영역 레이아웃
+export const levelProgressSection = (theme: AppTheme) => css`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing(2)};
+  margin-top: ${theme.spacing(2)};
+`;
+
+// 다음 레벨 안내 텍스트 스타일
+export const levelProgressMeta = (theme: AppTheme) => css`
+  font-size: 0.85rem;
   color: ${theme.colors.textMuted};
-  text-align: center;
+  text-align: right;
 `;
 
 // 카테고리 통계 리스트 스타일

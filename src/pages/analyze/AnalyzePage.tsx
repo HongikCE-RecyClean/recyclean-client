@@ -295,6 +295,8 @@ export function AnalyzePage() {
       {/* 파일 업로드 입력 요소를 숨김으로 렌더링 */}
       <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={handleFileChange} />
       <AnalyzeIntroCard />
+      {/* 촬영 팁을 상단 배너로 표시 */}
+      <AnalyzeTipsCard />
 
       {!capturedImage && !result && (
         <AnalyzeActionsCard
@@ -303,8 +305,6 @@ export function AnalyzePage() {
           disabled={isBusy}
         />
       )}
-
-      {interactionError && <S.ErrorMessage role="alert">{interactionError}</S.ErrorMessage>}
 
       {/* 카메라 촬영 카드를 조건부 렌더링 */}
       {isCameraActive && (
@@ -347,7 +347,8 @@ export function AnalyzePage() {
         <S.SuccessMessage role="alert">{t("analyze.result.saveSuccess")}</S.SuccessMessage>
       )}
 
-      <AnalyzeTipsCard />
+      {/* 오류 알림을 페이지 하단에 고정 */}
+      {interactionError && <S.ErrorMessage role="alert">{interactionError}</S.ErrorMessage>}
     </S.PageContainer>
   );
 }

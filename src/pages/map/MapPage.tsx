@@ -1,19 +1,21 @@
 import { useMemo } from "react";
 import type { ChangeEvent } from "react";
-import { MapFilterCard } from "./components/MapFilterCard";
+import { useTranslation } from "react-i18next";
 import { MapViewCard } from "./components/MapViewCard";
-import { TrashBinList } from "./components/TrashBinList";
 import { RecyclingCenterList } from "./components/RecyclingCenterList";
 import { useMapData } from "shared/api/map";
 import { useMapStore } from "shared/state/mapStore";
 import { defaultMapFilterOptions } from "shared/constants/mapVisuals";
+import { Button } from "shared/ui/Button/Button";
 import * as S from "./MapPage.styles";
 
 export function MapPage() {
+  const { t } = useTranslation();
   const { selectedType, setSelectedType } = useMapStore();
-  const { data } = useMapData();
+  const { data, error, isError, isFetching, refetch } = useMapData();
   const options = data?.options ?? defaultMapFilterOptions;
   const centers = data?.centers ?? [];
+  const shouldShowError = Boolean(isError && error);
 
   // 선택된 유형에 맞춰 쓰레기통 목록 필터링
   const filteredBins = useMemo(() => {
@@ -26,17 +28,29 @@ export function MapPage() {
     setSelectedType(event.target.value);
   };
 
+  const handleRetry = () => {
+    void refetch();
+  };
+
   // 지도 페이지 레이아웃 구성
   return (
     <S.PageContainer>
-      <MapFilterCard
-        selectedType={selectedType}
+      <MapViewCard binCount={filteredBins.length} />
+      {shouldShowError && (
+        <S.ErrorInline role="alert">
+          <S.ErrorMessage>{t("map.errors.title")}</S.ErrorMessage>
+          <Button size="sm" variant="secondary" onClick={handleRetry} disabled={isFetching}>
+            {isFetching ? t("map.errors.retrying") : t("map.errors.action")}
+          </Button>
+        </S.ErrorInline>
+      )}
+      <RecyclingCenterList
+        centers={centers}
+        bins={filteredBins}
         options={options}
+        selectedType={selectedType}
         onTypeChange={handleTypeChange}
       />
-      <MapViewCard binCount={filteredBins.length} />
-      <TrashBinList bins={filteredBins} />
-      <RecyclingCenterList centers={centers} />
     </S.PageContainer>
   );
 }

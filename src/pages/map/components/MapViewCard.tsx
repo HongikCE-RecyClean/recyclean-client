@@ -1,18 +1,22 @@
 import { useEffect, useRef } from "react";
-import { MapPin } from "lucide-react";
+import { MapPin, Navigation } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "shared/ui/Card/Card";
 import { useNaverMapsLoader } from "shared/hooks/useNaverMapsLoader";
 import * as S from "./MapViewCard.styles";
 
 interface MapViewCardProps {
   binCount: number;
+  onUseLocationClick?: () => void;
 }
 
 const DEFAULT_CENTER = { lat: 37.5666103, lng: 126.9783882 };
 const DEFAULT_ZOOM = 12;
 
-export function MapViewCard({ binCount }: MapViewCardProps) {
+export function MapViewCard({ binCount, onUseLocationClick }: MapViewCardProps) {
+  const { t } = useTranslation();
   const mapElementRef = useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = useRef<naver.maps.Map | null>(null);
   const { status, error, maps } = useNaverMapsLoader();
 
   useEffect(() => {
@@ -24,8 +28,24 @@ export function MapViewCard({ binCount }: MapViewCardProps) {
       zoom: DEFAULT_ZOOM,
     });
 
+    mapInstanceRef.current = mapInstance;
+
     return () => {
-      mapInstance.destroy();
+      const isNaverReady = Boolean(window?.naver?.maps?.Event);
+      const activeMap = mapInstanceRef.current;
+
+      if (!activeMap || !isNaverReady) {
+        mapInstanceRef.current = null;
+        return;
+      }
+
+      try {
+        activeMap.destroy();
+      } catch (cleanupError) {
+        console.warn("네이버 지도 정리 중 오류", cleanupError);
+      } finally {
+        mapInstanceRef.current = null;
+      }
     };
   }, [status, maps]);
 
@@ -33,13 +53,19 @@ export function MapViewCard({ binCount }: MapViewCardProps) {
   return (
     <Card>
       <CardContent>
-        <S.HeaderRow>
-          <MapPin size={20} />
-          <S.HeaderTexts>
-            <S.HeaderTitle>지도에서 위치 확인</S.HeaderTitle>
-            <S.HeaderSubtitle>근처 {binCount}개의 배출함을 지도에 표시해요.</S.HeaderSubtitle>
-          </S.HeaderTexts>
-        </S.HeaderRow>
+        <S.HeaderSection>
+          <S.HeaderRow>
+            <MapPin size={20} />
+            <S.HeaderTexts>
+              <S.HeaderTitle>지도에서 위치 확인</S.HeaderTitle>
+              <S.HeaderSubtitle>근처 {binCount}개의 배출함을 지도에 표시해요.</S.HeaderSubtitle>
+            </S.HeaderTexts>
+          </S.HeaderRow>
+          <S.LocationButton variant="outline" onClick={onUseLocationClick}>
+            <Navigation size={18} />
+            {t("map.filter.useLocation")}
+          </S.LocationButton>
+        </S.HeaderSection>
 
         {status === "success" ? (
           <S.MapWrapper>

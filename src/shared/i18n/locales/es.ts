@@ -57,6 +57,8 @@ export const esTranslation = {
       recyclable: "Reciclable",
       notRecyclable: "No permitido",
       empty: "No hay coincidencias para los filtros.",
+      showMore: "Ver más",
+      showLess: "Ver menos",
     },
     recentActivity: {
       title: "Actividad reciente",
@@ -109,6 +111,11 @@ export const esTranslation = {
     addEntry: {
       // 활동 추가 섹션 제목 문구
       title: "Agregar actividad",
+      modeLabel: "Tipo de entrada",
+      modeOptions: {
+        record: "Registrar actividad",
+        plan: "Planificar actividad",
+      },
       // 카테고리 필드 레이블
       category: "Categoría",
       // 재질(품목) 입력 레이블
@@ -117,6 +124,7 @@ export const esTranslation = {
       amount: "Cantidad",
       // 날짜 선택 레이블
       date: "Fecha",
+      time: "Hora",
       // 포인트 미리보기 문구
       pointsPreview: "Puntos estimados: +{{points}}pt",
     },
@@ -170,6 +178,7 @@ export const esTranslation = {
         "Asegura que el símbolo de reciclaje sea visible.",
         "Si puedes, toma la imagen de frente.",
       ],
+      bannerMessage: "Tip de foto ✨ Buena luz y fondo limpio ayudan a que la IA acierte más.",
     },
     captured: {
       alt: "Vista previa de la imagen capturada",
@@ -263,6 +272,8 @@ export const esTranslation = {
         "Los nuevos análisis aparecen de inmediato en el calendario.",
         "Los días con más actividad muestran un punto en el calendario.",
       ],
+      bannerMessage:
+        "Tip del calendario 🗓️ Toca una fecha para ver y editar sus registros al instante.",
     },
   },
   map: {
@@ -293,9 +304,18 @@ export const esTranslation = {
       maintenance: "En mantenimiento",
     },
     centers: {
-      title: "Centros de reciclaje",
+      title: "Centros y contenedores de reciclaje",
+      sectionTitle: "Centros de reciclaje",
       directions: "Cómo llegar",
       call: "Llamar",
+    },
+    errors: {
+      title: "No se pudieron cargar los datos del mapa",
+      description:
+        "Comprueba la conexión del servidor o la configuración SSL y vuelve a intentarlo.",
+      detail: "Mensaje de error: {{message}}",
+      action: "Reintentar",
+      retrying: "Reintentando...",
     },
   },
   settings: {
@@ -340,7 +360,7 @@ export const esTranslation = {
       },
       monthlyGoal: {
         title: "Meta mensual de puntos",
-        description: "Se usa para el progreso del panel",
+        description: "Base de cálculo del progreso",
         placeholder: "p. ej. 200",
         helper: "Ingresa al menos 10 pt para guardarlo.",
       },
@@ -388,6 +408,14 @@ export const esTranslation = {
       pointsNeeded: "{{points}}pt necesarios para el siguiente nivel",
       maxLevel: "¡Nivel máximo alcanzado!",
     },
+    monthlyGoal: {
+      title: "Meta de puntos mensuales",
+      description: "Define cuántos puntos quieres lograr este mes.",
+      placeholder: "ej. 250",
+      helper: "Ingresa un valor mayor a 10 puntos para guardarlo automáticamente.",
+      cta: "Guardar meta",
+      usage: "Se refleja en las tarjetas de progreso y el tracker del panel.",
+    },
     categories: {
       title: "Estadísticas por Categoría",
       topCategory: "Más Reciclado",
@@ -403,8 +431,8 @@ export const esTranslation = {
     },
     banner: {
       welcome: {
-        message: "¡Bienvenido, {{name}}! Registra tu primera actividad de reciclaje.",
-        cta: "Comenzar",
+        message: "¡Hola {{name}}! ¿Registramos otra acción de reciclaje hoy?",
+        cta: "Registrar actividad",
       },
     },
     snackbar: {

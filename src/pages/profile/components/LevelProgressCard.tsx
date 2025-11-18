@@ -33,12 +33,13 @@ export function LevelProgressCard({ userStats }: LevelProgressCardProps) {
           </Badge>
         </div>
 
-        {/* 진행률 바 */}
-        <Progress value={userStats.levelProgress} tone="info" />
-
-        {/* 필요 포인트 표시 */}
-        <div css={S.levelFooterText(theme)}>
-          {t("profile.level.pointsNeeded", { points: userStats.nextLevelPoints })}
+        {/* 진행률 영역 */}
+        <div css={S.levelProgressSection(theme)}>
+          {/* 다음 레벨 안내 문구 */}
+          <div css={S.levelProgressMeta(theme)}>
+            {t("profile.level.pointsNeeded", { points: userStats.nextLevelPoints })}
+          </div>
+          <Progress value={userStats.levelProgress} tone="info" />
         </div>
       </CardContent>
     </Card>

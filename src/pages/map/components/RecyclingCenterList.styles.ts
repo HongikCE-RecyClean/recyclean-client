@@ -2,6 +2,128 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Card, CardContent } from "../../../shared/ui/Card/Card";
 
+export const SectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+  flex-wrap: wrap;
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
+`;
+
+export const SectionLabel = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1.5)};
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+export const BinSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+export const EmptyState = styled.div`
+  text-align: center;
+  color: ${({ theme }) => theme.colors.textMuted};
+  padding: ${({ theme }) => theme.spacing(4)};
+  border: 1px dashed ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.md};
+  font-size: 0.9rem;
+`;
+
+export const BinList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(3)};
+`;
+
+export const BinItem = styled.div`
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.md};
+  padding: ${({ theme }) => theme.spacing(3)};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+export const BinHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing(2)};
+  flex-wrap: wrap;
+`;
+
+export const BinInfo = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+export const BinTexts = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+export const BinName = styled.span`
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+`;
+
+export const BinLocation = styled.span`
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+export const BinUpdated = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #64748b;
+`;
+
+export const BinStatus = styled.div`
+  min-width: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-end;
+`;
+
+export const ItemsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+export const SectionHint = styled.span`
+  font-size: 0.75rem;
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+export const ItemsChips = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+export const BinActions = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(1.5)};
+  flex-wrap: wrap;
+`;
+
+export const SectionDivider = styled.div`
+  height: 1px;
+  width: 100%;
+  background: ${({ theme }) => theme.colors.border};
+  margin: ${({ theme }) => theme.spacing(4)} 0;
+`;
+
 // 센터 리스트 전체 래퍼 스타일 정의
 export const CenterGrid = styled.div`
   display: flex;

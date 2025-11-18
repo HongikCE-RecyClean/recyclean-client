@@ -56,6 +56,8 @@ export const koTranslation = {
       recyclable: "재활용 가능",
       notRecyclable: "불가",
       empty: "조건에 맞는 결과가 없어요.",
+      showMore: "더보기",
+      showLess: "접기",
     },
     recentActivity: {
       title: "최근 활동",
@@ -106,10 +108,16 @@ export const koTranslation = {
     },
     addEntry: {
       title: "활동 기록 추가",
+      modeLabel: "추가 구분",
+      modeOptions: {
+        record: "활동 기록",
+        plan: "계획 추가",
+      },
       category: "카테고리",
       material: "품목",
       amount: "수량",
       date: "날짜",
+      time: "시간",
       pointsPreview: "예상 포인트: +{{points}}pt",
     },
   },
@@ -161,6 +169,7 @@ export const koTranslation = {
         "재활용 기호가 보이도록 찍어주세요.",
         "가능하면 물체 정면에서 촬영해요.",
       ],
+      bannerMessage: "촬영 팁 ✨ 밝은 곳 + 깨끗한 배경 + 정면 촬영이면 인식률이 훨씬 높아져요.",
     },
     captured: {
       alt: "촬영한 이미지 미리보기",
@@ -251,6 +260,7 @@ export const koTranslation = {
         "분석 화면에서 새 기록을 추가하면 달력에 표시돼요.",
         "기록이 많은 날은 달력 점 표시로 확인할 수 있어요.",
       ],
+      bannerMessage: "달력 꿀팁 🗓️ 날짜를 누르면 해당 기록을 바로 확인하고 수정할 수 있어요.",
     },
   },
   map: {
@@ -281,9 +291,17 @@ export const koTranslation = {
       maintenance: "점검 중",
     },
     centers: {
-      title: "재활용 센터",
+      title: "재활용 센터 & 배출함",
+      sectionTitle: "재활용 센터",
       directions: "길 찾기",
       call: "전화하기",
+    },
+    errors: {
+      title: "지도 데이터를 불러오지 못했어요",
+      description: "서버 연결이나 SSL 설정을 확인한 뒤 다시 시도해주세요.",
+      detail: "오류 메시지: {{message}}",
+      action: "다시 시도",
+      retrying: "재시도 중...",
     },
   },
   settings: {
@@ -328,7 +346,7 @@ export const koTranslation = {
       },
       monthlyGoal: {
         title: "월간 포인트 목표",
-        description: "대시보드 진행률 계산 기준",
+        description: "진행률 계산 기준",
         placeholder: "예: 200",
         helper: "10pt 이상 입력하면 저장돼요.",
       },
@@ -376,6 +394,14 @@ export const koTranslation = {
       pointsNeeded: "다음 레벨까지 {{points}}pt 필요",
       maxLevel: "최고 레벨 달성!",
     },
+    monthlyGoal: {
+      title: "월간 포인트 기준",
+      description: "이번 달 목표 포인트를 직접 설정해요.",
+      placeholder: "예: 250",
+      helper: "10pt 이상 숫자를 입력하면 자동으로 저장돼요.",
+      cta: "기준 설정",
+      usage: "대시보드 진행률 카드와 트래커에 바로 반영돼요.",
+    },
     categories: {
       title: "카테고리별 통계",
       topCategory: "가장 많이 재활용",
@@ -391,8 +417,8 @@ export const koTranslation = {
     },
     banner: {
       welcome: {
-        message: "{{name}}님, 환영해요! 첫 재활용 활동을 기록해보세요",
-        cta: "시작하기",
+        message: "환영해요 {{name}}님! 오늘도 재활용 기록 하나만 더 남겨볼까요?",
+        cta: "기록 추가하기",
       },
     },
     snackbar: {

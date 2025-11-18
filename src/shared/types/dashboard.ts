@@ -47,27 +47,15 @@ export interface GoalData {
 }
 
 // 재활용 기록 타입
+export type EntryMode = "record" | "plan";
+
 export interface RecyclingEntry {
   id: string;
   type: string;
   amount: number;
   date: Date;
   points: number;
-}
-
-// 대시보드 데이터 묶음 타입
-export interface DashboardData {
-  todayStats: {
-    itemsRecycled: number;
-    pointsEarned: number;
-    streakDays: number;
-  };
-  recentActivity: RecentActivityItem[];
-  achievements: AchievementItem[];
-  materials: MaterialItemData[];
-  tips: TipData[];
-  goals: GoalData[];
-  entries: RecyclingEntry[];
+  mode?: EntryMode;
 }
 
 // 팁 배지 톤 계산 함수

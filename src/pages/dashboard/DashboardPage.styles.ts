@@ -158,15 +158,22 @@ export const QuickActionGrid = styled.div`
 export const MaterialList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(4)};
+`;
+
+// 재질 더보기 버튼 래퍼 정의
+export const MaterialMoreWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: ${({ theme }) => theme.spacing(2)};
 `;
 
 // 재질 카드 아이템 정의
 export const MaterialItem = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-  padding: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(4)};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surfaceMuted};
   transition:
@@ -205,6 +212,7 @@ export const materialDescriptionText = (theme: AppTheme) => css`
   margin: 0;
   color: ${theme.colors.textMuted};
   font-size: 0.85rem;
+  line-height: 1.55;
 `;
 
 // 재질 팁 박스 스타일
@@ -217,6 +225,8 @@ export const materialTipBox = (theme: AppTheme) => css`
   padding: 8px 10px;
   color: ${theme.colors.info};
   font-size: 0.8rem;
+  margin-top: ${theme.spacing(2)};
+  line-height: 1.5;
 `;
 
 // 재질 검색 결과 없음 안내 스타일

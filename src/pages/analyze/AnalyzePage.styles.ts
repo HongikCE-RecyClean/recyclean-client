@@ -193,16 +193,6 @@ export const resultInstructionText = css`
   font-size: 0.9rem;
 `;
 
-// 팁 리스트 목록 스타일 정의
-export const TipsList = styled.ul`
-  margin: 0;
-  padding-left: ${({ theme }) => theme.spacing(4)};
-  color: ${({ theme }) => theme.colors.textMuted};
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
 // 사용자 피드백 메시지 영역 정의
 export const ErrorMessage = styled.div`
   padding: ${({ theme }) => theme.spacing(3)};

@@ -19,8 +19,7 @@ export const BannerContainer = styled.div(({ theme }) => ({
   alignItems: "center",
   justifyContent: "space-between",
   gap: theme.spacing(3),
-  margin: `0 ${theme.spacing(4)}`,
-  marginTop: theme.spacing(3),
+  width: "100%",
   minHeight: theme.spacing(16),
   padding: `${theme.spacing(4)} ${theme.spacing(4)}`,
   backgroundColor: theme.colors.surface,
@@ -31,12 +30,7 @@ export const BannerContainer = styled.div(({ theme }) => ({
       0 1px 3px rgba(15, 23, 42, 0.04)
     `,
   animation: `${slideDown} 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
-  position: "relative",
-
-  // 모바일 대응
   "@media (max-width: 768px)": {
-    margin: `0 ${theme.spacing(2)}`,
-    marginTop: theme.spacing(2),
     padding: `${theme.spacing(3)} ${theme.spacing(3)}`,
     gap: theme.spacing(2),
   },

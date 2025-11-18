@@ -8,6 +8,7 @@ import { useActivityStore } from "../../../shared/state/activityStore";
 import { useNotificationStore } from "../../../shared/state/notificationStore";
 import type { SnackbarOptions } from "../../../shared/types/notifications";
 import { MATERIALS_BY_CATEGORY, calculatePoints } from "../../../shared/utils/recyclingPoints";
+import type { EntryMode } from "../../../shared/types/dashboard";
 import * as S from "./AddEntryBottomSheet.styles";
 
 interface AddEntryBottomSheetProps {
@@ -20,6 +21,14 @@ type PendingSnackbar = {
   options?: SnackbarOptions;
 };
 
+const formatDateInput = (value: Date) => value.toISOString().split("T")[0];
+
+const formatTimeInput = (value: Date) => {
+  const hours = value.getHours().toString().padStart(2, "0");
+  const minutes = value.getMinutes().toString().padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
 export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProps) {
   const { t } = useTranslation();
   const { addEntry } = useActivityStore();
@@ -30,11 +39,9 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   const [category, setCategory] = useState<string>("플라스틱");
   const [materialType, setMaterialType] = useState<string>("");
   const [amount, setAmount] = useState<string>("1");
-  const [date, setDate] = useState<string>(() => {
-    // 기본값: 오늘 날짜 (YYYY-MM-DD 형식)
-    const today = new Date();
-    return today.toISOString().split("T")[0];
-  });
+  const [date, setDate] = useState<string>(() => formatDateInput(new Date()));
+  const [time, setTime] = useState<string>(() => formatTimeInput(new Date()));
+  const [entryMode, setEntryMode] = useState<EntryMode>("record");
 
   // 카테고리별 품목 목록
   const categoryOptions = Object.keys(MATERIALS_BY_CATEGORY);
@@ -51,10 +58,13 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
 
   // 폼 초기화
   const resetForm = () => {
+    const now = new Date();
     setCategory("플라스틱");
     setMaterialType("");
     setAmount("1");
-    setDate(new Date().toISOString().split("T")[0]);
+    setDate(formatDateInput(now));
+    setTime(formatTimeInput(now));
+    setEntryMode("record");
   };
 
   // 바텀시트 기본 닫기
@@ -85,9 +95,16 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
     const type = materialType || materialOptions[0] || "기타";
 
     // 유효성 검사
-    if (!type || amountNum <= 0 || !date) {
+    if (!type || amountNum <= 0 || !date || !time) {
       return;
     }
+
+    const [hours, minutes] = time.split(":").map((part) => parseInt(part, 10));
+    if (Number.isNaN(hours) || Number.isNaN(minutes)) {
+      return;
+    }
+    const entryDate = new Date(date);
+    entryDate.setHours(hours, minutes, 0, 0);
 
     // 포인트 계산
     const points = calculatePoints(type, amountNum);
@@ -96,8 +113,9 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
     addEntry({
       type,
       amount: amountNum,
-      date: new Date(date),
+      date: entryDate,
       points,
+      mode: entryMode,
     });
 
     // 성공 스낵바는 바텀시트가 완전히 닫힌 뒤 표시
@@ -134,6 +152,25 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
           />
         </S.FormGroup>
 
+        {/* 활동 유형 선택 */}
+        <S.FormGroup>
+          <S.Label>{t("dashboard.addEntry.modeLabel")}</S.Label>
+          <SelectField
+            value={entryMode}
+            onChange={(e) => setEntryMode(e.target.value as EntryMode)}
+            options={[
+              {
+                value: "record",
+                label: t("dashboard.addEntry.modeOptions.record"),
+              },
+              {
+                value: "plan",
+                label: t("dashboard.addEntry.modeOptions.plan"),
+              },
+            ]}
+          />
+        </S.FormGroup>
+
         {/* 품목 선택 */}
         <S.FormGroup>
           <S.Label>{t("dashboard.addEntry.material")}</S.Label>
@@ -163,6 +200,12 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
         <S.FormGroup>
           <S.Label>{t("dashboard.addEntry.date")}</S.Label>
           <TextField type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        </S.FormGroup>
+
+        {/* 시간 선택 */}
+        <S.FormGroup>
+          <S.Label>{t("dashboard.addEntry.time")}</S.Label>
+          <TextField type="time" value={time} onChange={(e) => setTime(e.target.value)} />
         </S.FormGroup>
 
         {/* 예상 포인트 표시 */}

@@ -9,3 +9,19 @@ export const PageContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(5)};
 `;
+
+export const ErrorInline = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(3)};
+  padding: ${({ theme }) => theme.spacing(3)};
+  border-radius: ${({ theme }) => theme.radii.md};
+  background: ${({ theme }) => theme.colors.dangerSurface};
+  border: 1px solid ${({ theme }) => theme.colors.danger};
+`;
+
+export const ErrorMessage = styled.span`
+  color: ${({ theme }) => theme.colors.danger};
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+`;
