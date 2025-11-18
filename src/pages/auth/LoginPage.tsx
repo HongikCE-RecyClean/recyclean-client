@@ -146,9 +146,11 @@ export function LoginPage() {
       </S.HeaderBar>
       <S.Content>
         <S.Hero>
-          <S.Tagline>재활용 데이터와 지도를 한곳에서 확인해요.</S.Tagline>
+          <S.Tagline>재활용이 쉬워지는 순간</S.Tagline>
           <S.Description>
-            수거함 상태, 도시별 순환 계획, 커뮤니티 챌린지를 하나의 대시보드에서 추적해요.
+            일상의 작은 환경 실천을 기록하고,
+            <br />
+            주변 수거함을 쉽게 찾아보세요.
           </S.Description>
         </S.Hero>
         <S.Footer>

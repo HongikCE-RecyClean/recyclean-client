@@ -79,7 +79,7 @@ export const Hero = styled.section`
 // 핵심 안내 한 줄 텍스트 스타일
 export const Tagline = styled.h1`
   margin: 0;
-  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  font-size: clamp(1.25rem, 3.5vw, 1.75rem);
   color: ${({ theme }) => theme.colors.primary};
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   letter-spacing: -0.02em;
