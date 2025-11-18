@@ -15,6 +15,7 @@ import {
   type CalendarMonthlyStats,
 } from "./components";
 import { normalizeLanguage, type SupportedLanguage } from "shared/i18n/supportedLanguages";
+import type { MaterialId } from "shared/utils/recyclingPoints";
 
 // 범례 배지 색상 순서를 정의
 const tonePalette: BadgeTone[] = ["primary", "success", "info", "warning", "danger"];
@@ -119,7 +120,7 @@ export function CalendarPage() {
 
   // 현재 월 기준 품목 범례 생성
   const materialLegend: CalendarLegendItem[] = useMemo(() => {
-    const counts = new Map<string, { count: number; points: number }>();
+    const counts = new Map<MaterialId, { count: number; points: number }>();
     monthlyEntries.forEach((entry) => {
       const key = entry.type;
       const prev = counts.get(key) ?? { count: 0, points: 0 };

@@ -57,7 +57,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   const handleCategoryChange = (value: string) => {
     const nextCategory = value as MaterialCategoryId;
     setCategory(nextCategory);
-    const firstMaterial = MATERIALS_BY_CATEGORY[value]?.[0];
+    const firstMaterial = MATERIALS_BY_CATEGORY[nextCategory]?.[0];
     if (firstMaterial) {
       setMaterialType(firstMaterial);
     }
