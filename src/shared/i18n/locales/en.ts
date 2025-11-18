@@ -311,6 +311,19 @@ export const enTranslation = {
       logout: "Log out",
     },
   },
+  profile: {
+    card: {
+      avatarAlt: "User profile image",
+      joined: "Joined {{date}}",
+      points: "{{points}} pts",
+      streak: "{{days}} day streak",
+    },
+    impact: {
+      title: "My Impact",
+      items: "Items Recycled",
+      points: "Total Points",
+    },
+  },
   notifications: {
     actions: {
       close: "Close",

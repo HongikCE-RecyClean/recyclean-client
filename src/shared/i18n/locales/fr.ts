@@ -303,6 +303,19 @@ export const frTranslation = {
       logout: "Se déconnecter",
     },
   },
+  profile: {
+    card: {
+      avatarAlt: "Image de profil de l'utilisateur",
+      joined: "Inscrit {{date}}",
+      points: "{{points}} pts",
+      streak: "Série de {{days}} jours",
+    },
+    impact: {
+      title: "Mon Impact",
+      items: "Articles Recyclés",
+      points: "Points Totaux",
+    },
+  },
   notifications: {
     actions: {
       close: "Fermer",

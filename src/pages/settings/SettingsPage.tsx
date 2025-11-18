@@ -1,16 +1,13 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import recycleanLogo from "../../assets/recycleanLogo.svg";
 import { useSettingsStore } from "shared/state/settingsStore";
 import {
   SettingsAppPreferencesCard,
-  SettingsImpactCard,
   SettingsLocaleCard,
-  SettingsProfileCard,
   SettingsSupportActionsCard,
 } from "./components";
 import * as S from "./SettingsPage.styles";
-import type { LocaleOption, UserStats } from "./types";
+import type { LocaleOption } from "./types";
 import { usePermissionRequests } from "./hooks/usePermissionRequests";
 
 // 지원 언어 목록 정의
@@ -95,18 +92,9 @@ export function SettingsPage() {
     [t],
   );
 
-  const userStats: UserStats = {
-    totalPoints: 287,
-    itemsRecycled: 156,
-    joinDate: "2024-01-01",
-    streakDays: 12,
-  };
-
   // 설정 페이지 섹션 컴포넌트 조합
   return (
     <S.PageContainer>
-      <SettingsProfileCard userStats={userStats} avatarSrc={recycleanLogo} />
-      <SettingsImpactCard userStats={userStats} />
       <SettingsAppPreferencesCard
         notifications={notifications}
         onNotificationsChange={handleNotificationsChange}

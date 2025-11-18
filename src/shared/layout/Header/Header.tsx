@@ -1,5 +1,6 @@
 import { User } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../../ui/Button/Button";
 import recycleanLogo from "../../../assets/recycleanLogo.svg";
 import * as S from "./Header.styles";
@@ -11,6 +12,7 @@ interface HeaderProps {
 
 export function Header({ hideProfileButton = false }: HeaderProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const appName = t("app.name");
   const profileLabel = t("header.profileButton");
 
@@ -23,8 +25,13 @@ export function Header({ hideProfileButton = false }: HeaderProps) {
           <S.BrandTitle>{appName}</S.BrandTitle>
         </S.Brand>
         {!hideProfileButton && (
-          // 로그인 외 페이지에서만 프로필 버튼 노출
-          <Button variant="ghost" size="icon" aria-label={profileLabel}>
+          // 프로필 버튼 클릭 시 프로필 페이지로 이동
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={profileLabel}
+            onClick={() => navigate("/profile")}
+          >
             <User size={20} />
           </Button>
         )}

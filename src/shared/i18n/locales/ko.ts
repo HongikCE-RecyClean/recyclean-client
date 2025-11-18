@@ -311,6 +311,19 @@ export const koTranslation = {
       logout: "로그아웃",
     },
   },
+  profile: {
+    card: {
+      avatarAlt: "사용자 프로필 이미지",
+      joined: "가입일 {{date}}",
+      points: "{{points}} pts",
+      streak: "{{days}}일 연속",
+    },
+    impact: {
+      title: "나의 영향력",
+      items: "처리한 아이템",
+      points: "누적 포인트",
+    },
+  },
   notifications: {
     actions: {
       close: "닫기",
