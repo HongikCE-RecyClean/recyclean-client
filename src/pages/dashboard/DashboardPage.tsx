@@ -7,6 +7,7 @@ import { useUserStore } from "shared/state/userStore";
 import { useSettingsStore } from "shared/state/settingsStore";
 import { useNotificationStore } from "shared/state/notificationStore";
 import { calculateTodayStats, calculateTotalStats } from "shared/utils/userStats";
+import type { MaterialItemData } from "shared/types/dashboard";
 import * as S from "./DashboardPage.styles";
 import {
   AddEntryBottomSheet,
@@ -15,6 +16,138 @@ import {
   TrackerCard,
   WelcomeOverviewCard,
 } from "./components";
+
+// 더미 재활용 재질 데이터 (테스트용)
+const DUMMY_MATERIALS: MaterialItemData[] = [
+  // 플라스틱류
+  {
+    name: "플라스틱 재질 항목 1",
+    recyclable: true,
+    category: "Plastic",
+    instructions: "처리 방법 설명 텍스트입니다. 여기에는 재활용 처리 절차가 들어갑니다.",
+    tips: "팁 텍스트입니다. 유용한 재활용 팁 내용입니다.",
+  },
+  {
+    name: "플라스틱 재질 항목 2",
+    recyclable: true,
+    category: "Plastic",
+    instructions: "처리 방법 설명 텍스트입니다. 재활용 가능한 플라스틱 처리 방법입니다.",
+  },
+  {
+    name: "플라스틱 재질 항목 3",
+    recyclable: false,
+    category: "Plastic",
+    instructions: "처리 방법 설명 텍스트입니다. 재활용 불가능한 경우의 처리 방법입니다.",
+    tips: "팁 텍스트입니다. 주의사항 안내 텍스트입니다.",
+  },
+  {
+    name: "플라스틱 재질 항목 4",
+    recyclable: true,
+    category: "Plastic",
+    instructions: "처리 방법 설명 텍스트입니다. 분리배출 방법 안내입니다.",
+  },
+  {
+    name: "플라스틱 재질 항목 5",
+    recyclable: true,
+    category: "Plastic",
+    instructions: "처리 방법 설명 텍스트입니다. 세척 후 배출 방법입니다.",
+    tips: "팁 텍스트입니다. 효율적인 재활용 팁입니다.",
+  },
+  {
+    name: "플라스틱 재질 항목 6",
+    recyclable: false,
+    category: "Plastic",
+    instructions: "처리 방법 설명 텍스트입니다. 일반 쓰레기로 배출하는 방법입니다.",
+  },
+  // 종이류
+  {
+    name: "종이 재질 항목 1",
+    recyclable: true,
+    category: "Paper",
+    instructions: "처리 방법 설명 텍스트입니다. 종이류 재활용 처리 절차입니다.",
+    tips: "팁 텍스트입니다. 종이 재활용 효율을 높이는 방법입니다.",
+  },
+  {
+    name: "종이 재질 항목 2",
+    recyclable: true,
+    category: "Paper",
+    instructions: "처리 방법 설명 텍스트입니다. 깨끗한 종이 분리배출 방법입니다.",
+  },
+  {
+    name: "종이 재질 항목 3",
+    recyclable: false,
+    category: "Paper",
+    instructions: "처리 방법 설명 텍스트입니다. 코팅된 종이의 처리 방법입니다.",
+    tips: "팁 텍스트입니다. 재활용 불가 종이 구분 방법입니다.",
+  },
+  {
+    name: "종이 재질 항목 4",
+    recyclable: true,
+    category: "Paper",
+    instructions: "처리 방법 설명 텍스트입니다. 박스류 재활용 방법입니다.",
+  },
+  {
+    name: "종이 재질 항목 5",
+    recyclable: true,
+    category: "Paper",
+    instructions: "처리 방법 설명 텍스트입니다. 신문지 재활용 처리 방법입니다.",
+    tips: "팁 텍스트입니다. 종이 재활용 주의사항입니다.",
+  },
+  // 금속류
+  {
+    name: "금속 재질 항목 1",
+    recyclable: true,
+    category: "Metal",
+    instructions: "처리 방법 설명 텍스트입니다. 금속 캔류 재활용 방법입니다.",
+    tips: "팁 텍스트입니다. 금속 재활용 효율적인 방법입니다.",
+  },
+  {
+    name: "금속 재질 항목 2",
+    recyclable: true,
+    category: "Metal",
+    instructions: "처리 방법 설명 텍스트입니다. 알루미늄 재활용 절차입니다.",
+  },
+  {
+    name: "금속 재질 항목 3",
+    recyclable: true,
+    category: "Metal",
+    instructions: "처리 방법 설명 텍스트입니다. 철 재질 분리배출 방법입니다.",
+    tips: "팁 텍스트입니다. 금속류 재활용 팁입니다.",
+  },
+  {
+    name: "금속 재질 항목 4",
+    recyclable: false,
+    category: "Metal",
+    instructions: "처리 방법 설명 텍스트입니다. 특수 금속의 처리 방법입니다.",
+  },
+  // 유리류
+  {
+    name: "유리 재질 항목 1",
+    recyclable: true,
+    category: "Glass",
+    instructions: "처리 방법 설명 텍스트입니다. 유리병 재활용 방법입니다.",
+    tips: "팁 텍스트입니다. 유리 재활용 안전 수칙입니다.",
+  },
+  {
+    name: "유리 재질 항목 2",
+    recyclable: true,
+    category: "Glass",
+    instructions: "처리 방법 설명 텍스트입니다. 색상별 유리 분리 방법입니다.",
+  },
+  {
+    name: "유리 재질 항목 3",
+    recyclable: false,
+    category: "Glass",
+    instructions: "처리 방법 설명 텍스트입니다. 내열 유리의 처리 방법입니다.",
+    tips: "팁 텍스트입니다. 유리 재활용 주의사항입니다.",
+  },
+  {
+    name: "유리 재질 항목 4",
+    recyclable: true,
+    category: "Glass",
+    instructions: "처리 방법 설명 텍스트입니다. 음료 병 재활용 절차입니다.",
+  },
+];
 
 export function DashboardPage() {
   const { data } = useDashboardData();
@@ -67,9 +200,9 @@ export function DashboardPage() {
 
   const recentActivity = data?.recentActivity ?? [];
 
-  // 재질 검색 결과 필터링 수행
+  // 재질 검색 결과 필터링 수행 (더미 데이터 사용)
   const filteredMaterials = useMemo(() => {
-    const materials = data?.materials ?? [];
+    const materials = data?.materials ?? DUMMY_MATERIALS;
     return materials.filter((material) => {
       const matchesSearch =
         material.name.toLowerCase().includes(searchTerm.toLowerCase()) ||

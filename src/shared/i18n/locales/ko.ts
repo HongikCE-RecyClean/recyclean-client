@@ -129,6 +129,8 @@ export const koTranslation = {
       notReady: "카메라 영상이 준비되지 않았어요.",
       stillInitializing: "카메라가 아직 초기화 중이에요. 잠시 후 다시 시도해주세요.",
       captureFailed: "이미지를 캡처하지 못했어요.",
+      analysisFailed: "AI 분석 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
+      noPrediction: "결과를 찾지 못했어요. 다른 각도로 다시 촬영해보세요.",
     },
     camera: {
       overlay: "카메라를 준비하고 있어요...",
@@ -149,6 +151,7 @@ export const koTranslation = {
       retry: "다시 촬영",
       logAction: "재활용 처리 기록",
       saveSuccess: "✅ 활동 기록에 추가되었어요!",
+      defaultInstructions: "이물질을 제거한 뒤 지자체 분리배출 기준에 맞춰 배출해요.",
     },
     tips: {
       title: "촬영 팁",
@@ -181,6 +184,43 @@ export const koTranslation = {
         category: "Aluminum",
         instructions: "물을 헹군 뒤 눌러서 부피를 줄여요.",
         tips: "금속류 중에서도 재활용 가치가 높아요.",
+      },
+    },
+    guides: {
+      plastic: {
+        item: "플라스틱류",
+        instructions: "라벨과 뚜껑을 제거하고 깨끗이 헹군 뒤 압축해서 배출해요.",
+        tips: "완전히 말린 뒤 배출하면 이물질 오염을 줄일 수 있어요.",
+      },
+      paper: {
+        item: "종이·골판지",
+        instructions: "테이프나 스테이플을 제거하고 상자를 접어 배출해요.",
+        tips: "기름이나 물에 젖은 부분은 일반쓰레기로 분리해요.",
+      },
+      metal: {
+        item: "금속 캔",
+        instructions: "내용물을 비우고 헹군 뒤 가볍게 눌러 부피를 줄여요.",
+        tips: "뚜껑과 라벨은 따로 분리해요.",
+      },
+      glass: {
+        item: "유리 용기",
+        instructions: "뚜껑을 제거하고 헹군 뒤 깨지지 않게 배출해요.",
+        tips: "깨진 유리는 신문지에 싸서 별도로 처리해요.",
+      },
+      textile: {
+        item: "의류·섬유",
+        instructions: "세탁 후 완전히 건조해 헌옷수거함에 넣어요.",
+        tips: "작은 조각은 묶어서 배출하면 정리돼요.",
+      },
+      electronic: {
+        item: "배터리·전자제품",
+        instructions: "배터리를 분리하고 지정 수거함이나 센터에 맡겨요.",
+        tips: "헐거운 배터리는 단자를 테이프로 감싸서 안전하게 보관해요.",
+      },
+      other: {
+        item: "기타 생활 폐기물",
+        instructions: "정확한 재질을 확인한 뒤 지자체 지침에 따라 처리해요.",
+        tips: "재질 표기나 안내 스티커를 확인해요.",
       },
     },
   },

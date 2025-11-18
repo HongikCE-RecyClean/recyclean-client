@@ -3,6 +3,7 @@ import { format, type Locale } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import type { RecyclingEntry } from "../../../shared/types/dashboard";
+import { openConfirmDialog } from "../../../shared/ui/AlertDialog";
 import * as S from "../CalendarPage.styles";
 
 type CalendarEntriesCardProps = {
@@ -50,8 +51,14 @@ export function CalendarEntriesCard({
                   </S.RecordPoints>
                   {onDelete && (
                     <S.DeleteButton
-                      onClick={() => {
-                        if (window.confirm(t("calendar.entries.confirmDelete"))) {
+                      onClick={async () => {
+                        const confirmed = await openConfirmDialog({
+                          title: t("calendar.entries.confirmDelete"),
+                          tone: "warning",
+                          confirmLabel: t("common.delete"),
+                          cancelLabel: t("common.cancel"),
+                        });
+                        if (confirmed) {
                           onDelete(entry.id);
                         }
                       }}

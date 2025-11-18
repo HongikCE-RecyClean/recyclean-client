@@ -129,6 +129,8 @@ export const enTranslation = {
       notReady: "The camera feed is not ready yet.",
       stillInitializing: "The camera is still initializing. Try again shortly.",
       captureFailed: "Unable to capture the image.",
+      analysisFailed: "We couldn't reach the AI service. Please try again shortly.",
+      noPrediction: "No recyclable material detected. Try a clearer angle.",
     },
     camera: {
       overlay: "Preparing the camera...",
@@ -149,6 +151,7 @@ export const enTranslation = {
       retry: "Retake",
       logAction: "Log recycling",
       saveSuccess: "✅ Added to your activity log!",
+      defaultInstructions: "Remove any residue and follow your local recycling rules.",
     },
     tips: {
       title: "Shooting tips",
@@ -181,6 +184,43 @@ export const enTranslation = {
         category: "Aluminum",
         instructions: "Rinse with water and crush to save space.",
         tips: "Metal cans have high recycling value.",
+      },
+    },
+    guides: {
+      plastic: {
+        item: "Plastic items",
+        instructions: "Remove labels and caps, rinse thoroughly, then crush before drop-off.",
+        tips: "Dry containers completely to avoid contamination.",
+      },
+      paper: {
+        item: "Paper & cardboard",
+        instructions: "Peel off tape or staples, flatten boxes, and keep greasy parts out.",
+        tips: "Store in a dry bag until collection.",
+      },
+      metal: {
+        item: "Metal cans",
+        instructions: "Empty and rinse cans, then press them gently to save space.",
+        tips: "Remove plastic lids or seals before recycling.",
+      },
+      glass: {
+        item: "Glass containers",
+        instructions: "Take off lids, rinse, and place carefully to prevent breakage.",
+        tips: "Wrap broken glass separately per local guidance.",
+      },
+      textile: {
+        item: "Textiles",
+        instructions: "Wash and dry garments before bringing them to a clothing bin.",
+        tips: "Bundle items in tied bags for easier handling.",
+      },
+      electronic: {
+        item: "Batteries & electronics",
+        instructions: "Remove batteries and drop devices at an e-waste collection point.",
+        tips: "Cover both battery terminals with tape to prevent short circuits.",
+      },
+      other: {
+        item: "General waste",
+        instructions: "Check municipal disposal rules when the material is uncertain.",
+        tips: "Look for recycling symbols or ask your local office.",
       },
     },
   },

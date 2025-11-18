@@ -1,5 +1,6 @@
 import { useTheme } from "@emotion/react";
 import { useTranslation } from "react-i18next";
+import { Edit } from "lucide-react";
 import { Avatar, AvatarImage } from "shared/ui/Avatar/Avatar";
 import { Badge } from "shared/ui/Badge/Badge";
 import { Card, CardContent } from "shared/ui/Card/Card";
@@ -11,9 +12,11 @@ import * as S from "../ProfilePage.styles";
 interface ProfileCardProps {
   userStats: UserStats;
   avatarSrc: string;
+  userName: string;
+  onEditClick: () => void;
 }
 
-export function ProfileCard({ userStats, avatarSrc }: ProfileCardProps) {
+export function ProfileCard({ userStats, avatarSrc, userName, onEditClick }: ProfileCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
   const { t, i18n } = useTranslation();
@@ -51,6 +54,13 @@ export function ProfileCard({ userStats, avatarSrc }: ProfileCardProps) {
           </Avatar>
           {/* 프로필 정보 컨테이너 */}
           <div css={S.profileInfoContainer}>
+            {/* 닉네임과 편집 버튼 */}
+            <div css={S.profileNameRow}>
+              <S.ProfileName>{userName}</S.ProfileName>
+              <S.EditButton onClick={onEditClick} aria-label={t("common.edit", "편집")}>
+                <Edit size={16} />
+              </S.EditButton>
+            </div>
             <p css={S.profileMetaText(theme)}>
               {t("profile.card.joined", { date: formattedJoinDate })}
             </p>

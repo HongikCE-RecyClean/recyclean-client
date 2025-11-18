@@ -137,6 +137,9 @@ export const esTranslation = {
       notReady: "La vista de la cámara aún no está lista.",
       stillInitializing: "La cámara sigue inicializándose. Inténtalo de nuevo en unos segundos.",
       captureFailed: "No se pudo capturar la imagen.",
+      analysisFailed:
+        "No pudimos contactar el servicio de IA. Intenta nuevamente en unos segundos.",
+      noPrediction: "No se detectó material reciclable. Prueba con otro ángulo más claro.",
     },
     camera: {
       overlay: "Preparando la cámara...",
@@ -157,6 +160,7 @@ export const esTranslation = {
       retry: "Volver a tomar",
       logAction: "Registrar reciclaje",
       saveSuccess: "✅ ¡Añadido a tu registro de actividades!",
+      defaultInstructions: "Retira los residuos y sigue las normas de reciclaje de tu municipio.",
     },
     tips: {
       title: "Consejos de captura",
@@ -189,6 +193,45 @@ export const esTranslation = {
         category: "Aluminio",
         instructions: "Enjuaga y aplasta para ahorrar espacio.",
         tips: "Las latas metálicas tienen alto valor de reciclaje.",
+      },
+    },
+    guides: {
+      plastic: {
+        item: "Plásticos",
+        instructions: "Quita etiquetas y tapas, enjuaga a fondo y aplasta antes de entregarlos.",
+        tips: "Sécalos bien para evitar contaminación.",
+      },
+      paper: {
+        item: "Papel y cartón",
+        instructions: "Retira cinta o grapas, aplana las cajas y separa las partes sucias.",
+        tips: "Guárdalos en una bolsa seca hasta la recolección.",
+      },
+      metal: {
+        item: "Latas metálicas",
+        instructions:
+          "Vacía y enjuaga las latas, luego presiónalas ligeramente para ahorrar espacio.",
+        tips: "Quita tapas o sellos plásticos antes de reciclar.",
+      },
+      glass: {
+        item: "Envases de vidrio",
+        instructions: "Retira las tapas, enjuaga y deposita con cuidado para que no se rompan.",
+        tips: "El vidrio roto se envuelve aparte según la guía local.",
+      },
+      textile: {
+        item: "Textiles",
+        instructions: "Lava y seca las prendas antes de llevarlas al contenedor de ropa.",
+        tips: "Agrúpalas en bolsas cerradas para facilitar el manejo.",
+      },
+      electronic: {
+        item: "Baterías y electrónicos",
+        instructions:
+          "Extrae las baterías y lleva los aparatos a un punto limpio o centro de e-waste.",
+        tips: "Cubre ambos polos de las baterías sueltas con cinta.",
+      },
+      other: {
+        item: "Residuos generales",
+        instructions: "Consulta la guía municipal cuando no estés seguro del contenedor correcto.",
+        tips: "Busca símbolos de reciclaje o las indicaciones locales.",
       },
     },
   },

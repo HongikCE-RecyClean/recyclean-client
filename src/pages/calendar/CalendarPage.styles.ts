@@ -225,14 +225,6 @@ export const LegendLabel = styled.div`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-// 가이드 목록 스타일
-export const guideList = css`
-  margin: 0;
-  padding-left: 1.1rem;
-  color: #475569;
-  font-size: 0.9rem;
-`;
-
 // 범례 통계 열 정렬 스타일
 export const legendStatsColumn = css`
   text-align: right;

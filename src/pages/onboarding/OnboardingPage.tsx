@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Header } from "shared/layout/Header/Header";
 import { useUserStore } from "shared/state/userStore";
+import { openAlertDialog } from "shared/ui/AlertDialog";
 import * as S from "./OnboardingPage.styles";
 
 // 앱 소개와 닉네임 입력을 제공하는 온보딩 페이지
@@ -18,7 +19,11 @@ export function OnboardingPage() {
   const handleStart = () => {
     const trimmedName = nickname.trim();
     if (!trimmedName) {
-      alert(t("onboarding.nameRequired", "닉네임을 입력해주세요"));
+      openAlertDialog({
+        title: t("onboarding.nameRequired", "닉네임을 입력해주세요"),
+        confirmLabel: t("common.confirm"),
+        tone: "warning",
+      });
       return;
     }
 

@@ -38,6 +38,46 @@ export const profileInfoContainer = css`
   flex: 1;
 `;
 
+// 프로필 닉네임과 편집 버튼 행 스타일
+export const profileNameRow = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+// 프로필 닉네임 스타일
+export const ProfileName = styled.h2`
+  font-size: 1.25rem;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  margin: 0;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+// 편집 버튼 스타일
+export const EditButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: ${({ theme }) => theme.spacing(1)};
+  border-radius: ${({ theme }) => theme.radii.sm};
+  color: ${({ theme }) => theme.colors.textMuted};
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.surfaceMuted};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
+
 // 프로필 메타 텍스트 스타일
 export const profileMetaText = (theme: AppTheme) => css`
   margin: 4px 0 0;
@@ -75,21 +115,14 @@ export const impactStatLabel = (theme: AppTheme) => css`
 // 레벨 카드 헤더 행 스타일
 export const levelHeaderRow = css`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 `;
 
-// 레벨 카드 다음 레벨 텍스트 스타일
-export const levelNextText = (theme: AppTheme) => css`
-  font-size: 0.85rem;
-  color: ${theme.colors.textMuted};
-`;
-
 // 레벨 카드 푸터 텍스트 스타일
 export const levelFooterText = (theme: AppTheme) => css`
-  margin-top: 8px;
-  font-size: 0.85rem;
+  margin-top: 12px;
+  font-size: 0.875rem;
   color: ${theme.colors.textMuted};
   text-align: center;
 `;
@@ -141,4 +174,19 @@ export const CategoryEmptyMessage = styled.p`
   margin: 0;
   padding: ${({ theme }) => theme.spacing(4)} 0;
   font-size: 0.9rem;
+`;
+
+// 프로필 편집 컨텐츠 컨테이너
+export const EditProfileContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(2)};
+`;
+
+// 프로필 편집 라벨
+export const EditProfileLabel = styled.label`
+  font-size: 0.875rem;
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  color: ${({ theme }) => theme.colors.text};
 `;

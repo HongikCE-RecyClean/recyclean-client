@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -14,34 +14,67 @@ import { Card, CardContent } from "../../shared/ui/Card/Card";
 import { Button } from "../../shared/ui/Button/Button";
 import { useCamera } from "./hooks/useCamera";
 import { useActivityStore } from "../../shared/state/activityStore";
-import { matchMaterialType, calculatePoints } from "../../shared/utils/recyclingPoints";
+import {
+  matchMaterialType,
+  calculatePoints,
+  translateCategory,
+} from "../../shared/utils/recyclingPoints";
+import { requestAiLabeling, type AiPrediction } from "../../shared/api/analyze";
 import * as S from "./AnalyzePage.styles";
 
-// 모의 분석 결과 리스트 정의
-const mockResultPresets = [
-  { key: "plasticBottle", confidence: 95, recyclable: true },
-  { key: "pizzaBox", confidence: 88, recyclable: false },
-  { key: "aluminumCan", confidence: 92, recyclable: true },
-] as const;
+type GuideKey = "plastic" | "paper" | "metal" | "glass" | "textile" | "electronic" | "other";
 
-// 분석 시뮬레이션 지연 시간 상수 정의
-const ANALYSIS_DELAY_MS = 2200;
+// 번역된 카테고리명을 가이드 키로 매핑
+const CATEGORY_GUIDE_BY_LABEL: Record<string, GuideKey> = {
+  플라스틱: "plastic",
+  종이: "paper",
+  금속: "metal",
+  유리: "glass",
+  "의류/섬유": "textile",
+  전자제품: "electronic",
+  기타: "other",
+};
+
+// 재활용 가능 여부 판별용 가이드 집합
+const RECYCLABLE_GUIDE_KEYS = new Set<GuideKey>([
+  "plastic",
+  "paper",
+  "metal",
+  "glass",
+  "textile",
+  "electronic",
+]);
+
+function resolveGuideKey(categoryLabel: string): GuideKey {
+  // 매핑 테이블에 없으면 기타 처리
+  return CATEGORY_GUIDE_BY_LABEL[categoryLabel] ?? "other";
+}
+
+function formatConfidence(confidence: number): number {
+  // API가 0-1 범위 혹은 0-100 범위를 모두 반환할 수 있어 보정
+  const normalized = confidence <= 1 ? confidence * 100 : confidence;
+  return Math.max(0, Math.min(100, Math.round(normalized)));
+}
+
+function dataUrlToFile(dataUrl: string): File | null {
+  // dataURL을 Blob으로 변환해 FormData 업로드에 사용
+  const [metadata, base64] = dataUrl.split(",");
+  if (!metadata || !base64) {
+    return null;
+  }
+  const mimeMatch = metadata.match(/data:(.*?);/);
+  const mime = mimeMatch?.[1] ?? "image/jpeg";
+  const binary = atob(base64);
+  const buffer = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) {
+    buffer[i] = binary.charCodeAt(i);
+  }
+  return new File([buffer], `capture-${Date.now()}.jpg`, { type: mime });
+}
 
 export function AnalyzePage() {
   const { t } = useTranslation();
   const { addEntry } = useActivityStore();
-  const mockResults = useMemo(
-    () =>
-      mockResultPresets.map((preset) => ({
-        confidence: preset.confidence,
-        recyclable: preset.recyclable,
-        item: t(`analyze.mockResults.${preset.key}.item`),
-        category: t(`analyze.mockResults.${preset.key}.category`),
-        instructions: t(`analyze.mockResults.${preset.key}.instructions`),
-        tips: t(`analyze.mockResults.${preset.key}.tips`),
-      })) as RecognitionResult[],
-    [t],
-  );
   // 분석 화면 표시와 결과 상태 정의
   const [isScanning, setIsScanning] = useState(false);
   const [result, setResult] = useState<RecognitionResult | null>(null);
@@ -54,7 +87,7 @@ export function AnalyzePage() {
   // 업로드 입력 및 타이머 관리를 위한 ref 정의
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const objectUrlRef = useRef<string | null>(null);
-  const analysisTimeoutRef = useRef<number | null>(null);
+  const analysisAbortRef = useRef<AbortController | null>(null);
 
   const {
     videoRef,
@@ -66,13 +99,86 @@ export function AnalyzePage() {
     capturePhoto,
   } = useCamera({ onError: setInteractionError });
 
-  // 분석 타이머 정리 함수 정의
-  const clearAnalysisTimeout = useCallback(() => {
-    if (analysisTimeoutRef.current) {
-      window.clearTimeout(analysisTimeoutRef.current);
-      analysisTimeoutRef.current = null;
+  // 진행 중인 분석 요청을 취소하는 헬퍼
+  const cancelActiveAnalysis = useCallback(() => {
+    if (analysisAbortRef.current) {
+      analysisAbortRef.current.abort();
+      analysisAbortRef.current = null;
     }
+    setIsScanning(false);
   }, []);
+
+  // 백엔드 예측값을 화면 표시용 구조로 변환
+  const buildRecognitionResult = useCallback(
+    (prediction: AiPrediction): RecognitionResult => {
+      const translatedCategory = translateCategory(prediction.category);
+      const guideKey = resolveGuideKey(translatedCategory);
+      const item = t(`analyze.guides.${guideKey}.item`, { defaultValue: translatedCategory });
+      const instructions = t(`analyze.guides.${guideKey}.instructions`, {
+        defaultValue: t("analyze.result.defaultInstructions"),
+      });
+      const rawTips = t(`analyze.guides.${guideKey}.tips`, { defaultValue: "" });
+
+      return {
+        item,
+        category: translatedCategory,
+        confidence: formatConfidence(prediction.confidence),
+        recyclable: RECYCLABLE_GUIDE_KEYS.has(guideKey),
+        instructions,
+        tips: rawTips || undefined,
+      };
+    },
+    [t],
+  );
+
+  // AI 라벨링 API 호출 및 결과 수신
+  const runAiRecognition = useCallback(
+    async (source: Blob) => {
+      const controller = new AbortController();
+      analysisAbortRef.current = controller;
+
+      try {
+        const predictions = await requestAiLabeling(source, controller.signal);
+        if (!predictions.length) {
+          setInteractionError(t("analyze.errors.noPrediction"));
+          setResult(null);
+          return;
+        }
+
+        const sorted = [...predictions].sort((a, b) => b.confidence - a.confidence);
+        const bestPrediction = sorted[0];
+        setResult(buildRecognitionResult(bestPrediction));
+        setInteractionError(null);
+      } catch (error) {
+        if (controller.signal.aborted) {
+          return;
+        }
+        console.error(error);
+        setInteractionError(t("analyze.errors.analysisFailed"));
+        setResult(null);
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsScanning(false);
+        }
+        analysisAbortRef.current = null;
+      }
+    },
+    [buildRecognitionResult, t],
+  );
+
+  // 프리뷰와 함께 분석을 시작
+  const beginAnalysis = useCallback(
+    (previewSrc: string, sourceFile: Blob) => {
+      cancelActiveAnalysis();
+      setCapturedImage(previewSrc);
+      setResult(null);
+      setSaveSuccess(false);
+      setInteractionError(null);
+      setIsScanning(true);
+      void runAiRecognition(sourceFile);
+    },
+    [cancelActiveAnalysis, runAiRecognition],
+  );
 
   // 카메라 스트림 자원 정리 함수 정의
   const revokeObjectUrl = useCallback(() => {
@@ -81,27 +187,6 @@ export function AnalyzePage() {
       objectUrlRef.current = null;
     }
   }, []);
-
-  // 모의 분석 실행 함수 정의
-  const runMockRecognition = useCallback(() => {
-    clearAnalysisTimeout();
-    analysisTimeoutRef.current = window.setTimeout(() => {
-      const random = mockResults[Math.floor(Math.random() * mockResults.length)];
-      setResult(random);
-      setIsScanning(false);
-    }, ANALYSIS_DELAY_MS);
-  }, [clearAnalysisTimeout, mockResults]);
-
-  const startAnalysis = useCallback(
-    (imageSrc: string) => {
-      // 새로운 이미지 분석 시뮬레이션 시작 처리
-      setCapturedImage(imageSrc);
-      setResult(null);
-      setIsScanning(true);
-      runMockRecognition();
-    },
-    [runMockRecognition],
-  );
 
   // 업로드 버튼 클릭 처리 정의
   const handleUploadButtonClick = () => {
@@ -127,7 +212,7 @@ export function AnalyzePage() {
     revokeObjectUrl();
     const objectUrl = URL.createObjectURL(file);
     objectUrlRef.current = objectUrl;
-    startAnalysis(objectUrl);
+    beginAnalysis(objectUrl, file);
     event.target.value = "";
   };
 
@@ -138,9 +223,15 @@ export function AnalyzePage() {
       return;
     }
 
+    const capturedFile = dataUrlToFile(dataUrl);
+    if (!capturedFile) {
+      setInteractionError(t("analyze.errors.analysisFailed"));
+      return;
+    }
+
     stopCamera();
     revokeObjectUrl();
-    startAnalysis(dataUrl);
+    beginAnalysis(dataUrl, capturedFile);
   };
 
   // 카메라 열기 처리 정의
@@ -179,11 +270,10 @@ export function AnalyzePage() {
 
   // 분석 상태 초기화 처리 정의
   const reset = () => {
-    clearAnalysisTimeout();
+    cancelActiveAnalysis();
     revokeObjectUrl();
     setResult(null);
     setCapturedImage(null);
-    setIsScanning(false);
     setInteractionError(null);
     setSaveSuccess(false);
     stopCamera();
@@ -191,11 +281,11 @@ export function AnalyzePage() {
 
   useEffect(() => {
     return () => {
-      clearAnalysisTimeout();
+      cancelActiveAnalysis();
       revokeObjectUrl();
       stopCamera();
     };
-  }, [clearAnalysisTimeout, revokeObjectUrl, stopCamera]);
+  }, [cancelActiveAnalysis, revokeObjectUrl, stopCamera]);
 
   const isBusy = isScanning || isCameraActive;
 

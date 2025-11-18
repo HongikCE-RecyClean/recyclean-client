@@ -6,7 +6,7 @@ import { TextField } from "../../../shared/ui/TextField/TextField";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import { useActivityStore } from "../../../shared/state/activityStore";
 import { useNotificationStore } from "../../../shared/state/notificationStore";
-import type { SnackbarState } from "../../../shared/state/notificationStore";
+import type { SnackbarOptions } from "../../../shared/types/notifications";
 import { MATERIALS_BY_CATEGORY, calculatePoints } from "../../../shared/utils/recyclingPoints";
 import * as S from "./AddEntryBottomSheet.styles";
 
@@ -15,11 +15,10 @@ interface AddEntryBottomSheetProps {
   onClose: () => void;
 }
 
-type SnackbarOptions = Partial<Omit<SnackbarState, "id" | "message">>;
-interface PendingSnackbar {
+type PendingSnackbar = {
   message: string;
   options?: SnackbarOptions;
-}
+};
 
 export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProps) {
   const { t } = useTranslation();

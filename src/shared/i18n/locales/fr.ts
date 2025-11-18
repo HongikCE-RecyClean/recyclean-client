@@ -137,6 +137,8 @@ export const frTranslation = {
       notReady: "Le flux de la caméra n'est pas encore prêt.",
       stillInitializing: "La caméra s'initialise encore. Réessayez dans un instant.",
       captureFailed: "Impossible de capturer l'image.",
+      analysisFailed: "Impossible de contacter le service d'IA. Réessayez dans quelques instants.",
+      noPrediction: "Aucun matériau recyclable détecté. Essayez avec un angle plus net.",
     },
     camera: {
       overlay: "Préparation de la caméra...",
@@ -157,6 +159,8 @@ export const frTranslation = {
       retry: "Reprendre",
       logAction: "Enregistrer le recyclage",
       saveSuccess: "✅ Ajouté à votre journal d'activités !",
+      defaultInstructions:
+        "Retirez les impuretés puis suivez les consignes de tri de votre commune.",
     },
     tips: {
       title: "Conseils de prise de vue",
@@ -189,6 +193,45 @@ export const frTranslation = {
         category: "Aluminium",
         instructions: "Rincez à l'eau puis écrasez pour gagner de la place.",
         tips: "Les canettes métalliques ont une forte valeur de recyclage.",
+      },
+    },
+    guides: {
+      plastic: {
+        item: "Plastiques",
+        instructions: "Retirez étiquettes et bouchons, rincez puis écrasez légèrement avant dépôt.",
+        tips: "Bien sécher évite les refus de tri.",
+      },
+      paper: {
+        item: "Papiers et cartons",
+        instructions:
+          "Enlevez rubans ou agrafes, aplatissez les cartons et séparez les parties grasses.",
+        tips: "Conservez-les à l'abri de l'humidité avant la collecte.",
+      },
+      metal: {
+        item: "Boîtes métalliques",
+        instructions: "Videz, rincez puis écrasez doucement les canettes pour gagner de la place.",
+        tips: "Retirez les couvercles plastiques avant tri.",
+      },
+      glass: {
+        item: "Contenants en verre",
+        instructions:
+          "Retirez les couvercles, rincez et déposez-les délicatement pour éviter la casse.",
+        tips: "Emballez le verre cassé séparément selon la consigne locale.",
+      },
+      textile: {
+        item: "Textiles",
+        instructions: "Lavez et séchez les vêtements avant de les déposer dans une borne textile.",
+        tips: "Nouez-les dans un sac pour faciliter la manutention.",
+      },
+      electronic: {
+        item: "Piles et électroniques",
+        instructions: "Retirez les piles et apportez l'appareil dans un point de collecte DEEE.",
+        tips: "Isolez les bornes des piles avec du ruban pour plus de sécurité.",
+      },
+      other: {
+        item: "Déchets divers",
+        instructions: "Vérifiez la consigne locale lorsque le matériau est incertain.",
+        tips: "Repérez les logos de tri ou renseignez-vous auprès de la mairie.",
       },
     },
   },

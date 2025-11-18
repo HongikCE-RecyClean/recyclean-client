@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { HelpCircle, Info, Shield, Trash2, User } from "lucide-react";
+import { HelpCircle, Info, Shield, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../../shared/ui/Button/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { BottomSheet } from "../../../shared/ui/BottomSheet";
 import { useUserStore } from "../../../shared/state/userStore";
 import { useActivityStore } from "../../../shared/state/activityStore";
+import { openConfirmDialog } from "../../../shared/ui/AlertDialog";
 import { AppInfoContent, HelpContent, PrivacyContent } from ".";
 import * as S from "../SettingsPage.styles";
 
@@ -43,12 +44,15 @@ export function SettingsSupportActionsCard() {
   };
 
   // 데이터 초기화 클릭
-  const handleResetData = () => {
-    if (
-      window.confirm(
-        t("settings.support.resetConfirm", "모든 데이터가 삭제됩니다. 계속하시겠습니까?"),
-      )
-    ) {
+  const handleResetData = async () => {
+    const confirmed = await openConfirmDialog({
+      title: t("settings.support.resetConfirm", "모든 데이터가 삭제됩니다. 계속하시겠습니까?"),
+      tone: "warning",
+      confirmLabel: t("settings.support.resetData", "데이터 초기화"),
+      cancelLabel: t("common.cancel"),
+    });
+
+    if (confirmed) {
       clearUserData();
       clearAllEntries();
       navigate("/onboarding", { replace: true });
@@ -68,14 +72,6 @@ export function SettingsSupportActionsCard() {
         <CardContent>
           <S.ActionList>
             {/* 지원 액션 버튼 정렬 클래스 적용 */}
-            <Button
-              variant="outline"
-              css={S.actionButtonAlignStart}
-              onClick={handleEditProfileClick}
-            >
-              <User size={16} />
-              {t("settings.support.editProfile")}
-            </Button>
             <Button variant="outline" css={S.actionButtonAlignStart} onClick={handlePrivacyClick}>
               <Shield size={16} />
               {t("settings.support.privacy")}
@@ -95,31 +91,6 @@ export function SettingsSupportActionsCard() {
           </S.ActionList>
         </CardContent>
       </Card>
-
-      {/* 프로필 편집 바텀시트 */}
-      <BottomSheet
-        isOpen={openSheet === "editProfile"}
-        onClose={handleCloseSheet}
-        title={t("settings.support.editProfile")}
-      >
-        <S.EditProfileContent>
-          <S.EditProfileLabel>{t("settings.profile.nickname", "닉네임")}</S.EditProfileLabel>
-          <S.EditProfileInput
-            type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder={t("onboarding.namePlaceholder", "닉네임 입력")}
-            maxLength={20}
-          />
-          <Button
-            variant="primary"
-            onClick={handleSaveProfile}
-            disabled={!newName.trim() || newName.trim() === name}
-          >
-            {t("common.save", "저장")}
-          </Button>
-        </S.EditProfileContent>
-      </BottomSheet>
 
       {/* 개인정보 보호 바텀시트 */}
       <BottomSheet

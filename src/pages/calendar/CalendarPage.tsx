@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { format, isSameMonth, startOfMonth, type Locale } from "date-fns";
 import { enUS, es, fr, ko as koLocale } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,6 @@ import type { RecyclingEntry } from "../../shared/types/dashboard";
 import * as S from "./CalendarPage.styles";
 import {
   CalendarEntriesCard,
-  CalendarGuideCard,
   CalendarLegendCard,
   CalendarOverviewCard,
   type CalendarLegendItem,
@@ -63,9 +62,23 @@ export function CalendarPage() {
 
   // 활동 기록 스토어에서 entries와 deleteEntry 로드
   const { entries, deleteEntry, addEntry } = useActivityStore();
-  const { showSnackbar } = useNotificationStore();
+  const { showSnackbar, showBanner, closeBanner } = useNotificationStore();
   const [currentMonth, setCurrentMonth] = useState<Date>(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
+
+  useEffect(() => {
+    // 달력 가이드 문구를 상단 배너로 노출
+    const guideItems = t("calendar.guide.items", { returnObjects: true }) as string[];
+    const guideMessage = [t("calendar.guide.title"), ...guideItems].join(" · ");
+    const bannerId = showBanner({
+      type: "info",
+      message: guideMessage,
+    });
+
+    return () => {
+      closeBanner(bannerId);
+    };
+  }, [t, showBanner, closeBanner, language]);
 
   // 날짜별 레코드 맵 생성
   const entriesByDate = useMemo(() => {
@@ -203,9 +216,6 @@ export function CalendarPage() {
         timeLocale={dateLocale}
         onDelete={handleDelete}
       />
-
-      {/* 안내 문구를 전용 카드로 유지 */}
-      <CalendarGuideCard />
     </S.PageContainer>
   );
 }
