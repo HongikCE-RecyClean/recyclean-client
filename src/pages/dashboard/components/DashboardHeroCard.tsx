@@ -28,6 +28,11 @@ export function DashboardHeroCard({
   const trimmedName = userName?.trim();
   const displayName =
     trimmedName && trimmedName.length > 0 ? trimmedName : t("dashboard.welcome.defaultName");
+  const roundedProgress = Math.round(progressValue);
+  const goalText = `${t("dashboard.tracker.goal", { goal: monthlyGoal })} (${t(
+    "dashboard.tracker.percent",
+    { percent: roundedProgress },
+  )})`;
 
   return (
     <S.HeroCard>
@@ -44,14 +49,11 @@ export function DashboardHeroCard({
             <S.HeroMainValue>{totalPoints}</S.HeroMainValue>
             <S.HeroMainLabel>{t("dashboard.hero.currentPoints")}</S.HeroMainLabel>
           </S.HeroMainStat>
-          <S.HeroGoalText>{t("dashboard.tracker.goal", { goal: monthlyGoal })}</S.HeroGoalText>
+          <S.HeroGoalText>{goalText}</S.HeroGoalText>
 
           {/* 진행률 바 */}
           <S.HeroProgressWrapper>
             <Progress value={progressValue} />
-            <S.HeroProgressLabel>
-              {t("dashboard.tracker.percent", { percent: Math.round(progressValue) })}
-            </S.HeroProgressLabel>
           </S.HeroProgressWrapper>
         </S.HeroMainSection>
 

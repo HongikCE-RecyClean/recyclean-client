@@ -224,7 +224,9 @@ export const MaterialItem = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
   padding: ${({ theme }) => theme.spacing(4)};
   border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.surfaceMuted};
+  background: ${({ theme }) => theme.colors.surface};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: ${({ theme }) => theme.shadows.soft};
   transition:
     transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
     background 0.15s ease,
@@ -232,8 +234,8 @@ export const MaterialItem = styled.div`
 
   &:hover {
     transform: translateY(-2px);
-    background: ${({ theme }) => theme.colors.surface};
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+    background: ${({ theme }) => theme.colors.surfaceMuted};
+    box-shadow: ${({ theme }) => theme.shadows.medium};
   }
 `;
 
@@ -574,10 +576,12 @@ export const HeroCardContent = styled(CardContent)`
 
 // 상단 헤더 영역
 export const HeroHeader = styled.div`
-  text-align: center;
+  text-align: left;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
+  align-items: flex-start;
+  width: 100%;
 `;
 
 // 인사말 텍스트
