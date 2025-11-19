@@ -47,6 +47,7 @@ export const BinItem = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+  background-color: ${({ theme }) => theme.colors.surface};
 `;
 
 export const BinHeader = styled.div`
@@ -111,10 +112,16 @@ export const ItemsChips = styled.div`
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 
+// 내 주변 배출함 버튼 영역을 1:1 그리드로 구성
 export const BinActions = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: ${({ theme }) => theme.spacing(1.5)};
-  flex-wrap: wrap;
+`;
+
+// 각 버튼 폭을 동일하게 맞추는 스타일
+export const binActionButton = css`
+  width: 100%;
 `;
 
 export const SectionDivider = styled.div`

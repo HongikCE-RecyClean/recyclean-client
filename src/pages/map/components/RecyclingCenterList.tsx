@@ -1,4 +1,5 @@
 import { useMemo, type ChangeEvent } from "react";
+import { formatDistanceToNow } from "date-fns";
 import { Clock, Navigation, Phone, Recycle, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { CardTitle } from "../../../shared/ui/Card/Card";
@@ -8,6 +9,7 @@ import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/Image
 import { SelectField } from "shared/ui/SelectField/SelectField";
 import { mapAvailabilityTone, resolveMaterialBadgeTone } from "shared/constants/mapVisuals";
 import type { RecyclingCenter, TrashBin, FilterOption } from "shared/types/map";
+import { resolveDateFnsLocale } from "shared/utils/dateLocales";
 import { SectionCard, SectionCardContent, SectionCardHeader } from "../MapPage.styles";
 import * as S from "./RecyclingCenterList.styles";
 
@@ -26,7 +28,8 @@ export function RecyclingCenterList({
   selectedType,
   onTypeChange,
 }: RecyclingCenterListProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const dateLocale = resolveDateFnsLocale(i18n.language);
   const localizedOptions = useMemo(
     () =>
       options.map((option) => ({
@@ -35,6 +38,19 @@ export function RecyclingCenterList({
       })),
     [options, t],
   );
+
+  const formatBinUpdatedTime = (timestamp: string) => {
+    // ISO 문자열을 사용자 친화적인 상대 시간으로 변환해요
+    const parsedDate = new Date(timestamp);
+    if (Number.isNaN(parsedDate.getTime())) {
+      return timestamp;
+    }
+    const relativeTime = formatDistanceToNow(parsedDate, {
+      addSuffix: true,
+      locale: dateLocale,
+    });
+    return t("map.bins.updatedAt", { time: relativeTime });
+  };
 
   return (
     <SectionCard>
@@ -62,7 +78,7 @@ export function RecyclingCenterList({
                         <S.BinLocation>{bin.location}</S.BinLocation>
                         <S.BinUpdated>
                           <Clock size={12} />
-                          {bin.lastUpdated}
+                          {formatBinUpdatedTime(bin.lastUpdated)}
                         </S.BinUpdated>
                       </S.BinTexts>
                     </S.BinInfo>
@@ -86,11 +102,11 @@ export function RecyclingCenterList({
                   </S.ItemsSection>
 
                   <S.BinActions>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" css={S.binActionButton}>
                       <Navigation size={14} />
                       {t("map.bins.directions")}
                     </Button>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" css={S.binActionButton}>
                       {t("map.bins.report")}
                     </Button>
                   </S.BinActions>
