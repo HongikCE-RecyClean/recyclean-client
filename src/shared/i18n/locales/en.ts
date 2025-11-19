@@ -32,6 +32,12 @@ export const enTranslation = {
         streak: "Day streak",
       },
     },
+    hero: {
+      subtitle: "This month's progress",
+      currentPoints: "Current points",
+      today: "Today",
+      total: "Total",
+    },
     tracker: {
       title: "Activity tracker",
       monthlyPoints: "Points collected this month",

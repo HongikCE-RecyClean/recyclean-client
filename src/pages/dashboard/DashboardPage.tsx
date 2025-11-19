@@ -14,10 +14,9 @@ import { normalizeLanguage, type SupportedLanguage } from "shared/i18n/supported
 import * as S from "./DashboardPage.styles";
 import {
   AddEntryBottomSheet,
+  DashboardHeroCard,
   MaterialSearchCard,
   RecentActivityCard,
-  TrackerCard,
-  WelcomeOverviewCard,
 } from "./components";
 
 type MaterialGuideKey =
@@ -151,13 +150,10 @@ export function DashboardPage() {
 
   return (
     <S.PageContainer>
-      <WelcomeOverviewCard todayStats={todayStats} userName={userName} />
-      {/* <MonthlyProgressCard
-        totalPoints={totalPoints}
-        monthlyGoal={monthlyGoal}
-        progressValue={progressValue}
-      /> */}
-      <TrackerCard
+      {/* 통합 히어로 카드 */}
+      <DashboardHeroCard
+        userName={userName}
+        todayStats={todayStats}
         totalPoints={totalPoints}
         monthlyGoal={monthlyGoal}
         progressValue={progressValue}
@@ -166,7 +162,7 @@ export function DashboardPage() {
         categoryCount={categoryCount}
         onLogAction={() => setIsAddEntryOpen(true)}
       />
-      {/* <QuickActionsCard onAnalyze={() => navigate("/analyze")} onOpenMap={() => navigate("/map")} /> */}
+      {/* 최근 활동 */}
       <RecentActivityCard recentActivity={recentActivity} />
       {/* <AchievementsCard achievements={achievements} /> */}
       <MaterialSearchCard

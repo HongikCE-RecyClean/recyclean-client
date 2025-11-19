@@ -33,6 +33,12 @@ export const frTranslation = {
         streak: "Jours consécutifs",
       },
     },
+    hero: {
+      subtitle: "Progression du mois",
+      currentPoints: "Points actuels",
+      today: "Aujourd'hui",
+      total: "Total",
+    },
     tracker: {
       title: "Suivi d'activité",
       monthlyPoints: "Points cumulés ce mois-ci",

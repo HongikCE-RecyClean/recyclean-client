@@ -33,6 +33,12 @@ export const esTranslation = {
         streak: "Racha de días",
       },
     },
+    hero: {
+      subtitle: "Progreso de este mes",
+      currentPoints: "Puntos actuales",
+      today: "Hoy",
+      total: "Total",
+    },
     tracker: {
       title: "Seguimiento de actividad",
       monthlyPoints: "Puntos acumulados este mes",

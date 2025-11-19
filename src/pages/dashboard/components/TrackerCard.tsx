@@ -1,4 +1,5 @@
-import { RotateCcw, Award } from "lucide-react";
+import { RotateCcw, Award, ListChecks, Package, Grid3x3 } from "lucide-react";
+import { useTheme } from "@emotion/react";
 import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Progress } from "../../../shared/ui/Progress/Progress";
 import { Button } from "../../../shared/ui/Button/Button";
@@ -25,6 +26,7 @@ export function TrackerCard({
   onLogAction,
 }: TrackerCardProps) {
   const { t } = useTranslation();
+  const theme = useTheme();
   return (
     <S.SectionCard>
       <S.SectionCardHeader>
@@ -61,14 +63,26 @@ export function TrackerCard({
         {/* 세부 지표 그리드 */}
         <S.TrackerGrid>
           <S.TrackerStat>
+            {/* 기록 수 아이콘 */}
+            <S.TrackerIconWrapper>
+              <ListChecks size={18} color={theme.colors.secondary} strokeWidth={2} />
+            </S.TrackerIconWrapper>
             <S.TrackerValue>{entriesCount}</S.TrackerValue>
             <S.TrackerLabel>{t("dashboard.tracker.stats.entries")}</S.TrackerLabel>
           </S.TrackerStat>
           <S.TrackerStat>
+            {/* 아이템 수 아이콘 */}
+            <S.TrackerIconWrapper>
+              <Package size={18} color={theme.colors.primary} strokeWidth={2} />
+            </S.TrackerIconWrapper>
             <S.TrackerValue>{totalItems}</S.TrackerValue>
             <S.TrackerLabel>{t("dashboard.tracker.stats.items")}</S.TrackerLabel>
           </S.TrackerStat>
           <S.TrackerStat>
+            {/* 카테고리 수 아이콘 */}
+            <S.TrackerIconWrapper>
+              <Grid3x3 size={18} color={theme.colors.accent} strokeWidth={2} />
+            </S.TrackerIconWrapper>
             <S.TrackerValue>{categoryCount}</S.TrackerValue>
             <S.TrackerLabel>{t("dashboard.tracker.stats.categories")}</S.TrackerLabel>
           </S.TrackerStat>

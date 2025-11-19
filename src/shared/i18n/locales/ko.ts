@@ -32,6 +32,12 @@ export const koTranslation = {
         streak: "연속 참여 일수",
       },
     },
+    hero: {
+      subtitle: "이번 달 재활용 현황",
+      currentPoints: "현재 포인트",
+      today: "오늘",
+      total: "전체",
+    },
     tracker: {
       title: "재활용 활동 추적",
       monthlyPoints: "이번 달 획득 포인트",

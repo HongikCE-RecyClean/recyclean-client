@@ -1,3 +1,4 @@
+export { DashboardHeroCard } from "./DashboardHeroCard";
 export { WelcomeOverviewCard } from "./WelcomeOverviewCard";
 export { MonthlyProgressCard } from "./MonthlyProgressCard";
 export { QuickActionsCard } from "./QuickActionsCard";

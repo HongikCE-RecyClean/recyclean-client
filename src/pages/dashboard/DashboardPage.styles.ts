@@ -40,6 +40,18 @@ export const SectionCardContent = styled(CardContent)`
 export const WelcomeCard = styled(Card)`
   background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(56, 189, 248, 0.1));
   border-color: rgba(74, 222, 128, 0.3);
+  animation: fadeInUp 0.6s ease-out;
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 // 환영 카드 컨텐츠 정렬 정의
@@ -87,13 +99,32 @@ export const StatCell = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
+  align-items: center;
+`;
+
+// 통계 아이콘 래퍼 정의
+export const StatIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  background: ${({ theme }) => theme.colors.surface};
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  margin-bottom: ${({ theme }) => theme.spacing(1)};
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
 
 // 통계 값 스타일 정의
 export const StatValue = styled.span`
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
-  color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 // 통계 라벨 텍스트 정의
@@ -421,12 +452,33 @@ export const TrackerStat = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
+  align-items: center;
+`;
+
+// 추적 지표 아이콘 래퍼 정의
+export const TrackerIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: ${({ theme }) => theme.radii.md};
+  background: ${({ theme }) => theme.colors.surfaceMuted};
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    background: ${({ theme }) => theme.colors.surface};
+  }
 `;
 
 // 추적 지표 값 정의
 export const TrackerValue = styled.span`
-  font-size: 1.25rem;
-  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  font-size: 1.5rem;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 // 추적 지표 라벨 정의
@@ -499,4 +551,163 @@ export const AchievementTitleText = styled.div`
 export const AchievementDescriptionText = styled.div`
   font-size: 0.8rem;
   color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+// ============================================
+// 통합 히어로 카드 스타일
+// ============================================
+
+// 히어로 카드 기본 스타일
+export const HeroCard = styled(Card)`
+  background: linear-gradient(135deg, rgba(47, 133, 90, 0.05), rgba(20, 184, 166, 0.08));
+  border: 1px solid ${({ theme }) => theme.colors.primary}33;
+  overflow: hidden;
+`;
+
+// 히어로 카드 컨텐츠
+export const HeroCardContent = styled(CardContent)`
+  padding: ${({ theme }) => theme.spacing(6)};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(5)};
+`;
+
+// 상단 헤더 영역
+export const HeroHeader = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+// 인사말 텍스트
+export const HeroGreeting = styled.h1`
+  font-size: 1.5rem;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0;
+`;
+
+// 부제목
+export const HeroSubtitle = styled.p`
+  font-size: 0.9rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin: 0;
+`;
+
+// 중앙 메인 섹션
+export const HeroMainSection = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(3)};
+  padding: ${({ theme }) => theme.spacing(4)} 0;
+  border-top: 1px solid ${({ theme }) => theme.colors.border}22;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border}22;
+`;
+
+// 메인 통계 (큰 숫자)
+export const HeroMainStat = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+// 메인 값 (포인트)
+export const HeroMainValue = styled.div`
+  font-size: 3.5rem;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.primary};
+  line-height: 1;
+  background: linear-gradient(
+    135deg,
+    ${({ theme }) => theme.colors.primary},
+    ${({ theme }) => theme.colors.accent}
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+`;
+
+// 메인 라벨
+export const HeroMainLabel = styled.div`
+  font-size: 0.95rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+`;
+
+// 목표 텍스트
+export const HeroGoalText = styled.div`
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+// 진행률 래퍼
+export const HeroProgressWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+// 진행률 라벨
+export const HeroProgressLabel = styled.div`
+  font-size: 0.9rem;
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  color: ${({ theme }) => theme.colors.text};
+  text-align: right;
+`;
+
+// 오늘/전체 통계 그리드
+export const HeroStatsGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: ${({ theme }) => theme.spacing(4)};
+`;
+
+// 통계 섹션 (오늘 or 전체)
+export const StatSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(3)};
+  background: ${({ theme }) => theme.colors.surface};
+  border-radius: ${({ theme }) => theme.radii.md};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+// 섹션 제목
+export const StatSectionTitle = styled.h3`
+  font-size: 0.85rem;
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  color: ${({ theme }) => theme.colors.primary};
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+// 섹션 콘텐츠
+export const StatSectionContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+// 통계 행
+export const StatRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+// 통계 라벨
+export const StatRowLabel = styled.span`
+  font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+// 통계 값
+export const StatRowValue = styled.span`
+  font-size: 1.1rem;
+  font-weight: ${({ theme }) => theme.typography.weights.bold};
+  color: ${({ theme }) => theme.colors.text};
 `;
