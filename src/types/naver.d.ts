@@ -37,6 +37,7 @@ declare global {
         map?: Map | null;
         icon?: MarkerIconOptions | string;
         title?: string;
+        zIndex?: number;
       }
 
       class Map {
@@ -54,6 +55,7 @@ declare global {
         setPosition(latlng: LatLng): void;
         setMap(map: Map | null): void;
         getMap(): Map | null;
+        setZIndex(zIndex: number): void;
       }
 
       interface PolylineOptions {

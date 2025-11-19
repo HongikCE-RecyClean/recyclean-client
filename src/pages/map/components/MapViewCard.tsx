@@ -246,17 +246,16 @@ export function MapViewCard({
     );
 
     disposeMarkers(centerMarkersRef);
-    centerMarkersRef.current = centers.map((center) => {
-      const marker = new maps.Marker({
-        map: mapInstance,
-        position: new maps.LatLng(center.coordinates.lat, center.coordinates.lng),
-        icon: { content: createCircularMarker(CENTER_MARKER_COLOR) },
-        title: center.name,
-      });
-      // 센터 마커가 다른 요소 위로 노출되도록 zIndex 후처리
-      marker.setZIndex(50);
-      return marker;
-    });
+    centerMarkersRef.current = centers.map(
+      (center) =>
+        new maps.Marker({
+          map: mapInstance,
+          position: new maps.LatLng(center.coordinates.lat, center.coordinates.lng),
+          icon: { content: createCircularMarker(CENTER_MARKER_COLOR) },
+          title: center.name,
+          zIndex: 50,
+        }),
+    );
   }, [bins, centers, status, maps]);
 
   useEffect(() => {
