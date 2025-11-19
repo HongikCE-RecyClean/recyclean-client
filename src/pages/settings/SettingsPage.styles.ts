@@ -138,6 +138,19 @@ export const actionButtonAlignStart = css`
   justify-content: flex-start;
 `;
 
+// 지원 카드 버튼 그림자 제거 스타일
+export const supportActionButtonNoShadow = css`
+  box-shadow: none;
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    box-shadow: none;
+  }
+`;
+
 // 프로필 아바타 이미지 패딩 스타일
 export const profileAvatarImage = css`
   object-fit: contain;

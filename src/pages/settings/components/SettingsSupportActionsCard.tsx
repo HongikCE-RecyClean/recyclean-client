@@ -74,19 +74,35 @@ export function SettingsSupportActionsCard() {
         <CardContent>
           <S.ActionList>
             {/* 지원 액션 버튼 정렬 클래스 적용 */}
-            <Button variant="outline" css={S.actionButtonAlignStart} onClick={handlePrivacyClick}>
+            <Button
+              variant="outline"
+              css={[S.actionButtonAlignStart, S.supportActionButtonNoShadow]}
+              onClick={handlePrivacyClick}
+            >
               <Shield size={16} />
               {t("settings.support.privacy")}
             </Button>
-            <Button variant="outline" css={S.actionButtonAlignStart} onClick={handleHelpClick}>
+            <Button
+              variant="outline"
+              css={[S.actionButtonAlignStart, S.supportActionButtonNoShadow]}
+              onClick={handleHelpClick}
+            >
               <HelpCircle size={16} />
               {t("settings.support.helpCenter")}
             </Button>
-            <Button variant="outline" css={S.actionButtonAlignStart} onClick={handleAppInfoClick}>
+            <Button
+              variant="outline"
+              css={[S.actionButtonAlignStart, S.supportActionButtonNoShadow]}
+              onClick={handleAppInfoClick}
+            >
               <Info size={16} />
               {t("settings.support.about")}
             </Button>
-            <Button variant="destructive" css={S.actionButtonAlignStart} onClick={handleResetData}>
+            <Button
+              variant="destructive"
+              css={[S.actionButtonAlignStart, S.supportActionButtonNoShadow]}
+              onClick={handleResetData}
+            >
               <Trash2 size={16} />
               {t("settings.support.resetData")}
             </Button>
