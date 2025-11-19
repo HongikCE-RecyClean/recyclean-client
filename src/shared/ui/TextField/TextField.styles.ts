@@ -18,7 +18,7 @@ export const StyledInput = styled.input<{ $hasIcon: boolean }>`
     `${theme.spacing(3)} ${theme.spacing(3)} ${theme.spacing(3)} ${
       $hasIcon ? `calc(${theme.spacing(3)} + 28px)` : theme.spacing(3)
     }`};
-  font-size: 0.95rem;
+  font-size: 1rem; /* iOS Safari 자동 확대 방지 위해 최소 16px 유지 */
   color: ${({ theme }) => theme.colors.text};
   transition:
     border-color 0.2s ease,

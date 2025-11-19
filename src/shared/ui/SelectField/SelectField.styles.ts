@@ -15,7 +15,7 @@ export const StyledSelect = styled.select`
   background-color: ${({ theme }) => theme.colors.surface};
   padding: ${({ theme }) =>
     `${theme.spacing(3)} ${theme.spacing(5)} ${theme.spacing(3)} ${theme.spacing(3)}`};
-  font-size: 0.95rem;
+  font-size: 1rem; /* iOS Safari 자동 확대 방지 위해 최소 16px 유지 */
   color: ${({ theme }) => theme.colors.text};
   transition:
     border-color 0.2s ease,
