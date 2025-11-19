@@ -1,9 +1,9 @@
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "@emotion/react";
-import { AlertCircle, Leaf, Lightbulb } from "lucide-react";
+import { AlertCircle, Leaf } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
+import { CardTitle } from "../../../shared/ui/Card/Card";
 import { TextField } from "../../../shared/ui/TextField/TextField";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import { Badge } from "../../../shared/ui/Badge/Badge";
@@ -54,14 +54,11 @@ export function MaterialSearchCard({
   }, [filteredMaterials]);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          <Lightbulb size={18} />
-          {t("dashboard.materialSearch.title")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+    <S.SectionCard>
+      <S.SectionCardHeader>
+        <CardTitle>{t("dashboard.materialSearch.title")}</CardTitle>
+      </S.SectionCardHeader>
+      <S.SectionCardContent>
         {/* 검색 입력 영역 */}
         <TextField
           placeholder={t("dashboard.materialSearch.placeholder")}
@@ -114,7 +111,7 @@ export function MaterialSearchCard({
             </Button>
           </S.MaterialMoreWrapper>
         )}
-      </CardContent>
-    </Card>
+      </S.SectionCardContent>
+    </S.SectionCard>
   );
 }

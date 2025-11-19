@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Card, CardContent } from "../../shared/ui/Card/Card";
+import { Card, CardContent, CardHeader } from "../../shared/ui/Card/Card";
 import type { AppTheme } from "../../shared/styles/theme";
 
 // 대시보드 페이지 컨테이너 정의
@@ -11,6 +11,29 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(5)};
+`;
+
+// 히어로 외 섹션 카드 배경 제거 래퍼
+export const SectionCard = styled(Card)`
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  transition: none;
+
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+`;
+
+// 히어로 외 섹션 헤더 좌우 패딩 제거
+export const SectionCardHeader = styled(CardHeader)`
+  padding: ${({ theme }) => `${theme.spacing(4)} 0`};
+`;
+
+// 히어로 외 섹션 콘텐츠 좌우 패딩 제거
+export const SectionCardContent = styled(CardContent)`
+  padding: ${({ theme }) => `${theme.spacing(4)} 0`};
 `;
 
 // 환영 카드 스타일 정의
@@ -67,15 +90,10 @@ export const StatCell = styled.div`
 `;
 
 // 통계 값 스타일 정의
-export const StatValue = styled.span<{ $tone: "success" | "info" | "warning" }>`
+export const StatValue = styled.span`
   font-size: 1.6rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
-  color: ${({ theme, $tone }) =>
-    ({
-      success: theme.colors.success,
-      info: theme.colors.info,
-      warning: theme.colors.warning,
-    })[$tone]};
+  color: ${({ theme }) => theme.colors.primary};
 `;
 
 // 통계 라벨 텍스트 정의

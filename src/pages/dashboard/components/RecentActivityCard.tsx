@@ -1,6 +1,5 @@
-import { Calendar } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
+import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../DashboardPage.styles";
 import type { RecentActivityItem } from "../../../shared/types/dashboard";
@@ -12,14 +11,11 @@ interface RecentActivityCardProps {
 export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) {
   const { t } = useTranslation();
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          <Calendar size={18} />
-          {t("dashboard.recentActivity.title")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+    <S.SectionCard>
+      <S.SectionCardHeader>
+        <CardTitle>{t("dashboard.recentActivity.title")}</CardTitle>
+      </S.SectionCardHeader>
+      <S.SectionCardContent>
         {/* 빈 상태 처리: 최근 활동이 없을 때 */}
         {recentActivity.length === 0 ? (
           <S.EmptyStateMessage>{t("dashboard.recentActivity.empty")}</S.EmptyStateMessage>
@@ -48,7 +44,7 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
             ))}
           </S.RecentActivityList>
         )}
-      </CardContent>
-    </Card>
+      </S.SectionCardContent>
+    </S.SectionCard>
   );
 }

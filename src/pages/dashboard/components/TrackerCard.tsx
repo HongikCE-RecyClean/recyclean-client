@@ -1,5 +1,5 @@
-import { RotateCcw, TrendingUp, Award } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
+import { RotateCcw, Award } from "lucide-react";
+import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Progress } from "../../../shared/ui/Progress/Progress";
 import { Button } from "../../../shared/ui/Button/Button";
 import { useTranslation } from "react-i18next";
@@ -26,14 +26,11 @@ export function TrackerCard({
 }: TrackerCardProps) {
   const { t } = useTranslation();
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          <TrendingUp size={18} />
-          {t("dashboard.tracker.title")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+    <S.SectionCard>
+      <S.SectionCardHeader>
+        <CardTitle>{t("dashboard.tracker.title")}</CardTitle>
+      </S.SectionCardHeader>
+      <S.SectionCardContent>
         {/* 통계 요약 표시 */}
         {/* 요약 박스 컴포넌트 적용 */}
         <S.TrackerSummaryBox>
@@ -56,7 +53,8 @@ export function TrackerCard({
             <S.TrackerHighlightText>{t("dashboard.tracker.highlight")}</S.TrackerHighlightText>
           </S.HighlightBox>
         )}
-        <Button variant="outline" onClick={onLogAction}>
+        {/* 홈 CTA 버튼을 브랜드 초록색(primary)으로 표시 */}
+        <Button variant="primary" onClick={onLogAction}>
           <RotateCcw size={16} />
           {t("dashboard.tracker.logAction")}
         </Button>
@@ -75,7 +73,7 @@ export function TrackerCard({
             <S.TrackerLabel>{t("dashboard.tracker.stats.categories")}</S.TrackerLabel>
           </S.TrackerStat>
         </S.TrackerGrid>
-      </CardContent>
-    </Card>
+      </S.SectionCardContent>
+    </S.SectionCard>
   );
 }

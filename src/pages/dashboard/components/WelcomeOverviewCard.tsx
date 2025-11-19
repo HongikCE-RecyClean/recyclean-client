@@ -26,15 +26,15 @@ export function WelcomeOverviewCard({ todayStats, userName }: WelcomeOverviewCar
         {/* 핵심 통계 그리드 */}
         <S.StatsGrid>
           <S.StatCell>
-            <S.StatValue $tone="success">{todayStats.itemsRecycled}</S.StatValue>
+            <S.StatValue>{todayStats.itemsRecycled}</S.StatValue>
             <S.StatLabel>{t("dashboard.welcome.stats.items")}</S.StatLabel>
           </S.StatCell>
           <S.StatCell>
-            <S.StatValue $tone="info">{todayStats.pointsEarned}</S.StatValue>
+            <S.StatValue>{todayStats.pointsEarned}</S.StatValue>
             <S.StatLabel>{t("dashboard.welcome.stats.points")}</S.StatLabel>
           </S.StatCell>
           <S.StatCell>
-            <S.StatValue $tone="warning">{todayStats.streakDays}</S.StatValue>
+            <S.StatValue>{todayStats.streakDays}</S.StatValue>
             <S.StatLabel>{t("dashboard.welcome.stats.streak")}</S.StatLabel>
           </S.StatCell>
         </S.StatsGrid>
