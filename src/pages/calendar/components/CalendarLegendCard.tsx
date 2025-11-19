@@ -1,6 +1,5 @@
-import { PieChart } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
+import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../CalendarPage.styles";
 import type { CalendarLegendItem } from "./types";
@@ -13,14 +12,11 @@ export function CalendarLegendCard({ items }: CalendarLegendCardProps) {
   const { t } = useTranslation();
   // 품목 범례 표시를 독립 컴포넌트로 구성
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          <PieChart size={18} />
-          {t("calendar.legend.title")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+    <S.SectionCard>
+      <S.SectionCardHeader>
+        <CardTitle>{t("calendar.legend.title")}</CardTitle>
+      </S.SectionCardHeader>
+      <S.SectionCardContent>
         {items.length > 0 ? (
           <S.LegendList>
             {items.map((item) => (
@@ -47,7 +43,7 @@ export function CalendarLegendCard({ items }: CalendarLegendCardProps) {
         ) : (
           <S.EmptyState>{t("calendar.legend.empty")}</S.EmptyState>
         )}
-      </CardContent>
-    </Card>
+      </S.SectionCardContent>
+    </S.SectionCard>
   );
 }

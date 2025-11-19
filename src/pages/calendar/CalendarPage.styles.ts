@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { CardContent } from "../../shared/ui/Card/Card";
+import { Card, CardContent, CardHeader } from "../../shared/ui/Card/Card";
 
 // 달력 페이지 전체 컨테이너 정의
 export const PageContainer = styled.div`
@@ -11,6 +11,27 @@ export const PageContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(5)};
   padding-bottom: ${({ theme }) => theme.spacing(6)};
+`;
+
+// 달력 외 섹션 카드 래퍼 정의
+export const SectionCard = styled(Card)`
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  transition: none;
+
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+`;
+
+export const SectionCardHeader = styled(CardHeader)`
+  padding: ${({ theme }) => `${theme.spacing(4)} 0`};
+`;
+
+export const SectionCardContent = styled(CardContent)`
+  padding: ${({ theme }) => `${theme.spacing(4)} 0`};
 `;
 
 // 달력 카드 컨텐츠 래퍼 정의

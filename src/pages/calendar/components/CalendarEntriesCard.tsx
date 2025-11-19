@@ -1,7 +1,7 @@
-import { ListTodo, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { format, type Locale } from "date-fns";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
+import { CardTitle } from "../../../shared/ui/Card/Card";
 import type { RecyclingEntry } from "../../../shared/types/dashboard";
 import { openConfirmDialog } from "../../../shared/ui/AlertDialog";
 import * as S from "../CalendarPage.styles";
@@ -22,14 +22,11 @@ export function CalendarEntriesCard({
   const { t } = useTranslation();
   // 날짜별 기록 리스트 출력을 카드로 분리
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          <ListTodo size={18} />
-          {t("calendar.entries.title", { date: selectedDateLabel })}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+    <S.SectionCard>
+      <S.SectionCardHeader>
+        <CardTitle>{t("calendar.entries.title", { date: selectedDateLabel })}</CardTitle>
+      </S.SectionCardHeader>
+      <S.SectionCardContent>
         {entries.length > 0 ? (
           <S.RecordList>
             {entries.map((entry) => (
@@ -79,7 +76,7 @@ export function CalendarEntriesCard({
         ) : (
           <S.EmptyState>{t("calendar.entries.empty")}</S.EmptyState>
         )}
-      </CardContent>
-    </Card>
+      </S.SectionCardContent>
+    </S.SectionCard>
   );
 }

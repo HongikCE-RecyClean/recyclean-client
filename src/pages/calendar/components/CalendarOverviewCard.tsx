@@ -1,6 +1,5 @@
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { Calendar } from "lucide-react";
 import type { DayPickerProps } from "react-day-picker";
 import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
@@ -31,10 +30,7 @@ export function CalendarOverviewCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>
-          <Calendar size={18} />
-          {t("calendar.overviewTitle", { month: currentMonthLabel })}
-        </CardTitle>
+        <CardTitle>{t("calendar.overviewTitle", { month: currentMonthLabel })}</CardTitle>
       </CardHeader>
       <S.CalendarContent>
         {/* 달력과 통계 묶음을 유지하여 시각적 맥락 보존 */}
