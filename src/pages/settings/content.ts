@@ -273,7 +273,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
     ],
     contactTitle: "문의하기",
     contactIntro: "추가 문의사항이 있으시면",
-    contactOutro: "으로 연락해주세요. 평일 09:00-18:00에 빠르게 답변드려요.",
+    contactOutro: "으로 연락해주세요.",
   },
   es: {
     faqTitle: "Preguntas frecuentes (FAQ)",
@@ -445,9 +445,9 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
   ko: {
     policyTitle: "개인정보 처리방침",
     policyDescription:
-      "RecyClean은 프라이버시 우선 앱이에요. 모든 데이터는 사용자의 기기(브라우저 localStorage)에만 저장되며, 서버로 전송되지 않아요.",
+      "RecyClean은 프라이버시 우선 앱이에요. 모든 데이터는 사용자의 기기에만 저장돼요.",
     collectTitle: "기기에 저장되는 데이터",
-    collectDescription: "브라우저 로컬 스토리지에 다음 정보가 저장돼요:",
+    collectDescription: "브라우저에 다음 정보가 저장돼요:",
     collect: {
       requiredLabel: "필수 항목:",
       requiredValue: "닉네임",
@@ -466,7 +466,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
     ],
     retentionTitle: "데이터 보관",
     retentionDescription:
-      "데이터는 사용자가 삭제하기 전까지 브라우저 localStorage에 보관돼요. 브라우저 데이터 삭제나 앱 제거 시 모든 정보가 영구적으로 삭제되며 복구할 수 없어요.",
+      "데이터는 사용자가 삭제하기 전까지 브라우저에 보관돼요. 브라우저 데이터 삭제나 앱 제거 시 모든 정보가 영구적으로 삭제되며 복구할 수 없어요.",
     deletionTitle: "데이터 삭제",
     deletionDescription:
       '설정 메뉴의 "데이터 초기화"로 모든 로컬 데이터를 영구 삭제할 수 있어요. 이 작업은 되돌릴 수 없으니 신중하게 결정해주세요. 브라우저 캐시나 쿠키 삭제 시에도 주의가 필요해요.',
