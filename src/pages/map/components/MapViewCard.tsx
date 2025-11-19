@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { MapPin, Navigation } from "lucide-react";
+import { Navigation } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent } from "shared/ui/Card/Card";
 import { useNaverMapsLoader } from "shared/hooks/useNaverMapsLoader";
 import type { MapCoordinates } from "shared/state/mapStore";
+import { SectionCard, SectionCardContent } from "../MapPage.styles";
 import * as S from "./MapViewCard.styles";
 
 interface MapViewCardProps {
@@ -118,11 +118,10 @@ export function MapViewCard({ binCount, onUseLocationClick, userLocation }: MapV
 
   // 지도 카드 렌더링
   return (
-    <Card>
-      <CardContent>
+    <SectionCard>
+      <SectionCardContent>
         <S.HeaderSection>
           <S.HeaderRow>
-            <MapPin size={20} />
             <S.HeaderTexts>
               <S.HeaderTitle>{t("map.mapView.title")}</S.HeaderTitle>
               <S.HeaderSubtitle>{t("map.mapView.subtitle", { count: binCount })}</S.HeaderSubtitle>
@@ -160,7 +159,7 @@ export function MapViewCard({ binCount, onUseLocationClick, userLocation }: MapV
             )}
           </S.MapFallback>
         )}
-      </CardContent>
-    </Card>
+      </SectionCardContent>
+    </SectionCard>
   );
 }

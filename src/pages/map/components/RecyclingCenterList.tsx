@@ -1,13 +1,14 @@
 import { useMemo, type ChangeEvent } from "react";
-import { Clock, Filter, MapPin, Navigation, Phone, Recycle, Trash2 } from "lucide-react";
+import { Clock, Navigation, Phone, Recycle, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
+import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
 import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
 import { SelectField } from "shared/ui/SelectField/SelectField";
 import { mapAvailabilityTone, resolveMaterialBadgeTone } from "shared/constants/mapVisuals";
 import type { RecyclingCenter, TrashBin, FilterOption } from "shared/types/map";
+import { SectionCard, SectionCardContent, SectionCardHeader } from "../MapPage.styles";
 import * as S from "./RecyclingCenterList.styles";
 
 interface RecyclingCenterListProps {
@@ -36,19 +37,13 @@ export function RecyclingCenterList({
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          <MapPin size={18} />
-          {t("map.centers.title")}
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
+    <SectionCard>
+      <SectionCardHeader>
+        <CardTitle>{t("map.centers.title")}</CardTitle>
+      </SectionCardHeader>
+      <SectionCardContent>
         <S.SectionHeader>
-          <S.SectionLabel>
-            <Filter size={16} />
-            {t("map.filter.title")}
-          </S.SectionLabel>
+          <S.SectionLabel>{t("map.filter.title")}</S.SectionLabel>
           <SelectField options={localizedOptions} value={selectedType} onChange={onTypeChange} />
         </S.SectionHeader>
 
@@ -108,7 +103,6 @@ export function RecyclingCenterList({
         <S.SectionDivider />
 
         <S.SectionLabel>
-          <MapPin size={16} />
           {t("map.centers.sectionTitle", { defaultValue: t("map.centers.title") })}
         </S.SectionLabel>
 
@@ -164,7 +158,7 @@ export function RecyclingCenterList({
             </S.CenterCard>
           ))}
         </S.CenterGrid>
-      </CardContent>
-    </Card>
+      </SectionCardContent>
+    </SectionCard>
   );
 }

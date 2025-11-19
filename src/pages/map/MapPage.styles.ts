@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Card, CardContent, CardHeader } from "shared/ui/Card/Card";
 
 // 지도 페이지 컨테이너 레이아웃 정의
 export const PageContainer = styled.div`
@@ -8,6 +9,27 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(5)};
+`;
+
+// 지도 페이지 섹션 카드 (맵 컨테이너 제외) 정의
+export const SectionCard = styled(Card)`
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  transition: none;
+
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+`;
+
+export const SectionCardHeader = styled(CardHeader)`
+  padding: ${({ theme }) => `${theme.spacing(4)} 0`};
+`;
+
+export const SectionCardContent = styled(CardContent)`
+  padding: ${({ theme }) => `${theme.spacing(4)} 0`};
 `;
 
 export const ErrorInline = styled.div`
