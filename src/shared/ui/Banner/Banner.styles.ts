@@ -132,6 +132,7 @@ export const ActionButton = styled.button(({ theme }) => ({
 // 닫기 버튼 (세련된 디자인)
 export const CloseButton = styled.button(({ theme }) => ({
   flexShrink: 0,
+  alignSelf: "flex-start",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
