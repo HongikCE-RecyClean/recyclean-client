@@ -164,6 +164,19 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
           />
         </S.FormGroup>
 
+        {/* 품목 선택 */}
+        <S.FormGroup>
+          <S.Label>{t("dashboard.addEntry.material")}</S.Label>
+          <SelectField
+            value={materialType || materialOptions[0]}
+            onChange={(e) => setMaterialType(e.target.value as MaterialId)}
+            options={materialOptions.map((mat) => ({
+              value: mat,
+              label: t(`materials.items.${mat}`),
+            }))}
+          />
+        </S.FormGroup>
+
         {/* 활동 유형 선택 */}
         <S.FormGroup>
           <S.Label>{t("dashboard.addEntry.modeLabel")}</S.Label>
@@ -180,19 +193,6 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
                 label: t("dashboard.addEntry.modeOptions.plan"),
               },
             ]}
-          />
-        </S.FormGroup>
-
-        {/* 품목 선택 */}
-        <S.FormGroup>
-          <S.Label>{t("dashboard.addEntry.material")}</S.Label>
-          <SelectField
-            value={materialType || materialOptions[0]}
-            onChange={(e) => setMaterialType(e.target.value as MaterialId)}
-            options={materialOptions.map((mat) => ({
-              value: mat,
-              label: t(`materials.items.${mat}`),
-            }))}
           />
         </S.FormGroup>
 
