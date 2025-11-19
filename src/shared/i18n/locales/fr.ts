@@ -331,7 +331,7 @@ export const frTranslation = {
         "Les journées chargées affichent un point sur le calendrier.",
       ],
       bannerMessage:
-        "Astuce calendrier 🗓️\nTouchez une date pour consulter ou modifier vos entrées.",
+        "Astuce calendrier 🗓️\nTouchez une date pour consulter ou supprimer vos entrées.",
     },
   },
   map: {
@@ -394,7 +394,7 @@ export const frTranslation = {
       maintenance: "En maintenance",
     },
     centers: {
-      title: "Centres de recyclage & points de dépôt",
+      title: "Centres de recyclage",
       sectionTitle: "Centres de recyclage",
       directions: "Itinéraire",
       call: "Appeler",

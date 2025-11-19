@@ -331,7 +331,7 @@ export const esTranslation = {
         "Los días con más actividad muestran un punto en el calendario.",
       ],
       bannerMessage:
-        "Tip del calendario 🗓️\nToca una fecha para ver y editar sus registros al instante.",
+        "Tip del calendario 🗓️\nToca una fecha para ver y eliminar sus registros al instante.",
     },
   },
   map: {
@@ -394,7 +394,7 @@ export const esTranslation = {
       maintenance: "En mantenimiento",
     },
     centers: {
-      title: "Centros y contenedores de reciclaje",
+      title: "Centros de reciclaje",
       sectionTitle: "Centros de reciclaje",
       directions: "Cómo llegar",
       call: "Llamar",

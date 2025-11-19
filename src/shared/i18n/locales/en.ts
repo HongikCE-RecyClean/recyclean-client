@@ -318,7 +318,7 @@ export const enTranslation = {
         "New scans appear on the calendar instantly.",
         "Busy days show a dot indicator on the calendar.",
       ],
-      bannerMessage: "Calendar tip 🗓️\nTap any date to instantly review or edit its logs.",
+      bannerMessage: "Calendar tip 🗓️\nTap any date to instantly review or delete its logs.",
     },
   },
   map: {
@@ -381,7 +381,7 @@ export const enTranslation = {
       maintenance: "Under maintenance",
     },
     centers: {
-      title: "Recycling centers & bins",
+      title: "Recycling centers",
       sectionTitle: "Recycling centers",
       directions: "Directions",
       call: "Call",
