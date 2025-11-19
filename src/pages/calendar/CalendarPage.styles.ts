@@ -153,30 +153,35 @@ export const DayPickerWrapper = styled.div`
     position: relative;
   }
 
-  .calendar-has-record::after {
+  /* 좌우 점 배치 공통 스타일 */
+  .calendar-has-record::after,
+  .calendar-has-plan::before {
     content: "";
     position: absolute;
     bottom: 6px;
-    left: 50%;
     width: 6px;
     height: 6px;
-    background: ${({ theme }) => theme.colors.success};
     opacity: 0.8;
     border-radius: ${({ theme }) => theme.radii.full};
     transform: translateX(-50%);
   }
 
+  /* 기록 점 좌측 정렬 */
+  .calendar-has-record::after {
+    left: 40%;
+    background: ${({ theme }) => theme.colors.success};
+  }
+
+  /* 계획 점 우측 정렬 */
   .calendar-has-plan::before {
-    content: "";
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    width: 6px;
-    height: 6px;
+    left: 60%;
     background: ${({ theme }) => theme.colors.warning};
-    opacity: 0.8;
-    border-radius: ${({ theme }) => theme.radii.full};
-    transform: translateX(-50%);
+  }
+
+  /* 단일 점 중앙 정렬 */
+  .calendar-has-record:not(.calendar-has-plan)::after,
+  .calendar-has-plan:not(.calendar-has-record)::before {
+    left: 50%;
   }
 
   .calendar-selected {
