@@ -359,7 +359,7 @@ export const esTranslation = {
         'Tip del mapa 🧭\nActiva "Usar mi ubicación" para ver primero los puntos de entrega cercanos.',
     },
     routePanel: {
-      title: "Indicaciones a pie",
+      title: "Cómo llegar",
       idle: "Toca el botón de rutas en la lista para ver el recorrido.",
       measuring: "Obteniendo la ruta a pie...",
       failed: "No se pudo cargar la ruta. Inténtalo de nuevo.",

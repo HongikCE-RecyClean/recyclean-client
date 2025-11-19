@@ -343,7 +343,7 @@ export const koTranslation = {
       bannerMessage: '지도 팁 🧭\n"내 위치 사용하기"를 켜면 주변 배출함을 우선으로 보여줘요.',
     },
     routePanel: {
-      title: "도보 길찾기",
+      title: "길 찾기",
       idle: "목록에서 길찾기를 누르면 경로를 확인할 수 있어요.",
       measuring: "도보 경로를 불러오는 중이에요...",
       failed: "경로를 불러오지 못했어요. 잠시 후 다시 시도해주세요.",

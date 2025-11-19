@@ -359,7 +359,7 @@ export const frTranslation = {
         'Astuce carte 🧭\nActivez "Utiliser ma position" pour afficher en priorité les points de dépôt proches.',
     },
     routePanel: {
-      title: "Itinéraire à pied",
+      title: "Itinéraire",
       idle: "Appuyez sur « Itinéraire » dans la liste pour afficher le trajet.",
       measuring: "Calcul de l'itinéraire à pied...",
       failed: "Impossible de charger l'itinéraire. Réessayez.",
