@@ -64,13 +64,18 @@ export function AppInfoContent() {
         <S.SectionTitle>{copy.ossTitle}</S.SectionTitle>
         <S.SectionText>{copy.ossDescription}</S.SectionText>
         <S.List>
-          <S.ListItem>React 19 (MIT License)</S.ListItem>
-          <S.ListItem>TypeScript 5.8 (Apache-2.0 License)</S.ListItem>
-          <S.ListItem>React Router 7 (MIT License)</S.ListItem>
-          <S.ListItem>Zustand 5.0 (MIT License)</S.ListItem>
-          <S.ListItem>TanStack Query 5.90 (MIT License)</S.ListItem>
-          <S.ListItem>Emotion (MIT License)</S.ListItem>
-          <S.ListItem>Lucide React (ISC License)</S.ListItem>
+          <S.ListItem>React 19.1 (MIT)</S.ListItem>
+          <S.ListItem>TypeScript 5.8 (Apache-2.0)</S.ListItem>
+          <S.ListItem>Vite 7.1 (MIT)</S.ListItem>
+          <S.ListItem>React Router 7.9 (MIT)</S.ListItem>
+          <S.ListItem>Zustand 5.0 (MIT)</S.ListItem>
+          <S.ListItem>TanStack Query 5.90 (MIT)</S.ListItem>
+          <S.ListItem>Emotion 11.14 (MIT)</S.ListItem>
+          <S.ListItem>Vanilla Extract 1.17 (MIT)</S.ListItem>
+          <S.ListItem>i18next 25.6 (MIT)</S.ListItem>
+          <S.ListItem>date-fns 4.1 (MIT)</S.ListItem>
+          <S.ListItem>Lucide React 0.546 (ISC)</S.ListItem>
+          <S.ListItem>overlay-kit 1.8 (MIT)</S.ListItem>
         </S.List>
       </S.Section>
 
