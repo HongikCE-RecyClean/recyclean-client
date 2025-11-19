@@ -85,15 +85,19 @@ function formatDistance(distanceInMeters: number) {
 
 function formatDuration(durationSeconds: number) {
   if (durationSeconds < 60) {
-    return `${Math.max(1, Math.round(durationSeconds))}s`;
+    const seconds = Math.max(1, Math.round(durationSeconds));
+    return `${seconds}초`;
   }
-  const minutes = Math.round(durationSeconds / 60);
+  const minutes = Math.max(1, Math.round(durationSeconds / 60));
   if (minutes >= 60) {
     const hours = Math.floor(minutes / 60);
     const restMinutes = minutes % 60;
-    return restMinutes > 0 ? `${hours}h ${restMinutes}m` : `${hours}h`;
+    if (restMinutes === 0) {
+      return `${hours}시간`;
+    }
+    return `${hours}시간 ${restMinutes}분`;
   }
-  return `${minutes}m`;
+  return `${minutes}분`;
 }
 
 // OSRM 공개 foot 라우팅 엔드포인트를 호출해요
@@ -155,7 +159,7 @@ export function MapViewCard({
 
   const routeSummaryText = useMemo(() => {
     if (!routeSummary) return null;
-    return `${formatDistance(routeSummary.distance)} · ${formatDuration(routeSummary.duration)}`;
+    return `${formatDistance(routeSummary.distance)} | ${formatDuration(routeSummary.duration)}`;
   }, [routeSummary]);
 
   const disposeMarkers = (markersRef: MutableRefObject<naver.maps.Marker[]>) => {
