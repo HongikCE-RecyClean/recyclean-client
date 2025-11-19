@@ -246,16 +246,17 @@ export function MapViewCard({
     );
 
     disposeMarkers(centerMarkersRef);
-    centerMarkersRef.current = centers.map(
-      (center) =>
-        new maps.Marker({
-          map: mapInstance,
-          position: new maps.LatLng(center.coordinates.lat, center.coordinates.lng),
-          icon: { content: createCircularMarker(CENTER_MARKER_COLOR) },
-          title: center.name,
-          zIndex: 50,
-        }),
-    );
+    centerMarkersRef.current = centers.map((center) => {
+      const marker = new maps.Marker({
+        map: mapInstance,
+        position: new maps.LatLng(center.coordinates.lat, center.coordinates.lng),
+        icon: { content: createCircularMarker(CENTER_MARKER_COLOR) },
+        title: center.name,
+      });
+      // 센터 마커가 다른 요소 위로 노출되도록 zIndex 후처리
+      marker.setZIndex(50);
+      return marker;
+    });
   }, [bins, centers, status, maps]);
 
   useEffect(() => {
@@ -335,13 +336,9 @@ export function MapViewCard({
           }
         }
 
-        const bounds = latLngPath.reduce(
-          (acc, latLng) => {
-            acc.extend(latLng);
-            return acc;
-          },
-          new maps.LatLngBounds(latLngPath[0], latLngPath[0]),
-        );
+        const bounds = new maps.LatLngBounds(latLngPath[0], latLngPath[0]);
+        // 경로 전체가 보이도록 bounds를 순차적으로 확장
+        latLngPath.forEach((latLng) => bounds.extend(latLng));
         mapInstance.fitBounds(bounds, ROUTE_PADDING as naver.maps.BoundsPadding);
         setRouteSummary({ distance: result.distance, duration: result.duration });
       })
