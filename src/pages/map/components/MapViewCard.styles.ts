@@ -69,3 +69,61 @@ export const MapFallback = styled.div`
   font-size: 0.9rem;
   text-align: center;
 `;
+
+export const RoutePanel = styled.div`
+  margin-top: ${({ theme }) => theme.spacing(3)};
+  padding: ${({ theme }) => theme.spacing(3)};
+  border-radius: ${({ theme }) => theme.radii.md};
+  border: 1px dashed ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.surfaceMuted};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+export const RoutePanelHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing(2)};
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+export const RouteSummaryPill = styled.span`
+  padding: 4px 10px;
+  border-radius: ${({ theme }) => theme.radii.full};
+  background: ${({ theme }) => theme.colors.successSurface};
+  color: ${({ theme }) => theme.colors.success};
+  font-size: 0.8rem;
+  font-weight: 600;
+`;
+
+export const RouteDestinationName = styled.div`
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+export const RouteDestinationAddress = styled.div`
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+export const RouteStatus = styled.div`
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+export const RouteError = styled.div`
+  font-size: 0.85rem;
+  color: ${({ theme }) => theme.colors.danger};
+`;
+
+export const RouteActions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+export const RouteClearButton = styled(Button)`
+  align-self: flex-end;
+`;

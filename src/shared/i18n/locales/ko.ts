@@ -342,6 +342,14 @@ export const koTranslation = {
     guide: {
       bannerMessage: '지도 팁 🧭\n"내 위치 사용하기"를 켜면 주변 배출함을 우선으로 보여줘요.',
     },
+    routePanel: {
+      title: "도보 길찾기",
+      idle: "목록에서 길찾기를 누르면 경로를 확인할 수 있어요.",
+      measuring: "도보 경로를 불러오는 중이에요...",
+      failed: "경로를 불러오지 못했어요. 잠시 후 다시 시도해주세요.",
+      clear: "경로 초기화",
+      locationRequired: "길찾기를 사용하려면 먼저 내 위치를 활성화해주세요.",
+    },
     filter: {
       title: "내 주변 배출함",
       useLocation: "내 위치 사용하기",

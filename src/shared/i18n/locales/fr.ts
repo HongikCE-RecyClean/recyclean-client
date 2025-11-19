@@ -358,6 +358,14 @@ export const frTranslation = {
       bannerMessage:
         'Astuce carte 🧭\nActivez "Utiliser ma position" pour afficher en priorité les points de dépôt proches.',
     },
+    routePanel: {
+      title: "Itinéraire à pied",
+      idle: "Appuyez sur « Itinéraire » dans la liste pour afficher le trajet.",
+      measuring: "Calcul de l'itinéraire à pied...",
+      failed: "Impossible de charger l'itinéraire. Réessayez.",
+      clear: "Réinitialiser l'itinéraire",
+      locationRequired: "Activez d'abord votre position pour utiliser l'itinéraire à pied.",
+    },
     filter: {
       title: "Points de dépôt à proximité",
       useLocation: "Utiliser ma position",

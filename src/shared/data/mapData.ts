@@ -13,6 +13,7 @@ export const mapSeedData: MapData = {
       availability: "available",
       lastUpdated: "2025-11-15T03:00:00.000Z",
       acceptedItems: ["플라스틱", "유리", "캔"],
+      coordinates: { lat: 37.5725, lng: 126.9756 },
     },
     {
       id: "bin-seoul-hongdae",
@@ -23,6 +24,7 @@ export const mapSeedData: MapData = {
       availability: "full",
       lastUpdated: "2025-11-18T00:30:00.000Z",
       acceptedItems: ["일반쓰레기", "가정용 비닐"],
+      coordinates: { lat: 37.557528, lng: 126.926611 },
     },
     {
       id: "bin-seoul-jamsil",
@@ -33,6 +35,7 @@ export const mapSeedData: MapData = {
       availability: "maintenance",
       lastUpdated: "2025-11-17T10:00:00.000Z",
       acceptedItems: ["소형가전", "배터리"],
+      coordinates: { lat: 37.5125, lng: 127.1027778 },
     },
     {
       id: "bin-seoul-seongsu",
@@ -43,6 +46,7 @@ export const mapSeedData: MapData = {
       availability: "available",
       lastUpdated: "2025-11-16T12:15:00.000Z",
       acceptedItems: ["음식물", "커피박"],
+      coordinates: { lat: 37.54417, lng: 127.0503 },
     },
   ],
   // 재활용 센터 시드
@@ -57,6 +61,7 @@ export const mapSeedData: MapData = {
       phone: "02-123-4567",
       acceptedMaterials: ["플라스틱", "종이", "금속", "유리"],
       image: "/icons/icon-512.png",
+      coordinates: { lat: 37.5330103, lng: 126.9593754 },
     },
     {
       id: "center-hangang",
@@ -68,6 +73,7 @@ export const mapSeedData: MapData = {
       phone: "02-987-6543",
       acceptedMaterials: ["직물", "목재", "플라스틱"],
       image: "/icons/icon-512-maskable.png",
+      coordinates: { lat: 37.5266691, lng: 126.9271941 },
     },
     {
       id: "center-ecomap",
@@ -79,6 +85,7 @@ export const mapSeedData: MapData = {
       phone: "02-555-7777",
       acceptedMaterials: ["배터리", "전자제품", "유리"],
       image: "/icons/icon-192.png",
+      coordinates: { lat: 37.5028813, lng: 127.0413566 },
     },
   ],
   // 필터 옵션 시드

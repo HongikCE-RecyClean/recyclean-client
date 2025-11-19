@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { MapViewCard } from "./components/MapViewCard";
@@ -9,6 +9,8 @@ import { useNotificationStore } from "shared/state/notificationStore";
 import { useSettingsStore } from "shared/state/settingsStore";
 import { defaultMapFilterOptions } from "shared/constants/mapVisuals";
 import { Button } from "shared/ui/Button/Button";
+import type { RecyclingCenter, TrashBin } from "shared/types/map";
+import type { MapDestination } from "./types";
 import * as S from "./MapPage.styles";
 
 export function MapPage() {
@@ -20,6 +22,7 @@ export function MapPage() {
   const options = data?.options ?? defaultMapFilterOptions;
   const centers = data?.centers ?? [];
   const shouldShowError = Boolean(isError && error);
+  const [selectedDestination, setSelectedDestination] = useState<MapDestination | null>(null);
   const canUseGeolocation =
     typeof window !== "undefined" && typeof navigator !== "undefined" && "geolocation" in navigator; // 브라우저 위치 지원 여부
 
@@ -36,6 +39,39 @@ export function MapPage() {
 
   const handleRetry = () => {
     void refetch();
+  };
+
+  const ensureUserLocation = () => {
+    if (userLocation) {
+      return true;
+    }
+
+    showSnackbar(t("map.routePanel.locationRequired"), {
+      type: "warning",
+      duration: 2800,
+    });
+    return false;
+  };
+
+  const handleRequestDirections = (
+    target: TrashBin | RecyclingCenter,
+    kind: MapDestination["kind"],
+  ) => {
+    if (!ensureUserLocation()) {
+      return;
+    }
+
+    setSelectedDestination({
+      id: target.id,
+      name: target.name,
+      address: kind === "bin" ? (target as TrashBin).location : (target as RecyclingCenter).address,
+      coordinates: target.coordinates,
+      kind,
+    });
+  };
+
+  const handleClearRoute = () => {
+    setSelectedDestination(null);
   };
 
   // 내 위치 사용하기 버튼 처리
@@ -105,13 +141,23 @@ export function MapPage() {
     };
   }, [showBanner, closeBanner, t]);
 
+  useEffect(() => {
+    if (!userLocation) {
+      setSelectedDestination(null);
+    }
+  }, [userLocation]);
+
   // 지도 페이지 레이아웃 구성
   return (
     <S.PageContainer>
       <MapViewCard
         binCount={filteredBins.length}
+        bins={filteredBins}
+        centers={centers}
         onUseLocationClick={handleUseLocation}
         userLocation={userLocation}
+        selectedDestination={selectedDestination}
+        onClearRoute={handleClearRoute}
       />
       {shouldShowError && (
         <S.ErrorInline role="alert">
@@ -127,6 +173,8 @@ export function MapPage() {
         options={options}
         selectedType={selectedType}
         onTypeChange={handleTypeChange}
+        onRequestBinDirections={(bin) => handleRequestDirections(bin, "bin")}
+        onRequestCenterDirections={(center) => handleRequestDirections(center, "center")}
       />
     </S.PageContainer>
   );

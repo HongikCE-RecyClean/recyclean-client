@@ -345,6 +345,14 @@ export const enTranslation = {
       bannerMessage:
         'Map tip 🧭\nTurn on "Use my location" to highlight nearby drop-off bins first.',
     },
+    routePanel: {
+      title: "Walking Directions",
+      idle: "Tap a directions button in the list to see the route.",
+      measuring: "Fetching a walking route...",
+      failed: "Couldn't load a route. Please try again.",
+      clear: "Clear Route",
+      locationRequired: "Enable your location first to start walking directions.",
+    },
     filter: {
       title: "Nearby drop-off bins",
       useLocation: "Use my location",

@@ -19,6 +19,8 @@ interface RecyclingCenterListProps {
   options: FilterOption[];
   selectedType: string;
   onTypeChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  onRequestBinDirections?: (bin: TrashBin) => void;
+  onRequestCenterDirections?: (center: RecyclingCenter) => void;
 }
 
 export function RecyclingCenterList({
@@ -27,6 +29,8 @@ export function RecyclingCenterList({
   options,
   selectedType,
   onTypeChange,
+  onRequestBinDirections,
+  onRequestCenterDirections,
 }: RecyclingCenterListProps) {
   const { t, i18n } = useTranslation();
   const dateLocale = resolveDateFnsLocale(i18n.language);
@@ -102,7 +106,12 @@ export function RecyclingCenterList({
                   </S.ItemsSection>
 
                   <S.BinActions>
-                    <Button variant="outline" size="sm" css={S.binActionButton}>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      css={S.binActionButton}
+                      onClick={() => onRequestBinDirections?.(bin)}
+                    >
                       <Navigation size={14} />
                       {t("map.bins.directions")}
                     </Button>
@@ -159,7 +168,12 @@ export function RecyclingCenterList({
                 </S.InfoStack>
 
                 <S.ActionButtons>
-                  <Button variant="outline" size="sm" css={S.centerActionButton}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    css={S.centerActionButton}
+                    onClick={() => onRequestCenterDirections?.(center)}
+                  >
                     <Navigation size={14} />
                     {t("map.centers.directions")}
                   </Button>

@@ -1,4 +1,9 @@
 // 쓰레기통 정보 타입 정의
+export interface GeoCoordinates {
+  lat: number;
+  lng: number;
+}
+
 export interface TrashBin {
   id: string;
   type: "general" | "recycling" | "compost" | "electronic";
@@ -8,6 +13,7 @@ export interface TrashBin {
   availability: "available" | "full" | "maintenance";
   lastUpdated: string;
   acceptedItems: string[];
+  coordinates: GeoCoordinates;
 }
 
 // 쓰레기통 유형 타입 별칭
@@ -27,6 +33,7 @@ export interface RecyclingCenter {
   phone?: string;
   acceptedMaterials: string[];
   image: string;
+  coordinates: GeoCoordinates;
 }
 
 // 필터 옵션 타입 정의
