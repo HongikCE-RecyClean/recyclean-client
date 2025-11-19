@@ -9,6 +9,7 @@ export interface RecentActivityItem {
   count: number;
   points: number;
   time: string;
+  mode?: EntryMode;
 }
 
 // 대시보드 업적 항목 타입

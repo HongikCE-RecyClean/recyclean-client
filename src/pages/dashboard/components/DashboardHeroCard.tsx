@@ -10,6 +10,7 @@ interface DashboardHeroCardProps {
   monthlyGoal: number;
   progressValue: number;
   entriesCount: number;
+  plannedCount: number;
   totalItems: number;
   categoryCount: number;
 }
@@ -21,6 +22,7 @@ export function DashboardHeroCard({
   monthlyGoal,
   progressValue,
   entriesCount,
+  plannedCount,
   totalItems,
   categoryCount,
 }: DashboardHeroCardProps) {
@@ -92,7 +94,12 @@ export function DashboardHeroCard({
               </S.StatRow>
               <S.StatRow>
                 <S.StatRowLabel>{t("dashboard.tracker.stats.entries")}</S.StatRowLabel>
-                <S.StatRowValue>{entriesCount}</S.StatRowValue>
+                <S.StatRowValueStack>
+                  <S.StatRowValue>{entriesCount}</S.StatRowValue>
+                  <S.StatRowHelper>
+                    {t("dashboard.tracker.stats.planned", { count: plannedCount })}
+                  </S.StatRowHelper>
+                </S.StatRowValueStack>
               </S.StatRow>
             </S.StatSectionContent>
           </S.StatSection>

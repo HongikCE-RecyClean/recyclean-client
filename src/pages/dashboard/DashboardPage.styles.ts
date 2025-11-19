@@ -164,6 +164,13 @@ export const RecentActivityTitle = styled.div`
   font-size: 0.9rem;
 `;
 
+export const RecentActivityTitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+  flex-wrap: wrap;
+`;
+
 // 최근 활동 서브 텍스트 스타일
 export const RecentActivityMeta = styled.div`
   color: ${({ theme }) => theme.colors.textMuted};
@@ -714,4 +721,16 @@ export const StatRowValue = styled.span`
   font-size: 1.1rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   color: ${({ theme }) => theme.colors.text};
+`;
+
+export const StatRowValueStack = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+`;
+
+export const StatRowHelper = styled.span`
+  font-size: 0.7rem;
+  color: ${({ theme }) => theme.colors.textMuted};
 `;

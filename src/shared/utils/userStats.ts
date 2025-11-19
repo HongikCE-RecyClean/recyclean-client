@@ -2,6 +2,10 @@ import { isSameDay } from "date-fns";
 import type { MaterialId } from "shared/utils/recyclingPoints";
 import type { RecyclingEntry } from "shared/types/dashboard";
 
+function filterRecordedEntries(entries: RecyclingEntry[]): RecyclingEntry[] {
+  return entries.filter((entry) => (entry.mode ?? "record") === "record");
+}
+
 /**
  * 사용자 전체 통계 인터페이스
  */
@@ -33,14 +37,15 @@ export function calculateTotalStats(entries: RecyclingEntry[]): {
   itemsRecycled: number;
   categoryCount: number;
 } {
+  const recordedEntries = filterRecordedEntries(entries);
   // 총 포인트 계산
-  const totalPoints = entries.reduce((sum, entry) => sum + entry.points, 0);
+  const totalPoints = recordedEntries.reduce((sum, entry) => sum + entry.points, 0);
 
   // 총 아이템 수 계산
-  const itemsRecycled = entries.reduce((sum, entry) => sum + entry.amount, 0);
+  const itemsRecycled = recordedEntries.reduce((sum, entry) => sum + entry.amount, 0);
 
   // 재활용한 카테고리 종류 수 계산
-  const categoryCount = new Set(entries.map((entry) => entry.type)).size;
+  const categoryCount = new Set(recordedEntries.map((entry) => entry.type)).size;
 
   return { totalPoints, itemsRecycled, categoryCount };
 }
@@ -50,11 +55,12 @@ export function calculateTotalStats(entries: RecyclingEntry[]): {
  * 오늘부터 거슬러 올라가며 연속으로 기록이 있는 날 수를 계산
  */
 export function calculateStreakDays(entries: RecyclingEntry[]): number {
-  if (entries.length === 0) return 0;
+  const recordedEntries = filterRecordedEntries(entries);
+  if (recordedEntries.length === 0) return 0;
 
   // 날짜별로 그룹화 (Date 객체를 정렬 가능한 형태로 변환)
   const datesWithEntries = new Set(
-    entries.map((entry) => {
+    recordedEntries.map((entry) => {
       const date = entry.date instanceof Date ? entry.date : new Date(entry.date);
       return date.toISOString().split("T")[0]; // YYYY-MM-DD 형식
     }),
@@ -88,9 +94,10 @@ export function calculateStreakDays(entries: RecyclingEntry[]): number {
  */
 export function calculateTodayStats(entries: RecyclingEntry[]): TodayStats {
   const today = new Date();
+  const recordedEntries = filterRecordedEntries(entries);
 
   // 오늘 기록된 활동만 필터링
-  const todayEntries = entries.filter((entry) => {
+  const todayEntries = recordedEntries.filter((entry) => {
     const entryDate = entry.date instanceof Date ? entry.date : new Date(entry.date);
     return isSameDay(entryDate, today);
   });
@@ -102,7 +109,7 @@ export function calculateTodayStats(entries: RecyclingEntry[]): TodayStats {
   const pointsEarned = todayEntries.reduce((sum, entry) => sum + entry.points, 0);
 
   // 연속 일수 계산
-  const streakDays = calculateStreakDays(entries);
+  const streakDays = calculateStreakDays(recordedEntries);
 
   return { itemsRecycled, pointsEarned, streakDays };
 }
@@ -156,10 +163,11 @@ export interface CategoryStats {
  * entries를 카테고리별로 그룹화하여 개수와 포인트 집계
  */
 export function calculateCategoryStats(entries: RecyclingEntry[]): CategoryStats[] {
+  const recordedEntries = filterRecordedEntries(entries);
   // 카테고리별로 그룹화
   const categoryMap = new Map<MaterialId, { count: number; points: number }>();
 
-  entries.forEach((entry) => {
+  recordedEntries.forEach((entry) => {
     const existing = categoryMap.get(entry.type) || { count: 0, points: 0 };
     categoryMap.set(entry.type, {
       count: existing.count + entry.amount,

@@ -26,10 +26,15 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
               // 항목 id로 안정적인 키(key) 보장
               <S.ActivityRow key={activity.id}>
                 <div>
-                  {/* 최근 활동 제목 컴포넌트 적용 */}
-                  <S.RecentActivityTitle>
-                    {t(`materials.items.${activity.type}`, { defaultValue: activity.type })}
-                  </S.RecentActivityTitle>
+                  {/* 최근 활동 제목/상태 묶음 */}
+                  <S.RecentActivityTitleRow>
+                    <S.RecentActivityTitle>
+                      {t(`materials.items.${activity.type}`, { defaultValue: activity.type })}
+                    </S.RecentActivityTitle>
+                    <Badge tone={activity.mode === "plan" ? "warning" : "success"} variant="soft">
+                      {t(`dashboard.recentActivity.modes.${activity.mode ?? "record"}`)}
+                    </Badge>
+                  </S.RecentActivityTitleRow>
                   <S.RecentActivityMeta>
                     {t("dashboard.recentActivity.meta", {
                       count: activity.count,
@@ -37,9 +42,15 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
                     })}
                   </S.RecentActivityMeta>
                 </div>
-                <Badge tone="primary">
-                  {t("dashboard.recentActivity.points", { points: activity.points })}
-                </Badge>
+                {activity.mode === "plan" ? (
+                  <Badge tone="warning">
+                    {t("dashboard.recentActivity.pointsPlanned", { points: activity.points })}
+                  </Badge>
+                ) : (
+                  <Badge tone="primary">
+                    {t("dashboard.recentActivity.points", { points: activity.points })}
+                  </Badge>
+                )}
               </S.ActivityRow>
             ))}
           </S.RecentActivityList>

@@ -10,7 +10,7 @@ import { useUserStore } from "shared/state/userStore";
 import { useSettingsStore } from "shared/state/settingsStore";
 import { useNotificationStore } from "shared/state/notificationStore";
 import { calculateTodayStats, calculateTotalStats } from "shared/utils/userStats";
-import type { MaterialItemData } from "shared/types/dashboard";
+import type { MaterialItemData, RecyclingEntry } from "shared/types/dashboard";
 import { normalizeLanguage, type SupportedLanguage } from "shared/i18n/supportedLanguages";
 import { Button } from "shared/ui/Button/Button";
 import * as S from "./DashboardPage.styles";
@@ -54,6 +54,18 @@ export function DashboardPage() {
   const { searchTerm, setSearchTerm, materialCategory, setMaterialCategory } = useDashboardStore();
   // 활동 기록 스토어에서 entries 로드
   const { entries } = useActivityStore();
+  const { recordedEntries, plannedEntries } = useMemo(() => {
+    const completed: RecyclingEntry[] = [];
+    const planned: RecyclingEntry[] = [];
+    entries.forEach((entry) => {
+      if ((entry.mode ?? "record") === "plan") {
+        planned.push(entry);
+      } else {
+        completed.push(entry);
+      }
+    });
+    return { recordedEntries: completed, plannedEntries: planned };
+  }, [entries]);
   // 사용자 정보 스토어에서 이름 로드
   const { name: userName } = useUserStore();
   const monthlyGoal = useSettingsStore((state) => state.monthlyGoal);
@@ -133,6 +145,7 @@ export function DashboardPage() {
             addSuffix: true,
             locale: dateLocale,
           }),
+          mode: entry.mode ?? "record",
         };
       });
   }, [entries, dateLocale]);
@@ -159,7 +172,8 @@ export function DashboardPage() {
         totalPoints={totalPoints}
         monthlyGoal={monthlyGoal}
         progressValue={progressValue}
-        entriesCount={entries.length}
+        entriesCount={recordedEntries.length}
+        plannedCount={plannedEntries.length}
         totalItems={totalItems}
         categoryCount={categoryCount}
       />
