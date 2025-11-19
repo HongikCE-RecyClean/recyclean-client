@@ -18,8 +18,19 @@ function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
 
+type PersistedRecyclingEntry = Omit<RecyclingEntry, "date"> & { date: Date | string };
+
 function normalizeDate(value: Date | string): Date {
   return value instanceof Date ? value : new Date(value);
+}
+
+function normalizeEntries(entries: PersistedRecyclingEntry[] = []): RecyclingEntry[] {
+  return entries.map((entry) => ({
+    ...entry,
+    type: normalizeMaterialId(entry.type),
+    mode: entry.mode ?? "record",
+    date: normalizeDate(entry.date),
+  }));
 }
 
 // 활동 기록 zustand 스토어 (localStorage 지속성 포함)
@@ -88,24 +99,27 @@ export const useActivityStore = create<ActivityState>()(
     {
       name: "recyclean-activities",
       storage: createJSONStorage(() => localStorage),
-      version: 2,
-      migrate: (persistedState, version) => {
+      version: 3,
+      merge: (persistedState, currentState) => {
+        if (!persistedState) {
+          return currentState;
+        }
+        const state = persistedState as ActivityState;
+        return {
+          ...currentState,
+          ...state,
+          entries: normalizeEntries(state.entries as PersistedRecyclingEntry[]),
+        };
+      },
+      migrate: (persistedState) => {
         if (!persistedState) {
           return persistedState;
         }
         const state = persistedState as ActivityState;
-        if (version < 2 && Array.isArray(state.entries)) {
-          return {
-            ...persistedState,
-            entries: state.entries.map((entry) => ({
-              ...entry,
-              type: normalizeMaterialId(entry.type as string),
-              mode: entry.mode ?? "record",
-              date: normalizeDate(entry.date),
-            })),
-          };
-        }
-        return persistedState;
+        return {
+          ...state,
+          entries: normalizeEntries(state.entries as PersistedRecyclingEntry[]),
+        } satisfies ActivityState;
       },
     },
   ),

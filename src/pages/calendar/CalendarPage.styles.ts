@@ -205,7 +205,7 @@ export const StatsGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: ${({ theme }) => theme.spacing(4)};
   justify-items: center;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 // 통계 블록 스타일 정의
