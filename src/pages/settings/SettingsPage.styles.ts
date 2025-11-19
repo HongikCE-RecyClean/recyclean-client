@@ -58,10 +58,10 @@ export const SettingsInputColumn = styled.div`
   flex-direction: column;
   align-items: flex-end;
   gap: ${({ theme }) => theme.spacing(1)};
-  flex: 0 0 50%;
-  width: 50%;
-  max-width: 40%;
-  min-width: 140px;
+  flex: 0 0 60%;
+  width: 60%;
+  max-width: 50%;
+  min-width: 160px;
 `;
 
 export const SettingsHelperText = styled.span`
