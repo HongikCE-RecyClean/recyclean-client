@@ -146,7 +146,7 @@ const referenceKeyList = [...referenceKeys];
 describe("i18n translations", () => {
   it("keeps all locales in sync", () => {
     const referenceList = [...referenceKeys].sort();
-    for (const [locale, translation] of Object.entries(locales)) {
+    for (const [localeCode, translation] of Object.entries(locales)) {
       const keys = flattenKeys(translation).sort();
       if (
         keys.length !== referenceList.length ||
@@ -155,7 +155,7 @@ describe("i18n translations", () => {
         const missing = referenceList.filter((key) => !keys.includes(key));
         const extra = keys.filter((key) => !referenceList.includes(key));
         throw new Error(
-          `Locale ${locale} is missing keys: ${missing.join(", ") || "없음"}, extra keys: ${extra.join(", ") || "없음"}`,
+          `Locale ${localeCode} is missing keys: ${missing.join(", ") || "없음"}, extra keys: ${extra.join(", ") || "없음"}`,
         );
       }
     }
