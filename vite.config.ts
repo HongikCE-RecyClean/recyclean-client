@@ -1,4 +1,5 @@
 import { defineConfig } from "vite";
+import { configDefaults } from "vitest/config";
 import react from "@vitejs/plugin-react-swc";
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import { fileURLToPath } from "node:url";
@@ -25,6 +26,17 @@ export default defineConfig(() => {
     },
     server: {
       port: 5173,
+    },
+    test: {
+      globals: true,
+      environment: "node",
+      include: [
+        "src/**/*.test.{ts,tsx}",
+        "src/**/*.spec.{ts,tsx}",
+        "tests/**/*.test.{ts,tsx}",
+        "tests/**/*.spec.{ts,tsx}",
+      ],
+      exclude: [...configDefaults.exclude, "e2e/**"],
     },
   };
 });
