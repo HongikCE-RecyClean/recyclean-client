@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import type { AppTheme } from "../../shared/styles/theme";
 import { Button } from "../../shared/ui/Button/Button";
 import { Card, CardContent, CardHeader } from "../../shared/ui/Card/Card";
 
@@ -97,9 +98,9 @@ export const capturedImageFrame = css`
 `;
 
 // 분석 소개 문단 스타일
-export const introDescriptionText = css`
+export const introDescriptionText = (theme: AppTheme) => css`
   margin: 0;
-  color: #475569;
+  color: ${theme.colors.textMuted};
   font-size: 0.9rem;
 `;
 
@@ -178,10 +179,10 @@ export const resultItemTitle = css`
 `;
 
 // 결과 카테고리 설명 스타일
-export const resultCategoryText = css`
+export const resultCategoryText = (theme: AppTheme) => css`
   margin: 4px 0 0;
   font-size: 0.85rem;
-  color: #475569;
+  color: ${theme.colors.textMuted};
 `;
 
 // 안내 콜아웃 스타일 정의
@@ -210,9 +211,9 @@ export const resultSectionHeading = css`
 `;
 
 // 처리 방법 본문 텍스트 스타일
-export const resultInstructionText = css`
+export const resultInstructionText = (theme: AppTheme) => css`
   margin: 0;
-  color: #1f2933;
+  color: ${theme.colors.text};
   font-size: 0.9rem;
 `;
 

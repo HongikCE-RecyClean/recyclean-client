@@ -7,6 +7,7 @@ export type CalendarMonthlyStats = {
   totalItems: number;
   totalPoints: number;
   activeDays: number;
+  plannedCount: number;
 };
 
 // 범례 행 구성을 위한 타입 정의

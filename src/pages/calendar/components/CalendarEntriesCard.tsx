@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { CardTitle } from "../../../shared/ui/Card/Card";
 import type { RecyclingEntry } from "../../../shared/types/dashboard";
 import { openConfirmDialog } from "../../../shared/ui/AlertDialog";
+import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../CalendarPage.styles";
 
 type CalendarEntriesCardProps = {
@@ -33,10 +34,16 @@ export function CalendarEntriesCard({
               <S.RecordItem key={entry.id}>
                 {/* 항목 정보를 묶어서 정렬 */}
                 <S.RecordInfo>
+                  <S.RecordTitleRow>
+                    {/* 기록 타입 텍스트 클래스 적용 */}
+                    <S.RecordTypeText>
+                      {t(`materials.items.${entry.type}`, { defaultValue: entry.type })}
+                    </S.RecordTypeText>
+                    <Badge tone={entry.mode === "plan" ? "warning" : "success"} variant="soft">
+                      {t(`calendar.entries.modes.${entry.mode ?? "record"}`)}
+                    </Badge>
+                  </S.RecordTitleRow>
                   {/* 기록 타입 텍스트 클래스 적용 */}
-                  <S.RecordTypeText>
-                    {t(`materials.items.${entry.type}`, { defaultValue: entry.type })}
-                  </S.RecordTypeText>
                   <span css={S.recordMetaText}>
                     {t("calendar.entries.meta", {
                       count: entry.amount,
@@ -45,14 +52,18 @@ export function CalendarEntriesCard({
                   </span>
                 </S.RecordInfo>
                 <div css={S.recordActionsRow}>
-                  <S.RecordPoints>
-                    {t("calendar.entries.points", { points: entry.points })}
+                  <S.RecordPoints $variant={entry.mode === "plan" ? "plan" : "record"}>
+                    {entry.mode === "plan"
+                      ? t("calendar.entries.pointsPlanned", { points: entry.points })
+                      : t("calendar.entries.points", { points: entry.points })}
                   </S.RecordPoints>
                   {onDelete && (
                     <S.DeleteButton
                       onClick={async () => {
                         const confirmed = await openConfirmDialog({
                           title: t("calendar.entries.confirmDelete"),
+                          // 기록 삭제 안내 문구 전달
+                          description: t("calendar.entries.deleteGuide"),
                           tone: "warning",
                           confirmLabel: t("common.delete"),
                           cancelLabel: t("common.cancel"),

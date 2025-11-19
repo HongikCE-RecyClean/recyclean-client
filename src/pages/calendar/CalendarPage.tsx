@@ -63,6 +63,18 @@ export function CalendarPage() {
 
   // 활동 기록 스토어에서 entries와 deleteEntry 로드
   const { entries, deleteEntry, addEntry } = useActivityStore();
+  const { recordedEntries, plannedEntries } = useMemo(() => {
+    const completed: RecyclingEntry[] = [];
+    const plannedList: RecyclingEntry[] = [];
+    entries.forEach((entry) => {
+      if ((entry.mode ?? "record") === "plan") {
+        plannedList.push(entry);
+      } else {
+        completed.push(entry);
+      }
+    });
+    return { recordedEntries: completed, plannedEntries: plannedList };
+  }, [entries]);
   const { showSnackbar, showBanner, closeBanner } = useNotificationStore();
   const [currentMonth, setCurrentMonth] = useState<Date>(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
@@ -92,36 +104,53 @@ export function CalendarPage() {
     return map;
   }, [entries]);
 
-  // 레코드가 존재하는 날짜 목록 생성
-  const daysWithEntries = useMemo(() => {
+  // 기록/계획이 존재하는 날짜 목록 생성
+  const recordDays = useMemo(() => {
     const unique = new Map<string, Date>();
-    entries.forEach((entry) => {
+    recordedEntries.forEach((entry) => {
       const key = formatDateKey(entry.date);
       if (!unique.has(key)) {
         unique.set(key, entry.date);
       }
     });
     return Array.from(unique.values());
-  }, [entries]);
+  }, [recordedEntries]);
 
-  // 현재 월에 속한 레코드 목록 계산
-  const monthlyEntries = useMemo(() => {
-    return entries.filter((entry) => isSameMonth(entry.date, currentMonth));
-  }, [entries, currentMonth]);
+  const planDays = useMemo(() => {
+    const unique = new Map<string, Date>();
+    plannedEntries.forEach((entry) => {
+      const key = formatDateKey(entry.date);
+      if (!unique.has(key)) {
+        unique.set(key, entry.date);
+      }
+    });
+    return Array.from(unique.values());
+  }, [plannedEntries]);
+
+  // 현재 월에 속한 기록/계획 목록 계산
+  const monthlyRecordedEntries = useMemo(() => {
+    return recordedEntries.filter((entry) => isSameMonth(entry.date, currentMonth));
+  }, [recordedEntries, currentMonth]);
+
+  const monthlyPlannedEntries = useMemo(() => {
+    return plannedEntries.filter((entry) => isSameMonth(entry.date, currentMonth));
+  }, [plannedEntries, currentMonth]);
 
   // 현재 월 기준 통계 계산
   const monthlyStats: CalendarMonthlyStats = useMemo(() => {
-    const totalRecords = monthlyEntries.length;
-    const totalItems = monthlyEntries.reduce((sum, entry) => sum + entry.amount, 0);
-    const totalPoints = monthlyEntries.reduce((sum, entry) => sum + entry.points, 0);
-    const activeDays = new Set(monthlyEntries.map((entry) => formatDateKey(entry.date))).size;
-    return { totalRecords, totalItems, totalPoints, activeDays };
-  }, [monthlyEntries]);
+    const totalRecords = monthlyRecordedEntries.length;
+    const totalItems = monthlyRecordedEntries.reduce((sum, entry) => sum + entry.amount, 0);
+    const totalPoints = monthlyRecordedEntries.reduce((sum, entry) => sum + entry.points, 0);
+    const activeDays = new Set(monthlyRecordedEntries.map((entry) => formatDateKey(entry.date)))
+      .size;
+    const plannedCount = monthlyPlannedEntries.length;
+    return { totalRecords, totalItems, totalPoints, activeDays, plannedCount };
+  }, [monthlyRecordedEntries, monthlyPlannedEntries]);
 
   // 현재 월 기준 품목 범례 생성
   const materialLegend: CalendarLegendItem[] = useMemo(() => {
     const counts = new Map<MaterialId, { count: number; points: number }>();
-    monthlyEntries.forEach((entry) => {
+    monthlyRecordedEntries.forEach((entry) => {
       const key = entry.type;
       const prev = counts.get(key) ?? { count: 0, points: 0 };
       counts.set(key, { count: prev.count + entry.amount, points: prev.points + entry.points });
@@ -135,7 +164,7 @@ export function CalendarPage() {
     });
 
     return legendRows;
-  }, [monthlyEntries]);
+  }, [monthlyRecordedEntries]);
 
   const selectedEntries = useMemo(() => {
     const key = formatDateKey(selectedDate);
@@ -144,9 +173,10 @@ export function CalendarPage() {
 
   const modifiers = useMemo(
     () => ({
-      hasEntry: daysWithEntries,
+      hasRecord: recordDays,
+      hasPlan: planDays,
     }),
-    [daysWithEntries],
+    [recordDays, planDays],
   );
 
   const selectedDateLabel = formatSelectedDateLabel(selectedDate, intlLocale);

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
-import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
+import recycleanLogo from "../../../assets/recycleanLogo.svg";
 import { resolveMaterialBadgeTone } from "shared/constants/mapVisuals";
 import type { RecyclingCenter, TrashBin, FilterOption } from "shared/types/map";
 import { SectionCard, SectionCardContent, SectionCardHeader } from "../MapPage.styles";
@@ -25,6 +25,13 @@ export function RecyclingCenterList({
   onRequestCenterDirections,
 }: RecyclingCenterListProps) {
   const { t } = useTranslation();
+
+  // 로고 기본 이미지를 만드는 헬퍼 정의
+  const createLogoFallback = (centerName: string) => (
+    <S.CenterLogoPlaceholder role="img" aria-label={`${centerName} 기본 이미지`}>
+      <S.CenterLogoMark src={recycleanLogo} alt="" />
+    </S.CenterLogoPlaceholder>
+  );
 
   /*
     필터 옵션 로직 보류
@@ -124,61 +131,66 @@ export function RecyclingCenterList({
          */}
 
         <S.CenterGrid>
-          {centers.map((center) => (
-            <S.CenterCard key={center.id}>
-              <S.CenterMedia>
-                <ImageWithFallback src={center.image} alt={center.name} />
-                <div css={S.centerBadgeContainer}>
-                  <Badge variant="outline">{center.distance}</Badge>
-                </div>
-              </S.CenterMedia>
-              <S.CenterContent>
-                <div>
-                  <h3 css={S.centerNameText}>{center.name}</h3>
-                  <div css={S.centerAddressText}>{center.address}</div>
-                </div>
+          {centers.map((center) => {
+            // 고화질 로고 기본 이미지를 준비
+            const logoFallback = createLogoFallback(center.name);
 
-                <S.MaterialChips>
-                  {center.acceptedMaterials.map((material) => (
-                    <Badge key={material} tone={resolveMaterialBadgeTone(material)}>
-                      {material}
-                    </Badge>
-                  ))}
-                </S.MaterialChips>
+            return (
+              <S.CenterCard key={center.id}>
+                <S.CenterMedia>
+                  {logoFallback}
+                  <div css={S.centerBadgeContainer}>
+                    <Badge variant="outline">{center.distance}</Badge>
+                  </div>
+                </S.CenterMedia>
+                <S.CenterContent>
+                  <div>
+                    <h3 css={S.centerNameText}>{center.name}</h3>
+                    <div css={S.centerAddressText}>{center.address}</div>
+                  </div>
 
-                <S.InfoStack>
-                  <S.InfoRow>
-                    <Clock size={12} />
-                    {center.hours}
-                  </S.InfoRow>
-                  {center.phone && (
+                  <S.MaterialChips>
+                    {center.acceptedMaterials.map((material) => (
+                      <Badge key={material} tone={resolveMaterialBadgeTone(material)}>
+                        {material}
+                      </Badge>
+                    ))}
+                  </S.MaterialChips>
+
+                  <S.InfoStack>
                     <S.InfoRow>
-                      <Phone size={12} />
-                      {center.phone}
+                      <Clock size={12} />
+                      {center.hours}
                     </S.InfoRow>
-                  )}
-                </S.InfoStack>
+                    {center.phone && (
+                      <S.InfoRow>
+                        <Phone size={12} />
+                        {center.phone}
+                      </S.InfoRow>
+                    )}
+                  </S.InfoStack>
 
-                <S.ActionButtons>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    css={S.centerActionButton}
-                    onClick={() => onRequestCenterDirections?.(center)}
-                  >
-                    <Navigation size={14} />
-                    {t("map.centers.directions")}
-                  </Button>
-                  {center.phone && (
-                    <Button variant="outline" size="sm" css={S.centerActionButton}>
-                      <Phone size={14} />
-                      {t("map.centers.call")}
+                  <S.ActionButtons>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      css={S.centerActionButton}
+                      onClick={() => onRequestCenterDirections?.(center)}
+                    >
+                      <Navigation size={14} />
+                      {t("map.centers.directions")}
                     </Button>
-                  )}
-                </S.ActionButtons>
-              </S.CenterContent>
-            </S.CenterCard>
-          ))}
+                    {center.phone && (
+                      <Button variant="outline" size="sm" css={S.centerActionButton}>
+                        <Phone size={14} />
+                        {t("map.centers.call")}
+                      </Button>
+                    )}
+                  </S.ActionButtons>
+                </S.CenterContent>
+              </S.CenterCard>
+            );
+          })}
         </S.CenterGrid>
       </SectionCardContent>
     </SectionCard>

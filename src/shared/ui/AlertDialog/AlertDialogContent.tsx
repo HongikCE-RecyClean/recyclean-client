@@ -64,6 +64,15 @@ const IconWrapper = styled.div<{ $tone: NotificationType }>(({ theme, $tone }) =
   };
 });
 
+// 안내 텍스트 영역 간격 조정해 X 라인 아래에서 시작되도록 함
+const TextSection = styled.div<{ $hasToneIcon: boolean }>(({ theme, $hasToneIcon }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: theme.spacing(1),
+  // X 라인과 본문 메시지 사이 여백 확장
+  marginTop: $hasToneIcon ? theme.spacing(2) : theme.spacing(4),
+}));
+
 const Title = styled.h3(({ theme }) => ({
   margin: 0,
   fontSize: "1.1rem",
@@ -77,11 +86,16 @@ const Description = styled.p(({ theme }) => ({
   lineHeight: 1.5,
 }));
 
+// 버튼 그룹에서 동일 비율을 강제해 1:1 너비 유지
 const Actions = styled.div(({ theme }) => ({
   display: "flex",
   gap: theme.spacing(2),
-  justifyContent: "flex-end",
+  width: "100%",
   flexWrap: "wrap",
+  justifyContent: "flex-end",
+  "& > button": {
+    flex: 1,
+  },
 }));
 
 const CloseButton = styled.button(({ theme }) => ({
@@ -143,10 +157,10 @@ export function AlertDialogContent({
             <Icon size={24} />
           </IconWrapper>
         )}
-        <div>
+        <TextSection $hasToneIcon={showToneIcon}>
           <Title>{title}</Title>
           {description && <Description>{description}</Description>}
-        </div>
+        </TextSection>
         <Actions>
           {showCancel && (
             <Button variant="outline" onClick={onCancel} type="button">

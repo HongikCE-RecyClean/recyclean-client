@@ -50,7 +50,8 @@ export function CalendarOverviewCard({
             modifiers={modifiers}
             modifiersClassNames={{
               selected: "calendar-selected",
-              hasEntry: "calendar-has-entry",
+              hasRecord: "calendar-has-record",
+              hasPlan: "calendar-has-plan",
             }}
             captionLayout="label"
             // 이전 버튼 배치를 유지하기 위해 네비게이션을 양옆으로 정렬
@@ -64,6 +65,9 @@ export function CalendarOverviewCard({
           <S.StatBlock>
             <S.StatValue>{monthlyStats.totalRecords}</S.StatValue>
             <S.StatLabel>{t("calendar.stats.records")}</S.StatLabel>
+            <S.StatHelperText>
+              {t("calendar.stats.planned", { count: monthlyStats.plannedCount })}
+            </S.StatHelperText>
           </S.StatBlock>
           <S.StatBlock>
             <S.StatValue>{monthlyStats.totalItems}</S.StatValue>

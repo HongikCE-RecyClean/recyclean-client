@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import type { AppTheme } from "../../shared/styles/theme";
 import { Card, CardContent, CardHeader } from "../../shared/ui/Card/Card";
 
 // 달력 페이지 전체 컨테이너 정의
@@ -45,8 +46,8 @@ export const RecordTypeText = styled.span`
 `;
 
 // 기록 목록 서브 텍스트 스타일
-export const recordMetaText = css`
-  color: #64748b;
+export const recordMetaText = (theme: AppTheme) => css`
+  color: ${theme.colors.textMuted};
   font-size: 0.85rem;
 `;
 
@@ -147,18 +148,33 @@ export const DayPickerWrapper = styled.div`
     color: ${({ theme }) => theme.colors.textMuted};
   }
 
-  .calendar-has-entry {
+  .calendar-has-record,
+  .calendar-has-plan {
     position: relative;
   }
 
-  .calendar-has-entry::after {
+  .calendar-has-record::after {
     content: "";
     position: absolute;
-    bottom: 8px;
+    bottom: 6px;
     left: 50%;
     width: 6px;
     height: 6px;
-    background: rgba(22, 163, 74, 0.75);
+    background: ${({ theme }) => theme.colors.success};
+    opacity: 0.8;
+    border-radius: ${({ theme }) => theme.radii.full};
+    transform: translateX(-50%);
+  }
+
+  .calendar-has-plan::before {
+    content: "";
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    background: ${({ theme }) => theme.colors.warning};
+    opacity: 0.8;
     border-radius: ${({ theme }) => theme.radii.full};
     transform: translateX(-50%);
   }
@@ -206,6 +222,11 @@ export const StatValue = styled.span`
 // 통계 라벨 텍스트 정의
 export const StatLabel = styled.span`
   font-size: 0.8rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+export const StatHelperText = styled.span`
+  font-size: 0.75rem;
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
@@ -257,8 +278,8 @@ export const LegendCountText = styled.div`
 `;
 
 // 범례 포인트 텍스트 스타일
-export const legendPointsText = css`
-  color: #64748b;
+export const legendPointsText = (theme: AppTheme) => css`
+  color: ${theme.colors.textMuted};
   font-size: 0.8rem;
 `;
 
@@ -294,10 +315,18 @@ export const RecordInfo = styled.div`
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 
+export const RecordTitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+  flex-wrap: wrap;
+`;
+
 // 포인트 강조 텍스트 정의
-export const RecordPoints = styled.span`
+export const RecordPoints = styled.span<{ $variant?: "record" | "plan" }>`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
-  color: #16a34a;
+  color: ${({ theme, $variant }) =>
+    $variant === "plan" ? theme.colors.warning : theme.colors.success};
 `;
 
 // 기록 액션 행 스타일

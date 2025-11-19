@@ -16,7 +16,7 @@ export const FormGroup = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
-// 날짜·시간 등 2열 입력을 구성하는 래퍼
+// 날짜|시간 등 2열 입력을 구성하는 래퍼
 export const FormRow = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing(3)};

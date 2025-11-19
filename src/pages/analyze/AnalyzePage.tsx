@@ -20,7 +20,7 @@ import {
   translateCategory,
   type MaterialCategoryId,
 } from "../../shared/utils/recyclingPoints";
-import { requestAiLabeling, type AiPrediction } from "../../shared/api/analyze";
+import type { AiPrediction } from "../../shared/api/analyze";
 import * as S from "./AnalyzePage.styles";
 
 type GuideKey = "plastic" | "paper" | "metal" | "glass" | "textile" | "electronic" | "other";
@@ -69,6 +69,20 @@ function dataUrlToFile(dataUrl: string): File | null {
     buffer[i] = binary.charCodeAt(i);
   }
   return new File([buffer], `capture-${Date.now()}.jpg`, { type: mime });
+}
+
+function getRandomHighConfidence(): number {
+  // 임시 Mock 결과를 위한 80% 이상 랜덤 정확도 생성
+  return Math.floor(80 + Math.random() * 20);
+}
+
+function buildMockAiPrediction(): AiPrediction {
+  // 임시 Mock 결과를 PET병으로 고정
+  return {
+    category: "pet bottle",
+    confidence: getRandomHighConfidence(),
+    bbox: [0, 0, 0, 0],
+  };
 }
 
 export function AnalyzePage() {
@@ -135,12 +149,34 @@ export function AnalyzePage() {
 
   // AI 라벨링 API 호출 및 결과 수신
   const runAiRecognition = useCallback(
-    async (source: Blob) => {
+    async (_source: Blob) => {
       const controller = new AbortController();
       analysisAbortRef.current = controller;
 
       try {
-        const predictions = await requestAiLabeling(source, controller.signal);
+        await new Promise<void>((resolve) => {
+          let finished = false;
+          const finish = () => {
+            if (finished) {
+              return;
+            }
+            finished = true;
+            resolve();
+          };
+          const timeoutId = window.setTimeout(finish, 1200);
+          controller.signal.addEventListener("abort", () => {
+            window.clearTimeout(timeoutId);
+            finish();
+          });
+        });
+
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        // const predictions = await requestAiLabeling(_source, controller.signal);
+        // TODO: API 복구 시 requestAiLabeling 재활성화
+        const predictions = [buildMockAiPrediction()];
         if (!predictions.length) {
           setInteractionError(t("analyze.errors.noPrediction"));
           setResult(null);

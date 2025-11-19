@@ -50,6 +50,7 @@ export const esTranslation = {
         entries: "Registros",
         items: "Artículos",
         categories: "Categorías",
+        planned: "Planificados {{count}}",
       },
     },
     materialSearch: {
@@ -70,8 +71,13 @@ export const esTranslation = {
     },
     recentActivity: {
       title: "Actividad reciente",
-      meta: "{{count}} artículos · {{time}}",
+      meta: "{{count}} artículos | {{time}}",
       points: "+{{points}} pts",
+      pointsPlanned: "Planificado +{{points}} pts",
+      modes: {
+        record: "Completado",
+        plan: "Planificado",
+      },
       empty:
         "Aún no hay actividades registradas.\n¡Comienza a registrar tu primera actividad de reciclaje!",
     },
@@ -308,6 +314,7 @@ export const esTranslation = {
       records: "Registros totales",
       items: "Artículos totales",
       points: "Puntos obtenidos",
+      planned: "Planificados {{count}}",
     },
     legend: {
       title: "Leyenda de materiales",
@@ -317,11 +324,18 @@ export const esTranslation = {
     },
     entries: {
       title: "{{date}}",
-      meta: "{{count}} artículos · {{time}}",
+      meta: "{{count}} artículos | {{time}}",
       points: "+{{points}} pts",
+      pointsPlanned: "Planificado +{{points}} pts",
+      modes: {
+        record: "Completado",
+        plan: "Planificado",
+      },
       empty: "No hay registros este día.",
       // 삭제 확인 모달 메시지
       confirmDelete: "¿Seguro que quieres eliminar este registro?",
+      // 기록 삭제 안내 메시지
+      deleteGuide: "Al eliminar también se borran los puntos y no se puede deshacer",
     },
     guide: {
       title: "Guía de registro",
@@ -337,7 +351,8 @@ export const esTranslation = {
   map: {
     mapView: {
       title: "Ver ubicaciones en el mapa",
-      subtitle: "Mostramos {{count}} contenedores cercanos en el mapa.",
+      subtitle:
+        'Mostramos los puntos de entrega de tu región predeterminada; activa "Usar mi ubicación" para ordenarlos por distancia.',
       loading: "Cargando el mapa...",
       missingKey: {
         title: "Falta la clave de la API del mapa",
@@ -356,7 +371,7 @@ export const esTranslation = {
     },
     guide: {
       bannerMessage:
-        'Tip del mapa 🧭\nActiva "Usar mi ubicación" para ver primero los puntos de entrega cercanos.',
+        "Tip del mapa 🧭\nUbicación desactivada = vista regional; activada = contenedores más cercanos primero.",
     },
     routePanel: {
       title: "Cómo llegar",
@@ -486,6 +501,8 @@ export const esTranslation = {
       about: "Acerca de la app",
       logout: "Cerrar sesión",
       resetConfirm: "Todos los datos almacenados localmente se eliminarán. ¿Continuar?",
+      // 데이터 초기화 안내 메시지
+      resetGuide: "Los datos borrados no se pueden recuperar y la app se reinicia tras el borrado",
       resetData: "Restablecer datos",
     },
   },

@@ -49,6 +49,7 @@ export const enTranslation = {
         entries: "Entries",
         items: "Items",
         categories: "Categories",
+        planned: "Planned {{count}}",
       },
     },
     materialSearch: {
@@ -69,8 +70,13 @@ export const enTranslation = {
     },
     recentActivity: {
       title: "Recent activity",
-      meta: "{{count}} items · {{time}}",
+      meta: "{{count}} items | {{time}}",
       points: "+{{points}} pts",
+      pointsPlanned: "Planned +{{points}} pts",
+      modes: {
+        record: "Completed",
+        plan: "Planned",
+      },
       empty: "No activities recorded yet.\nStart logging your first recycling activity!",
     },
     monthlyProgress: {
@@ -297,6 +303,7 @@ export const enTranslation = {
       records: "Total records",
       items: "Total items",
       points: "Points earned",
+      planned: "Planned {{count}}",
     },
     legend: {
       title: "Material legend",
@@ -306,10 +313,17 @@ export const enTranslation = {
     },
     entries: {
       title: "{{date}}",
-      meta: "{{count}} items · {{time}}",
+      meta: "{{count}} items | {{time}}",
       points: "+{{points}} pts",
+      pointsPlanned: "Planned +{{points}} pts",
+      modes: {
+        record: "Completed",
+        plan: "Planned",
+      },
       empty: "No entries on this day.",
       confirmDelete: "Are you sure you want to delete this record?",
+      // 기록 삭제 안내 메시지
+      deleteGuide: "Deleting also removes the related points and cannot be undone",
     },
     guide: {
       title: "Tracking guide",
@@ -324,7 +338,8 @@ export const enTranslation = {
   map: {
     mapView: {
       title: "Check locations on the map",
-      subtitle: "We'll highlight {{count}} nearby drop-off bins on the map.",
+      subtitle:
+        'We list drop-off bins for your default region; turn on "Use my location" to sort by distance.',
       loading: "Loading the map...",
       missingKey: {
         title: "Map API key missing",
@@ -342,8 +357,7 @@ export const enTranslation = {
       },
     },
     guide: {
-      bannerMessage:
-        'Map tip 🧭\nTurn on "Use my location" to highlight nearby drop-off bins first.',
+      bannerMessage: "Map tip 🧭\nLocation off = regional view, on = closest bins first.",
     },
     routePanel: {
       title: "Directions",
@@ -472,6 +486,8 @@ export const enTranslation = {
       about: "About the app",
       logout: "Log out",
       resetConfirm: "All locally stored data will be deleted. Continue?",
+      // 데이터 초기화 안내 메시지
+      resetGuide: "Deleted data cannot be recovered and the app restarts after wiping",
       resetData: "Reset data",
     },
   },

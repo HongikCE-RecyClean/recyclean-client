@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import type { AppTheme } from "../../../shared/styles/theme";
 import { Card, CardContent } from "../../../shared/ui/Card/Card";
 
 export const SectionHeader = styled.div`
@@ -86,7 +87,7 @@ export const BinUpdated = styled.span`
   align-items: center;
   gap: 4px;
   font-size: 0.75rem;
-  color: #64748b;
+  color: ${({ theme }) => theme.colors.textMuted};
   line-height: 1.4;
 `;
 
@@ -152,6 +153,27 @@ export const CenterCard = styled(Card)`
 export const CenterMedia = styled.div`
   position: relative;
   height: 140px;
+  overflow: hidden;
+  background: ${({ theme }) => theme.colors.surfaceMuted};
+`;
+
+// 로고 기본 이미지를 감싸는 컨테이너 정의
+export const CenterLogoPlaceholder = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: ${({ theme }) => theme.spacing(4)};
+`;
+
+// 로고 SVG 크기를 제어하는 이미지 스타일 정의
+export const CenterLogoMark = styled.img`
+  width: 96px;
+  max-width: 60%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 24px rgba(15, 23, 42, 0.25));
 `;
 
 // 센터 거리 배지 위치 클래스
@@ -176,9 +198,9 @@ export const centerNameText = css`
 `;
 
 // 센터 주소 텍스트 스타일
-export const centerAddressText = css`
+export const centerAddressText = (theme: AppTheme) => css`
   font-size: 0.8rem;
-  color: #475569;
+  color: ${theme.colors.textMuted};
   line-height: 1.5;
 `;
 
@@ -203,7 +225,7 @@ export const InfoRow = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #64748b;
+  color: ${({ theme }) => theme.colors.textMuted};
   line-height: 1.4;
 `;
 

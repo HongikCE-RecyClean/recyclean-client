@@ -47,6 +47,8 @@ export function SettingsSupportActionsCard() {
   const handleResetData = async () => {
     const confirmed = await openConfirmDialog({
       title: t("settings.support.resetConfirm"),
+      // 데이터 초기화 안내 문구 전달
+      description: t("settings.support.resetGuide"),
       tone: "warning",
       confirmLabel: t("settings.support.resetData"),
       cancelLabel: t("common.cancel"),

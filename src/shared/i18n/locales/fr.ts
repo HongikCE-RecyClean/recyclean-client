@@ -50,6 +50,7 @@ export const frTranslation = {
         entries: "Enregistrements",
         items: "Objets",
         categories: "Catégories",
+        planned: "Prévu {{count}}",
       },
     },
     materialSearch: {
@@ -70,8 +71,13 @@ export const frTranslation = {
     },
     recentActivity: {
       title: "Activité récente",
-      meta: "{{count}} objets · {{time}}",
+      meta: "{{count}} objets | {{time}}",
       points: "+{{points}} pts",
+      pointsPlanned: "Prévu +{{points}} pts",
+      modes: {
+        record: "Terminé",
+        plan: "Prévu",
+      },
       empty:
         "Aucune activité enregistrée pour le moment.\nCommencez par enregistrer votre première activité de recyclage !",
     },
@@ -308,6 +314,7 @@ export const frTranslation = {
       records: "Nombre total d'enregistrements",
       items: "Nombre total d'objets",
       points: "Points gagnés",
+      planned: "Prévu {{count}}",
     },
     legend: {
       title: "Légende des matériaux",
@@ -317,11 +324,18 @@ export const frTranslation = {
     },
     entries: {
       title: "{{date}}",
-      meta: "{{count}} objets · {{time}}",
+      meta: "{{count}} objets | {{time}}",
       points: "+{{points}} pts",
+      pointsPlanned: "Prévu +{{points}} pts",
+      modes: {
+        record: "Terminé",
+        plan: "Prévu",
+      },
       empty: "Aucun enregistrement ce jour-là.",
       // 삭제 확인 모달 문구
       confirmDelete: "Voulez-vous vraiment supprimer cet enregistrement ?",
+      // 기록 삭제 안내 메시지
+      deleteGuide: "La suppression retire aussi les points associés et reste irréversible",
     },
     guide: {
       title: "Guide de suivi",
@@ -337,7 +351,8 @@ export const frTranslation = {
   map: {
     mapView: {
       title: "Voir les emplacements sur la carte",
-      subtitle: "Nous afficherons {{count}} points de dépôt proches sur la carte.",
+      subtitle:
+        "Nous listons les points de dépôt de votre région par défaut ; activez « Utiliser ma position » pour les trier par distance.",
       loading: "Chargement de la carte...",
       missingKey: {
         title: "Clé d'API de carte manquante",
@@ -356,7 +371,7 @@ export const frTranslation = {
     },
     guide: {
       bannerMessage:
-        'Astuce carte 🧭\nActivez "Utiliser ma position" pour afficher en priorité les points de dépôt proches.',
+        "Astuce carte 🧭\nPosition désactivée = vue régionale ; activée = points les plus proches en premier.",
     },
     routePanel: {
       title: "Itinéraire",
@@ -485,6 +500,8 @@ export const frTranslation = {
       about: "À propos de l'application",
       logout: "Se déconnecter",
       resetConfirm: "Toutes les données stockées localement seront supprimées. Continuer ?",
+      // 데이터 초기화 안내 메시지
+      resetGuide: "Les données supprimées sont définitives et l'app redémarre après l'effacement",
       resetData: "Réinitialiser les données",
     },
   },
