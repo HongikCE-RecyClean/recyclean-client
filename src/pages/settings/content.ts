@@ -26,20 +26,19 @@ export interface AppInfoCopy {
 
 export const APP_INFO_COPY: Record<SupportedLanguage, AppInfoCopy> = {
   en: {
-    description:
-      "A privacy-first progressive web app that makes recycling tracking easier and more rewarding.",
+    description: "RecyClean is a service that makes recycling tracking easier and more rewarding.",
     versionTitle: "Version info",
     currentVersionLabel: "Current version:",
-    currentVersionValue: "0.1.0 (Beta)",
+    currentVersionValue: "1.0.3",
     latestUpdateLabel: "Latest update:",
-    latestUpdateValue: "January 2025",
+    latestUpdateValue: "November 19, 2025",
     featuresTitle: "Key features",
     features: [
       "AI-powered image analysis for recyclable classification",
-      "Local-first activity tracking with points and streaks",
+      "Recycling activity tracking with a points system",
       "Calendar-based recycling history management",
       "Map search for nearby recycling centers",
-      "Offline-capable PWA with no login required",
+      "Offline-capable PWA experience",
     ],
     teamTitle: "Team",
     companyLabel: "Developer:",
@@ -88,19 +87,19 @@ export const APP_INFO_COPY: Record<SupportedLanguage, AppInfoCopy> = {
   },
   es: {
     description:
-      "Una app web progresiva que prioriza la privacidad y hace que el seguimiento del reciclaje sea más fácil y gratificante.",
+      "RecyClean es un servicio que hace que el seguimiento del reciclaje sea más fácil y gratificante.",
     versionTitle: "Información de la versión",
     currentVersionLabel: "Versión actual:",
-    currentVersionValue: "0.1.0 (Beta)",
+    currentVersionValue: "1.0.3",
     latestUpdateLabel: "Última actualización:",
-    latestUpdateValue: "enero de 2025",
+    latestUpdateValue: "19 de noviembre de 2025",
     featuresTitle: "Funciones principales",
     features: [
       "Análisis de imágenes con IA para clasificar reciclables",
-      "Seguimiento local de actividades con puntos y rachas",
+      "Seguimiento de actividades de reciclaje con sistema de puntos",
       "Gestión del historial mediante calendario",
       "Búsqueda en el mapa de centros de reciclaje cercanos",
-      "PWA sin conexión que no requiere inicio de sesión",
+      "PWA con funciones sin conexión",
     ],
     teamTitle: "Equipo",
     companyLabel: "Desarrollador:",
@@ -119,19 +118,19 @@ export const APP_INFO_COPY: Record<SupportedLanguage, AppInfoCopy> = {
   },
   fr: {
     description:
-      "Une app web progressive qui privilégie la confidentialité et facilite le suivi du recyclage de manière plus gratifiante.",
+      "RecyClean est un service qui rend le suivi du recyclage plus simple et plus gratifiant.",
     versionTitle: "Informations sur la version",
     currentVersionLabel: "Version actuelle :",
-    currentVersionValue: "0.1.0 (Bêta)",
+    currentVersionValue: "1.0.3",
     latestUpdateLabel: "Dernière mise à jour :",
-    latestUpdateValue: "janvier 2025",
+    latestUpdateValue: "19 novembre 2025",
     featuresTitle: "Fonctionnalités clés",
     features: [
       "Analyse d'image par IA pour classifier les recyclables",
-      "Suivi local des activités avec points et séries",
+      "Suivi des activités de recyclage avec système de points",
       "Gestion de l'historique via un calendrier",
       "Carte des centres de recyclage à proximité",
-      "PWA hors ligne sans connexion requise",
+      "PWA compatible hors ligne",
     ],
     teamTitle: "Équipe",
     companyLabel: "Éditeur :",
@@ -194,7 +193,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
       dataLoss: {
         question: "My data disappeared",
         answer:
-          "All data is stored in browser localStorage. Clearing browser cache/cookies or switching devices will erase your data permanently with no recovery option. Backup is not available—please be cautious.",
+          "All data is stored in your browser. Clearing browser cache/cookies or switching devices will erase your data permanently with no recovery option. Backup is not available—please be cautious.",
       },
       issues: {
         question: "The app is not working properly",
@@ -225,7 +224,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
     ],
     contactTitle: "Contact us",
     contactIntro: "For additional questions email",
-    contactOutro: ". We reply on weekdays 09:00–18:00.",
+    contactOutro: ".",
   },
   ko: {
     faqTitle: "자주 묻는 질문 (FAQ)",
@@ -296,7 +295,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
       dataLoss: {
         question: "P. Mis datos desaparecieron",
         answer:
-          "Todos los datos se guardan en localStorage del navegador. Borrar caché/cookies o cambiar de dispositivo eliminará tus datos permanentemente sin recuperación. No hay respaldo disponible—ten precaución.",
+          "Todos los datos se guardan en tu navegador. Borrar caché/cookies o cambiar de dispositivo eliminará tus datos permanentemente sin recuperación. No hay respaldo disponible—ten precaución.",
       },
       issues: {
         question: "P. La app no funciona correctamente",
@@ -324,7 +323,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
     ],
     contactTitle: "Contáctanos",
     contactIntro: "Si tienes dudas, escribe a",
-    contactOutro: ". Respondemos de lunes a viernes de 09:00 a 18:00.",
+    contactOutro: ".",
   },
   fr: {
     faqTitle: "Questions fréquentes (FAQ)",
@@ -347,7 +346,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
       dataLoss: {
         question: "Q. Mes données ont disparu",
         answer:
-          "Toutes les données sont stockées dans localStorage du navigateur. Effacer le cache/cookies ou changer d'appareil supprimera vos données définitivement sans récupération. Aucune sauvegarde disponible—soyez prudent.",
+          "Toutes les données sont stockées dans votre navigateur. Effacer le cache/cookies ou changer d'appareil supprimera vos données définitivement sans récupération. Aucune sauvegarde disponible—soyez prudent.",
       },
       issues: {
         question: "Q. L'application ne fonctionne pas correctement",
@@ -381,7 +380,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
     ],
     contactTitle: "Nous contacter",
     contactIntro: "Pour toute question, écrivez à",
-    contactOutro: ". Réponse du lundi au vendredi de 09h00 à 18h00.",
+    contactOutro: ".",
   },
 };
 
@@ -413,9 +412,9 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
   en: {
     policyTitle: "Privacy policy",
     policyDescription:
-      "RecyClean is a privacy-first app. All data is stored locally on your device (browser localStorage) and never transmitted to any server.",
+      "RecyClean is a privacy-first app. All data stays on your device and is never sent to any server.",
     collectTitle: "Data stored on your device",
-    collectDescription: "The following information is stored locally in your browser:",
+    collectDescription: "The following information is stored in your browser:",
     collect: {
       requiredLabel: "Required:",
       requiredValue: "Nickname",
@@ -434,7 +433,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
     ],
     retentionTitle: "Data retention",
     retentionDescription:
-      "Your data remains in browser localStorage until you delete it. Clearing browser data or uninstalling the app will permanently erase all information with no recovery option.",
+      "Your data remains in your browser until you delete it. Clearing browser data or uninstalling the app will permanently erase all information with no recovery option.",
     deletionTitle: "Delete your data",
     deletionDescription:
       'Use "Reset data" in Settings to permanently erase all local data. This action cannot be undone. Be cautious when clearing browser cache or cookies.',
@@ -477,9 +476,9 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
   es: {
     policyTitle: "Política de privacidad",
     policyDescription:
-      "RecyClean prioriza tu privacidad. Todos los datos se almacenan localmente en tu dispositivo (localStorage del navegador) y nunca se transmiten a ningún servidor.",
+      "RecyClean prioriza tu privacidad. Todos los datos se guardan solo en tu dispositivo y nunca se envían a ningún servidor.",
     collectTitle: "Datos almacenados en tu dispositivo",
-    collectDescription: "La siguiente información se guarda localmente en tu navegador:",
+    collectDescription: "La siguiente información se guarda en tu navegador:",
     collect: {
       requiredLabel: "Obligatorio:",
       requiredValue: "Alias",
@@ -498,7 +497,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
     ],
     retentionTitle: "Retención de datos",
     retentionDescription:
-      "Tus datos permanecen en localStorage hasta que los elimines. Borrar datos del navegador o desinstalar la app eliminará toda la información permanentemente sin opción de recuperación.",
+      "Tus datos permanecen en tu navegador hasta que los elimines. Borrar datos del navegador o desinstalar la app eliminará toda la información permanentemente sin opción de recuperación.",
     deletionTitle: "Eliminar datos",
     deletionDescription:
       'Usa "Restablecer datos" en Ajustes para borrar permanentemente todos los datos locales. Esta acción no se puede deshacer. Ten cuidado al limpiar la caché o las cookies del navegador.',
@@ -509,10 +508,9 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
   fr: {
     policyTitle: "Politique de confidentialité",
     policyDescription:
-      "RecyClean privilégie la confidentialité. Toutes les données sont stockées localement sur votre appareil (localStorage du navigateur) et ne sont jamais transmises à un serveur.",
+      "RecyClean privilégie la confidentialité. Toutes les données restent uniquement sur votre appareil et ne sont jamais envoyées à un serveur.",
     collectTitle: "Données stockées sur votre appareil",
-    collectDescription:
-      "Les informations suivantes sont enregistrées localement dans votre navigateur :",
+    collectDescription: "Les informations suivantes sont enregistrées dans votre navigateur :",
     collect: {
       requiredLabel: "Obligatoire :",
       requiredValue: "Pseudo",
@@ -531,7 +529,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
     ],
     retentionTitle: "Conservation des données",
     retentionDescription:
-      "Vos données restent dans localStorage jusqu'à suppression. Effacer les données du navigateur ou désinstaller l'app supprimera définitivement toutes les informations sans récupération possible.",
+      "Vos données restent dans votre navigateur jusqu'à suppression. Effacer les données du navigateur ou désinstaller l'app supprimera définitivement toutes les informations sans récupération possible.",
     deletionTitle: "Supprimer vos données",
     deletionDescription:
       'Utilisez "Réinitialiser les données" dans Réglages pour effacer définitivement toutes les données locales. Cette action est irréversible. Attention lors du nettoyage du cache ou des cookies.',
