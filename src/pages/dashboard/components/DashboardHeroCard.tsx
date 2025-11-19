@@ -75,7 +75,7 @@ export function DashboardHeroCard({
               </S.StatRow>
               <S.StatRow>
                 <S.StatRowLabel>{t("dashboard.welcome.stats.streak")}</S.StatRowLabel>
-                <S.StatRowValue>{todayStats.streakDays}일</S.StatRowValue>
+                <S.StatRowValue>{todayStats.streakDays}</S.StatRowValue>
               </S.StatRow>
             </S.StatSectionContent>
           </S.StatSection>
