@@ -1,6 +1,7 @@
 import { buildApiUrl } from "./config";
 
-const DEFAULT_AI_LABELING_PATH = "/ai/labeling";
+// 기본 프록시 경로에 /api prefix 적용
+const DEFAULT_AI_LABELING_PATH = "/api/ai/labeling";
 
 // AI 라벨링 API 응답 타입 정의
 export interface AiPrediction {
