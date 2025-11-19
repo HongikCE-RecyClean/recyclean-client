@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Sparkles } from "lucide-react";
 import { Progress } from "shared/ui/Progress/Progress";
-import { Button } from "shared/ui/Button/Button";
 import type { TodayStats } from "shared/utils/userStats";
 import * as S from "../DashboardPage.styles";
 
@@ -14,7 +12,6 @@ interface DashboardHeroCardProps {
   entriesCount: number;
   totalItems: number;
   categoryCount: number;
-  onLogAction?: () => void;
 }
 
 export function DashboardHeroCard({
@@ -26,7 +23,6 @@ export function DashboardHeroCard({
   entriesCount,
   totalItems,
   categoryCount,
-  onLogAction,
 }: DashboardHeroCardProps) {
   const { t } = useTranslation();
   const trimmedName = userName?.trim();
@@ -99,12 +95,6 @@ export function DashboardHeroCard({
             </S.StatSectionContent>
           </S.StatSection>
         </S.HeroStatsGrid>
-
-        {/* CTA 버튼 */}
-        <Button variant="primary" onClick={onLogAction} css={{ width: "100%" }}>
-          <Sparkles size={18} />
-          {t("dashboard.tracker.logAction")}
-        </Button>
       </S.HeroCardContent>
     </S.HeroCard>
   );

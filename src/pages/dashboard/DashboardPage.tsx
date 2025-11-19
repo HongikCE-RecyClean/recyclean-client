@@ -3,6 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { enUS, es, fr, ko as koLocale } from "date-fns/locale";
 import type { Locale } from "date-fns";
 import { useTranslation } from "react-i18next";
+import { Sparkles } from "lucide-react";
 import { useDashboardStore } from "shared/state/dashboardStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useUserStore } from "shared/state/userStore";
@@ -11,6 +12,7 @@ import { useNotificationStore } from "shared/state/notificationStore";
 import { calculateTodayStats, calculateTotalStats } from "shared/utils/userStats";
 import type { MaterialItemData } from "shared/types/dashboard";
 import { normalizeLanguage, type SupportedLanguage } from "shared/i18n/supportedLanguages";
+import { Button } from "shared/ui/Button/Button";
 import * as S from "./DashboardPage.styles";
 import {
   AddEntryBottomSheet,
@@ -160,8 +162,11 @@ export function DashboardPage() {
         entriesCount={entries.length}
         totalItems={totalItems}
         categoryCount={categoryCount}
-        onLogAction={() => setIsAddEntryOpen(true)}
       />
+      <Button variant="primary" onClick={() => setIsAddEntryOpen(true)} css={{ width: "100%" }}>
+        <Sparkles size={18} />
+        {t("dashboard.tracker.logAction")}
+      </Button>
       {/* 최근 활동 */}
       <RecentActivityCard recentActivity={recentActivity} />
       {/* <AchievementsCard achievements={achievements} /> */}

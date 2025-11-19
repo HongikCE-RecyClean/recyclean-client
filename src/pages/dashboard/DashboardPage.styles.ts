@@ -566,7 +566,7 @@ export const HeroCard = styled(Card)`
 
 // 히어로 카드 컨텐츠
 export const HeroCardContent = styled(CardContent)`
-  padding: ${({ theme }) => theme.spacing(6)};
+  padding: ${({ theme }) => theme.spacing(4)};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(5)};
