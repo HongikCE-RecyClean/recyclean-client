@@ -207,17 +207,19 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
           />
         </S.FormGroup>
 
-        {/* 날짜 선택 */}
-        <S.FormGroup>
-          <S.Label>{t("dashboard.addEntry.date")}</S.Label>
-          <TextField type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-        </S.FormGroup>
-
-        {/* 시간 선택 */}
-        <S.FormGroup>
-          <S.Label>{t("dashboard.addEntry.time")}</S.Label>
-          <TextField type="time" value={time} onChange={(e) => setTime(e.target.value)} />
-        </S.FormGroup>
+        {/* 날짜/시간 선택 */}
+        <S.FormRow>
+          <S.FormRowItem>
+            {/* 날짜 선택 */}
+            <S.Label>{t("dashboard.addEntry.date")}</S.Label>
+            <TextField type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+          </S.FormRowItem>
+          <S.FormRowItem>
+            {/* 시간 선택 */}
+            <S.Label>{t("dashboard.addEntry.time")}</S.Label>
+            <TextField type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+          </S.FormRowItem>
+        </S.FormRow>
 
         {/* 예상 포인트 표시 */}
         <S.PointsPreview>

@@ -16,6 +16,19 @@ export const FormGroup = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
+// 날짜·시간 등 2열 입력을 구성하는 래퍼
+export const FormRow = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(3)};
+  width: 100%;
+`;
+
+// FormRow 내부에서 동일 비율을 유지하는 그룹
+export const FormRowItem = styled(FormGroup)`
+  flex: 1;
+  min-width: 0;
+`;
+
 // 레이블
 export const Label = styled.label`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
