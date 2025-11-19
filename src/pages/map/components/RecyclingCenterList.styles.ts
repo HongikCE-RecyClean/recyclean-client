@@ -66,16 +66,19 @@ export const BinInfo = styled.div`
 export const BinTexts = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing(1)};
+  line-height: 1.5;
 `;
 
 export const BinName = styled.span`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  line-height: 1.45;
 `;
 
 export const BinLocation = styled.span`
   font-size: 0.85rem;
   color: ${({ theme }) => theme.colors.textMuted};
+  line-height: 1.5;
 `;
 
 export const BinUpdated = styled.span`
@@ -84,6 +87,7 @@ export const BinUpdated = styled.span`
   gap: 4px;
   font-size: 0.75rem;
   color: #64748b;
+  line-height: 1.4;
 `;
 
 export const BinStatus = styled.div`
@@ -104,6 +108,7 @@ export const SectionHint = styled.span`
   font-size: 0.75rem;
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   color: ${({ theme }) => theme.colors.textMuted};
+  line-height: 1.4;
 `;
 
 export const ItemsChips = styled.div`
@@ -160,18 +165,21 @@ export const centerBadgeContainer = css`
 export const CenterContent = styled(CardContent)`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(3)};
 `;
 
 // 센터 명칭 텍스트 스타일
 export const centerNameText = css`
   margin: 0;
+  line-height: 1.45;
+  margin-bottom: 4px;
 `;
 
 // 센터 주소 텍스트 스타일
 export const centerAddressText = css`
   font-size: 0.8rem;
   color: #475569;
+  line-height: 1.5;
 `;
 
 // 재활용 품목 칩 묶음 스타일 정의
@@ -185,8 +193,9 @@ export const MaterialChips = styled.div`
 export const InfoStack = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: ${({ theme }) => theme.spacing(1)};
   font-size: 0.8rem;
+  line-height: 1.5;
 `;
 
 // 정보 행 정렬 정의
@@ -195,6 +204,7 @@ export const InfoRow = styled.span`
   align-items: center;
   gap: 6px;
   color: #64748b;
+  line-height: 1.4;
 `;
 
 // 액션 버튼 행 정렬 정의
