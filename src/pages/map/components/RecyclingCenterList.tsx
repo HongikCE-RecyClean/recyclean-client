@@ -1,15 +1,12 @@
-import { useMemo, type ChangeEvent } from "react";
-import { formatDistanceToNow } from "date-fns";
-import { Clock, Navigation, Phone, Recycle, Trash2 } from "lucide-react";
+import { type ChangeEvent } from "react";
+import { Clock, Navigation, Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
 import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
-import { SelectField } from "shared/ui/SelectField/SelectField";
-import { mapAvailabilityTone, resolveMaterialBadgeTone } from "shared/constants/mapVisuals";
+import { resolveMaterialBadgeTone } from "shared/constants/mapVisuals";
 import type { RecyclingCenter, TrashBin, FilterOption } from "shared/types/map";
-import { resolveDateFnsLocale } from "shared/utils/dateLocales";
 import { SectionCard, SectionCardContent, SectionCardHeader } from "../MapPage.styles";
 import * as S from "./RecyclingCenterList.styles";
 
@@ -25,36 +22,21 @@ interface RecyclingCenterListProps {
 
 export function RecyclingCenterList({
   centers,
-  bins,
-  options,
-  selectedType,
-  onTypeChange,
-  onRequestBinDirections,
   onRequestCenterDirections,
 }: RecyclingCenterListProps) {
-  const { t, i18n } = useTranslation();
-  const dateLocale = resolveDateFnsLocale(i18n.language);
-  const localizedOptions = useMemo(
-    () =>
-      options.map((option) => ({
-        ...option,
-        label: t(`map.filter.options.${option.value}`, { defaultValue: option.label }),
-      })),
-    [options, t],
-  );
+  const { t } = useTranslation();
 
-  const formatBinUpdatedTime = (timestamp: string) => {
-    // ISO 문자열을 사용자 친화적인 상대 시간으로 변환해요
-    const parsedDate = new Date(timestamp);
-    if (Number.isNaN(parsedDate.getTime())) {
-      return timestamp;
-    }
-    const relativeTime = formatDistanceToNow(parsedDate, {
-      addSuffix: true,
-      locale: dateLocale,
-    });
-    return t("map.bins.updatedAt", { time: relativeTime });
-  };
+  /*
+    필터 옵션 로직 보류
+    const localizedOptions = useMemo(() => {
+      ...
+    }, [options, t]);
+  */
+
+  /*
+    배출함 업데이트 시간 포맷 보류
+    const formatBinUpdatedTime = (timestamp: string) => { ... }
+  */
 
   return (
     <SectionCard>
@@ -62,74 +44,84 @@ export function RecyclingCenterList({
         <CardTitle>{t("map.centers.title")}</CardTitle>
       </SectionCardHeader>
       <SectionCardContent>
-        <S.SectionHeader>
-          <S.SectionLabel>{t("map.filter.title")}</S.SectionLabel>
-          <SelectField options={localizedOptions} value={selectedType} onChange={onTypeChange} />
-        </S.SectionHeader>
+        {/**
+         * 필터 메뉴와 배출함 목록을 임시로 숨기기 위한 주석 처리
+         */}
+        {/**
+         * <S.SectionHeader>
+         *   <S.SectionLabel>{t("map.filter.title")}</S.SectionLabel>
+         *   <SelectField options={localizedOptions} value={selectedType} onChange={onTypeChange} />
+         * </S.SectionHeader>
+         *
+         * <S.BinSection>
+         *   {bins.length === 0 ? (
+         *     <S.EmptyState>{t("map.bins.empty")}</S.EmptyState>
+         *   ) : (
+         *     <S.BinList>
+         *       {bins.map((bin) => (
+         *         <S.BinItem key={bin.id}>
+         *           <S.BinHeader>
+         *             <S.BinInfo>
+         *               {bin.type === "recycling" ? <Recycle size={18} /> : <Trash2 size={18} />}
+         *               <S.BinTexts>
+         *                 <S.BinName>{bin.name}</S.BinName>
+         *                 <S.BinLocation>{bin.location}</S.BinLocation>
+         *                 <S.BinUpdated>
+         *                   <Clock size={12} />
+         *                   {formatBinUpdatedTime(bin.lastUpdated)}
+         *                 </S.BinUpdated>
+         *               </S.BinTexts>
+         *             </S.BinInfo>
+         *             <S.BinStatus>
+         *               <Badge variant="outline">{bin.distance}</Badge>
+         *               <Badge tone={mapAvailabilityTone[bin.availability]}>
+         *                 {t(`map.availability.${bin.availability}`)}
+         *               </Badge>
+         *             </S.BinStatus>
+         *           </S.BinHeader>
+         *
+         *           <S.ItemsSection>
+         *             <S.SectionHint>{t("map.bins.sectionLabel")}</S.SectionHint>
+         *             <S.ItemsChips>
+         *               {bin.acceptedItems.map((item) => (
+         *                 <Badge key={item} variant="soft" tone={resolveMaterialBadgeTone(item)}>
+         *                   {item}
+         *                 </Badge>
+         *               ))}
+         *             </S.ItemsChips>
+         *           </S.ItemsSection>
+         *
+         *           <S.BinActions>
+         *             <Button
+         *               variant="outline"
+         *               size="sm"
+         *               css={S.binActionButton}
+         *               onClick={() => onRequestBinDirections?.(bin)}
+         *             >
+         *               <Navigation size={14} />
+         *               {t("map.bins.directions")}
+         *             </Button>
+         *             <Button variant="outline" size="sm" css={S.binActionButton}>
+         *               {t("map.bins.report")}
+         *             </Button>
+         *           </S.BinActions>
+         *         </S.BinItem>
+         *       ))}
+         *     </S.BinList>
+         *   )}
+         * </S.BinSection>
+         *
+         * <S.SectionDivider />
+         */}
 
-        <S.BinSection>
-          {bins.length === 0 ? (
-            <S.EmptyState>{t("map.bins.empty")}</S.EmptyState>
-          ) : (
-            <S.BinList>
-              {bins.map((bin) => (
-                <S.BinItem key={bin.id}>
-                  <S.BinHeader>
-                    <S.BinInfo>
-                      {bin.type === "recycling" ? <Recycle size={18} /> : <Trash2 size={18} />}
-                      <S.BinTexts>
-                        <S.BinName>{bin.name}</S.BinName>
-                        <S.BinLocation>{bin.location}</S.BinLocation>
-                        <S.BinUpdated>
-                          <Clock size={12} />
-                          {formatBinUpdatedTime(bin.lastUpdated)}
-                        </S.BinUpdated>
-                      </S.BinTexts>
-                    </S.BinInfo>
-                    <S.BinStatus>
-                      <Badge variant="outline">{bin.distance}</Badge>
-                      <Badge tone={mapAvailabilityTone[bin.availability]}>
-                        {t(`map.availability.${bin.availability}`)}
-                      </Badge>
-                    </S.BinStatus>
-                  </S.BinHeader>
-
-                  <S.ItemsSection>
-                    <S.SectionHint>{t("map.bins.sectionLabel")}</S.SectionHint>
-                    <S.ItemsChips>
-                      {bin.acceptedItems.map((item) => (
-                        <Badge key={item} variant="soft" tone={resolveMaterialBadgeTone(item)}>
-                          {item}
-                        </Badge>
-                      ))}
-                    </S.ItemsChips>
-                  </S.ItemsSection>
-
-                  <S.BinActions>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      css={S.binActionButton}
-                      onClick={() => onRequestBinDirections?.(bin)}
-                    >
-                      <Navigation size={14} />
-                      {t("map.bins.directions")}
-                    </Button>
-                    <Button variant="outline" size="sm" css={S.binActionButton}>
-                      {t("map.bins.report")}
-                    </Button>
-                  </S.BinActions>
-                </S.BinItem>
-              ))}
-            </S.BinList>
-          )}
-        </S.BinSection>
-
-        <S.SectionDivider />
-
-        <S.SectionLabel>
-          {t("map.centers.sectionTitle", { defaultValue: t("map.centers.title") })}
-        </S.SectionLabel>
+        {/**
+         * 재활용 센터 라벨 임시 비활성
+         */}
+        {/**
+         * <S.SectionLabel>
+         *   {t("map.centers.sectionTitle", { defaultValue: t("map.centers.title") })}
+         * </S.SectionLabel>
+         */}
 
         <S.CenterGrid>
           {centers.map((center) => (
