@@ -16,6 +16,18 @@ declare global {
         zoom?: number;
       }
 
+      interface BoundsPadding {
+        top?: number;
+        right?: number;
+        bottom?: number;
+        left?: number;
+      }
+
+      class LatLngBounds {
+        constructor(sw: LatLng, ne: LatLng);
+        extend(latlng: LatLng): void;
+      }
+
       interface MarkerIconOptions {
         content?: string;
       }
@@ -24,6 +36,7 @@ declare global {
         position: LatLng;
         map?: Map | null;
         icon?: MarkerIconOptions | string;
+        title?: string;
       }
 
       class Map {
@@ -33,6 +46,7 @@ declare global {
         panTo(latlng: LatLng): void;
         getZoom(): number;
         setZoom(zoom: number): void;
+        fitBounds(bounds: LatLngBounds, padding?: BoundsPadding): void;
       }
 
       class Marker {
@@ -40,6 +54,22 @@ declare global {
         setPosition(latlng: LatLng): void;
         setMap(map: Map | null): void;
         getMap(): Map | null;
+      }
+
+      interface PolylineOptions {
+        map?: Map | null;
+        path: LatLng[];
+        strokeColor?: string;
+        strokeWeight?: number;
+        strokeOpacity?: number;
+        strokeStyle?: string;
+      }
+
+      class Polyline {
+        constructor(options: PolylineOptions);
+        setMap(map: Map | null): void;
+        getMap(): Map | null;
+        setPath(path: LatLng[]): void;
       }
 
       // 네이버 지도 이벤트 핸들러 타입 정의
