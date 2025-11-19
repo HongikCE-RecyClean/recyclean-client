@@ -362,6 +362,7 @@ export const koTranslation = {
       sectionLabel: "수거 품목",
       directions: "길 찾기",
       report: "상태 신고",
+      updatedAt: "최근 업데이트 {{time}}",
     },
     availability: {
       available: "이용 가능",

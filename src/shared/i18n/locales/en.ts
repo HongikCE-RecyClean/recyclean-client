@@ -365,6 +365,7 @@ export const enTranslation = {
       sectionLabel: "Accepted items",
       directions: "Directions",
       report: "Report status",
+      updatedAt: "Updated {{time}}",
     },
     availability: {
       available: "Available",

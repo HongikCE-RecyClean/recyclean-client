@@ -378,6 +378,7 @@ export const esTranslation = {
       sectionLabel: "Materiales aceptados",
       directions: "Cómo llegar",
       report: "Reportar estado",
+      updatedAt: "Actualizado {{time}}",
     },
     availability: {
       available: "Disponible",
