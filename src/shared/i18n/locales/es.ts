@@ -236,7 +236,7 @@ export const esTranslation = {
         "Asegura que el símbolo de reciclaje sea visible.",
         "Si puedes, toma la imagen de frente.",
       ],
-      bannerMessage: "Tip de foto ✨ Buena luz y fondo limpio ayudan a que la IA acierte más.",
+      bannerMessage: "Tip de foto ✨\nBuena luz y fondo limpio ayudan a que la IA acierte más.",
     },
     captured: {
       alt: "Vista previa de la imagen capturada",
@@ -331,7 +331,7 @@ export const esTranslation = {
         "Los días con más actividad muestran un punto en el calendario.",
       ],
       bannerMessage:
-        "Tip del calendario 🗓️ Toca una fecha para ver y editar sus registros al instante.",
+        "Tip del calendario 🗓️\nToca una fecha para ver y editar sus registros al instante.",
     },
   },
   map: {
@@ -356,7 +356,7 @@ export const esTranslation = {
     },
     guide: {
       bannerMessage:
-        'Tip del mapa 🧭 Activa "Usar mi ubicación" para ver primero los puntos de entrega cercanos.',
+        'Tip del mapa 🧭\nActiva "Usar mi ubicación" para ver primero los puntos de entrega cercanos.',
     },
     filter: {
       title: "Contenedores cercanos",
@@ -555,7 +555,7 @@ export const esTranslation = {
     },
     banner: {
       welcome: {
-        message: "¡Hola {{name}}! ¿Registramos otra acción de reciclaje hoy?",
+        message: "¡Hola {{name}}!\n¿Registramos otra acción de reciclaje hoy?",
         cta: "Registrar actividad",
       },
     },

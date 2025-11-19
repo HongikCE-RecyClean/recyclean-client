@@ -61,7 +61,8 @@ export const Emoji = styled.span({
 export const Message = styled.div(({ theme }) => ({
   flex: 1,
   display: "flex",
-  alignItems: "center",
+  alignItems: "flex-start",
+  gap: theme.spacing(2),
   fontSize: "0.95rem",
   fontWeight: theme.typography.weights.medium,
   color: theme.colors.text,
@@ -74,6 +75,17 @@ export const Message = styled.div(({ theme }) => ({
 
   "@media (max-width: 768px)": {
     fontSize: "0.875rem",
+  },
+}));
+
+// 줄바꿈된 문장을 세로로 정렬할 텍스트 래퍼
+export const MessageText = styled.div(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: theme.spacing(1),
+  minWidth: 0,
+  span: {
+    display: "block",
   },
 }));
 

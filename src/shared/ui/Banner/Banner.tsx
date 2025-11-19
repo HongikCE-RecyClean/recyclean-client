@@ -18,13 +18,23 @@ const emojiMap = {
 export function Banner({ type, message, action, onClose }: BannerProps) {
   const { t } = useTranslation();
   const emoji = emojiMap[type];
+  // 개행 문자를 기준으로 문장을 분리해 줄바꿈을 명시적으로 표현
+  const messageLines = message
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+  const linesToRender = messageLines.length > 0 ? messageLines : [message];
 
   return (
     <S.BannerContainer>
       <S.Content>
         <S.Message>
           <S.Emoji>{emoji}</S.Emoji>
-          {message}
+          <S.MessageText>
+            {linesToRender.map((line, index) => (
+              <span key={`${line}-${index}`}>{line}</span>
+            ))}
+          </S.MessageText>
         </S.Message>
 
         {action && <S.ActionButton onClick={action.onClick}>{action.label}</S.ActionButton>}

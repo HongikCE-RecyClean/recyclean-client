@@ -236,7 +236,7 @@ export const frTranslation = {
         "Assurez-vous que le symbole de recyclage soit visible.",
         "Cadrez l'objet de face si possible.",
       ],
-      bannerMessage: "Astuce photo ✨ Lumière douce et fond net rendent l'IA bien plus précise.",
+      bannerMessage: "Astuce photo ✨\nLumière douce et fond net rendent l'IA bien plus précise.",
     },
     captured: {
       alt: "Aperçu de l'image capturée",
@@ -331,7 +331,7 @@ export const frTranslation = {
         "Les journées chargées affichent un point sur le calendrier.",
       ],
       bannerMessage:
-        "Astuce calendrier 🗓️ Touchez une date pour consulter ou modifier vos entrées.",
+        "Astuce calendrier 🗓️\nTouchez une date pour consulter ou modifier vos entrées.",
     },
   },
   map: {
@@ -356,7 +356,7 @@ export const frTranslation = {
     },
     guide: {
       bannerMessage:
-        'Astuce carte 🧭 Activez "Utiliser ma position" pour afficher en priorité les points de dépôt proches.',
+        'Astuce carte 🧭\nActivez "Utiliser ma position" pour afficher en priorité les points de dépôt proches.',
     },
     filter: {
       title: "Points de dépôt à proximité",
@@ -554,7 +554,7 @@ export const frTranslation = {
     },
     banner: {
       welcome: {
-        message: "Bonjour {{name}} ! On ajoute un nouveau geste de tri aujourd'hui ?",
+        message: "Bonjour {{name}} !\nOn ajoute un nouveau geste de tri aujourd'hui ?",
         cta: "Ajouter un enregistrement",
       },
     },

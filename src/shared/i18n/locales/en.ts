@@ -227,7 +227,7 @@ export const enTranslation = {
         "Make sure the recycling symbol is visible.",
         "Capture the item straight on when possible.",
       ],
-      bannerMessage: "Photo tip ✨ Bright light plus a clean, front view keeps the AI spot on.",
+      bannerMessage: "Photo tip ✨\nBright light plus a clean, front view keeps the AI spot on.",
     },
     captured: {
       alt: "Captured image preview",
@@ -318,7 +318,7 @@ export const enTranslation = {
         "New scans appear on the calendar instantly.",
         "Busy days show a dot indicator on the calendar.",
       ],
-      bannerMessage: "Calendar tip 🗓️ Tap any date to instantly review or edit its logs.",
+      bannerMessage: "Calendar tip 🗓️\nTap any date to instantly review or edit its logs.",
     },
   },
   map: {
@@ -343,7 +343,7 @@ export const enTranslation = {
     },
     guide: {
       bannerMessage:
-        'Map tip 🧭 Turn on "Use my location" to highlight nearby drop-off bins first.',
+        'Map tip 🧭\nTurn on "Use my location" to highlight nearby drop-off bins first.',
     },
     filter: {
       title: "Nearby drop-off bins",
@@ -541,7 +541,7 @@ export const enTranslation = {
     },
     banner: {
       welcome: {
-        message: "Hi {{name}}! Ready to log one more recycling win today?",
+        message: "Hi {{name}}!\nReady to log one more recycling win today?",
         cta: "Log activity",
       },
     },

@@ -227,7 +227,7 @@ export const koTranslation = {
         "재활용 기호가 보이도록 찍어주세요.",
         "가능하면 물체 정면에서 촬영해요.",
       ],
-      bannerMessage: "촬영 팁 ✨ 밝은 곳 + 깨끗한 배경 + 정면 촬영이면 인식률이 훨씬 높아져요.",
+      bannerMessage: "촬영 팁 ✨\n밝은 곳 + 깨끗한 배경 + 정면 촬영이면 인식률이 훨씬 높아져요.",
     },
     captured: {
       alt: "촬영한 이미지 미리보기",
@@ -318,7 +318,7 @@ export const koTranslation = {
         "분석 화면에서 새 기록을 추가하면 달력에 표시돼요.",
         "기록이 많은 날은 달력 점 표시로 확인할 수 있어요.",
       ],
-      bannerMessage: "달력 꿀팁 🗓️ 날짜를 누르면 해당 기록을 바로 확인하고 수정할 수 있어요.",
+      bannerMessage: "달력 꿀팁 🗓️\n날짜를 누르면 해당 기록을 바로 확인하고 수정할 수 있어요.",
     },
   },
   map: {
@@ -340,7 +340,7 @@ export const koTranslation = {
       },
     },
     guide: {
-      bannerMessage: '지도 팁 🧭 "내 위치 사용하기"를 켜면 주변 배출함을 우선으로 보여줘요.',
+      bannerMessage: '지도 팁 🧭\n"내 위치 사용하기"를 켜면 주변 배출함을 우선으로 보여줘요.',
     },
     filter: {
       title: "내 주변 배출함",
@@ -538,7 +538,7 @@ export const koTranslation = {
     },
     banner: {
       welcome: {
-        message: "환영해요 {{name}}님! 오늘도 재활용 기록 하나만 더 남겨볼까요?",
+        message: "환영해요 {{name}}님!\n오늘도 재활용 기록 하나만 더 남겨볼까요?",
         cta: "기록 추가하기",
       },
     },
