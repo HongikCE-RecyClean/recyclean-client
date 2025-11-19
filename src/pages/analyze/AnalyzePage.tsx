@@ -13,6 +13,7 @@ import type { RecognitionResult } from "./types";
 import { Button } from "../../shared/ui/Button/Button";
 import { useCamera } from "./hooks/useCamera";
 import { useActivityStore } from "../../shared/state/activityStore";
+import { useNotificationStore } from "../../shared/state/notificationStore";
 import {
   matchMaterialType,
   calculatePoints,
@@ -73,14 +74,13 @@ function dataUrlToFile(dataUrl: string): File | null {
 export function AnalyzePage() {
   const { t } = useTranslation();
   const { addEntry } = useActivityStore();
+  const { showSnackbar } = useNotificationStore();
   // 분석 화면 표시와 결과 상태 정의
   const [isScanning, setIsScanning] = useState(false);
   const [result, setResult] = useState<RecognitionResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   // 카메라 활성화 및 준비 상태 정의
   const [interactionError, setInteractionError] = useState<string | null>(null);
-  // 기록 저장 성공 메시지 상태
-  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // 업로드 입력 및 타이머 관리를 위한 ref 정의
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -174,7 +174,6 @@ export function AnalyzePage() {
       cancelActiveAnalysis();
       setCapturedImage(previewSrc);
       setResult(null);
-      setSaveSuccess(false);
       setInteractionError(null);
       setIsScanning(true);
       void runAiRecognition(sourceFile);
@@ -260,14 +259,11 @@ export function AnalyzePage() {
       points,
     });
 
-    // 성공 메시지 표시
-    setSaveSuccess(true);
-
-    // 3초 후 성공 메시지 숨김
-    setTimeout(() => {
-      setSaveSuccess(false);
-    }, 3000);
-  }, [result, addEntry]);
+    showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
+      type: "success",
+      duration: 3000,
+    });
+  }, [result, addEntry, showSnackbar, t]);
 
   // 분석 상태 초기화 처리 정의
   const reset = () => {
@@ -276,7 +272,6 @@ export function AnalyzePage() {
     setResult(null);
     setCapturedImage(null);
     setInteractionError(null);
-    setSaveSuccess(false);
     stopCamera();
   };
 
@@ -342,10 +337,6 @@ export function AnalyzePage() {
 
       {result && !isScanning && (
         <AnalyzeResultCard result={result} onReset={reset} onSave={handleSaveEntry} />
-      )}
-
-      {saveSuccess && (
-        <S.SuccessMessage role="alert">{t("analyze.result.saveSuccess")}</S.SuccessMessage>
       )}
 
       {/* 오류 알림을 페이지 하단에 고정 */}

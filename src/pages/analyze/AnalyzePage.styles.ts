@@ -225,16 +225,6 @@ export const ErrorMessage = styled.div`
   font-weight: ${({ theme }) => theme.typography.weights.medium};
 `;
 
-// 성공 메시지 영역 정의
-export const SuccessMessage = styled.div`
-  padding: ${({ theme }) => theme.spacing(3)};
-  border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.successSurface};
-  color: ${({ theme }) => theme.colors.success};
-  font-weight: ${({ theme }) => theme.typography.weights.medium};
-  text-align: center;
-`;
-
 // 결과 팁 텍스트 스타일
 export const resultTipText = css`
   font-size: 0.85rem;
