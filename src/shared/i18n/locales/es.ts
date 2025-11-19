@@ -303,7 +303,7 @@ export const esTranslation = {
     },
   },
   calendar: {
-    overviewTitle: "Calendario de actividad de {{month}}",
+    overviewTitle: "{{month}}",
     stats: {
       records: "Registros totales",
       items: "Artículos totales",
@@ -316,7 +316,7 @@ export const esTranslation = {
       empty: "Aún no hay registros este mes.",
     },
     entries: {
-      title: "Registros del {{date}}",
+      title: "{{date}}",
       meta: "{{count}} artículos · {{time}}",
       points: "+{{points}} pts",
       empty: "No hay registros este día.",

@@ -292,7 +292,7 @@ export const enTranslation = {
     },
   },
   calendar: {
-    overviewTitle: "{{month}} activity calendar",
+    overviewTitle: "{{month}}",
     stats: {
       records: "Total records",
       items: "Total items",
@@ -305,7 +305,7 @@ export const enTranslation = {
       empty: "No records for this month yet.",
     },
     entries: {
-      title: "Records on {{date}}",
+      title: "{{date}}",
       meta: "{{count}} items · {{time}}",
       points: "+{{points}} pts",
       empty: "No entries on this day.",

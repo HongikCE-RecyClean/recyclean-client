@@ -292,7 +292,7 @@ export const koTranslation = {
     },
   },
   calendar: {
-    overviewTitle: "{{month}} 기록 달력",
+    overviewTitle: "{{month}}",
     stats: {
       records: "총 기록 수",
       items: "총 수거량",
@@ -305,7 +305,7 @@ export const koTranslation = {
       empty: "이 달에는 아직 기록이 없어요.",
     },
     entries: {
-      title: "{{date}} 기록",
+      title: "{{date}}",
       meta: "{{count}}개 · {{time}}",
       points: "+{{points}} pts",
       empty: "선택한 날짜에는 기록이 없어요.",
