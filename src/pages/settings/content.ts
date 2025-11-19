@@ -57,20 +57,19 @@ export const APP_INFO_COPY: Record<SupportedLanguage, AppInfoCopy> = {
       "All app content is protected by copyright. Do not reproduce or distribute without permission.",
   },
   ko: {
-    description:
-      "프라이버시 우선 설계로 재활용 추적을 더 쉽고 보람있게 만드는 프로그레시브 웹 앱이에요.",
+    description: "재활용 추적을 더 쉽고 보람있게 만드는 서비스 리싸이클린입니다.",
     versionTitle: "버전 정보",
     currentVersionLabel: "현재 버전:",
-    currentVersionValue: "0.1.0 (베타)",
+    currentVersionValue: "1.0.3",
     latestUpdateLabel: "최신 업데이트:",
-    latestUpdateValue: "2025년 1월",
+    latestUpdateValue: "2025년 11월 19일",
     featuresTitle: "주요 기능",
     features: [
       "AI 기반 재활용 품목 이미지 분석",
-      "로컬 우선 활동 추적 및 포인트/스트릭 시스템",
+      "재활용 활동 추적 및 포인트 시스템",
       "캘린더 기반 재활용 기록 관리",
       "주변 재활용 센터 지도 검색",
-      "로그인 불필요한 오프라인 지원 PWA",
+      "오프라인 기능 지원 PWA",
     ],
     teamTitle: "개발팀",
     companyLabel: "개발사:",
@@ -249,7 +248,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
       dataLoss: {
         question: "Q. 데이터가 사라졌어요",
         answer:
-          "모든 데이터는 브라우저 localStorage에 저장돼요. 브라우저 캐시/쿠키 삭제나 기기 변경 시 데이터가 영구적으로 삭제되며 복구할 수 없어요. 백업 기능이 없으니 주의해주세요.",
+          "모든 데이터는 브라우저에 저장돼요. 브라우저 캐시/쿠키 삭제나 기기 변경 시 데이터가 영구적으로 삭제되며 복구할 수 없어요. 백업 기능이 없으니 주의해주세요.",
       },
       issues: {
         question: "Q. 앱이 제대로 작동하지 않아요",
