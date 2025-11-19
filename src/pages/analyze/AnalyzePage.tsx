@@ -10,7 +10,6 @@ import {
   AnalyzeTipsCard,
 } from "./components";
 import type { RecognitionResult } from "./types";
-import { Card, CardContent } from "../../shared/ui/Card/Card";
 import { Button } from "../../shared/ui/Button/Button";
 import { useCamera } from "./hooks/useCamera";
 import { useActivityStore } from "../../shared/state/activityStore";
@@ -310,8 +309,8 @@ export function AnalyzePage() {
 
       {/* 카메라 촬영 카드를 조건부 렌더링 */}
       {isCameraActive && (
-        <Card>
-          <CardContent>
+        <S.SectionCard>
+          <S.SectionCardContent>
             <S.CameraContainer>
               <S.VideoWrapper>
                 <video
@@ -333,8 +332,8 @@ export function AnalyzePage() {
                 </Button>
               </S.CameraControls>
             </S.CameraContainer>
-          </CardContent>
-        </Card>
+          </S.SectionCardContent>
+        </S.SectionCard>
       )}
 
       {capturedImage && <AnalyzeCapturedImageCard imageSrc={capturedImage} onReset={reset} />}

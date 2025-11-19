@@ -1,6 +1,5 @@
 import { Camera, Upload } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent } from "../../../shared/ui/Card/Card";
 import { Button } from "../../../shared/ui/Button/Button";
 import * as S from "../AnalyzePage.styles";
 
@@ -14,8 +13,8 @@ interface AnalyzeActionsCardProps {
 export function AnalyzeActionsCard({ onCapture, onUpload, disabled }: AnalyzeActionsCardProps) {
   const { t } = useTranslation();
   return (
-    <Card>
-      <CardContent>
+    <S.SectionCard>
+      <S.SectionCardContent>
         {/* 행동 버튼 배열 구성 */}
         <S.ActionsContainer>
           {/* 촬영 버튼 */}
@@ -29,7 +28,7 @@ export function AnalyzeActionsCard({ onCapture, onUpload, disabled }: AnalyzeAct
             {t("analyze.actions.upload")}
           </Button>
         </S.ActionsContainer>
-      </CardContent>
-    </Card>
+      </S.SectionCardContent>
+    </S.SectionCard>
   );
 }

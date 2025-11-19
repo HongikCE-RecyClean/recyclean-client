@@ -1,6 +1,5 @@
 import { RotateCcw } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent } from "../../../shared/ui/Card/Card";
 import { ImageWithFallback } from "../../../shared/media/ImageWithFallback/ImageWithFallback";
 import * as S from "../AnalyzePage.styles";
 
@@ -13,8 +12,8 @@ interface AnalyzeCapturedImageCardProps {
 export function AnalyzeCapturedImageCard({ imageSrc, onReset }: AnalyzeCapturedImageCardProps) {
   const { t } = useTranslation();
   return (
-    <Card>
-      <CardContent>
+    <S.SectionCard>
+      <S.SectionCardContent>
         {/* 촬영 이미지 프리뷰 영역 */}
         {/* 촬영 이미지 프레임 클래스 적용 */}
         <S.ImageWrapper css={S.capturedImageFrame}>
@@ -29,7 +28,7 @@ export function AnalyzeCapturedImageCard({ imageSrc, onReset }: AnalyzeCapturedI
             <RotateCcw size={16} />
           </S.ResetButton>
         </S.ImageWrapper>
-      </CardContent>
-    </Card>
+      </S.SectionCardContent>
+    </S.SectionCard>
   );
 }

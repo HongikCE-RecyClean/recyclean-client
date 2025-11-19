@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Button } from "../../shared/ui/Button/Button";
-import { CardContent } from "../../shared/ui/Card/Card";
+import { Card, CardContent, CardHeader } from "../../shared/ui/Card/Card";
 
 // 분석 페이지 전체 레이아웃 컨테이너 정의
 export const PageContainer = styled.div`
@@ -11,6 +11,29 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(5)};
+`;
+
+// 분석 카드 공용 래퍼 정의
+export const SectionCard = styled(Card)`
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  transition: none;
+
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+`;
+
+// 카드 헤더 좌우 패딩 제거
+export const SectionCardHeader = styled(CardHeader)`
+  padding: ${({ theme }) => `${theme.spacing(4)} 0`};
+`;
+
+// 카드 콘텐츠 좌우 패딩 제거
+export const SectionCardContent = styled(CardContent)`
+  padding: ${({ theme }) => `${theme.spacing(4)} 0`};
 `;
 
 // 분석 액션 영역 정렬 정의
@@ -126,7 +149,7 @@ export const ResultBody = styled.div`
 `;
 
 // 스캔 진행 카드 컨텐츠 정렬 스타일
-export const ScanningContent = styled(CardContent)`
+export const ScanningContent = styled(SectionCardContent)`
   text-align: center;
   gap: ${({ theme }) => theme.spacing(4)};
 `;

@@ -1,8 +1,7 @@
-import { AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Button } from "../../../shared/ui/Button/Button";
-import { Card, CardContent, CardHeader } from "../../../shared/ui/Card/Card";
 import type { RecognitionResult } from "../types";
 import * as S from "../AnalyzePage.styles";
 
@@ -23,24 +22,18 @@ export function AnalyzeResultCard({ result, onReset, onSave }: AnalyzeResultCard
   );
 
   return (
-    <Card>
-      <CardHeader>
+    <S.SectionCard>
+      <S.SectionCardHeader>
         <S.ResultHeader>
           <S.ResultTitle>
-            {/* 재활용 여부 아이콘 */}
-            {result.recyclable ? (
-              <CheckCircle size={20} color="#16a34a" />
-            ) : (
-              <XCircle size={20} color="#dc2626" />
-            )}
             <span>{t("analyze.result.title")}</span>
           </S.ResultTitle>
           <Badge variant="outline">
             {t("analyze.result.confidence", { value: result.confidence })}
           </Badge>
         </S.ResultHeader>
-      </CardHeader>
-      <CardContent>
+      </S.SectionCardHeader>
+      <S.SectionCardContent>
         <S.ResultBody>
           {/* 항목 요약 영역 */}
           {/* 결과 요약 행 클래스 적용 */}
@@ -82,7 +75,7 @@ export function AnalyzeResultCard({ result, onReset, onSave }: AnalyzeResultCard
             </Button>
           </div>
         </S.ResultBody>
-      </CardContent>
-    </Card>
+      </S.SectionCardContent>
+    </S.SectionCard>
   );
 }

@@ -4,6 +4,7 @@ import { BottomSheet } from "../../../shared/ui/BottomSheet/BottomSheet";
 import { Button } from "../../../shared/ui/Button/Button";
 import { TextField } from "../../../shared/ui/TextField/TextField";
 import { SelectField } from "../../../shared/ui/SelectField/SelectField";
+import { NumberInput } from "../../../shared/ui/NumberInput/NumberInput";
 import { useActivityStore } from "../../../shared/state/activityStore";
 import { useNotificationStore } from "../../../shared/state/notificationStore";
 import type { SnackbarOptions } from "../../../shared/types/notifications";
@@ -44,7 +45,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   // 폼 상태
   const [category, setCategory] = useState<MaterialCategoryId>("plastic");
   const [materialType, setMaterialType] = useState<MaterialId | "">("");
-  const [amount, setAmount] = useState<string>("1");
+  const [amount, setAmount] = useState<number>(1);
   const [date, setDate] = useState<string>(() => formatDateInput(new Date()));
   const [time, setTime] = useState<string>(() => formatTimeInput(new Date()));
   const [entryMode, setEntryMode] = useState<EntryMode>("record");
@@ -68,7 +69,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
     const now = new Date();
     setCategory("plastic");
     setMaterialType("");
-    setAmount("1");
+    setAmount(1);
     setDate(formatDateInput(now));
     setTime(formatTimeInput(now));
     setEntryMode("record");
@@ -101,7 +102,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
     event.preventDefault(); // 폼 기본 제출에 의한 전체 페이지 리로드 방지
     event.stopPropagation(); // 다른 핸들러로 이벤트 버블링되는 상황 차단
 
-    const amountNum = parseInt(amount, 10);
+    const amountNum = Number.isFinite(amount) ? Math.max(1, Math.floor(amount)) : 1;
     const type = (materialType || materialOptions[0] || "other") as MaterialId;
 
     // 유효성 검사
@@ -198,13 +199,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
         {/* 수량 입력 */}
         <S.FormGroup>
           <S.Label>{t("dashboard.addEntry.amount")}</S.Label>
-          <TextField
-            type="number"
-            min="1"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="1"
-          />
+          <NumberInput value={amount} min={1} step={1} onChange={(value) => setAmount(value)} />
         </S.FormGroup>
 
         {/* 날짜/시간 선택 */}
@@ -226,7 +221,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
           {t("dashboard.addEntry.pointsPreview", {
             points: calculatePoints(
               (materialType || materialOptions[0] || "other") as MaterialId,
-              parseInt(amount, 10) || 1,
+              amount || 1,
             ),
           })}
         </S.PointsPreview>
