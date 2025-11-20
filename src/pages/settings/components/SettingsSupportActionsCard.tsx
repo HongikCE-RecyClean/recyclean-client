@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { HelpCircle, Info, Shield, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Button } from "../../../shared/ui/Button/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
@@ -68,10 +67,7 @@ export function SettingsSupportActionsCard() {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>
-            <Shield size={18} />
-            {t("settings.support.title")}
-          </CardTitle>
+          <CardTitle>{t("settings.support.title")}</CardTitle>
         </CardHeader>
         <CardContent>
           <S.ActionList>
@@ -81,7 +77,6 @@ export function SettingsSupportActionsCard() {
               css={[S.actionButtonAlignStart, S.supportActionButtonNoShadow]}
               onClick={handlePrivacyClick}
             >
-              <Shield size={16} />
               {t("settings.support.privacy")}
             </Button>
             <Button
@@ -89,7 +84,6 @@ export function SettingsSupportActionsCard() {
               css={[S.actionButtonAlignStart, S.supportActionButtonNoShadow]}
               onClick={handleHelpClick}
             >
-              <HelpCircle size={16} />
               {t("settings.support.helpCenter")}
             </Button>
             <Button
@@ -97,7 +91,6 @@ export function SettingsSupportActionsCard() {
               css={[S.actionButtonAlignStart, S.supportActionButtonNoShadow]}
               onClick={handleAppInfoClick}
             >
-              <Info size={16} />
               {t("settings.support.about")}
             </Button>
             <Button
@@ -105,7 +98,6 @@ export function SettingsSupportActionsCard() {
               css={[S.actionButtonAlignStart, S.supportActionButtonNoShadow]}
               onClick={handleResetData}
             >
-              <Trash2 size={16} />
               {t("settings.support.resetData")}
             </Button>
           </S.ActionList>
