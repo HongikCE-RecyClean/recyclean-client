@@ -14,7 +14,7 @@ export const Overlay = styled.div<{ isOpen: boolean; $interactive: boolean }>`
 `;
 
 // 바텀시트 컨테이너
-export const Container = styled.div<{ isOpen: boolean }>`
+export const Container = styled.div<{ isOpen: boolean; $isDragging: boolean }>`
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -27,8 +27,9 @@ export const Container = styled.div<{ isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   box-shadow: ${({ theme }) => theme.shadows.medium};
-  transition: transform 0.3s ease-in-out;
-  transform: translateX(-50%) translateY(${({ isOpen }) => (isOpen ? "0" : "100%")});
+  transition: ${({ $isDragging }) => ($isDragging ? "none" : "transform 0.3s ease-in-out")};
+  transform: ${({ isOpen }) =>
+    `translateX(-50%) translateY(calc(${isOpen ? "0%" : "100%"} + var(--drag-offset, 0px)))`};
 `;
 
 // 드래그 핸들 영역
@@ -39,6 +40,8 @@ export const Header = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${({ theme }) => theme.spacing(2)};
+  touch-action: pan-y;
+  cursor: grab;
 `;
 
 // 드래그 핸들 바

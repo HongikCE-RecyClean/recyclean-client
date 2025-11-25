@@ -1,4 +1,12 @@
-import { useEffect, useId, useRef, useState, type ReactNode, type TransitionEvent } from "react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type PointerEvent,
+  type ReactNode,
+  type TransitionEvent,
+} from "react";
 import { useTheme } from "@emotion/react";
 import * as S from "./BottomSheet.styles";
 import { useBottomSheetStore } from "../../state/bottomSheetStore";
@@ -26,6 +34,10 @@ export function BottomSheet({ isOpen, onClose, onAfterClose, title, children }: 
   const overlayTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const afterCloseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const wasPreviouslyOpenRef = useRef(isOpen);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartYRef = useRef<number | null>(null);
+  const activePointerIdRef = useRef<number | null>(null);
 
   // 전역 시트 상태 등록
   useEffect(() => {
@@ -139,6 +151,79 @@ export function BottomSheet({ isOpen, onClose, onAfterClose, title, children }: 
     };
   }, [isOpen]);
 
+  // 드래그 제스처 상태 초기화
+  useEffect(() => {
+    if (!isOpen) {
+      setIsDragging(false);
+      setDragOffset(0);
+      dragStartYRef.current = null;
+      activePointerIdRef.current = null;
+    }
+  }, [isOpen]);
+
+  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (!isOpen) {
+      return;
+    }
+    dragStartYRef.current = event.clientY;
+    activePointerIdRef.current = event.pointerId;
+    setIsDragging(true);
+    setDragOffset(0);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (!isDragging) {
+      return;
+    }
+    if (activePointerIdRef.current !== event.pointerId) {
+      return;
+    }
+    if (dragStartYRef.current === null) {
+      return;
+    }
+    const deltaY = event.clientY - dragStartYRef.current;
+    setDragOffset(deltaY > 0 ? deltaY : 0);
+  };
+
+  const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (!isDragging) {
+      return;
+    }
+    if (activePointerIdRef.current !== event.pointerId) {
+      return;
+    }
+    if (dragStartYRef.current === null) {
+      return;
+    }
+
+    const deltaY = event.clientY - dragStartYRef.current;
+    const shouldClose = deltaY > 72;
+
+    setIsDragging(false);
+    setDragOffset(0);
+    dragStartYRef.current = null;
+    activePointerIdRef.current = null;
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    if (shouldClose) {
+      onClose();
+    }
+  };
+
+  const handlePointerCancel = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    setIsDragging(false);
+    setDragOffset(0);
+    dragStartYRef.current = null;
+    activePointerIdRef.current = null;
+  };
+
   return (
     <>
       {/* 오버레이 배경 */}
@@ -147,15 +232,22 @@ export function BottomSheet({ isOpen, onClose, onAfterClose, title, children }: 
       {/* 바텀시트 컨테이너 */}
       <S.Container
         isOpen={isOpen}
+        $isDragging={isDragging}
         onTransitionEnd={handleTransitionEnd}
         style={
           {
             "--link-color": theme.colors.info,
+            "--drag-offset": `${dragOffset}px`,
           } as React.CSSProperties
         }
       >
         {/* 헤더 영역 */}
-        <S.Header>
+        <S.Header
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerCancel}
+        >
           {/* 드래그 핸들 */}
           <S.DragHandle />
           {/* 제목 */}
