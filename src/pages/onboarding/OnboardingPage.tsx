@@ -214,15 +214,32 @@ export function OnboardingPage() {
 
   // 파티클 데이터 생성
   const particles = useMemo<ParticleData[]>(() => {
-    const count = particleType === "rain" ? 20 : 12;
+    // 타입별 개수 설정
+    const count = particleType === "rain" ? 20 : particleType === "snow" ? 30 : 12;
+
     return Array.from({ length: count }, (_, i) => {
-      const duration = particleType === "rain" ? 2 + Math.random() * 2 : 10 + Math.random() * 8;
+      // 타입별 duration 설정
+      const duration =
+        particleType === "rain"
+          ? 2 + Math.random() * 2
+          : particleType === "snow"
+            ? 12 + Math.random() * 10
+            : 10 + Math.random() * 8;
+
+      // 타입별 크기 설정
+      const size =
+        particleType === "rain"
+          ? 12 + Math.random() * 8
+          : particleType === "snow"
+            ? 10 + Math.random() * 10
+            : 20 + Math.random() * 16;
+
       return {
         id: i,
         left: 5 + Math.random() * 90,
         delay: -Math.random() * duration,
         duration,
-        size: particleType === "rain" ? 12 + Math.random() * 8 : 20 + Math.random() * 16,
+        size,
         rotation: Math.random() * 360,
         swayAmount: particleType === "rain" ? 5 : 40 + Math.random() * 60,
         direction: (Math.random() > 0.5 ? 1 : -1) as 1 | -1,
