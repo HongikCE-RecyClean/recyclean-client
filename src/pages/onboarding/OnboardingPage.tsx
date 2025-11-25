@@ -112,7 +112,7 @@ function Particle({ particle, type }: { particle: ParticleData; type: ParticleTy
       case "autumnLeaf":
         return ["#e67e22", "#d35400", "#c0392b", "#e74c3c"][particle.id % 4];
       case "snow":
-        return theme.colors.textMuted;
+        return "#c0c0c0"; // 옅은 회색
       case "rain":
         return theme.colors.secondary;
       default:
@@ -204,7 +204,7 @@ export function OnboardingPage() {
       case "autumnLeaf":
         return "#d35400";
       case "snow":
-        return theme.colors.text;
+        return "#888888"; // 옅은 회색
       case "rain":
         return theme.colors.secondary;
       default:
