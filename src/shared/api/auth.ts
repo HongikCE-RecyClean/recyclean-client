@@ -54,6 +54,7 @@ export function useKakaoLogin() {
 
   return useMutation({
     mutationFn: loginWithKakao,
+    retry: false, // 로그인 실패 시 자동 재시도 비활성화
     onSuccess: (data) => {
       // authStore에 인증 정보 저장
       setAuth({

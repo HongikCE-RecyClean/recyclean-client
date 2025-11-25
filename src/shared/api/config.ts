@@ -1,5 +1,4 @@
 // API 기본 설정 관련 유틸
-const DEFAULT_BASE_URL = "/";
 
 // Mock API 사용 여부 확인
 export function isMockApiEnabled(): boolean {
@@ -10,7 +9,14 @@ export function isMockApiEnabled(): boolean {
 
 // API 기본 URL 반환
 export function getApiBaseUrl(): string {
-  // 환경 변수에서 백엔드 주소를 우선적으로 참조
+  // 개발 모드에서는 빈 문자열 반환 (Vite 프록시 사용)
+  // 프로덕션에서는 환경 변수 또는 동일 출처 사용
+  if (import.meta.env?.DEV) {
+    // 개발 모드: 상대 경로로 요청 → Vite 프록시가 백엔드로 전달
+    return "";
+  }
+
+  // 프로덕션: 환경 변수에서 백엔드 주소 참조
   const baseUrl = import.meta.env?.VITE_API_BASE_URL;
   if (typeof baseUrl === "string") {
     const trimmed = baseUrl.trim();
@@ -19,12 +25,12 @@ export function getApiBaseUrl(): string {
     }
   }
 
-  // 환경 변수가 없을 때는 동일 출처 혹은 기본값 사용
+  // 환경 변수가 없을 때는 동일 출처 사용 (Nginx 프록시 등)
   if (typeof window !== "undefined") {
     return window.location.origin;
   }
 
-  return DEFAULT_BASE_URL;
+  return "";
 }
 
 // API 경로와 기본 URL 결합

@@ -26,6 +26,14 @@ export default defineConfig(() => {
     },
     server: {
       port: 5173,
+      // 로컬 개발 시 백엔드 API 프록시 (CORS 우회)
+      proxy: {
+        "/api": {
+          target: "https://www.recyclean-server.com",
+          changeOrigin: true,
+          secure: true,
+        },
+      },
     },
     test: {
       globals: true,
