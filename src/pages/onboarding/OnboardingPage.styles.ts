@@ -167,3 +167,54 @@ export const StartButton = styled.button`
     box-shadow: ${({ theme }) => theme.shadows.soft};
   }
 `;
+
+// 카카오 로그인 버튼 스타일 (카카오 브랜드 가이드 준수)
+export const KakaoLoginButton = styled.button`
+  width: 100%;
+  max-width: 400px;
+  border: none;
+  border-radius: 12px;
+  background: #fee500; /* 카카오 노란색 */
+  color: #000000de; /* 카카오 검정 텍스트 */
+  padding: ${({ theme }) => `${theme.spacing(4)} ${theme.spacing(5)}`};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+  cursor: pointer;
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  font-size: 1.05rem;
+  box-shadow: ${({ theme }) => theme.shadows.soft};
+  transition:
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(0.95);
+    box-shadow: ${({ theme }) => theme.shadows.medium};
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    filter: brightness(0.9);
+    box-shadow: ${({ theme }) => theme.shadows.soft};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
+// 카카오 아이콘 (SVG 인라인)
+export const KakaoIcon = styled.span`
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000000' d='M12 3c5.8 0 10.5 3.66 10.5 8.18 0 4.52-4.7 8.18-10.5 8.18-.88 0-1.73-.08-2.54-.24l-4.14 2.72a.5.5 0 0 1-.78-.54l.98-3.67C3.24 16.1 1.5 13.76 1.5 11.18 1.5 6.66 6.2 3 12 3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+`;

@@ -21,6 +21,22 @@ export const esTranslation = {
     hint: "Empieza a actuar por el planeta con {{appName}} ahora.",
     nameRequired: "Ingresa un apodo.",
     namePlaceholder: "Ingresa tu apodo",
+    kakaoLogin: "Continuar con Kakao",
+    kakaoNotConfigured: "El inicio de sesión con Kakao no está configurado",
+  },
+  auth: {
+    callback: {
+      loading: "Procesando tu inicio de sesión...",
+      success: "¡Inicio de sesión exitoso!",
+      redirecting: "Redirigiendo en breve...",
+      error: "Error de inicio de sesión",
+      retry: "Reintentar",
+    },
+    errors: {
+      kakaoFailed: "Error en el inicio de sesión con Kakao",
+      noCode: "Falta el código de autorización",
+      loginFailed: "Error de inicio de sesión. Por favor, inténtalo de nuevo.",
+    },
   },
   dashboard: {
     welcome: {

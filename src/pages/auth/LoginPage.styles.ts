@@ -186,3 +186,112 @@ export const StartButton = styled.button`
       `};
   }
 `;
+
+// ============================================================
+// OAuth 콜백 페이지 스타일
+// ============================================================
+
+// 스피너 회전 애니메이션
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+// 상태 컨테이너
+export const StatusContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(8)};
+  animation: ${fadeIn} 0.4s ease-out;
+`;
+
+// 로딩 스피너
+export const Spinner = styled.div`
+  width: 48px;
+  height: 48px;
+  border: 4px solid ${({ theme }) => theme.colors.border};
+  border-top-color: ${({ theme }) => theme.colors.primary};
+  border-radius: 50%;
+  animation: ${spin} 1s linear infinite;
+`;
+
+// 상태 텍스트
+export const StatusText = styled.h2`
+  margin: 0;
+  font-size: 1.25rem;
+  color: ${({ theme }) => theme.colors.text};
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  text-align: center;
+`;
+
+// 보조 텍스트
+export const SubText = styled.p`
+  margin: 0;
+  font-size: 0.95rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+  text-align: center;
+`;
+
+// 에러 메시지
+export const ErrorMessage = styled.p`
+  margin: 0;
+  font-size: 0.95rem;
+  color: ${({ theme }) => theme.colors.danger};
+  text-align: center;
+  max-width: 300px;
+  line-height: 1.5;
+`;
+
+// 성공 아이콘
+export const SuccessIcon = styled.div`
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.successSurface};
+  color: ${({ theme }) => theme.colors.success};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+`;
+
+// 에러 아이콘
+export const ErrorIcon = styled.div`
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.colors.dangerSurface};
+  color: ${({ theme }) => theme.colors.danger};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+`;
+
+// 재시도 버튼
+export const RetryButton = styled.button`
+  margin-top: ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => `${theme.spacing(3)} ${theme.spacing(6)}`};
+  border: none;
+  border-radius: ${({ theme }) => theme.radii.md};
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primaryContrast};
+  font-size: 1rem;
+  font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    filter: brightness(0.9);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;

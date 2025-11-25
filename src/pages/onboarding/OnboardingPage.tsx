@@ -1,28 +1,45 @@
 import { useMemo } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Header } from "shared/layout/Header/Header";
 import { useUserStore } from "shared/state/userStore";
+import { useAuthStore } from "shared/state/authStore";
+import { getKakaoLoginUrl } from "shared/api/auth";
+import {
+  getKakaoClientId,
+  getKakaoRedirectUri,
+  isKakaoAuthConfigured,
+} from "shared/api/authConfig";
 import * as S from "./OnboardingPage.styles";
 
-// 앱 소개와 시작 버튼만 노출하는 온보딩 페이지
+// 앱 소개와 카카오 로그인 버튼을 노출하는 온보딩 페이지
 export function OnboardingPage() {
-  const navigate = useNavigate();
   const { t } = useTranslation();
-  const { completeOnboarding, isOnboarded } = useUserStore();
+  const { isOnboarded } = useUserStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const appName = t("app.name");
-  const descriptionLines = useMemo(() => t("onboarding.description").split("\\n"), [t]); // 설명 줄 분리
+  const descriptionLines = useMemo(() => t("onboarding.description").split("\\n"), [t]);
 
-  // 시작 버튼을 눌렀을 때 온보딩 완료 상태 저장
-  const handleStart = () => {
-    completeOnboarding();
-    navigate("/", { replace: true });
+  // 카카오 로그인 버튼 클릭 시 카카오 인증 페이지로 리다이렉트
+  const handleKakaoLogin = () => {
+    const clientId = getKakaoClientId();
+    const redirectUri = getKakaoRedirectUri();
+
+    if (!clientId) {
+      console.error("카카오 클라이언트 ID가 설정되지 않았어요.");
+      return;
+    }
+
+    const kakaoLoginUrl = getKakaoLoginUrl(redirectUri, clientId);
+    window.location.href = kakaoLoginUrl;
   };
 
-  // 온보딩 완료 상태는 즉시 대시보드로 리다이렉트
-  if (isOnboarded) {
+  // 이미 인증된 사용자 또는 온보딩 완료 시 대시보드로 리다이렉트
+  if (isAuthenticated || isOnboarded) {
     return <Navigate to="/" replace />;
   }
+
+  const isKakaoConfigured = isKakaoAuthConfigured();
 
   // 온보딩 화면 UI 구성 반환
   return (
@@ -44,11 +61,17 @@ export function OnboardingPage() {
             ))}
           </S.Description>
         </S.TextGroup>
-        {/* 시작 버튼 영역 */}
+        {/* 카카오 로그인 버튼 영역 */}
         <S.Footer>
-          <S.StartButton type="button" onClick={handleStart}>
-            {t("onboarding.cta")}
-          </S.StartButton>
+          <S.KakaoLoginButton
+            type="button"
+            onClick={handleKakaoLogin}
+            disabled={!isKakaoConfigured}
+          >
+            <S.KakaoIcon />
+            {t("onboarding.kakaoLogin")}
+          </S.KakaoLoginButton>
+          {!isKakaoConfigured && <S.ButtonHint>{t("onboarding.kakaoNotConfigured")}</S.ButtonHint>}
           <S.ButtonHint>{t("onboarding.hint", { appName })}</S.ButtonHint>
         </S.Footer>
       </S.Content>

@@ -21,6 +21,22 @@ export const frTranslation = {
     hint: "Commencez à agir pour la planète avec {{appName}} dès maintenant.",
     nameRequired: "Veuillez saisir un pseudo.",
     namePlaceholder: "Saisir un pseudo",
+    kakaoLogin: "Continuer avec Kakao",
+    kakaoNotConfigured: "La connexion Kakao n'est pas configurée",
+  },
+  auth: {
+    callback: {
+      loading: "Connexion en cours...",
+      success: "Connexion réussie !",
+      redirecting: "Redirection en cours...",
+      error: "Échec de la connexion",
+      retry: "Réessayer",
+    },
+    errors: {
+      kakaoFailed: "Échec de la connexion Kakao",
+      noCode: "Code d'autorisation manquant",
+      loginFailed: "Échec de la connexion. Veuillez réessayer.",
+    },
   },
   dashboard: {
     welcome: {

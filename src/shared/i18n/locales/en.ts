@@ -20,6 +20,22 @@ export const enTranslation = {
     hint: "Start living sustainably with {{appName}} now.",
     nameRequired: "Please enter a nickname.",
     namePlaceholder: "Enter nickname",
+    kakaoLogin: "Continue with Kakao",
+    kakaoNotConfigured: "Kakao login is not configured",
+  },
+  auth: {
+    callback: {
+      loading: "Processing your login...",
+      success: "Login successful!",
+      redirecting: "Redirecting shortly...",
+      error: "Login failed",
+      retry: "Try again",
+    },
+    errors: {
+      kakaoFailed: "Kakao login failed",
+      noCode: "Authorization code missing",
+      loginFailed: "Login failed. Please try again.",
+    },
   },
   dashboard: {
     welcome: {

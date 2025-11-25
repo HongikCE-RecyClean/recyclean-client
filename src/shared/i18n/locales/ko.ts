@@ -20,6 +20,22 @@ export const koTranslation = {
     hint: "지금 바로 {{appName}}과 함께 환경 실천을 시작해요.",
     nameRequired: "닉네임을 입력해주세요.",
     namePlaceholder: "닉네임 입력",
+    kakaoLogin: "카카오로 시작하기",
+    kakaoNotConfigured: "카카오 로그인이 설정되지 않았어요",
+  },
+  auth: {
+    callback: {
+      loading: "로그인 처리 중이에요...",
+      success: "로그인 성공!",
+      redirecting: "잠시 후 이동해요...",
+      error: "로그인에 실패했어요",
+      retry: "다시 시도",
+    },
+    errors: {
+      kakaoFailed: "카카오 로그인에 실패했어요",
+      noCode: "인증 코드가 없어요",
+      loginFailed: "로그인에 실패했어요. 다시 시도해주세요.",
+    },
   },
   dashboard: {
     welcome: {
