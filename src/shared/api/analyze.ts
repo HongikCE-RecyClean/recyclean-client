@@ -1,19 +1,13 @@
 import { buildApiUrl } from "./config";
+import type { AiLabelingResponse, AiPrediction } from "./types";
+
+// re-export 타입 (하위 호환성)
+export type { AiLabelingResponse, AiPrediction } from "./types";
 
 // 기본 프록시 경로에 /api prefix 적용
 const DEFAULT_AI_LABELING_PATH = "/api/ai/labeling";
 
-// AI 라벨링 API 응답 타입 정의
-export interface AiPrediction {
-  category: string;
-  confidence: number;
-  bbox: number[];
-}
-
-export interface AiLabelingResponse {
-  predictions?: AiPrediction[];
-}
-
+// AI 라벨링 엔드포인트 결정
 function getAiLabelingEndpoint(): string {
   const envEndpoint = import.meta.env?.VITE_AI_LABELING_ENDPOINT as string | undefined;
   if (envEndpoint) {
