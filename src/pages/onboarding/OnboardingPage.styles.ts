@@ -45,10 +45,9 @@ export const LeavesContainer = styled.div`
   z-index: 0;
 `;
 
-// 나뭇잎 SVG
-export const LeafSvg = styled.svg`
-  color: ${({ theme }) => theme.colors.primary};
-  opacity: 0.4;
+// 파티클 SVG (나뭇잎, 눈, 비)
+export const ParticleSvg = styled.svg`
+  pointer-events: none;
 `;
 
 // 헤더 컨테이너
