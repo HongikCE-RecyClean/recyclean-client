@@ -114,7 +114,7 @@ function Particle({ particle, type }: { particle: ParticleData; type: ParticleTy
       case "snow":
         return "#c0c0c0"; // 옅은 회색
       case "rain":
-        return theme.colors.secondary;
+        return "#60a5fa"; // 밝은 파랑
       default:
         return theme.colors.primary;
     }
@@ -206,7 +206,7 @@ export function OnboardingPage() {
       case "snow":
         return "#888888"; // 옅은 회색
       case "rain":
-        return theme.colors.secondary;
+        return "#60a5fa"; // 밝은 파랑
       default:
         return theme.colors.primary;
     }
