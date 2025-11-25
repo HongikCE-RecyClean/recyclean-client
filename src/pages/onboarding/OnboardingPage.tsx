@@ -184,6 +184,7 @@ function Particle({ particle, type }: { particle: ParticleData; type: ParticleTy
 // ============================================================
 export function OnboardingPage() {
   const { t } = useTranslation();
+  const theme = useTheme();
   const { isOnboarded } = useUserStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const appName = t("app.name");
@@ -194,6 +195,22 @@ export function OnboardingPage() {
     const types: ParticleType[] = ["greenLeaf", "autumnLeaf", "snow", "rain"];
     return types[Math.floor(Math.random() * types.length)];
   }, []);
+
+  // 타입별 제목 색상
+  const titleColor = useMemo(() => {
+    switch (particleType) {
+      case "greenLeaf":
+        return theme.colors.primary;
+      case "autumnLeaf":
+        return "#d35400";
+      case "snow":
+        return theme.colors.text;
+      case "rain":
+        return theme.colors.secondary;
+      default:
+        return theme.colors.primary;
+    }
+  }, [particleType, theme]);
 
   // 파티클 데이터 생성
   const particles = useMemo<ParticleData[]>(() => {
@@ -249,7 +266,7 @@ export function OnboardingPage() {
 
       <S.Content>
         <S.TextGroup>
-          <S.BrandName>{appName}</S.BrandName>
+          <S.BrandName style={{ color: titleColor }}>{appName}</S.BrandName>
           <S.Tagline>{t("onboarding.tagline")}</S.Tagline>
           <S.Description>
             {descriptionLines.map((line, index) => (
