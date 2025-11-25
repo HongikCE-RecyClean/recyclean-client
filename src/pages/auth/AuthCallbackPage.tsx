@@ -94,10 +94,10 @@ export function AuthCallbackPage() {
 function LoadingState() {
   const { t } = useTranslation();
   return (
-    <StatusCard>
+    <>
       <Spinner />
       <StatusText>{t("auth.callback.loading")}</StatusText>
-    </StatusCard>
+    </>
   );
 }
 
