@@ -32,6 +32,23 @@ export const Page = styled.div`
   display: flex;
   flex-direction: column;
   font-family: ${({ theme }) => theme.typography.family};
+  position: relative;
+  overflow: hidden;
+`;
+
+// 나뭇잎 컨테이너
+export const LeavesContainer = styled.div`
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+`;
+
+// 나뭇잎 SVG
+export const LeafSvg = styled.svg`
+  color: ${({ theme }) => theme.colors.primary};
+  opacity: 0.4;
 `;
 
 // 헤더 컨테이너
@@ -40,7 +57,7 @@ export const HeaderBar = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.soft};
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 10;
 `;
 
 // 중앙 콘텐츠 래퍼
@@ -55,6 +72,8 @@ export const Content = styled.main`
   margin: 0 auto;
   padding: ${({ theme }) => `${theme.spacing(12)} ${theme.spacing(5)}`};
   gap: ${({ theme }) => theme.spacing(12)};
+  position: relative;
+  z-index: 1;
 `;
 
 // 텍스트 그룹

@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styled from "@emotion/styled";
-import { keyframes, css } from "@emotion/react";
+import { keyframes } from "@emotion/react";
 import { useKakaoLogin } from "shared/api/auth";
 import { useUserStore } from "shared/state/userStore";
 import { useAuthStore } from "shared/state/authStore";
@@ -13,17 +13,6 @@ import { useAuthStore } from "shared/state/authStore";
 
 type CallbackStatus = "loading" | "success" | "error";
 
-interface LeafData {
-  id: number;
-  left: number;
-  delay: number;
-  duration: number;
-  size: number;
-  rotation: number;
-  swayAmount: number;
-  direction: 1 | -1; // 좌우 방향 (1: 오른쪽 먼저, -1: 왼쪽 먼저)
-}
-
 export function AuthCallbackPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -31,24 +20,6 @@ export function AuthCallbackPage() {
   const [status, setStatus] = useState<CallbackStatus>("loading");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const isProcessingRef = useRef(false);
-
-  // 나뭇잎 데이터 (컴포넌트 마운트 시 1회 생성)
-  const leaves = useMemo<LeafData[]>(() => {
-    return Array.from({ length: 12 }, (_, i) => {
-      const duration = 10 + Math.random() * 8;
-      return {
-        id: i,
-        left: 5 + Math.random() * 90,
-        // 음수 딜레이: 애니메이션이 이미 진행 중인 것처럼 시작
-        delay: -Math.random() * duration,
-        duration,
-        size: 20 + Math.random() * 16,
-        rotation: Math.random() * 360,
-        swayAmount: 40 + Math.random() * 60,
-        direction: (Math.random() > 0.5 ? 1 : -1) as 1 | -1,
-      };
-    });
-  }, []);
 
   const kakaoLoginMutation = useKakaoLogin();
   const completeOnboarding = useUserStore((state) => state.completeOnboarding);
@@ -95,7 +66,6 @@ export function AuthCallbackPage() {
       onError: (err) => {
         setStatus("error");
         setErrorMessage(err instanceof Error ? err.message : t("auth.errors.loginFailed"));
-        // 에러 시에도 플래그 유지 (재시도 버튼으로만 초기화)
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,82 +78,12 @@ export function AuthCallbackPage() {
 
   return (
     <Page>
-      <LeavesContainer>
-        {leaves.map((leaf) => (
-          <Leaf key={leaf.id} leaf={leaf} />
-        ))}
-      </LeavesContainer>
-
       <Content>
         {status === "loading" && <LoadingState />}
         {status === "success" && <SuccessState />}
         {status === "error" && <ErrorState message={errorMessage} onRetry={handleRetry} />}
       </Content>
     </Page>
-  );
-}
-
-// ============================================================
-// 나뭇잎 컴포넌트
-// ============================================================
-
-function Leaf({ leaf }: { leaf: LeafData }) {
-  const d = leaf.direction; // 방향 (-1 또는 1)
-  const s = leaf.swayAmount;
-  const r = leaf.rotation;
-
-  const fallAnimation = useMemo(
-    () => keyframes`
-      0% {
-        top: -60px;
-        transform: translateX(0) rotate(${r}deg);
-        opacity: 0.7;
-      }
-      20% {
-        transform: translateX(${s * 0.6 * d}px) rotate(${r + 40 * d}deg);
-      }
-      40% {
-        transform: translateX(${s * 0.2 * d * -1}px) rotate(${r + 80 * d}deg);
-      }
-      60% {
-        transform: translateX(${s * 0.8 * d}px) rotate(${r + 120 * d}deg);
-      }
-      80% {
-        transform: translateX(${s * 0.3 * d * -1}px) rotate(${r + 160 * d}deg);
-      }
-      100% {
-        top: 100vh;
-        transform: translateX(${s * 0.5 * d}px) rotate(${r + 200 * d}deg);
-        opacity: 0.3;
-      }
-    `,
-    [r, s, d],
-  );
-
-  return (
-    <LeafSvg
-      viewBox="0 0 32 32"
-      css={css`
-        position: absolute;
-        left: ${leaf.left}%;
-        width: ${leaf.size}px;
-        height: ${leaf.size}px;
-        animation: ${fallAnimation} ${leaf.duration}s ease-in-out infinite;
-        animation-delay: ${leaf.delay}s;
-      `}
-    >
-      <path
-        d="M16 2C16 2 8 8 8 18C8 24 11 28 16 30C21 28 24 24 24 18C24 8 16 2 16 2Z"
-        fill="currentColor"
-      />
-      <path
-        d="M16 8V26M12 14Q14 16 16 18M20 12Q18 14 16 16"
-        stroke="currentColor"
-        strokeWidth="0.8"
-        strokeOpacity="0.3"
-        fill="none"
-      />
-    </LeafSvg>
   );
 }
 
@@ -248,24 +148,9 @@ const Page = styled.div`
   align-items: center;
   justify-content: center;
   background: ${({ theme }) => theme.colors.background};
-  position: relative;
-  overflow: hidden;
-`;
-
-const LeavesContainer = styled.div`
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-`;
-
-const LeafSvg = styled.svg`
-  color: ${({ theme }) => theme.colors.primary};
-  opacity: 0.5;
 `;
 
 const Content = styled.div`
-  z-index: 10;
   padding: 1rem;
 `;
 
