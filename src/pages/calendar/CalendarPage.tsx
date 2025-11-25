@@ -84,7 +84,12 @@ export function CalendarPage() {
     const bannerId = showBanner({
       type: "info",
       message: t("calendar.guide.bannerMessage"),
+      sessionKey: "calendar-guide",
     });
+
+    if (!bannerId) {
+      return undefined;
+    }
 
     return () => {
       closeBanner(bannerId);

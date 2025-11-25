@@ -134,7 +134,12 @@ export function MapPage() {
     const bannerId = showBanner({
       type: "info",
       message: t("map.guide.bannerMessage"),
+      sessionKey: "map-guide",
     });
+
+    if (!bannerId) {
+      return undefined;
+    }
 
     return () => {
       closeBanner(bannerId);

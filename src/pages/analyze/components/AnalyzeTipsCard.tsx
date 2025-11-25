@@ -12,7 +12,12 @@ export function AnalyzeTipsCard() {
     const bannerId = showBanner({
       type: "info",
       message: t("analyze.tips.bannerMessage"),
+      sessionKey: "analyze-tips",
     });
+
+    if (!bannerId) {
+      return undefined;
+    }
 
     return () => {
       closeBanner(bannerId);

@@ -105,7 +105,12 @@ export function DashboardPage() {
     const bannerId = showBanner({
       type: "info",
       message: t("notifications.banner.welcome.message", { name: userName }),
+      sessionKey: "dashboard-welcome",
     });
+
+    if (!bannerId) {
+      return undefined;
+    }
 
     return () => {
       closeBanner(bannerId);
