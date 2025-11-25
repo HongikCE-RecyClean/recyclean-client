@@ -3,7 +3,6 @@ import { format, isSameMonth, startOfMonth, type Locale } from "date-fns";
 import { enUS, es, fr, ko as koLocale } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 import type { BadgeTone } from "../../shared/ui/Badge/Badge";
-import { useActivityStore } from "../../shared/state/activityStore";
 import { useNotificationStore } from "../../shared/state/notificationStore";
 import type { RecyclingEntry } from "../../shared/types/dashboard";
 import * as S from "./CalendarPage.styles";
@@ -16,6 +15,7 @@ import {
 } from "./components";
 import { normalizeLanguage, type SupportedLanguage } from "shared/i18n/supportedLanguages";
 import type { MaterialId } from "shared/utils/recyclingPoints";
+import { useCalendarData } from "./hooks";
 
 // 범례 배지 색상 순서를 정의
 const tonePalette: BadgeTone[] = ["primary", "success", "info", "warning", "danger"];
@@ -61,8 +61,8 @@ export function CalendarPage() {
   const intlLocale = localeTagMap[language];
   const dateLocale = dateLocaleMap[language];
 
-  // 활동 기록 스토어에서 entries와 deleteEntry 로드
-  const { entries, deleteEntry, addEntry } = useActivityStore();
+  // 달력 데이터 (API/로컬 하이브리드)
+  const { entries, deleteEntry, addEntry } = useCalendarData();
   const { recordedEntries, plannedEntries } = useMemo(() => {
     const completed: RecyclingEntry[] = [];
     const plannedList: RecyclingEntry[] = [];

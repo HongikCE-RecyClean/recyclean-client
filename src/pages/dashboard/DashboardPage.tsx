@@ -7,10 +7,8 @@ import { Sparkles } from "lucide-react";
 import { useDashboardStore } from "shared/state/dashboardStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useUserStore } from "shared/state/userStore";
-import { useSettingsStore } from "shared/state/settingsStore";
 import { useNotificationStore } from "shared/state/notificationStore";
-import { calculateTodayStats, calculateTotalStats } from "shared/utils/userStats";
-import type { MaterialItemData, RecyclingEntry } from "shared/types/dashboard";
+import type { MaterialItemData } from "shared/types/dashboard";
 import { normalizeLanguage, type SupportedLanguage } from "shared/i18n/supportedLanguages";
 import { Button } from "shared/ui/Button/Button";
 import * as S from "./DashboardPage.styles";
@@ -20,6 +18,7 @@ import {
   MaterialSearchCard,
   RecentActivityCard,
 } from "./components";
+import { useDashboardData } from "./hooks";
 
 type MaterialGuideKey =
   | "plasticPetBottle"
@@ -52,23 +51,10 @@ export function DashboardPage() {
   const { t, i18n } = useTranslation();
   // 전역 상태와 스토어 제어자 로드
   const { searchTerm, setSearchTerm, materialCategory, setMaterialCategory } = useDashboardStore();
-  // 활동 기록 스토어에서 entries 로드
+  // 활동 기록 스토어에서 entries 로드 (최근 활동 표시용)
   const { entries } = useActivityStore();
-  const { recordedEntries, plannedEntries } = useMemo(() => {
-    const completed: RecyclingEntry[] = [];
-    const planned: RecyclingEntry[] = [];
-    entries.forEach((entry) => {
-      if ((entry.mode ?? "record") === "plan") {
-        planned.push(entry);
-      } else {
-        completed.push(entry);
-      }
-    });
-    return { recordedEntries: completed, plannedEntries: planned };
-  }, [entries]);
   // 사용자 정보 스토어에서 이름 로드
   const { name: userName } = useUserStore();
-  const monthlyGoal = useSettingsStore((state) => state.monthlyGoal);
   // 알림 스토어에서 배너 제어 로드
   const { showBanner, closeBanner } = useNotificationStore();
   // 활동 추가 BottomSheet 상태
@@ -81,6 +67,9 @@ export function DashboardPage() {
     fr,
   };
   const dateLocale = dateLocaleMap[language];
+
+  // 대시보드 데이터 (API/로컬 하이브리드)
+  const dashboardData = useDashboardData();
   const localizedMaterials = useMemo<MaterialItemData[]>(() => {
     return MATERIAL_GUIDE_DEFINITIONS.map((definition) => {
       const tips = t(`dashboard.materials.${definition.key}.tips`, {
@@ -117,18 +106,17 @@ export function DashboardPage() {
     };
   }, [userName, showBanner, closeBanner, t]);
 
-  // activityStore의 entries를 기반으로 오늘의 통계 실시간 계산
-  const todayStats = useMemo(() => {
-    return calculateTodayStats(entries);
-  }, [entries]);
-
+  // dashboardData에서 통계 추출 (API 또는 로컬 데이터)
   const {
+    todayStats,
     totalPoints,
-    itemsRecycled: totalItems,
+    monthlyGoal,
+    progressValue,
+    entriesCount,
+    plannedCount,
+    totalItems,
     categoryCount,
-  } = useMemo(() => {
-    return calculateTotalStats(entries);
-  }, [entries]);
+  } = dashboardData;
 
   const recentActivity = useMemo(() => {
     return [...entries]
@@ -166,19 +154,17 @@ export function DashboardPage() {
     });
   }, [searchTerm, materialCategory, localizedMaterials]);
 
-  const progressValue = monthlyGoal > 0 ? (totalPoints / monthlyGoal) * 100 : 0;
-
   return (
     <S.PageContainer>
-      {/* 통합 히어로 카드 */}
+      {/* 통합 히어로 카드 (API 또는 로컬 데이터) */}
       <DashboardHeroCard
         userName={userName}
         todayStats={todayStats}
         totalPoints={totalPoints}
         monthlyGoal={monthlyGoal}
         progressValue={progressValue}
-        entriesCount={recordedEntries.length}
-        plannedCount={plannedEntries.length}
+        entriesCount={entriesCount}
+        plannedCount={plannedCount}
         totalItems={totalItems}
         categoryCount={categoryCount}
       />

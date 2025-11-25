@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSettingsStore } from "shared/state/settingsStore";
 import { useNotificationStore } from "shared/state/notificationStore";
+import { useAuthStore } from "shared/state/authStore";
+import { useUpdateMonthlyGoal } from "shared/api/plans";
 import {
   SettingsAppPreferencesCard,
   SettingsLocaleCard,
@@ -41,6 +43,32 @@ export function SettingsPage() {
     setMonthlyGoal,
   } = useSettingsStore();
   const { showSnackbar } = useNotificationStore();
+
+  // 인증 상태 및 API 훅
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const updateMonthlyGoalMutation = useUpdateMonthlyGoal();
+
+  // 월간 목표 변경 핸들러 (API 연동)
+  const handleMonthlyGoalChange = useCallback(
+    (newGoal: number) => {
+      // 로컬 스토어 즉시 업데이트 (낙관적 업데이트)
+      setMonthlyGoal(newGoal);
+
+      // 인증된 경우 API로 동기화
+      if (isAuthenticated) {
+        updateMonthlyGoalMutation.mutate(newGoal, {
+          onError: () => {
+            // API 실패 시 스낵바 표시 (로컬은 이미 업데이트됨)
+            showSnackbar(t("notifications.snackbar.monthlyGoalSyncFailed"), {
+              type: "warning",
+              duration: 3000,
+            });
+          },
+        });
+      }
+    },
+    [isAuthenticated, setMonthlyGoal, updateMonthlyGoalMutation, showSnackbar, t],
+  );
   const {
     supportsNotifications,
     supportsGeolocation,
@@ -155,7 +183,7 @@ export function SettingsPage() {
         darkMode={darkMode}
         onDarkModeChange={handleDarkModeChange}
         monthlyGoal={monthlyGoal}
-        onMonthlyGoalChange={setMonthlyGoal}
+        onMonthlyGoalChange={handleMonthlyGoalChange}
         notificationsSupported={supportsNotifications}
         notificationStatus={notificationStatus}
         locationSupported={supportsGeolocation}

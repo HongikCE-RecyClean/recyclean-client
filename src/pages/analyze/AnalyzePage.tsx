@@ -14,13 +14,17 @@ import { Button } from "../../shared/ui/Button/Button";
 import { useCamera } from "./hooks/useCamera";
 import { useActivityStore } from "../../shared/state/activityStore";
 import { useNotificationStore } from "../../shared/state/notificationStore";
+import { useAuthStore } from "../../shared/state/authStore";
 import {
   matchMaterialType,
   calculatePoints,
   translateCategory,
   type MaterialCategoryId,
 } from "../../shared/utils/recyclingPoints";
-import type { AiPrediction } from "../../shared/api/analyze";
+import { requestAiLabeling, type AiPrediction } from "../../shared/api/analyze";
+import { useCreatePlan } from "../../shared/api/plans";
+import type { CategoryType } from "../../shared/api/types";
+import { isMockApiEnabled } from "../../shared/api/config";
 import * as S from "./AnalyzePage.styles";
 
 type GuideKey = "plastic" | "paper" | "metal" | "glass" | "textile" | "electronic" | "other";
@@ -85,10 +89,23 @@ function buildMockAiPrediction(): AiPrediction {
   };
 }
 
+// MaterialCategoryId를 API CategoryType으로 매핑
+const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
+  plastic: "PLASTIC",
+  paper: "PAPER",
+  metal: "METAL",
+  glass: "GLASS",
+  textile: "CLOTHING",
+  electronic: "ELECTRONICS",
+  other: "GENERAL",
+};
+
 export function AnalyzePage() {
   const { t } = useTranslation();
   const { addEntry } = useActivityStore();
   const { showSnackbar } = useNotificationStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const createPlanMutation = useCreatePlan();
   // 분석 화면 표시와 결과 상태 정의
   const [isScanning, setIsScanning] = useState(false);
   const [result, setResult] = useState<RecognitionResult | null>(null);
@@ -149,34 +166,39 @@ export function AnalyzePage() {
 
   // AI 라벨링 API 호출 및 결과 수신
   const runAiRecognition = useCallback(
-    async (_source: Blob) => {
+    async (source: Blob) => {
       const controller = new AbortController();
       analysisAbortRef.current = controller;
 
       try {
-        await new Promise<void>((resolve) => {
-          let finished = false;
-          const finish = () => {
-            if (finished) {
-              return;
-            }
-            finished = true;
-            resolve();
-          };
-          const timeoutId = window.setTimeout(finish, 1200);
-          controller.signal.addEventListener("abort", () => {
-            window.clearTimeout(timeoutId);
-            finish();
-          });
-        });
+        let predictions: AiPrediction[];
 
-        if (controller.signal.aborted) {
-          return;
+        // Mock 모드 여부에 따라 분기
+        if (isMockApiEnabled()) {
+          // Mock 모드: 지연 후 가짜 결과 반환
+          await new Promise<void>((resolve) => {
+            let finished = false;
+            const finish = () => {
+              if (finished) return;
+              finished = true;
+              resolve();
+            };
+            const timeoutId = window.setTimeout(finish, 1200);
+            controller.signal.addEventListener("abort", () => {
+              window.clearTimeout(timeoutId);
+              finish();
+            });
+          });
+
+          if (controller.signal.aborted) return;
+          predictions = [buildMockAiPrediction()];
+        } else {
+          // 실제 API 호출
+          predictions = await requestAiLabeling(source, controller.signal);
         }
 
-        // const predictions = await requestAiLabeling(_source, controller.signal);
-        // TODO: API 복구 시 requestAiLabeling 재활성화
-        const predictions = [buildMockAiPrediction()];
+        if (controller.signal.aborted) return;
+
         if (!predictions.length) {
           setInteractionError(t("analyze.errors.noPrediction"));
           setResult(null);
@@ -188,9 +210,7 @@ export function AnalyzePage() {
         setResult(buildRecognitionResult(bestPrediction));
         setInteractionError(null);
       } catch (error) {
-        if (controller.signal.aborted) {
-          return;
-        }
+        if (controller.signal.aborted) return;
         console.error(error);
         setInteractionError(t("analyze.errors.analysisFailed"));
         setResult(null);
@@ -287,19 +307,63 @@ export function AnalyzePage() {
     const amount = 1; // 기본 수량 1개
     const points = calculatePoints(result.materialId, amount);
 
-    // activityStore에 추가
-    addEntry({
-      type: result.materialId,
-      amount,
-      date: new Date(),
-      points,
-    });
+    // 인증된 경우 API로 Plan 생성
+    if (isAuthenticated) {
+      const now = new Date();
+      const dateStr = now.toISOString().split("T")[0]; // YYYY-MM-DD
+      const timeStr = now.toTimeString().split(" ")[0]; // HH:mm:ss
+      const apiCategory = CATEGORY_TO_API[result.categoryId] || "GENERAL";
 
-    showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
-      type: "success",
-      duration: 3000,
-    });
-  }, [result, addEntry, showSnackbar, t]);
+      createPlanMutation.mutate(
+        {
+          date: dateStr,
+          time: timeStr,
+          memo: t("analyze.result.autoMemo", { item: result.item }),
+          items: [
+            {
+              category: apiCategory,
+              quantity: amount,
+              detectedByAi: true,
+            },
+          ],
+        },
+        {
+          onSuccess: () => {
+            showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
+              type: "success",
+              duration: 3000,
+            });
+          },
+          onError: () => {
+            // API 실패 시 로컬에 저장
+            addEntry({
+              type: result.materialId,
+              amount,
+              date: new Date(),
+              points,
+            });
+            showSnackbar(t("notifications.snackbar.entrySavedLocally", { points }), {
+              type: "warning",
+              duration: 3000,
+            });
+          },
+        },
+      );
+    } else {
+      // 미인증 시 로컬에 저장
+      addEntry({
+        type: result.materialId,
+        amount,
+        date: new Date(),
+        points,
+      });
+
+      showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
+        type: "success",
+        duration: 3000,
+      });
+    }
+  }, [result, isAuthenticated, createPlanMutation, addEntry, showSnackbar, t]);
 
   // 분석 상태 초기화 처리 정의
   const reset = () => {
