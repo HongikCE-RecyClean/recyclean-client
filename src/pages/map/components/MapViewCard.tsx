@@ -4,7 +4,7 @@ import { Navigation } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNaverMapsLoader } from "shared/hooks/useNaverMapsLoader";
 import type { MapCoordinates } from "shared/state/mapStore";
-import type { RecyclingCenter, TrashBin, TrashBinType } from "shared/types/map";
+import type { RecyclingCenter, TrashBin } from "shared/types/map";
 import type { MapDestination } from "../types";
 import { SectionCard, SectionCardContent } from "../MapPage.styles";
 import * as S from "./MapViewCard.styles";
@@ -22,13 +22,7 @@ interface MapViewCardProps {
 const DEFAULT_CENTER = { lat: 37.5666103, lng: 126.9783882 };
 const DEFAULT_ZOOM = 12;
 const ROUTE_PADDING = { top: 48, right: 32, bottom: 48, left: 32 };
-const BIN_MARKER_COLORS: Record<TrashBinType, string> = {
-  general: "#6b7280",
-  recycling: "#22c55e",
-  compost: "#d97706",
-  electronic: "#6366f1",
-};
-const CENTER_MARKER_COLOR = "#0ea5e9";
+const UNIFIED_MARKER_COLOR = "#22c55e"; // 모든 핀 색상 통일
 const ROUTE_STROKE_COLOR = "#22c55e";
 const WALKING_ROUTE_API = "https://router.project-osrm.org/route/v1/foot";
 
@@ -240,7 +234,7 @@ export function MapViewCard({
         new maps.Marker({
           map: mapInstance,
           position: new maps.LatLng(bin.coordinates.lat, bin.coordinates.lng),
-          icon: { content: createCircularMarker(BIN_MARKER_COLORS[bin.type]) },
+          icon: { content: createCircularMarker(UNIFIED_MARKER_COLOR) },
           title: bin.name,
         }),
     );
@@ -251,7 +245,7 @@ export function MapViewCard({
         new maps.Marker({
           map: mapInstance,
           position: new maps.LatLng(center.coordinates.lat, center.coordinates.lng),
-          icon: { content: createCircularMarker(CENTER_MARKER_COLOR) },
+          icon: { content: createCircularMarker(UNIFIED_MARKER_COLOR) },
           title: center.name,
           zIndex: 50,
         }),
