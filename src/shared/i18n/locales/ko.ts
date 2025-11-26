@@ -335,6 +335,7 @@ export const koTranslation = {
       completeGuide: "완료하면 포인트가 적립되고 기록으로 전환돼요",
       completeSuccess: "계획이 완료되었어요!",
       pointsEarned: "+{{points}}P 적립되었어요!",
+      aiDetected: "AI",
       editSuccess: "계획이 수정되었어요",
     },
     guide: {

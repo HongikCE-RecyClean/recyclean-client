@@ -66,14 +66,22 @@ export function CalendarEntriesCard({
                           ? t("calendar.entries.modes.completed")
                           : t(`calendar.entries.modes.${entry.mode ?? "record"}`)}
                       </Badge>
+                      {/* AI 감지 배지 */}
+                      {entry.detectedByAi && (
+                        <Badge tone="info" variant="soft">
+                          {t("calendar.entries.aiDetected")}
+                        </Badge>
+                      )}
                     </S.RecordTitleRow>
-                    {/* 기록 타입 텍스트 클래스 적용 */}
+                    {/* 수량, 시간 메타 텍스트 */}
                     <span css={S.recordMetaText}>
                       {t("calendar.entries.meta", {
                         count: entry.amount,
                         time: format(entry.date, "p", { locale: timeLocale }),
                       })}
                     </span>
+                    {/* 메모 표시 */}
+                    {entry.memo && <span css={S.recordMemoText}>💬 {entry.memo}</span>}
                   </S.RecordInfo>
                   <div css={S.recordActionsRow}>
                     <S.RecordPoints

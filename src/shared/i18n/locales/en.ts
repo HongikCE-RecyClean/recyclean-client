@@ -333,6 +333,7 @@ export const enTranslation = {
       completeGuide: "Completing will add points and convert to a record",
       completeSuccess: "Plan completed!",
       pointsEarned: "+{{points}}P earned!",
+      aiDetected: "AI",
       editSuccess: "Plan updated",
     },
     guide: {

@@ -53,6 +53,19 @@ export const recordMetaText = (theme: AppTheme) => css`
   font-size: 0.85rem;
 `;
 
+// 메모 텍스트 스타일
+export const recordMemoText = (theme: AppTheme) => css`
+  color: ${theme.colors.textMuted};
+  font-size: 0.8rem;
+  font-style: italic;
+  margin-top: ${theme.spacing(0.5)};
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 // DayPicker 래퍼 및 스타일 오버라이드 정의
 export const DayPickerWrapper = styled.div`
   width: 100%;

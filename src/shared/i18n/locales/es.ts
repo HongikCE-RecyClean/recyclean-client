@@ -345,6 +345,7 @@ export const esTranslation = {
       completeGuide: "Completar añadirá puntos y lo convertirá en un registro",
       completeSuccess: "¡Plan completado!",
       pointsEarned: "¡+{{points}}P ganados!",
+      aiDetected: "IA",
       editSuccess: "Plan actualizado",
     },
     guide: {

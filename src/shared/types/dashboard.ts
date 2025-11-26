@@ -64,6 +64,10 @@ export interface RecyclingEntry {
   planId?: number;
   // 계획 완료 여부
   completed?: boolean;
+  // AI 감지 여부 (분석 페이지에서 생성된 항목)
+  detectedByAi?: boolean;
+  // 메모 (계획에 첨부된 메모)
+  memo?: string;
 }
 
 // 팁 배지 톤 계산 함수

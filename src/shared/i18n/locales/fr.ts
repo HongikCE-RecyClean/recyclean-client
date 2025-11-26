@@ -345,6 +345,7 @@ export const frTranslation = {
       completeGuide: "Terminer ajoutera des points et le convertira en enregistrement",
       completeSuccess: "Plan terminé !",
       pointsEarned: "+{{points}}P gagnés !",
+      aiDetected: "IA",
       editSuccess: "Plan mis à jour",
     },
     guide: {

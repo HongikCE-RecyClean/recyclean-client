@@ -41,6 +41,10 @@ function planToEntry(plan: Plan): RecyclingEntry[] {
     planId: plan.id,
     // 완료 여부
     completed: plan.completed,
+    // AI 감지 여부
+    detectedByAi: item.detectedByAi,
+    // 메모 (Plan 레벨, 첫 번째 item에만 표시)
+    memo: index === 0 ? plan.memo : undefined,
   }));
 }
 
