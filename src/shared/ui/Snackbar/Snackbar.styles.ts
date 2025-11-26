@@ -92,6 +92,7 @@ export const Message = styled.div(({ theme }) => ({
   fontWeight: theme.typography.weights.medium,
   color: theme.colors.text,
   lineHeight: 1.5,
+  whiteSpace: "pre-line",
 }));
 
 // 액션 버튼
