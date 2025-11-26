@@ -264,8 +264,8 @@ export const PredictionItem = styled.button<{ $selected?: boolean }>`
   justify-content: space-between;
   width: 100%;
   padding: ${({ theme }) => theme.spacing(3)};
-  border: 1px solid
-    ${({ theme, $selected }) => ($selected ? theme.colors.primary : theme.colors.border)};
+  border: none;
+  outline: none;
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme, $selected }) =>
     $selected ? theme.colors.successSurface : theme.colors.surface};
@@ -273,8 +273,11 @@ export const PredictionItem = styled.button<{ $selected?: boolean }>`
   transition: all 0.15s ease;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.primary};
     background: ${({ theme }) => theme.colors.surfaceMuted};
+  }
+
+  &:focus-visible {
+    outline: none;
   }
 `;
 

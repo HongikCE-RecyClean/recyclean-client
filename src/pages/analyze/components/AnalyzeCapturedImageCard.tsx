@@ -64,7 +64,7 @@ export function AnalyzeCapturedImageCard({
                 y={bboxPercent.y}
                 width={bboxPercent.width}
                 height={bboxPercent.height}
-                fill={`${theme.colors.highlight}30`}
+                fill={`${theme.colors.highlight}40`}
                 rx="2"
                 ry="2"
                 css={S.bboxRectStyle(theme)}
