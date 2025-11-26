@@ -1,32 +1,24 @@
-import { useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useUserStore } from "shared/state/userStore";
 import { useActivityStore } from "shared/state/activityStore";
-import { useNotificationStore } from "shared/state/notificationStore";
 import { useAuthStore } from "shared/state/authStore";
-import { useMyProfile, useUpdateNickname } from "shared/api/members";
+import { useMyProfile } from "shared/api/members";
 import { useDashboardSummary } from "shared/api/dashboard";
 import { calculateUserStats, calculateCategoryStats } from "shared/utils/userStats";
 import { ProfileCard, ImpactCard, LevelProgressCard, CategoryStatsCard } from "./components";
-import { BottomSheet } from "shared/ui/BottomSheet";
-import { Button } from "shared/ui/Button/Button";
-import { TextField } from "shared/ui/TextField/TextField";
 import recycleanLogo from "../../assets/recycleanLogo.svg";
 import * as S from "./ProfilePage.styles";
 
 export function ProfilePage() {
   // 사용자 정보 및 활동 기록 로드
-  const { name, setName, joinedAt } = useUserStore(
+  const { name, joinedAt } = useUserStore(
     useShallow((state) => ({
       name: state.name,
-      setName: state.setName,
       joinedAt: state.joinedAt,
     })),
   ); // zustand selector 안정화로 무한 렌더링 방지 목적
   const entries = useActivityStore((state) => state.entries); // 필요한 조각만 구독
-  const { showSnackbar } = useNotificationStore();
-  const { t } = useTranslation();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const { data: profileData, isLoading: isProfileLoading } = useMyProfile({
     enabled: isAuthenticated,
@@ -34,11 +26,6 @@ export function ProfilePage() {
   const { data: dashboardData } = useDashboardSummary({
     enabled: isAuthenticated,
   });
-  const updateNicknameMutation = useUpdateNickname();
-
-  // 프로필 편집 BottomSheet 상태 관리
-  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
-  const [newName, setNewName] = useState("");
 
   // 실시간 통계 계산 (메모이제이션)
   const userStats = useMemo(() => {
@@ -65,60 +52,6 @@ export function ProfilePage() {
   const displayName = profileData?.nickname ?? name;
   const avatarSrc = profileData?.profileImageUrl ?? recycleanLogo;
 
-  const handleEditProfileClick = () => {
-    setNewName(displayName ?? "");
-    setIsEditProfileOpen(true);
-  };
-
-  // 프로필 저장 핸들러
-  const handleSaveProfile = () => {
-    const trimmedName = newName.trim();
-    if (!trimmedName) {
-      showSnackbar(t("settings.profile.nicknameRequired"), {
-        type: "warning",
-        duration: 2500,
-      });
-      return;
-    }
-
-    if (trimmedName === displayName) {
-      setIsEditProfileOpen(false);
-      setNewName("");
-      return;
-    }
-
-    const handleSuccess = () => {
-      setName(trimmedName);
-      showSnackbar(t("notifications.snackbar.profileUpdated"), {
-        type: "success",
-        duration: 2500,
-      });
-      setIsEditProfileOpen(false);
-      setNewName("");
-    };
-
-    if (isAuthenticated) {
-      updateNicknameMutation.mutate(trimmedName, {
-        onSuccess: handleSuccess,
-        onError: () => {
-          showSnackbar(t("settings.profile.nicknameUpdateFailed"), {
-            type: "warning",
-            duration: 3000,
-          });
-        },
-      });
-      return;
-    }
-
-    handleSuccess();
-  };
-
-  // BottomSheet 닫기 핸들러
-  const handleCloseEditProfile = () => {
-    setIsEditProfileOpen(false);
-    setNewName("");
-  };
-
   return (
     <>
       <S.PageContainer>
@@ -127,7 +60,6 @@ export function ProfilePage() {
           userStats={userStats}
           avatarSrc={avatarSrc}
           userName={isProfileLoading ? "..." : displayName || name || "Guest"}
-          onEditClick={handleEditProfileClick}
         />
 
         {/* 영향력 카드: 재활용 아이템 수, 총 포인트 */}
@@ -139,31 +71,6 @@ export function ProfilePage() {
         {/* 카테고리별 통계 카드: 가장 많이 재활용한 품목 순위 */}
         <CategoryStatsCard categoryStats={categoryStats} />
       </S.PageContainer>
-
-      {/* 프로필 편집 BottomSheet */}
-      <BottomSheet
-        isOpen={isEditProfileOpen}
-        onClose={handleCloseEditProfile}
-        title={t("settings.support.editProfile")}
-      >
-        <S.EditProfileContent>
-          <S.EditProfileLabel>{t("settings.profile.nickname")}</S.EditProfileLabel>
-          <TextField
-            type="text"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder={t("onboarding.namePlaceholder")}
-            maxLength={20}
-          />
-          <Button
-            variant="primary"
-            onClick={handleSaveProfile}
-            disabled={!newName.trim() || newName.trim() === name}
-          >
-            {t("common.save")}
-          </Button>
-        </S.EditProfileContent>
-      </BottomSheet>
     </>
   );
 }

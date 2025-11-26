@@ -55,27 +55,6 @@ export const ProfileName = styled.h2`
   color: ${({ theme }) => theme.colors.text};
 `;
 
-// 편집 버튼 스타일
-export const EditButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: ${({ theme }) => theme.spacing(1)};
-  border-radius: ${({ theme }) => theme.radii.sm};
-  color: ${({ theme }) => theme.colors.textMuted};
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.surfaceMuted};
-    color: ${({ theme }) => theme.colors.primary};
-  }
-`;
-
 // 프로필 메타 텍스트 스타일
 export const profileMetaText = (theme: AppTheme) => css`
   margin: 4px 0 0;
@@ -176,19 +155,4 @@ export const CategoryEmptyMessage = styled.p`
   margin: 0;
   padding: ${({ theme }) => theme.spacing(4)} 0;
   font-size: 0.9rem;
-`;
-
-// 프로필 편집 컨텐츠 컨테이너
-export const EditProfileContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
-
-// 프로필 편집 라벨
-export const EditProfileLabel = styled.label`
-  font-size: 0.875rem;
-  font-weight: ${({ theme }) => theme.typography.weights.semibold};
-  color: ${({ theme }) => theme.colors.text};
 `;
