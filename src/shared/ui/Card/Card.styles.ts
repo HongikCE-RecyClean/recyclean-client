@@ -5,7 +5,7 @@ export const Card = styled.section`
   background-color: ${({ theme }) => theme.colors.surface};
   border-radius: ${({ theme }) => theme.radii.lg};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  overflow: hidden;
+  overflow: visible;
   position: relative;
 `;
 

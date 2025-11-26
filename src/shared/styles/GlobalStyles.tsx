@@ -14,6 +14,12 @@ export function AppGlobalStyles() {
           --app-accent: ${theme.colors.accent};
         }
 
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+        }
+
         body {
           background-color: var(--app-background);
           color: var(--app-text);
