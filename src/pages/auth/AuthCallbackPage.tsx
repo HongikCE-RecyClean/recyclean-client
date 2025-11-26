@@ -169,8 +169,8 @@ const Content = styled.div`
 const Spinner = styled.div`
   width: 40px;
   height: 40px;
-  border: 3px solid ${({ theme }) => theme.colors.border};
-  border-top-color: ${({ theme }) => theme.colors.primary};
+  border: 3px solid ${({ theme }) => theme.colors.spinnerTrack};
+  border-top-color: ${({ theme }) => theme.colors.spinnerPrimary};
   border-radius: 50%;
   margin: 0 auto 1.25rem;
   animation: ${spin} 0.8s linear infinite;

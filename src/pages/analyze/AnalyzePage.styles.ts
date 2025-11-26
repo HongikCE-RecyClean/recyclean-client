@@ -116,8 +116,8 @@ export const Spinner = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 3px solid rgba(99, 102, 241, 0.2);
-  border-top-color: rgba(99, 102, 241, 0.65);
+  border: 3px solid ${({ theme }) => theme.colors.spinnerTrack};
+  border-top-color: ${({ theme }) => theme.colors.spinnerPrimary};
   animation: spin 1s linear infinite;
   margin: 0 auto;
 

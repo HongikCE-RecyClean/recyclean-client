@@ -9,6 +9,8 @@ export interface AppTheme {
     secondary: string;
     secondaryHover: string;
     accent: string;
+    spinnerPrimary: string;
+    spinnerTrack: string;
     text: string;
     textMuted: string;
     border: string;
@@ -83,6 +85,8 @@ export const lightTheme: AppTheme = {
     secondary: "#0c4a6e",
     secondaryHover: "#0a3c58",
     accent: "#14b8a6",
+    spinnerPrimary: "#2f855a",
+    spinnerTrack: "rgba(47, 133, 90, 0.2)",
     text: "#1f2933",
     textMuted: "#4a5568",
     border: "#d1d9e0",
@@ -118,6 +122,8 @@ export const darkTheme: AppTheme = {
     secondary: "#38bdf8",
     secondaryHover: "#1f8ec4",
     accent: "#2dd4bf",
+    spinnerPrimary: "#6366f1",
+    spinnerTrack: "rgba(99, 102, 241, 0.35)",
     text: "#f1f5f9",
     textMuted: "#94a3b8",
     border: "#334155",

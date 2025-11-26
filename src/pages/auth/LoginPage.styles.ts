@@ -183,8 +183,8 @@ export const StatusContainer = styled.div`
 export const Spinner = styled.div`
   width: 48px;
   height: 48px;
-  border: 4px solid ${({ theme }) => theme.colors.border};
-  border-top-color: ${({ theme }) => theme.colors.primary};
+  border: 4px solid ${({ theme }) => theme.colors.spinnerTrack};
+  border-top-color: ${({ theme }) => theme.colors.spinnerPrimary};
   border-radius: 50%;
   animation: ${spin} 1s linear infinite;
 `;
