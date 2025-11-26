@@ -86,7 +86,7 @@ export function useCalendarData(): CalendarData {
 
   // API Plans를 RecyclingEntry[]로 변환
   const apiEntries = useMemo(() => {
-    if (!apiPlans) return [];
+    if (!Array.isArray(apiPlans)) return [];
     return apiPlans.flatMap(planToEntry);
   }, [apiPlans]);
 

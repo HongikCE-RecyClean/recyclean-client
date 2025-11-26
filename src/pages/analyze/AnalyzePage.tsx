@@ -91,13 +91,23 @@ export function AnalyzePage() {
   // 다중 예측 후보 상태 (상위 3개까지)
   const [predictions, setPredictions] = useState<AiPrediction[]>([]);
   const [selectedPredictionIndex, setSelectedPredictionIndex] = useState(0);
-  // 카메라 활성화 및 준비 상태 정의
-  const [interactionError, setInteractionError] = useState<string | null>(null);
 
   // 업로드 입력 및 타이머 관리를 위한 ref 정의
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const objectUrlRef = useRef<string | null>(null);
   const analysisAbortRef = useRef<AbortController | null>(null);
+
+  // 경고 메시지를 스낵바로 통일해 노출
+  const showWarning = useCallback(
+    (message: string | null) => {
+      if (!message) return;
+      showSnackbar(message, {
+        type: "warning",
+        duration: 3000,
+      });
+    },
+    [showSnackbar],
+  );
 
   const {
     videoRef,
@@ -107,7 +117,7 @@ export function AnalyzePage() {
     stopCamera,
     handleVideoReady,
     capturePhoto,
-  } = useCamera({ onError: setInteractionError });
+  } = useCamera({ onError: showWarning });
 
   // 진행 중인 분석 요청을 취소하는 헬퍼
   const cancelActiveAnalysis = useCallback(() => {

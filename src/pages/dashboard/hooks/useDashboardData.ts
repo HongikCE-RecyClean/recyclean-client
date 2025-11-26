@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { isSameMonth } from "date-fns";
 import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useSettingsStore } from "shared/state/settingsStore";
@@ -21,8 +22,10 @@ const RECENT_ACTIVITY_LIMIT = 3;
 export interface DashboardData {
   // 오늘 통계
   todayStats: TodayStats;
-  // 총 포인트 (myPoint)
+  // 총 포인트 (myPoint) - 전체 누적, 프로필/설정용
   totalPoints: number;
+  // 이번 달 포인트 (monthlyPoints) - 대시보드 표시용
+  monthlyPoints: number;
   // 월간 목표
   monthlyGoal: number;
   // 진행률 (0-100)
@@ -69,6 +72,8 @@ export function useDashboardData(): DashboardData {
 
   // 로컬 데이터 계산
   const localData = useMemo(() => {
+    const now = new Date();
+
     // 기록/계획 분리
     const recordedEntries = entries.filter((e) => (e.mode ?? "record") === "record");
     const plannedEntries = entries.filter((e) => e.mode === "plan");
@@ -79,13 +84,20 @@ export function useDashboardData(): DashboardData {
     // 전체 통계 계산
     const totalStats = calculateTotalStats(entries);
 
-    // 진행률 계산
-    const progressValue =
-      localMonthlyGoal > 0 ? (totalStats.totalPoints / localMonthlyGoal) * 100 : 0;
+    // 이번 달 포인트 계산
+    const monthlyEntries = recordedEntries.filter((e) => {
+      const entryDate = e.date instanceof Date ? e.date : new Date(e.date);
+      return isSameMonth(entryDate, now);
+    });
+    const monthlyPoints = monthlyEntries.reduce((sum, e) => sum + e.points, 0);
+
+    // 진행률 계산 (이번 달 포인트 기준)
+    const progressValue = localMonthlyGoal > 0 ? (monthlyPoints / localMonthlyGoal) * 100 : 0;
 
     return {
       todayStats,
       totalPoints: totalStats.totalPoints,
+      monthlyPoints,
       monthlyGoal: localMonthlyGoal,
       progressValue: Math.min(progressValue, 100),
       entriesCount: recordedEntries.length,
@@ -97,7 +109,7 @@ export function useDashboardData(): DashboardData {
 
   // API Plans를 RecyclingEntry로 변환 (최근 활동용)
   const apiEntries = useMemo(() => {
-    if (!apiPlans) return [];
+    if (!Array.isArray(apiPlans)) return [];
     return apiPlans.flatMap(planToEntry);
   }, [apiPlans]);
 
