@@ -93,13 +93,15 @@ export function DashboardHeroCard({
                 <S.StatRowValue>{categoryCount}</S.StatRowValue>
               </S.StatRow>
               <S.StatRow>
-                <S.StatRowLabel>{t("dashboard.tracker.stats.entries")}</S.StatRowLabel>
-                <S.StatRowValueStack>
-                  <S.StatRowValue>{entriesCount}</S.StatRowValue>
+                <S.StatRowGroup>
+                  <S.StatRowLabelInline>
+                    <S.StatRowLabel>{t("dashboard.tracker.stats.entries")}</S.StatRowLabel>
+                    <S.StatRowValue>{entriesCount}</S.StatRowValue>
+                  </S.StatRowLabelInline>
                   <S.StatRowHelper>
                     {t("dashboard.tracker.stats.planned", { count: plannedCount })}
                   </S.StatRowHelper>
-                </S.StatRowValueStack>
+                </S.StatRowGroup>
               </S.StatRow>
             </S.StatSectionContent>
           </S.StatSection>

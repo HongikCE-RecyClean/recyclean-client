@@ -711,3 +711,18 @@ export const StatRowHelper = styled.span`
   font-size: 0.7rem;
   color: ${({ theme }) => theme.colors.textMuted};
 `;
+
+// 통계 라벨·값을 한 줄로 묶고 추가 설명을 아래로 배치하는 전용 래퍼
+export const StatRowGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+  width: 100%;
+`;
+
+export const StatRowLabelInline = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
