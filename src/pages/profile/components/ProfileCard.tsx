@@ -5,6 +5,7 @@ import { Badge } from "shared/ui/Badge/Badge";
 import { Card, CardContent } from "shared/ui/Card/Card";
 import { normalizeLanguage } from "shared/i18n/supportedLanguages";
 import type { UserStats } from "shared/utils/userStats";
+import { useNumberFormatter } from "shared/utils/numberFormat";
 import * as S from "../ProfilePage.styles";
 
 // 사용자 프로필 카드 컴포넌트 정의
@@ -18,6 +19,9 @@ export function ProfileCard({ userStats, avatarSrc, userName }: ProfileCardProps
   // 테마 객체 가져오기
   const theme = useTheme();
   const { t, i18n } = useTranslation();
+  const formatNumber = useNumberFormatter();
+  const formattedPoints = formatNumber(userStats.totalPoints);
+  const formattedStreak = formatNumber(userStats.streakDays);
 
   // 로케일별 날짜 포맷팅
   const resolvedLanguage = normalizeLanguage(i18n.language);
@@ -61,12 +65,8 @@ export function ProfileCard({ userStats, avatarSrc, userName }: ProfileCardProps
               {t("profile.card.joined", { date: formattedJoinDate })}
             </p>
             <div css={S.profileBadgeRow}>
-              <Badge tone="success">
-                {t("profile.card.points", { points: userStats.totalPoints })}
-              </Badge>
-              <Badge variant="outline">
-                {t("profile.card.streak", { days: userStats.streakDays })}
-              </Badge>
+              <Badge tone="success">{t("profile.card.points", { points: formattedPoints })}</Badge>
+              <Badge variant="outline">{t("profile.card.streak", { days: formattedStreak })}</Badge>
             </div>
           </div>
         </S.ProfileRow>

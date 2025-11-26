@@ -324,6 +324,14 @@ export function AnalyzePage() {
       const now = new Date();
       const dateStr = now.toISOString().split("T")[0]; // YYYY-MM-DD
       const timeStr = now.toTimeString().split(" ")[0]; // HH:mm:ss
+      // 번역 키가 그대로 노출되지 않도록 기본값과 키 체크로 안전하게 메모 생성
+      const autoMemo =
+        t("analyze.result.autoMemo", {
+          item: result.item,
+          defaultValue: `AI 분석: ${result.item}`,
+        }) || `AI 분석: ${result.item}`;
+      const memoText =
+        autoMemo === "analyze.result.autoMemo" ? `AI 분석: ${result.item}` : autoMemo;
       // 서버가 반환한 카테고리를 직접 사용 (변환 없이)
       const apiCategory = (result.serverCategory as CategoryType) || "GENERAL";
 
@@ -331,7 +339,7 @@ export function AnalyzePage() {
         {
           date: dateStr,
           time: timeStr,
-          memo: t("analyze.result.autoMemo", { item: result.item }),
+          memo: memoText,
           items: [
             {
               category: apiCategory,
@@ -426,6 +434,13 @@ export function AnalyzePage() {
     },
     [predictions, buildRecognitionResult],
   );
+
+  // 촬영/분석 시작 시 결과 섹션으로 부드럽게 스크롤 이동
+  useEffect(() => {
+    if (isScanning || capturedImage || result) {
+      scrollToResult();
+    }
+  }, [isScanning, capturedImage, result, scrollToResult]);
 
   useEffect(() => {
     return () => {

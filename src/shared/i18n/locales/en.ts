@@ -527,6 +527,12 @@ export const enTranslation = {
       logoutGuide: "You’ll be signed out on this device. Sign back in anytime to continue.",
       logoutSuccess: "You’ve been logged out.",
       logoutFailed: "Failed to log out. Please try again.",
+      resetData: "Reset local data",
+      resetDataConfirm: "Reset app data?",
+      resetDataDesc:
+        "This removes saved auth, profile, activity, and settings data stored on this device and restarts the app.",
+      resetDataSuccess: "Local data has been reset.",
+      resetDataFailed: "Reset failed. Please try again.",
     },
   },
   profile: {

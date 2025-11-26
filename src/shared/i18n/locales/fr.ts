@@ -542,6 +542,12 @@ export const frTranslation = {
         "Vous serez déconnecté sur cet appareil. Reconnectez-vous à tout moment pour continuer.",
       logoutSuccess: "Déconnexion effectuée.",
       logoutFailed: "Échec de la déconnexion. Réessayez.",
+      resetData: "Réinitialiser les données locales",
+      resetDataConfirm: "Réinitialiser les données de l'application ?",
+      resetDataDesc:
+        "Supprime les données enregistrées d'authentification, de profil, d'activité et de réglages sur cet appareil et redémarre l'application.",
+      resetDataSuccess: "Les données locales ont été réinitialisées.",
+      resetDataFailed: "Échec de la réinitialisation. Réessayez.",
     },
   },
   profile: {

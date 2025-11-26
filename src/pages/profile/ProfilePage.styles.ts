@@ -74,7 +74,9 @@ export const ImpactStatValueSuccess = styled.div`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   color: ${({ theme }) => theme.colors.success};
-  max-width: 7ch;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -87,7 +89,9 @@ export const ImpactStatValueInfo = styled.div`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   color: ${({ theme }) => theme.colors.primary};
-  max-width: 7ch;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

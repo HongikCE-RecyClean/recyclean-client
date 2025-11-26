@@ -543,6 +543,12 @@ export const esTranslation = {
         "Se cerrará tu sesión en este dispositivo. Inicia sesión de nuevo cuando quieras para continuar.",
       logoutSuccess: "Sesión cerrada.",
       logoutFailed: "No se pudo cerrar sesión. Inténtalo de nuevo.",
+      resetData: "Restablecer datos locales",
+      resetDataConfirm: "¿Restablecer los datos de la app?",
+      resetDataDesc:
+        "Elimina los datos guardados de autenticación, perfil, actividades y ajustes en este dispositivo y reinicia la app.",
+      resetDataSuccess: "Los datos locales se restablecieron.",
+      resetDataFailed: "Error al restablecer. Inténtalo de nuevo.",
     },
   },
   profile: {

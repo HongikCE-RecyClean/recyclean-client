@@ -528,6 +528,12 @@ export const koTranslation = {
         "이 기기에서 계정이 로그아웃돼요. 필요할 때 다시 로그인해 이어서 사용할 수 있어요.",
       logoutSuccess: "로그아웃되었어요.",
       logoutFailed: "로그아웃에 실패했어요. 다시 시도해주세요.",
+      resetData: "로컬 데이터 초기화",
+      resetDataConfirm: "앱 데이터를 초기화할까요?",
+      resetDataDesc:
+        "로컬 저장소에 저장된 인증, 프로필, 활동, 설정 데이터를 모두 삭제하고 앱을 다시 시작해요.",
+      resetDataSuccess: "로컬 데이터가 초기화되었어요.",
+      resetDataFailed: "초기화에 실패했어요. 다시 시도해주세요.",
     },
   },
   profile: {
