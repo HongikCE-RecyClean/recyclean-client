@@ -344,6 +344,7 @@ export const esTranslation = {
       confirmComplete: "¿Marcar este plan como completado?",
       completeGuide: "Completar añadirá puntos y lo convertirá en un registro",
       completeSuccess: "¡Plan completado!",
+      pointsEarned: "¡+{{points}}P ganados!",
       editSuccess: "Plan actualizado",
     },
     guide: {

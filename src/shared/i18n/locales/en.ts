@@ -332,6 +332,7 @@ export const enTranslation = {
       confirmComplete: "Mark this plan as completed?",
       completeGuide: "Completing will add points and convert to a record",
       completeSuccess: "Plan completed!",
+      pointsEarned: "+{{points}}P earned!",
       editSuccess: "Plan updated",
     },
     guide: {

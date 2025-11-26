@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
+import { useNotificationStore } from "shared/state/notificationStore";
 import { useCompletePlan, useDeletePlan, useUpdatePlan } from "shared/api/plans";
 import { useCalendar } from "shared/api/calendar";
 import type { Plan, CategoryType } from "shared/api/types";
@@ -76,6 +78,9 @@ export interface CalendarData {
 }
 
 export function useCalendarData(): CalendarData {
+  const { t } = useTranslation();
+  const showSnackbar = useNotificationStore((state) => state.showSnackbar);
+
   // 인증 상태 확인
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
@@ -123,13 +128,21 @@ export function useCalendarData(): CalendarData {
 
   // API 계획 완료 핸들러
   const handleApiComplete = useCallback(
-    (id: string) => {
+    async (id: string) => {
       const planId = extractPlanId(id);
       if (planId) {
-        completePlanMutation.mutate(planId);
+        try {
+          const response = await completePlanMutation.mutateAsync(planId);
+          // 적립된 포인트 스낵바 표시
+          showSnackbar(t("calendar.entries.pointsEarned", { points: response.addedPoint }), {
+            type: "success",
+          });
+        } catch {
+          // 에러는 React Query에서 처리
+        }
       }
     },
-    [extractPlanId, completePlanMutation],
+    [extractPlanId, completePlanMutation, showSnackbar, t],
   );
 
   // API 계획 수정 핸들러
