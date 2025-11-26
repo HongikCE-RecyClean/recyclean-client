@@ -4,6 +4,8 @@ import { apiClient } from "./client";
 import { queryKeys } from "./queryKeys";
 import type { AuthResponse, TokenReissueRequest } from "./types";
 import { useAuthStore } from "../state/authStore";
+import { useUserStore } from "../state/userStore";
+import { useActivityStore } from "../state/activityStore";
 
 // ============================================================
 // 인증 API 모듈
@@ -86,6 +88,29 @@ export function useTokenReissue() {
       setTokens(data.accessToken, data.refreshToken);
       // React Query 캐시 갱신
       queryClient.setQueryData(queryKeys.auth.session(), data);
+    },
+  });
+}
+
+// 로그아웃 요청
+export async function logoutRequest(): Promise<void> {
+  await apiClient.post<void>("/api/auth/logout");
+}
+
+// 로그아웃 mutation
+export function useLogout() {
+  const queryClient = useQueryClient();
+  const logoutStore = useAuthStore((state) => state.logout);
+  const clearUserData = useUserStore((state) => state.clearUserData);
+  const clearAllEntries = useActivityStore((state) => state.clearAllEntries);
+
+  return useMutation({
+    mutationFn: logoutRequest,
+    onSuccess: () => {
+      logoutStore(); // 인증 토큰/유저 정보 초기화
+      clearUserData(); // 온보딩/프로필 초기화
+      clearAllEntries(); // 활동 기록 초기화
+      queryClient.removeQueries(); // React Query 캐시 초기화
     },
   });
 }

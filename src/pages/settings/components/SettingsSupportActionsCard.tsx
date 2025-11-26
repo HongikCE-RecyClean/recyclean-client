@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import { Button } from "../../../shared/ui/Button/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { BottomSheet } from "../../../shared/ui/BottomSheet";
-import { useUserStore } from "../../../shared/state/userStore";
-import { useActivityStore } from "../../../shared/state/activityStore";
 import { openConfirmDialog } from "../../../shared/ui/AlertDialog";
+import { useNotificationStore } from "../../../shared/state/notificationStore";
+import { useLogout } from "../../../shared/api/auth";
 import { AppInfoContent, HelpContent, PrivacyContent } from ".";
 import * as S from "../SettingsPage.styles";
 
@@ -19,8 +19,8 @@ export function SettingsSupportActionsCard() {
   const [openSheet, setOpenSheet] = useState<BottomSheetType>(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { clearUserData } = useUserStore();
-  const { clearAllEntries } = useActivityStore();
+  const showSnackbar = useNotificationStore((state) => state.showSnackbar);
+  const { mutateAsync: logoutMutate, isPending: isLoggingOut } = useLogout();
 
   // 바텀시트 닫기 핸들러
   const handleCloseSheet = () => {
@@ -42,23 +42,29 @@ export function SettingsSupportActionsCard() {
     setOpenSheet("appInfo");
   };
 
-  // 데이터 초기화 클릭
-  const handleResetData = async () => {
+  // 로그아웃 클릭
+  const handleLogout = async () => {
     const confirmed = await openConfirmDialog({
-      title: t("settings.support.resetConfirm"),
-      // 데이터 초기화 안내 문구 전달
-      description: t("settings.support.resetGuide"),
+      title: t("settings.support.logoutConfirm"),
+      // 로그아웃 안내 문구 전달
+      description: t("settings.support.logoutGuide"),
       tone: "warning",
-      confirmLabel: t("settings.support.resetData"),
+      confirmLabel: t("settings.support.logout"),
       cancelLabel: t("common.cancel"),
       showToneIcon: false,
       confirmVariant: "destructive",
     });
 
-    if (confirmed) {
-      clearUserData();
-      clearAllEntries();
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await logoutMutate();
+      showSnackbar(t("settings.support.logoutSuccess"));
       navigate("/onboarding", { replace: true });
+    } catch {
+      showSnackbar(t("settings.support.logoutFailed"), { type: "error" });
     }
   };
 
@@ -96,9 +102,10 @@ export function SettingsSupportActionsCard() {
             <Button
               variant="destructive"
               css={[S.actionButtonAlignStart, S.supportActionButtonNoShadow]}
-              onClick={handleResetData}
+              onClick={handleLogout}
+              disabled={isLoggingOut}
             >
-              {t("settings.support.resetData")}
+              {t("settings.support.logout")}
             </Button>
           </S.ActionList>
         </CardContent>

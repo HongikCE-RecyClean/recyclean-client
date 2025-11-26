@@ -501,10 +501,12 @@ export const enTranslation = {
       helpCenter: "Help center",
       about: "About the app",
       logout: "Log out",
-      resetConfirm: "All locally stored data will be deleted. Continue?",
-      // 데이터 초기화 안내 메시지
-      resetGuide: "Deleted data cannot be recovered and the app restarts after wiping",
-      resetData: "Reset data",
+      logoutConfirm: "Do you want to log out?",
+      // 로그아웃 안내 메시지
+      logoutGuide:
+        "Logging out clears your profile and activity data locally and requires signing in again.",
+      logoutSuccess: "You’ve been logged out.",
+      logoutFailed: "Failed to log out. Please try again.",
     },
   },
   profile: {

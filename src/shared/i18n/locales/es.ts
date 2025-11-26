@@ -516,10 +516,12 @@ export const esTranslation = {
       helpCenter: "Centro de ayuda",
       about: "Acerca de la app",
       logout: "Cerrar sesión",
-      resetConfirm: "Todos los datos almacenados localmente se eliminarán. ¿Continuar?",
-      // 데이터 초기화 안내 메시지
-      resetGuide: "Los datos borrados no se pueden recuperar y la app se reinicia tras el borrado",
-      resetData: "Restablecer datos",
+      logoutConfirm: "¿Quieres cerrar sesión?",
+      // 로그아웃 안내 메시지
+      logoutGuide:
+        "Al cerrar sesión se borrarán tu perfil y actividades guardadas localmente y deberás iniciar sesión de nuevo.",
+      logoutSuccess: "Sesión cerrada.",
+      logoutFailed: "No se pudo cerrar sesión. Inténtalo de nuevo.",
     },
   },
   profile: {

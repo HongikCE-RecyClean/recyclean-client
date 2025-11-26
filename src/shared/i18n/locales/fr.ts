@@ -515,10 +515,12 @@ export const frTranslation = {
       helpCenter: "Centre d'aide",
       about: "À propos de l'application",
       logout: "Se déconnecter",
-      resetConfirm: "Toutes les données stockées localement seront supprimées. Continuer ?",
-      // 데이터 초기화 안내 메시지
-      resetGuide: "Les données supprimées sont définitives et l'app redémarre après l'effacement",
-      resetData: "Réinitialiser les données",
+      logoutConfirm: "Voulez-vous vous déconnecter ?",
+      // 로그아웃 안내 메시지
+      logoutGuide:
+        "La déconnexion efface le profil et les activités stockées localement et vous devrez vous reconnecter.",
+      logoutSuccess: "Déconnexion effectuée.",
+      logoutFailed: "Échec de la déconnexion. Réessayez.",
     },
   },
   profile: {

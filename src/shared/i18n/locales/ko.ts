@@ -499,10 +499,11 @@ export const koTranslation = {
       helpCenter: "도움말 센터",
       about: "앱 정보",
       logout: "로그아웃",
-      resetConfirm: "모든 데이터가 삭제됩니다. 계속하시겠어요?",
-      // 데이터 초기화 안내 메시지
-      resetGuide: "삭제 후 앱이 다시 시작되며 복구할 수 없어요",
-      resetData: "데이터 초기화",
+      logoutConfirm: "로그아웃할까요?",
+      // 로그아웃 안내 메시지
+      logoutGuide: "로그아웃하면 저장된 프로필과 활동 기록이 초기화되고 다시 로그인해야 해요",
+      logoutSuccess: "로그아웃되었어요.",
+      logoutFailed: "로그아웃에 실패했어요. 다시 시도해주세요.",
     },
   },
   profile: {
