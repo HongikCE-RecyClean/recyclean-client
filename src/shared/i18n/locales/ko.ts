@@ -272,7 +272,7 @@ export const koTranslation = {
         tips: "완전히 말린 뒤 배출하면 이물질 오염을 줄일 수 있어요.",
       },
       paper: {
-        item: "종이|골판지",
+        item: "종이·골판지",
         instructions: "테이프나 스테이플을 제거하고 상자를 접어 배출해요.",
         tips: "기름이나 물에 젖은 부분은 일반쓰레기로 분리해요.",
       },
@@ -287,12 +287,12 @@ export const koTranslation = {
         tips: "깨진 유리는 신문지에 싸서 별도로 처리해요.",
       },
       textile: {
-        item: "의류|섬유",
+        item: "의류·섬유",
         instructions: "세탁 후 완전히 건조해 헌옷수거함에 넣어요.",
         tips: "작은 조각은 묶어서 배출하면 정리돼요.",
       },
       electronic: {
-        item: "배터리|전자제품",
+        item: "배터리·전자제품",
         instructions: "배터리를 분리하고 지정 수거함이나 센터에 맡겨요.",
         tips: "헐거운 배터리는 단자를 테이프로 감싸서 안전하게 보관해요.",
       },
