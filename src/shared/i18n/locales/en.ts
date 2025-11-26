@@ -626,6 +626,7 @@ export const enTranslation = {
       analysisFailedRetry: "Analysis failed. Try retaking the photo with better light or angle.",
       analysisLowConfidence: "Low confidence (≤60%). Please retake the photo.",
       emptyPredictions: "No results found. Please retake with the object clearly visible.",
+      monthlyGoalSyncFailed: "Couldn't sync the monthly goal. Please try again.",
     },
   },
   common: {

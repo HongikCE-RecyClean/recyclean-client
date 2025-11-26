@@ -642,6 +642,7 @@ export const frTranslation = {
         "Échec de l'analyse. Reprenez la photo avec un meilleur éclairage ou angle.",
       analysisLowConfidence: "Confiance faible (≤60 %). Veuillez reprendre la photo.",
       emptyPredictions: "Aucun résultat. Reprenez la photo avec l'objet bien visible.",
+      monthlyGoalSyncFailed: "Échec de la synchronisation de l'objectif mensuel. Réessayez.",
     },
   },
   common: {

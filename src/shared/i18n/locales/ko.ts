@@ -626,6 +626,7 @@ export const koTranslation = {
       analysisFailedRetry: "분석에 실패했어요. 다른 각도나 밝은 곳에서 다시 촬영해주세요.",
       analysisLowConfidence: "정확도가 낮아요(60% 이하). 다시 한 번 촬영해볼까요?",
       emptyPredictions: "분류 결과가 비어있어요. 물체가 잘 보이도록 다시 촬영해주세요.",
+      monthlyGoalSyncFailed: "월간 목표를 동기화하지 못했어요. 다시 시도해주세요.",
     },
   },
   common: {

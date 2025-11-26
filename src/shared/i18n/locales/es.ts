@@ -642,6 +642,7 @@ export const esTranslation = {
       analysisFailedRetry: "El análisis falló. Toma otra foto con mejor luz o ángulo.",
       analysisLowConfidence: "Confianza baja (≤60%). Vuelve a tomar la foto.",
       emptyPredictions: "Sin resultados. Vuelva a tomar la foto con el objeto bien visible.",
+      monthlyGoalSyncFailed: "No se pudo sincronizar la meta mensual. Inténtalo de nuevo.",
     },
   },
   common: {
