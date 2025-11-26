@@ -11,6 +11,8 @@ import { useAuthStore } from "shared/state/authStore";
 // 카카오 OAuth 콜백 페이지
 // ============================================================
 
+// 동일 인가 코드(code) 재사용으로 인한 중복 호출을 막기 위한 단일 인스턴스 메모리 캐시
+
 type CallbackStatus = "loading" | "success" | "error";
 
 export function AuthCallbackPage() {
@@ -19,7 +21,7 @@ export function AuthCallbackPage() {
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<CallbackStatus>("loading");
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const isProcessingRef = useRef(false);
+  const handledCodeRef = useRef<string | null>(null);
 
   const kakaoLoginMutation = useKakaoLogin();
   const completeOnboarding = useUserStore((state) => state.completeOnboarding);
@@ -31,8 +33,6 @@ export function AuthCallbackPage() {
       navigate("/", { replace: true });
       return;
     }
-
-    if (isProcessingRef.current) return;
 
     const code = searchParams.get("code");
     const error = searchParams.get("error");
@@ -50,7 +50,12 @@ export function AuthCallbackPage() {
       return;
     }
 
-    isProcessingRef.current = true;
+    // 동일 인가 코드(code)로 중복 호출을 차단해 서버에서 "code already used" 오류가 나지 않도록 해요
+    if (handledCodeRef.current === code) {
+      return;
+    }
+
+    handledCodeRef.current = code;
 
     kakaoLoginMutation.mutate(code, {
       onSuccess: (data) => {
@@ -72,7 +77,7 @@ export function AuthCallbackPage() {
   }, [searchParams]);
 
   const handleRetry = () => {
-    isProcessingRef.current = false;
+    handledCodeRef.current = null;
     navigate("/onboarding", { replace: true });
   };
 
