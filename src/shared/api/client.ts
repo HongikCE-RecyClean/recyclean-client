@@ -1,7 +1,7 @@
 import { buildApiUrl } from "./config";
 import { ApiError } from "./errors";
 import type { ApiQueryParams, ApiResponse, AuthResponse } from "./types";
-import { getAccessToken, getRefreshToken, updateTokens, clearAuth } from "../state/authStore";
+import { getAccessToken, getRefreshToken, updateTokens, forceLogout } from "../state/authStore";
 
 // ============================================================
 // HTTP 클라이언트 (인증 토큰 자동 주입 + 401 갱신 인터셉터)
@@ -99,7 +99,7 @@ async function refreshAccessToken(): Promise<string | null> {
 
     if (!response.ok) {
       // 갱신 실패 시 로그아웃 처리
-      clearAuth();
+      forceLogout();
       return null;
     }
 
@@ -109,7 +109,7 @@ async function refreshAccessToken(): Promise<string | null> {
     return data.accessToken;
   } catch {
     // 네트워크 오류 시 로그아웃 처리
-    clearAuth();
+    forceLogout();
     return null;
   }
 }

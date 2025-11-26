@@ -1,5 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { useUserStore } from "./userStore";
+import { useActivityStore } from "./activityStore";
+import { queryClient } from "../providers/queryClient";
 
 // ============================================================
 // 인증 상태 관리 스토어
@@ -98,8 +101,22 @@ export const useAuthStore = create<AuthState>()(
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         user: state.user,
-        isAuthenticated: state.isAuthenticated,
       }),
+      merge: (persistedState, currentState) => {
+        if (!persistedState) {
+          return currentState;
+        }
+        const state = persistedState as AuthState;
+        const accessToken = state.accessToken ?? null;
+        const refreshToken = state.refreshToken ?? null;
+        return {
+          ...currentState,
+          ...state,
+          accessToken,
+          refreshToken,
+          isAuthenticated: Boolean(accessToken),
+        } satisfies AuthState;
+      },
     },
   ),
 );
@@ -123,7 +140,17 @@ export function updateTokens(accessToken: string, refreshToken: string): void {
   useAuthStore.getState().setTokens(accessToken, refreshToken);
 }
 
-// 로그아웃 (HttpClient 인터셉터에서 401 실패 시 사용)
-export function clearAuth(): void {
+// 강제 로그아웃 유틸 (401/만료 등 모든 경로에서 공통 사용)
+export function forceLogout(options: { clearQueryCache?: boolean } = {}): void {
   useAuthStore.getState().logout();
+  useUserStore.getState().clearUserData();
+  useActivityStore.getState().clearAllEntries();
+  if (options.clearQueryCache !== false) {
+    queryClient.removeQueries();
+  }
+}
+
+// 기존 clearAuth 호환 API (토큰만 초기화하던 경로 대체)
+export function clearAuth(): void {
+  forceLogout();
 }

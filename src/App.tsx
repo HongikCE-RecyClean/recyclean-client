@@ -16,8 +16,8 @@ function AuthGuard({ children }: { children: React.ReactElement }) {
   const { isOnboarded } = useUserStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-  // 인증되지 않고 온보딩도 완료되지 않은 경우 온보딩으로 이동
-  if (!isAuthenticated && !isOnboarded) {
+  // 인증 또는 온보딩이 하나라도 미충족이면 온보딩으로 이동
+  if (!isAuthenticated || !isOnboarded) {
     return <Navigate to="/onboarding" replace />;
   }
 
