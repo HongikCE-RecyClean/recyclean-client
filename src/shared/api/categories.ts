@@ -1,9 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { UseQueryOptions } from "@tanstack/react-query";
 
 import { apiClient } from "./client";
 import { queryKeys } from "./queryKeys";
-import type { Category, CategoryDeleteResponse, CategoryRequest } from "./types";
+import type { Category } from "./types";
 
 // ============================================================
 // 카테고리 API 모듈
@@ -15,6 +15,23 @@ export async function fetchCategories(signal?: AbortSignal): Promise<Category[]>
   return response.data;
 }
 
+// ============================================================
+// React Query 훅
+// ============================================================
+
+type UseCategoriesOptions = Omit<UseQueryOptions<Category[], Error>, "queryKey" | "queryFn">;
+
+// 전체 카테고리 조회 훅
+export function useCategories(options?: UseCategoriesOptions) {
+  return useQuery({
+    queryKey: queryKeys.categories.list(),
+    queryFn: ({ signal }) => fetchCategories(signal),
+    staleTime: 5 * 60_000, // 5분 (카테고리는 자주 변경되지 않음)
+    ...options,
+  });
+}
+
+/* 미사용 API: 카테고리 단건/CRUD는 현재 UI에서 호출하지 않아 주석 처리
 // 단건 카테고리 조회
 export async function fetchCategory(id: number, signal?: AbortSignal): Promise<Category> {
   const response = await apiClient.get<Category>(`/api/categories/${id}`, { signal });
@@ -47,22 +64,7 @@ export async function deleteCategory(id: number): Promise<CategoryDeleteResponse
   return response.data;
 }
 
-// ============================================================
-// React Query 훅
-// ============================================================
-
-type UseCategoriesOptions = Omit<UseQueryOptions<Category[], Error>, "queryKey" | "queryFn">;
 type UseCategoryOptions = Omit<UseQueryOptions<Category, Error>, "queryKey" | "queryFn">;
-
-// 전체 카테고리 조회 훅
-export function useCategories(options?: UseCategoriesOptions) {
-  return useQuery({
-    queryKey: queryKeys.categories.list(),
-    queryFn: ({ signal }) => fetchCategories(signal),
-    staleTime: 5 * 60_000, // 5분 (카테고리는 자주 변경되지 않음)
-    ...options,
-  });
-}
 
 // 단건 카테고리 조회 훅
 export function useCategory(id: number, options?: UseCategoryOptions) {
@@ -112,3 +114,4 @@ export function useDeleteCategory() {
     },
   });
 }
+*/

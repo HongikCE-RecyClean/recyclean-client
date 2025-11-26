@@ -23,13 +23,6 @@ export const queryKeys = {
     completed: () => [...queryKeys.plans.all, "completed"] as const,
   },
 
-  // 달력
-  calendar: {
-    all: ["calendar"] as const,
-    list: () => [...queryKeys.calendar.all, "list"] as const,
-    detail: (id: number) => [...queryKeys.calendar.all, "detail", id] as const,
-  },
-
   // 카테고리
   categories: {
     all: ["categories"] as const,

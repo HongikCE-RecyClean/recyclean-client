@@ -23,13 +23,7 @@ export { ApiError } from "./errors";
 // ============================================================
 
 // 인증
-export {
-  getKakaoLoginUrl,
-  loginWithKakao,
-  reissueToken,
-  useKakaoLogin,
-  useTokenReissue,
-} from "./auth";
+export { getKakaoLoginUrl, loginWithKakao, reissueToken, useKakaoLogin } from "./auth";
 
 // 대시보드
 export { fetchDashboardSummary, useDashboardSummary } from "./dashboard";
@@ -54,22 +48,8 @@ export {
   useUpdateMonthlyGoal,
 } from "./plans";
 
-// 달력
-export { fetchCalendar, fetchCalendarEntry, useCalendar, useCalendarEntry } from "./calendar";
-
 // 카테고리
-export {
-  fetchCategories,
-  fetchCategory,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-  useCategories,
-  useCategory,
-  useCreateCategory,
-  useUpdateCategory,
-  useDeleteCategory,
-} from "./categories";
+export { fetchCategories, useCategories } from "./categories";
 
 // AI 분석
 export { requestAiLabeling } from "./analyze";

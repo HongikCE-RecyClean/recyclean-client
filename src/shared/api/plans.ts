@@ -30,12 +30,6 @@ export async function fetchPlans(signal?: AbortSignal): Promise<Plan[]> {
   return response.data;
 }
 
-// 개별 계획 조회
-export async function fetchPlan(id: number, signal?: AbortSignal): Promise<Plan> {
-  const response = await apiClient.get<Plan>(`/api/plans/${id}`, { signal });
-  return response.data;
-}
-
 // 계획 수정
 export async function updatePlan(id: number, data: PlanUpdateRequest): Promise<Plan> {
   const response = await apiClient.put<Plan, PlanUpdateRequest>(`/api/plans/${id}`, {
@@ -55,12 +49,6 @@ export async function completePlan(id: number): Promise<PlanCompleteResponse> {
   return response.data;
 }
 
-// 완료된 계획 목록 조회
-export async function fetchCompletedPlans(signal?: AbortSignal): Promise<Plan[]> {
-  const response = await apiClient.get<Plan[]>("/api/plans/completed", { signal });
-  return response.data;
-}
-
 // 월간 목표 수정
 export async function updateMonthlyGoal(monthlyGoal: number): Promise<MonthlyGoalResponse> {
   const response = await apiClient.post<MonthlyGoalResponse, MonthlyGoalRequest>(
@@ -75,7 +63,6 @@ export async function updateMonthlyGoal(monthlyGoal: number): Promise<MonthlyGoa
 // ============================================================
 
 type UsePlansOptions = Omit<UseQueryOptions<Plan[], Error>, "queryKey" | "queryFn">;
-type UsePlanOptions = Omit<UseQueryOptions<Plan, Error>, "queryKey" | "queryFn">;
 
 // 전체 계획 조회 훅
 export function usePlans(options?: UsePlansOptions) {
@@ -86,6 +73,21 @@ export function usePlans(options?: UsePlansOptions) {
     ...options,
   });
 }
+
+/* 미사용 API: 계획 단건/완료 조회는 현재 UI에서 호출하지 않아 주석 처리
+// 개별 계획 조회
+export async function fetchPlan(id: number, signal?: AbortSignal): Promise<Plan> {
+  const response = await apiClient.get<Plan>(`/api/plans/${id}`, { signal });
+  return response.data;
+}
+
+// 완료된 계획 목록 조회
+export async function fetchCompletedPlans(signal?: AbortSignal): Promise<Plan[]> {
+  const response = await apiClient.get<Plan[]>("/api/plans/completed", { signal });
+  return response.data;
+}
+
+type UsePlanOptions = Omit<UseQueryOptions<Plan, Error>, "queryKey" | "queryFn">;
 
 // 개별 계획 조회 훅
 export function usePlan(id: number, options?: UsePlanOptions) {
@@ -107,6 +109,7 @@ export function useCompletedPlans(options?: UsePlansOptions) {
     ...options,
   });
 }
+*/
 
 // 계획 생성 mutation
 export function useCreatePlan() {

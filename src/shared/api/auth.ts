@@ -75,21 +75,6 @@ export function useKakaoLogin() {
 }
 
 // 토큰 재발급 mutation
-export function useTokenReissue() {
-  const queryClient = useQueryClient();
-  const setTokens = useAuthStore((state) => state.setTokens);
-
-  return useMutation({
-    mutationFn: reissueToken,
-    onSuccess: (data) => {
-      // authStore에 새 토큰 저장
-      setTokens(data.accessToken, data.refreshToken);
-      // React Query 캐시 갱신
-      queryClient.setQueryData(queryKeys.auth.session(), data);
-    },
-  });
-}
-
 // 로그아웃 요청
 export async function logoutRequest(): Promise<void> {
   await apiClient.post<void>("/api/auth/logout");
