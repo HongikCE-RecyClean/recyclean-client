@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { format, isSameMonth, startOfMonth, type Locale } from "date-fns";
 import { enUS, es, fr, ko as koLocale } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import type { BadgeTone } from "../../shared/ui/Badge/Badge";
 import { useNotificationStore } from "../../shared/state/notificationStore";
 import type { RecyclingEntry } from "../../shared/types/dashboard";
@@ -21,17 +22,32 @@ import { useCalendarData } from "./hooks";
 // 범례 배지 색상 순서를 정의
 const tonePalette: BadgeTone[] = ["primary", "success", "info", "warning", "danger"];
 
+const MONTH_KEYS = [
+  "january",
+  "february",
+  "march",
+  "april",
+  "may",
+  "june",
+  "july",
+  "august",
+  "september",
+  "october",
+  "november",
+  "december",
+] as const;
+
 // 날짜를 월-일 문자열로 정규화하는 함수 정의
 function formatDateKey(date: Date) {
   return format(date, "yyyy-MM-dd");
 }
 
 // 월과 연도를 현지화 문자열로 변환하는 함수 정의
-function formatMonthLabel(month: Date, localeTag: string) {
-  return new Intl.DateTimeFormat(localeTag, {
-    year: "numeric",
-    month: "long",
-  }).format(month);
+function formatMonthLabel(month: Date, t: TFunction) {
+  const monthKey = MONTH_KEYS[month.getMonth()];
+  const monthName = t(`calendar.monthNames.${monthKey}`);
+  const year = format(month, "yyyy");
+  return t("calendar.monthLabel", { month: monthName, year });
 }
 
 // 선택 일자를 전체 형식 문자열로 변환하는 함수 정의
@@ -191,7 +207,7 @@ export function CalendarPage() {
   );
 
   const selectedDateLabel = formatSelectedDateLabel(selectedDate, intlLocale);
-  const currentMonthLabel = formatMonthLabel(currentMonth, intlLocale);
+  const currentMonthLabel = formatMonthLabel(currentMonth, t);
 
   // 날짜 선택에 따른 상태 갱신 처리
   const handleSelectDate = useCallback((date: Date) => {
@@ -313,6 +329,7 @@ export function CalendarPage() {
         onChangeMonth={handleMonthChange}
         modifiers={modifiers}
         monthlyStats={monthlyStats}
+        locale={dateLocale}
       />
 
       {/* 선택 날짜의 기록 상세를 독립 카드로 표현 */}

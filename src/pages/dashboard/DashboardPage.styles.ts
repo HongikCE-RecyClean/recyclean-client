@@ -149,6 +149,12 @@ export const ActivityRow = styled.div`
   }
 `;
 
+export const RecentActivityInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
 // 최근 활동 제목 텍스트 스타일
 export const RecentActivityTitle = styled.div`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};

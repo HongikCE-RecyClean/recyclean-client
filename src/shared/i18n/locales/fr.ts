@@ -250,6 +250,7 @@ export const frTranslation = {
       instructionsTitle: "Étapes de traitement",
       retry: "Reprendre",
       logAction: "Enregistrer le recyclage",
+      autoMemo: "Analyse IA : {{item}}",
       saveSuccess: "✅ Ajouté à votre journal d'activités !",
       defaultInstructions:
         "Retirez les impuretés puis suivez les consignes de tri de votre commune.",
@@ -316,6 +317,21 @@ export const frTranslation = {
   },
   calendar: {
     overviewTitle: "{{month}}",
+    monthLabel: "{{month}} {{year}}",
+    monthNames: {
+      january: "janvier",
+      february: "février",
+      march: "mars",
+      april: "avril",
+      may: "mai",
+      june: "juin",
+      july: "juillet",
+      august: "août",
+      september: "septembre",
+      october: "octobre",
+      november: "novembre",
+      december: "décembre",
+    },
     stats: {
       records: "Nombre total d'enregistrements",
       items: "Nombre total d'objets",

@@ -2,6 +2,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import type { DayPickerProps } from "react-day-picker";
 import { useTranslation } from "react-i18next";
+import type { Locale } from "date-fns";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import * as S from "../CalendarPage.styles";
 import type { CalendarMonthlyStats } from "./types";
@@ -14,6 +15,7 @@ type CalendarOverviewCardProps = {
   onChangeMonth: (month: Date) => void;
   modifiers: DayPickerProps["modifiers"];
   monthlyStats: CalendarMonthlyStats;
+  locale: Locale;
 };
 
 export function CalendarOverviewCard({
@@ -24,6 +26,7 @@ export function CalendarOverviewCard({
   onChangeMonth,
   modifiers,
   monthlyStats,
+  locale,
 }: CalendarOverviewCardProps) {
   const { t } = useTranslation();
   // 카드 전체 구조를 캡슐화하여 상위 페이지 단순화
@@ -40,6 +43,7 @@ export function CalendarOverviewCard({
             weekStartsOn={1}
             month={currentMonth}
             selected={selectedDate}
+            locale={locale}
             onSelect={(date) => {
               // 사용자 입력(date)가 존재할 때만 상위 콜백 호출
               if (date) {

@@ -25,7 +25,7 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
             {recentActivity.map((activity) => (
               // 항목 id로 안정적인 키(key) 보장
               <S.ActivityRow key={activity.id}>
-                <div>
+                <S.RecentActivityInfo>
                   {/* 최근 활동 제목/상태 묶음 */}
                   <S.RecentActivityTitleRow>
                     <S.RecentActivityTitle>
@@ -41,7 +41,7 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
                       time: activity.time,
                     })}
                   </S.RecentActivityMeta>
-                </div>
+                </S.RecentActivityInfo>
                 {activity.mode === "plan" ? (
                   <Badge tone="warning">
                     {t("dashboard.recentActivity.pointsPlanned", { points: activity.points })}
