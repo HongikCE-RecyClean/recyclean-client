@@ -484,9 +484,6 @@ export function AnalyzePage() {
           </S.SectionCardContent>
         </S.SectionCard>
       )}
-
-      {/* 오류 알림을 페이지 하단에 고정 */}
-      {interactionError && <S.ErrorMessage role="alert">{interactionError}</S.ErrorMessage>}
     </S.PageContainer>
   );
 }

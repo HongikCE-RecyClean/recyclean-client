@@ -104,7 +104,7 @@ export function DashboardPage() {
   // dashboardData에서 통계 및 최근 활동 추출 (API 또는 로컬 데이터)
   const {
     todayStats,
-    totalPoints,
+    monthlyPoints,
     monthlyGoal,
     progressValue,
     entriesCount,
@@ -149,7 +149,7 @@ export function DashboardPage() {
       <DashboardHeroCard
         userName={userName}
         todayStats={todayStats}
-        totalPoints={totalPoints}
+        monthlyPoints={monthlyPoints}
         monthlyGoal={monthlyGoal}
         progressValue={progressValue}
         entriesCount={entriesCount}
