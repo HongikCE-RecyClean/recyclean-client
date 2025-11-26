@@ -501,10 +501,9 @@ export const enTranslation = {
       helpCenter: "Help center",
       about: "About the app",
       logout: "Log out",
-      logoutConfirm: "Do you want to log out?",
+      logoutConfirm: "Log out?",
       // 로그아웃 안내 메시지
-      logoutGuide:
-        "Logging out clears your profile and activity data locally and requires signing in again.",
+      logoutGuide: "You’ll be signed out on this device. Sign back in anytime to continue.",
       logoutSuccess: "You’ve been logged out.",
       logoutFailed: "Failed to log out. Please try again.",
     },

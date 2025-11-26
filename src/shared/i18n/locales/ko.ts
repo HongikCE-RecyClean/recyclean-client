@@ -501,7 +501,8 @@ export const koTranslation = {
       logout: "로그아웃",
       logoutConfirm: "로그아웃할까요?",
       // 로그아웃 안내 메시지
-      logoutGuide: "로그아웃하면 저장된 프로필과 활동 기록이 초기화되고 다시 로그인해야 해요",
+      logoutGuide:
+        "이 기기에서 계정이 로그아웃돼요. 필요할 때 다시 로그인해 이어서 사용할 수 있어요.",
       logoutSuccess: "로그아웃되었어요.",
       logoutFailed: "로그아웃에 실패했어요. 다시 시도해주세요.",
     },

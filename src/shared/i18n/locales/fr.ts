@@ -515,10 +515,10 @@ export const frTranslation = {
       helpCenter: "Centre d'aide",
       about: "À propos de l'application",
       logout: "Se déconnecter",
-      logoutConfirm: "Voulez-vous vous déconnecter ?",
+      logoutConfirm: "Se déconnecter ?",
       // 로그아웃 안내 메시지
       logoutGuide:
-        "La déconnexion efface le profil et les activités stockées localement et vous devrez vous reconnecter.",
+        "Vous serez déconnecté sur cet appareil. Reconnectez-vous à tout moment pour continuer.",
       logoutSuccess: "Déconnexion effectuée.",
       logoutFailed: "Échec de la déconnexion. Réessayez.",
     },

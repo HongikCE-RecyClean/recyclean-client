@@ -516,10 +516,10 @@ export const esTranslation = {
       helpCenter: "Centro de ayuda",
       about: "Acerca de la app",
       logout: "Cerrar sesión",
-      logoutConfirm: "¿Quieres cerrar sesión?",
+      logoutConfirm: "¿Cerrar sesión?",
       // 로그아웃 안내 메시지
       logoutGuide:
-        "Al cerrar sesión se borrarán tu perfil y actividades guardadas localmente y deberás iniciar sesión de nuevo.",
+        "Se cerrará tu sesión en este dispositivo. Inicia sesión de nuevo cuando quieras para continuar.",
       logoutSuccess: "Sesión cerrada.",
       logoutFailed: "No se pudo cerrar sesión. Inténtalo de nuevo.",
     },
