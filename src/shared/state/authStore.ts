@@ -15,7 +15,7 @@ export interface AuthUser {
   socialType: "KAKAO";
   socialId: string;
   nickname: string;
-  profileImageUrl: string;
+  profileImageUrl: string | null;
 }
 
 // 인증 스토어 상태 타입
@@ -51,14 +51,10 @@ interface AuthState {
 }
 
 // 로컬스토리지에 저장·마이그레이션되는 슬라이스 타입
-type AuthPersistedState = {
-  accessToken: string | null;
-  refreshToken: string | null;
-  tokenExpiresAt: number | null;
-  user: AuthUser | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-};
+type AuthPersistedState = Pick<
+  AuthState,
+  "accessToken" | "refreshToken" | "tokenExpiresAt" | "user" | "isAuthenticated" | "isLoading"
+>;
 
 // 초기 상태 생성 함수
 const createInitialState = () => ({
@@ -117,7 +113,10 @@ function sanitizeAuthState(state: unknown): AuthPersistedState {
   const parsed = authPersistSchema.safeParse(state ?? {});
   if (!parsed.success) {
     return {
-      ...createInitialState(),
+      accessToken: null,
+      refreshToken: null,
+      tokenExpiresAt: null,
+      user: null,
       isAuthenticated: false,
       isLoading: false,
     };
@@ -145,7 +144,7 @@ function sanitizeAuthState(state: unknown): AuthPersistedState {
 
 // 인증 스토어 생성 (localStorage 지속성 포함)
 export const useAuthStore = create<AuthState>()(
-  persist<AuthState, AuthPersistedState>(
+  persist<AuthState, [], [], AuthPersistedState>(
     (set, get) => ({
       ...createInitialState(),
 
@@ -198,7 +197,7 @@ export const useAuthStore = create<AuthState>()(
         user: state.user,
         tokenExpiresAt: state.tokenExpiresAt,
         isAuthenticated: state.isAuthenticated,
-        isLoading: false,
+        isLoading: state.isLoading,
       }),
       merge: (persistedState, currentState) => {
         const sanitized = sanitizeAuthState(persistedState);
