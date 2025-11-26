@@ -20,10 +20,8 @@ export function AuthCallbackPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<CallbackStatus>("loading");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const handledCodeRef = useRef<string | null>(null); // code 중복 처리 여부 추적해 멱등 보장
-
-  const code = searchParams.get("code");
-  const error = searchParams.get("error");
 
   const kakaoLoginMutation = useKakaoLogin();
   const completeOnboarding = useUserStore((state) => state.completeOnboarding);
@@ -36,13 +34,19 @@ export function AuthCallbackPage() {
       return;
     }
 
+    const code = searchParams.get("code");
+    const error = searchParams.get("error");
+    const errorDescription = searchParams.get("error_description");
+
     if (error) {
       setStatus("error");
+      setErrorMessage(errorDescription || t("auth.errors.kakaoFailed"));
       return;
     }
 
     if (!code) {
       setStatus("error");
+      setErrorMessage(t("auth.errors.noCode"));
       return;
     }
 
@@ -64,20 +68,13 @@ export function AuthCallbackPage() {
           navigate("/", { replace: true });
         }, 1500);
       },
-      onError: () => {
+      onError: (err) => {
         setStatus("error");
+        setErrorMessage(err instanceof Error ? err.message : t("auth.errors.loginFailed"));
       },
     });
-  }, [
-    code,
-    error,
-    isAuthenticated,
-    kakaoLoginMutation,
-    t,
-    completeOnboarding,
-    setUserName,
-    navigate,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleRetry = () => {
     handledCodeRef.current = null;
@@ -89,7 +86,7 @@ export function AuthCallbackPage() {
       <Content>
         {status === "loading" && <LoadingState />}
         {status === "success" && <SuccessState />}
-        {status === "error" && <ErrorState onRetry={handleRetry} />}
+        {status === "error" && <ErrorState message={errorMessage} onRetry={handleRetry} />}
       </Content>
     </Page>
   );
@@ -120,11 +117,12 @@ function SuccessState() {
   );
 }
 
-function ErrorState({ onRetry }: { onRetry: () => void }) {
+function ErrorState({ message, onRetry }: { message?: string; onRetry: () => void }) {
   const { t } = useTranslation();
   return (
     <ErrorStack>
       <StatusText>{t("auth.callback.error")}</StatusText>
+      {message && <ErrorMessage>{message}</ErrorMessage>}
       <RetryButton onClick={onRetry}>{t("auth.callback.retry")}</RetryButton>
     </ErrorStack>
   );
