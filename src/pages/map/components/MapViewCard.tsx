@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import type { MutableRefObject } from "react";
 import { Navigation } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import type { RecyclingCenter, TrashBin } from "shared/types/map";
 import type { MapDestination } from "../types";
 import { SectionCard, SectionCardContent } from "../MapPage.styles";
 import * as S from "./MapViewCard.styles";
+import { useNumberFormatter } from "shared/utils/numberFormat";
 
 interface MapViewCardProps {
   binCount: number;
@@ -70,30 +71,6 @@ function createCircularMarker(color: string) {
   `;
 }
 
-function formatDistance(distanceInMeters: number) {
-  if (distanceInMeters >= 1000) {
-    return `${(distanceInMeters / 1000).toFixed(1)}km`;
-  }
-  return `${Math.round(distanceInMeters)}m`;
-}
-
-function formatDuration(durationSeconds: number) {
-  if (durationSeconds < 60) {
-    const seconds = Math.max(1, Math.round(durationSeconds));
-    return `${seconds}초`;
-  }
-  const minutes = Math.max(1, Math.round(durationSeconds / 60));
-  if (minutes >= 60) {
-    const hours = Math.floor(minutes / 60);
-    const restMinutes = minutes % 60;
-    if (restMinutes === 0) {
-      return `${hours}시간`;
-    }
-    return `${hours}시간 ${restMinutes}분`;
-  }
-  return `${minutes}분`;
-}
-
 // OSRM 공개 foot 라우팅 엔드포인트를 호출해요
 async function requestWalkingRoute(
   start: MapCoordinates,
@@ -138,6 +115,7 @@ export function MapViewCard({
   onClearRoute,
 }: MapViewCardProps) {
   const { t } = useTranslation();
+  const formatNumber = useNumberFormatter();
   const mapElementRef = useRef<HTMLDivElement | null>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
   const userMarkerRef = useRef<naver.maps.Marker | null>(null);
@@ -151,10 +129,42 @@ export function MapViewCard({
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
   const [routeError, setRouteError] = useState(false);
 
+  const formatDistance = useCallback(
+    (distanceInMeters: number) => {
+      if (distanceInMeters >= 1000) {
+        return `${formatNumber(distanceInMeters / 1000, {
+          maximumFractionDigits: 1,
+        })}km`;
+      }
+      return `${formatNumber(Math.round(distanceInMeters), { maximumFractionDigits: 0 })}m`;
+    },
+    [formatNumber],
+  );
+
+  const formatDuration = useCallback(
+    (durationSeconds: number) => {
+      if (durationSeconds < 60) {
+        const seconds = Math.max(1, Math.round(durationSeconds));
+        return `${formatNumber(seconds, { maximumFractionDigits: 0 })}초`;
+      }
+      const minutes = Math.max(1, Math.round(durationSeconds / 60));
+      if (minutes >= 60) {
+        const hours = Math.floor(minutes / 60);
+        const restMinutes = minutes % 60;
+        if (restMinutes === 0) {
+          return `${formatNumber(hours, { maximumFractionDigits: 0 })}시간`;
+        }
+        return `${formatNumber(hours, { maximumFractionDigits: 0 })}시간 ${formatNumber(restMinutes, { maximumFractionDigits: 0 })}분`;
+      }
+      return `${formatNumber(minutes, { maximumFractionDigits: 0 })}분`;
+    },
+    [formatNumber],
+  );
+
   const routeSummaryText = useMemo(() => {
     if (!routeSummary) return null;
     return `${formatDistance(routeSummary.distance)} · ${formatDuration(routeSummary.duration)}`;
-  }, [routeSummary]);
+  }, [routeSummary, formatDistance, formatDuration]);
 
   const disposeMarkers = (markersRef: MutableRefObject<naver.maps.Marker[]>) => {
     markersRef.current.forEach((marker) => marker.setMap(null));

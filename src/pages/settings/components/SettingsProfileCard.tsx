@@ -79,10 +79,16 @@ export function SettingsProfileCard({
             </p>
             <div css={S.profileBadgeRow}>
               <Badge tone="success">
-                {t("settings.profile.points", { points: userStats.totalPoints })}
+                {t("settings.profile.points", {
+                  points: userStats.totalPoints,
+                  formatParams: { points: "number" },
+                })}
               </Badge>
               <Badge variant="outline">
-                {t("settings.profile.streak", { days: userStats.streakDays })}
+                {t("settings.profile.streak", {
+                  days: userStats.streakDays,
+                  formatParams: { days: "number" },
+                })}
               </Badge>
             </div>
           </div>

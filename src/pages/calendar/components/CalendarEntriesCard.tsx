@@ -123,6 +123,7 @@ export function CalendarEntriesCard({
                         {t("calendar.entries.meta", {
                           count: entry.amount,
                           time: format(entry.date, "p", { locale: timeLocale }),
+                          formatParams: { count: "number" },
                         })}
                       </span>
                       {/* 메모 표시 */}
@@ -134,8 +135,14 @@ export function CalendarEntriesCard({
                       $completed={isCompletedPlan}
                     >
                       {isPendingPlan
-                        ? t("calendar.entries.pointsPlanned", { points: entry.points })
-                        : t("calendar.entries.points", { points: entry.points })}
+                        ? t("calendar.entries.pointsPlanned", {
+                            points: entry.points,
+                            formatParams: { points: "number" },
+                          })
+                        : t("calendar.entries.points", {
+                            points: entry.points,
+                            formatParams: { points: "number" },
+                          })}
                     </S.RecordPoints>
                   </S.SwipeableContent>
 

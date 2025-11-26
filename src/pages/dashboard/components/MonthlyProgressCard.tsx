@@ -2,7 +2,6 @@ import { Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Progress } from "../../../shared/ui/Progress/Progress";
-import { formatNumber } from "shared/utils/numberFormat";
 import * as S from "../DashboardPage.styles";
 
 interface MonthlyProgressCardProps {
@@ -16,10 +15,7 @@ export function MonthlyProgressCard({
   monthlyGoal,
   progressValue,
 }: MonthlyProgressCardProps) {
-  const { t, i18n } = useTranslation();
-  const locale = i18n.language;
-  const formattedTotalPoints = formatNumber(totalPoints, locale);
-  const formattedMonthlyGoal = formatNumber(monthlyGoal, locale);
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
@@ -34,8 +30,9 @@ export function MonthlyProgressCard({
           {/* 진행 수치 텍스트 클래스 적용 */}
           <S.MonthlyProgressValue>
             {t("dashboard.monthlyProgress.value", {
-              current: formattedTotalPoints,
-              goal: formattedMonthlyGoal,
+              current: totalPoints,
+              goal: monthlyGoal,
+              formatParams: { current: "number", goal: "number" },
             })}
           </S.MonthlyProgressValue>
           <S.MonthlyProgressSubtitle>
@@ -47,7 +44,10 @@ export function MonthlyProgressCard({
         {/* 진행률 서브 정보 행 클래스 적용 */}
         <div css={S.monthlyProgressFooter}>
           <S.MonthlyProgressPercent>
-            {t("dashboard.monthlyProgress.percent", { percent: Math.round(progressValue) })}
+            {t("dashboard.monthlyProgress.percent", {
+              percent: progressValue,
+              formatParams: { percent: "number0" },
+            })}
           </S.MonthlyProgressPercent>
           {/* TODO: 진행률 메시지 클래스를 정의한 뒤 활성화 예정 */}
         </div>

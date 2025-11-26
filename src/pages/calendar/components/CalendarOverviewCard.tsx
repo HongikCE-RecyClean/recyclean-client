@@ -6,6 +6,7 @@ import type { Locale } from "date-fns";
 import { Card, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import * as S from "../CalendarPage.styles";
 import type { CalendarMonthlyStats } from "./types";
+import { useNumberFormatter } from "shared/utils/numberFormat";
 
 type CalendarOverviewCardProps = {
   currentMonth: Date;
@@ -29,6 +30,7 @@ export function CalendarOverviewCard({
   locale,
 }: CalendarOverviewCardProps) {
   const { t } = useTranslation();
+  const formatNumber = useNumberFormatter({ maximumFractionDigits: 1 });
   // 카드 전체 구조를 캡슐화하여 상위 페이지 단순화
   return (
     <Card>
@@ -67,18 +69,21 @@ export function CalendarOverviewCard({
         {/* 월간 통계 수치를 별도 영역으로 렌더링 */}
         <S.StatsGrid>
           <S.StatBlock>
-            <S.StatValue>{monthlyStats.totalRecords}</S.StatValue>
+            <S.StatValue>{formatNumber(monthlyStats.totalRecords)}</S.StatValue>
             <S.StatLabel>{t("calendar.stats.records")}</S.StatLabel>
             <S.StatHelperText>
-              {t("calendar.stats.planned", { count: monthlyStats.plannedCount })}
+              {t("calendar.stats.planned", {
+                count: monthlyStats.plannedCount,
+                formatParams: { count: "number" },
+              })}
             </S.StatHelperText>
           </S.StatBlock>
           <S.StatBlock>
-            <S.StatValue>{monthlyStats.totalItems}</S.StatValue>
+            <S.StatValue>{formatNumber(monthlyStats.totalItems)}</S.StatValue>
             <S.StatLabel>{t("calendar.stats.items")}</S.StatLabel>
           </S.StatBlock>
           <S.StatBlock>
-            <S.StatValue>{monthlyStats.totalPoints} pts</S.StatValue>
+            <S.StatValue>{`${formatNumber(monthlyStats.totalPoints)} pts`}</S.StatValue>
             <S.StatLabel>{t("calendar.stats.points")}</S.StatLabel>
           </S.StatBlock>
         </S.StatsGrid>

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Progress } from "shared/ui/Progress/Progress";
 import type { TodayStats } from "shared/utils/userStats";
-import { formatNumber } from "shared/utils/numberFormat";
+import { useNumberFormatter } from "shared/utils/numberFormat";
 import * as S from "../DashboardPage.styles";
 
 interface DashboardHeroCardProps {
@@ -27,23 +27,25 @@ export function DashboardHeroCard({
   totalItems,
   categoryCount,
 }: DashboardHeroCardProps) {
-  const { t, i18n } = useTranslation();
-  const locale = i18n.language;
+  const { t } = useTranslation();
+  const formatNumber = useNumberFormatter();
   const trimmedName = userName?.trim();
   const displayName =
     trimmedName && trimmedName.length > 0 ? trimmedName : t("dashboard.welcome.defaultName");
-  const roundedProgress = Math.round(progressValue);
-  const goalText = `${t("dashboard.tracker.goal", { goal: formatNumber(monthlyGoal, locale) })} (${t(
-    "dashboard.tracker.percent",
-    { percent: roundedProgress },
-  )})`;
-  const formattedMonthlyPoints = formatNumber(monthlyPoints, locale);
-  const formattedTodayItems = formatNumber(todayStats.itemsRecycled, locale);
-  const formattedTodayPoints = formatNumber(todayStats.pointsEarned, locale);
-  const formattedTotalItems = formatNumber(totalItems, locale);
-  const formattedCategoryCount = formatNumber(categoryCount, locale);
-  const formattedEntriesCount = formatNumber(entriesCount, locale);
-  const formattedPlannedCount = formatNumber(plannedCount, locale);
+  const goalText = `${t("dashboard.tracker.goal", {
+    goal: monthlyGoal,
+    formatParams: { goal: "number" },
+  })} (${t("dashboard.tracker.percent", {
+    percent: progressValue,
+    formatParams: { percent: "number0" },
+  })})`;
+  const formattedMonthlyPoints = formatNumber(monthlyPoints);
+  const formattedTodayItems = formatNumber(todayStats.itemsRecycled);
+  const formattedTodayPoints = formatNumber(todayStats.pointsEarned);
+  const formattedTotalItems = formatNumber(totalItems);
+  const formattedCategoryCount = formatNumber(categoryCount);
+  const formattedEntriesCount = formatNumber(entriesCount);
+  const formattedPlannedCount = formatNumber(plannedCount);
 
   return (
     <S.HeroCard>

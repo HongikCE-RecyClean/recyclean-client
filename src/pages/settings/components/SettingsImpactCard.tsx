@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import * as S from "../SettingsPage.styles";
 import type { UserStats } from "../types";
+import { useNumberFormatter } from "shared/utils/numberFormat";
 
 // 사용자 영향력 카드 컴포넌트 정의
 interface SettingsImpactCardProps {
@@ -14,6 +15,7 @@ export function SettingsImpactCard({ userStats }: SettingsImpactCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
   const { t } = useTranslation();
+  const formatNumber = useNumberFormatter();
 
   // 통계 값을 시각적으로 배치
   return (
@@ -28,11 +30,13 @@ export function SettingsImpactCard({ userStats }: SettingsImpactCardProps) {
         <S.StatGrid>
           <div>
             {/* 영향력 통계 수치 컴포넌트 적용 */}
-            <S.ImpactStatValueSuccess>{userStats.itemsRecycled}</S.ImpactStatValueSuccess>
+            <S.ImpactStatValueSuccess>
+              {formatNumber(userStats.itemsRecycled)}
+            </S.ImpactStatValueSuccess>
             <div css={S.impactStatLabel(theme)}>{t("settings.impact.items")}</div>
           </div>
           <div>
-            <S.ImpactStatValueInfo>{userStats.totalPoints}</S.ImpactStatValueInfo>
+            <S.ImpactStatValueInfo>{formatNumber(userStats.totalPoints)}</S.ImpactStatValueInfo>
             <div css={S.impactStatLabel(theme)}>{t("settings.impact.points")}</div>
           </div>
         </S.StatGrid>

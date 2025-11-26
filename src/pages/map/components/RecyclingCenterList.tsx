@@ -10,6 +10,7 @@ import type { RecyclingCenter, TrashBin, FilterOption } from "shared/types/map";
 import { SectionCard, SectionCardContent, SectionCardHeader } from "../MapPage.styles";
 import * as S from "./RecyclingCenterList.styles";
 import { useNotificationStore } from "shared/state/notificationStore";
+import { useNumberFormatter } from "shared/utils/numberFormat";
 
 interface RecyclingCenterListProps {
   centers: RecyclingCenter[];
@@ -27,6 +28,16 @@ export function RecyclingCenterList({
 }: RecyclingCenterListProps) {
   const { t } = useTranslation();
   const { showSnackbar } = useNotificationStore();
+  const formatNumber = useNumberFormatter({ maximumFractionDigits: 1 });
+
+  const formatDistanceLabel = (distance: string) => {
+    const match = distance.match(/([\\d.,]+)/);
+    if (!match) return distance;
+    const rawNumber = Number(match[1].replace(/,/g, ""));
+    if (Number.isNaN(rawNumber)) return distance;
+    const unit = distance.replace(match[1], "").trim() || "km";
+    return `${formatNumber(rawNumber)}${unit}`;
+  };
 
   // 로고 기본 이미지를 만드는 헬퍼 정의
   const createLogoFallback = (centerName: string) => (
@@ -149,7 +160,7 @@ export function RecyclingCenterList({
                 <S.CenterMedia>
                   {logoFallback}
                   <div css={S.centerBadgeContainer}>
-                    <Badge variant="outline">{center.distance}</Badge>
+                    <Badge variant="outline">{formatDistanceLabel(center.distance)}</Badge>
                   </div>
                 </S.CenterMedia>
                 <S.CenterContent>

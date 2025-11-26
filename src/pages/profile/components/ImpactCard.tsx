@@ -3,7 +3,7 @@ import { useTheme } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "shared/ui/Card/Card";
 import type { UserStats } from "shared/utils/userStats";
-import { formatNumber } from "shared/utils/numberFormat";
+import { useNumberFormatter } from "shared/utils/numberFormat";
 import * as S from "../ProfilePage.styles";
 
 // 사용자 영향력 카드 컴포넌트 정의
@@ -14,10 +14,10 @@ interface ImpactCardProps {
 export function ImpactCard({ userStats }: ImpactCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
-  const { t, i18n } = useTranslation();
-  const locale = i18n.language;
-  const formattedItems = formatNumber(userStats.itemsRecycled, locale);
-  const formattedPoints = formatNumber(userStats.totalPoints, locale);
+  const { t } = useTranslation();
+  const formatNumber = useNumberFormatter();
+  const formattedItems = formatNumber(userStats.itemsRecycled);
+  const formattedPoints = formatNumber(userStats.totalPoints);
 
   // 통계 값을 시각적으로 배치
   return (

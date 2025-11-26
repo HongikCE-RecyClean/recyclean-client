@@ -4,7 +4,7 @@ import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Progress } from "../../../shared/ui/Progress/Progress";
 import { Button } from "../../../shared/ui/Button/Button";
 import { useTranslation } from "react-i18next";
-import { formatNumber } from "shared/utils/numberFormat";
+import { useNumberFormatter } from "shared/utils/numberFormat";
 import * as S from "../DashboardPage.styles";
 
 interface TrackerCardProps {
@@ -26,14 +26,13 @@ export function TrackerCard({
   categoryCount,
   onLogAction,
 }: TrackerCardProps) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
-  const locale = i18n.language;
-  const formattedMonthlyPoints = formatNumber(monthlyPoints, locale);
-  const formattedMonthlyGoal = formatNumber(monthlyGoal, locale);
-  const formattedEntriesCount = formatNumber(entriesCount, locale);
-  const formattedTotalItems = formatNumber(totalItems, locale);
-  const formattedCategoryCount = formatNumber(categoryCount, locale);
+  const formatNumber = useNumberFormatter();
+  const formattedMonthlyPoints = formatNumber(monthlyPoints);
+  const formattedEntriesCount = formatNumber(entriesCount);
+  const formattedTotalItems = formatNumber(totalItems);
+  const formattedCategoryCount = formatNumber(categoryCount);
   return (
     <S.SectionCard>
       <S.SectionCardHeader>
@@ -48,10 +47,16 @@ export function TrackerCard({
           <Progress value={progressValue} />
           <div css={S.trackerProgressRow}>
             <S.TrackerGoalText>
-              {t("dashboard.tracker.goal", { goal: formattedMonthlyGoal })}
+              {t("dashboard.tracker.goal", {
+                goal: monthlyGoal,
+                formatParams: { goal: "number" },
+              })}
             </S.TrackerGoalText>
             <S.TrackerPercentText>
-              {t("dashboard.tracker.percent", { percent: Math.round(progressValue) })}
+              {t("dashboard.tracker.percent", {
+                percent: progressValue,
+                formatParams: { percent: "number0" },
+              })}
             </S.TrackerPercentText>
           </div>
         </S.TrackerSummaryBox>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "shared/ui/Card/Card";
 import { Badge } from "shared/ui/Badge/Badge";
 import { Progress } from "shared/ui/Progress/Progress";
 import type { UserStats } from "shared/utils/userStats";
-import { formatNumber } from "shared/utils/numberFormat";
+import { useNumberFormatter } from "shared/utils/numberFormat";
 import * as S from "../ProfilePage.styles";
 
 // 레벨 진행도 카드 컴포넌트 정의
@@ -16,9 +16,9 @@ interface LevelProgressCardProps {
 export function LevelProgressCard({ userStats }: LevelProgressCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
-  const { t, i18n } = useTranslation();
-  const locale = i18n.language;
-  const formattedNextLevelPoints = formatNumber(userStats.nextLevelPoints, locale);
+  const { t } = useTranslation();
+  const formatNumber = useNumberFormatter();
+  const formattedNextLevelPoints = formatNumber(userStats.nextLevelPoints);
 
   return (
     <Card>
