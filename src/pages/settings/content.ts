@@ -122,7 +122,7 @@ export const APP_INFO_COPY: Record<SupportedLanguage, AppInfoCopy> = {
   },
   fr: {
     description:
-      "RecyClean suit votre recyclage avec synchronisation cloud, classification IA et accès multi‑appareils.",
+      "RecyClean suit votre recyclage avec synchronisation cloud, classification IA et accès multi-appareils.",
     versionTitle: "Informations sur la version",
     currentVersionLabel: "Version actuelle :",
     currentVersionValue: "0.1.0 (Bêta)",
@@ -451,7 +451,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
       optionalValue: "Location (for map results), push notifications (when available)",
       automaticLabel: "Activity data:",
       automaticValue:
-        "Recycling plans, calendar entries, and AI classification results with timestamps. In guest mode these stay on this device; when signed in they sync to your account.",
+        "Recycling plans, calendar entries, and AI classification results you choose to save, with timestamps. In guest mode these stay on this device; when signed in they sync to your account.",
     },
     purposeTitle: "How your data is used",
     purposeList: [
@@ -484,7 +484,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
       optionalValue: "위치 정보(지도 결과 개선), 푸시 알림(지원되는 경우)",
       automaticLabel: "활동 데이터:",
       automaticValue:
-        "재활용 계획, 캘린더 항목, AI 분류 결과와 타임스탬프. 게스트 모드에서는 기기에만 저장되고, 로그인하면 계정에 동기화돼요.",
+        "사용자가 저장한 재활용 계획, 캘린더 항목, AI 분류 결과와 시간 정보. 게스트 모드에서는 기기에만 저장되고, 로그인하면 계정에 동기화돼요.",
     },
     purposeTitle: "데이터 사용 방식",
     purposeList: [
@@ -507,32 +507,34 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
   es: {
     policyTitle: "Política de privacidad",
     policyDescription:
-      "RecyClean prioriza tu privacidad. Todos los datos se almacenan localmente en el localStorage de tu navegador y nunca se transmiten a ningún servidor.",
-    collectTitle: "Datos almacenados en tu dispositivo",
-    collectDescription: "La siguiente información se guarda en tu navegador:",
+      "RecyClean usa un modelo híbrido de nube + caché local. Al iniciar sesión, tu perfil, planes y estadísticas se guardan en los servidores de RecyClean; el localStorage solo mantiene los tokens de sesión, preferencias y pantallas recientes para cargar más rápido.",
+    collectTitle: "Datos que almacenamos",
+    collectDescription: "Almacenamos lo siguiente para tu cuenta o dispositivo:",
     collect: {
-      requiredLabel: "Perfil:",
-      requiredValue: "Alias, preferencia de región, fecha de registro",
+      requiredLabel: "Cuenta y perfil:",
+      requiredValue:
+        "ID de cuenta, alias, región y tokens de autenticación para mantener la sesión",
       optionalLabel: "Permisos del dispositivo:",
-      optionalValue: "Ubicación (para buscar centros de reciclaje), notificaciones push",
+      optionalValue:
+        "Ubicación (para resultados del mapa), notificaciones push (cuando estén disponibles)",
       automaticLabel: "Datos de actividad:",
       automaticValue:
-        "Registros de reciclaje con tipo de material, cantidad, fecha y puntos ganados",
+        "Planes de reciclaje, entradas de calendario y resultados de clasificación por IA que guardes, con marcas de tiempo. En modo invitado se quedan en este dispositivo; al iniciar sesión se sincronizan con tu cuenta.",
     },
     purposeTitle: "Cómo se usan tus datos",
     purposeList: [
-      "Todo el procesamiento ocurre localmente solo en tu dispositivo",
-      "Registrar actividad de reciclaje y calcular puntos según el tipo de material",
-      "Mostrar estadísticas personalizadas e impacto ambiental",
-      "Recordar tu idioma, tema y preferencias de notificación",
-      "Los datos nunca se envían a servidores externos ni terceros",
+      "Autenticarte y mantener tu sesión activa (tokens guardados localmente y renovados de forma segura)",
+      "Almacenar y sincronizar tus planes, estadísticas del tablero y calendario entre dispositivos",
+      "Procesar el análisis de imágenes con IA para ofrecer guías de reciclaje",
+      "Recordar idioma, tema y preferencias de notificaciones en este dispositivo",
+      "Ofrecer resultados de mapa basados en ubicación y alertas opcionales cuando otorgas permiso",
     ],
     retentionTitle: "Retención de datos",
     retentionDescription:
-      "Tus datos permanecen en el localStorage del navegador indefinidamente hasta que los elimines. Borrar datos del navegador, cookies o reinstalar la app eliminará toda la información permanentemente sin recuperación.",
+      "Los datos en el servidor se conservan mientras tu cuenta esté activa y se eliminan cuando solicites la supresión. La caché local (tokens, preferencias, pantallas recientes) permanece hasta que cierres sesión, restablezcas datos o borres el almacenamiento del navegador.",
     deletionTitle: "Eliminar datos",
     deletionDescription:
-      'Usa "Restablecer datos" en Ajustes para borrar permanentemente todos los datos locales incluyendo tu perfil e historial de actividad. Esta acción no se puede deshacer. También ten en cuenta que limpiar el almacenamiento del navegador tiene el mismo efecto.',
+      'Usa "Restablecer datos" en Ajustes para borrar la caché local y cerrar sesión. Para eliminar la cuenta o los datos en el servidor, escribe a privacy@recyclean.com y gestionaremos la eliminación.',
     contactTitle: "Consultas de privacidad",
     contactIntro: "Para preguntas sobre privacidad contacta a",
     contactOutro: ".",
@@ -540,31 +542,35 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
   fr: {
     policyTitle: "Politique de confidentialité",
     policyDescription:
-      "RecyClean privilégie la confidentialité. Toutes les données sont stockées localement dans le localStorage de votre navigateur et ne sont jamais transmises à un serveur.",
-    collectTitle: "Données stockées sur votre appareil",
-    collectDescription: "Les informations suivantes sont enregistrées dans votre navigateur :",
+      "RecyClean adopte un modèle hybride cloud + cache local. Lorsque vous êtes connecté, votre profil, vos plans et vos statistiques de recyclage sont stockés sur les serveurs RecyClean ; le localStorage ne conserve que les jetons de session, vos préférences et les écrans récents pour un chargement rapide.",
+    collectTitle: "Données que nous stockons",
+    collectDescription:
+      "Nous stockons les informations suivantes pour votre compte ou votre appareil :",
     collect: {
-      requiredLabel: "Profil :",
-      requiredValue: "Pseudo, préférence de région, date d'inscription",
+      requiredLabel: "Compte et profil :",
+      requiredValue:
+        "Identifiant de compte, pseudo, région et jetons d'authentification pour maintenir la session",
       optionalLabel: "Autorisations :",
-      optionalValue: "Localisation (recherche de centres), notifications push",
+      optionalValue:
+        "Localisation (pour les résultats de la carte), notifications push (si disponibles)",
       automaticLabel: "Données d'activité :",
-      automaticValue: "Entrées de recyclage avec type de matériau, quantité, date et points gagnés",
+      automaticValue:
+        "Plans de recyclage, entrées de calendrier et résultats de classification IA que vous enregistrez, avec horodatage. En mode invité, ils restent sur cet appareil ; une fois connecté, ils se synchronisent avec votre compte.",
     },
     purposeTitle: "Utilisation des données",
     purposeList: [
-      "Tout le traitement s'effectue uniquement localement sur votre appareil",
-      "Suivre l'activité de recyclage et calculer les points selon le type de matériau",
-      "Afficher des statistiques personnalisées et votre impact environnemental",
-      "Mémoriser votre langue, thème et préférences de notification",
-      "Les données ne sont jamais envoyées à des serveurs externes ou tiers",
+      "Vous authentifier et sécuriser votre session (jetons conservés localement et renouvelés en toute sécurité)",
+      "Synchroniser vos plans, statistiques du tableau de bord et calendrier entre appareils",
+      "Traiter l'analyse d'images IA pour fournir des consignes de recyclage",
+      "Mémoriser la langue, le thème et les préférences de notification sur cet appareil",
+      "Fournir des résultats cartographiques basés sur la localisation et des alertes optionnelles lorsque vous l'autorisez",
     ],
     retentionTitle: "Conservation des données",
     retentionDescription:
-      "Vos données restent dans le localStorage du navigateur indéfiniment jusqu'à suppression. Effacer les données du navigateur, les cookies ou réinstaller l'app supprimera définitivement toutes les informations sans récupération.",
+      "Les données serveur sont conservées tant que votre compte est actif et supprimées sur demande. Le cache local (jetons, préférences, écrans récents) reste jusqu'à la déconnexion, la réinitialisation des données ou le nettoyage du stockage du navigateur.",
     deletionTitle: "Supprimer vos données",
     deletionDescription:
-      'Utilisez "Réinitialiser les données" dans Réglages pour effacer définitivement toutes les données locales incluant votre profil et historique d\'activité. Cette action est irréversible. Notez aussi que nettoyer le stockage du navigateur a le même effet.',
+      'Utilisez "Réinitialiser les données" dans Réglages pour effacer le cache local et vous déconnecter. Pour supprimer le compte ou les données côté serveur, contactez privacy@recyclean.com et nous traiterons la suppression.',
     contactTitle: "Questions de confidentialité",
     contactIntro: "Pour toute question contactez",
     contactOutro: ".",

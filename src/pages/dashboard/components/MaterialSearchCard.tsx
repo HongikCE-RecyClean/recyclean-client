@@ -49,6 +49,9 @@ export function MaterialSearchCard({
   }, [filteredMaterials, showAllMaterials]);
   const hasHiddenMaterials = filteredMaterials.length > MATERIAL_PREVIEW_COUNT;
 
+  const translateCategory = (category: string) =>
+    t(`dashboard.materialSearch.filters.${category}`, { defaultValue: category });
+
   useEffect(() => {
     setShowAllMaterials(false);
   }, [filteredMaterials]);
@@ -85,7 +88,7 @@ export function MaterialSearchCard({
                   </Badge>
                   <S.MaterialNameText>{material.name}</S.MaterialNameText>
                 </div>
-                <Badge variant="outline">{material.category}</Badge>
+                <Badge variant="outline">{translateCategory(material.category)}</Badge>
               </div>
               <p css={S.materialDescriptionText(theme)}>{material.instructions}</p>
               {/* 재질 팁 박스 클래스 적용 */}
