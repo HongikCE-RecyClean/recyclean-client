@@ -241,3 +241,94 @@ export const resultActionsRow = css`
 export const resultActionButton = css`
   flex: 1;
 `;
+
+// 다중 예측 후보 리스트 컨테이너
+export const PredictionListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+  margin-top: ${({ theme }) => theme.spacing(2)};
+`;
+
+// 다중 예측 후보 리스트 헤더
+export const PredictionListHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${({ theme }) => theme.spacing(1)};
+`;
+
+// 다중 예측 후보 리스트 제목
+export const PredictionListTitle = styled.span`
+  font-size: 0.85rem;
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+  color: ${({ theme }) => theme.colors.textMuted};
+`;
+
+// 다중 예측 후보 아이템
+export const PredictionItem = styled.button<{ $selected?: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing(3)};
+  border: 1px solid
+    ${({ theme, $selected }) => ($selected ? theme.colors.primary : theme.colors.border)};
+  border-radius: ${({ theme }) => theme.radii.md};
+  background: ${({ theme, $selected }) =>
+    $selected ? theme.colors.successSurface : theme.colors.surface};
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.surfaceMuted};
+  }
+`;
+
+// 예측 아이템 카테고리 정보
+export const PredictionItemCategory = styled.span`
+  font-size: 0.9rem;
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+// 예측 아이템 신뢰도
+export const PredictionItemConfidence = styled.span<{ $low?: boolean }>`
+  font-size: 0.85rem;
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
+  color: ${({ theme, $low }) => ($low ? theme.colors.warning : theme.colors.success)};
+`;
+
+// Bbox 오버레이 컨테이너
+export const BboxOverlay = styled.svg`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+`;
+
+// Bbox 토글 버튼
+export const BboxToggle = styled.button<{ $active?: boolean }>`
+  position: absolute;
+  bottom: ${({ theme }) => theme.spacing(2)};
+  left: ${({ theme }) => theme.spacing(2)};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+  padding: ${({ theme }) => `${theme.spacing(1)} ${theme.spacing(2)}`};
+  border: none;
+  border-radius: ${({ theme }) => theme.radii.sm};
+  background: ${({ theme, $active }) =>
+    $active ? theme.colors.primary : "rgba(15, 23, 42, 0.65)"};
+  color: ${({ theme }) => theme.colors.surface};
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primary};
+  }
+`;

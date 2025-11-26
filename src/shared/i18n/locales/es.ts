@@ -228,6 +228,8 @@ export const esTranslation = {
       analysisFailed:
         "No pudimos contactar el servicio de IA. Intente nuevamente en unos segundos.",
       noPrediction: "No se detectó material reciclable. Pruebe con otro ángulo más claro.",
+      emptyPredictions:
+        "Sin resultados de clasificación. Vuelva a tomar la foto con el objeto bien visible.",
     },
     camera: {
       overlay: "Preparando la cámara...",
@@ -263,6 +265,12 @@ export const esTranslation = {
     captured: {
       alt: "Vista previa de la imagen capturada",
       resetAria: "Volver a tomar la foto",
+      bboxToggle: "Mostrar/ocultar área detectada",
+      showBbox: "Mostrar área",
+      hideBbox: "Ocultar área",
+    },
+    predictions: {
+      title: "Seleccionar otro resultado",
     },
     guides: {
       plastic: {
@@ -605,6 +613,7 @@ export const esTranslation = {
       locationError: "No pudimos obtener su ubicación. Inténtelo de nuevo.",
       analysisFailedRetry: "El análisis falló. Toma otra foto con mejor luz o ángulo.",
       analysisLowConfidence: "Confianza baja (≤60%). Vuelve a tomar la foto.",
+      emptyPredictions: "Sin resultados. Vuelva a tomar la foto con el objeto bien visible.",
     },
   },
   common: {

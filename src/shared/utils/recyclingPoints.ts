@@ -137,6 +137,19 @@ const LEGACY_CATEGORY_LABEL_MAP: Record<string, MaterialCategoryId> = {
   "\uc804\uc790\uc81c\ud488": "electronic",
 };
 
+// 서버 API CategoryType Enum → 로컬 MaterialCategoryId 매핑
+// API_SPEC3 기준: CAN, PAPER, PLASTIC, GLASS, GENERAL, ELECTRONICS, METAL, CLOTHING
+export const API_CATEGORY_TO_LOCAL: Record<string, MaterialCategoryId> = {
+  PLASTIC: "plastic",
+  PAPER: "paper",
+  GLASS: "glass",
+  METAL: "metal",
+  CAN: "metal", // CAN은 금속으로 분류
+  ELECTRONICS: "electronic",
+  CLOTHING: "textile",
+  GENERAL: "other",
+};
+
 function normalizeLegacyKey(value: string): string {
   return value.trim().toLowerCase();
 }
@@ -174,6 +187,14 @@ export function translateCategory(category: string): MaterialCategoryId {
   if (!category) {
     return "other";
   }
+
+  // 서버 API Enum 직접 매핑 우선 확인 (대문자 Enum)
+  const apiMatch = API_CATEGORY_TO_LOCAL[category.toUpperCase()];
+  if (apiMatch) {
+    return apiMatch;
+  }
+
+  // 문자열 포함 매핑 (하위 호환성)
   const normalized = category.toLowerCase();
 
   if (normalized.includes("plastic") || normalized.includes("pet")) {

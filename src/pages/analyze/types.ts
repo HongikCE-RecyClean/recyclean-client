@@ -11,4 +11,8 @@ export interface RecognitionResult {
   instructions: string;
   // 추가 안내 문구 옵션
   tips?: string;
+  // 서버 API 카테고리 (Plan 생성 시 직접 사용)
+  serverCategory: string;
+  // 바운딩 박스 좌표 [x1, y1, x2, y2]
+  bbox?: [number, number, number, number];
 }

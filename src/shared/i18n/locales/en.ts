@@ -219,6 +219,7 @@ export const enTranslation = {
       captureFailed: "Unable to capture the image.",
       analysisFailed: "We couldn't reach the AI service. Please try again shortly.",
       noPrediction: "No recyclable material detected. Try a clearer angle.",
+      emptyPredictions: "No classification results. Please retake with the object clearly visible.",
     },
     camera: {
       overlay: "Preparing the camera...",
@@ -254,6 +255,12 @@ export const enTranslation = {
     captured: {
       alt: "Captured image preview",
       resetAria: "Retake photo",
+      bboxToggle: "Toggle detection area",
+      showBbox: "Show area",
+      hideBbox: "Hide area",
+    },
+    predictions: {
+      title: "Select another result",
     },
     guides: {
       plastic: {
@@ -590,6 +597,7 @@ export const enTranslation = {
       locationError: "We couldn't load your location. Please try again.",
       analysisFailedRetry: "Analysis failed. Try retaking the photo with better light or angle.",
       analysisLowConfidence: "Low confidence (≤60%). Please retake the photo.",
+      emptyPredictions: "No results found. Please retake with the object clearly visible.",
     },
   },
   common: {

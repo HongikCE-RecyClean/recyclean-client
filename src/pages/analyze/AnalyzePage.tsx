@@ -74,18 +74,8 @@ function dataUrlToFile(dataUrl: string): File | null {
   return new File([buffer], `capture-${Date.now()}.jpg`, { type: mime });
 }
 
-// MaterialCategoryId를 API CategoryType으로 매핑
-const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
-  plastic: "PLASTIC",
-  paper: "PAPER",
-  metal: "METAL",
-  glass: "GLASS",
-  textile: "CLOTHING",
-  electronic: "ELECTRONICS",
-  other: "GENERAL",
-};
-
-const LOW_CONFIDENCE_THRESHOLD = 60;
+// 신뢰도 임계값 (0~1 스케일, 60% = 0.6)
+const LOW_CONFIDENCE_THRESHOLD = 0.6;
 
 export function AnalyzePage() {
   const { t } = useTranslation();
@@ -98,6 +88,9 @@ export function AnalyzePage() {
   const [isScanning, setIsScanning] = useState(false);
   const [result, setResult] = useState<RecognitionResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  // 다중 예측 후보 상태 (상위 3개까지)
+  const [predictions, setPredictions] = useState<AiPrediction[]>([]);
+  const [selectedPredictionIndex, setSelectedPredictionIndex] = useState(0);
   // 카메라 활성화 및 준비 상태 정의
   const [interactionError, setInteractionError] = useState<string | null>(null);
 
@@ -147,6 +140,10 @@ export function AnalyzePage() {
         recyclable: RECYCLABLE_GUIDE_KEYS.has(guideKey),
         instructions,
         tips: rawTips || undefined,
+        // 서버 카테고리 직접 저장 (Plan 생성 시 사용)
+        serverCategory: prediction.category.toUpperCase(),
+        // 바운딩 박스 좌표
+        bbox: prediction.bbox,
       };
     },
     [t],
@@ -159,48 +156,62 @@ export function AnalyzePage() {
       analysisAbortRef.current = controller;
 
       try {
-        const predictions = await aiLabelingMutation.mutateAsync({
+        const rawPredictions = await aiLabelingMutation.mutateAsync({
           file: source,
           signal: controller.signal,
         });
 
         if (controller.signal.aborted) return;
 
-        if (!predictions.length) {
-          showSnackbar(t("notifications.snackbar.analysisFailedRetry"), {
+        // 예측 결과가 비어있는 경우
+        if (!rawPredictions.length) {
+          showSnackbar(t("notifications.snackbar.emptyPredictions"), {
             type: "warning",
             duration: 3000,
           });
-          setInteractionError(t("analyze.errors.noPrediction"));
+          setInteractionError(t("analyze.errors.emptyPredictions"));
           setResult(null);
+          setPredictions([]);
           return;
         }
 
-        const sorted = [...predictions].sort((a, b) => b.confidence - a.confidence);
-        const bestPrediction = sorted[0];
-        const confidencePct = formatConfidence(bestPrediction.confidence);
+        // 신뢰도 내림차순 정렬 후 상위 3개만 유지
+        const sorted = [...rawPredictions].sort((a, b) => b.confidence - a.confidence);
+        const topPredictions = sorted.slice(0, 3);
+        const bestPrediction = topPredictions[0];
 
-        if (confidencePct <= LOW_CONFIDENCE_THRESHOLD) {
+        // 0~1 스케일 기준으로 신뢰도 확인 (LOW_CONFIDENCE_THRESHOLD = 0.6)
+        if (bestPrediction.confidence <= LOW_CONFIDENCE_THRESHOLD) {
           showSnackbar(t("notifications.snackbar.analysisLowConfidence"), {
             type: "warning",
             duration: 3000,
           });
           setInteractionError(t("analyze.errors.analysisFailed"));
           setResult(null);
+          setPredictions([]);
           return;
         }
 
+        // 다중 예측 후보 저장
+        setPredictions(topPredictions);
+        setSelectedPredictionIndex(0);
         setResult(buildRecognitionResult(bestPrediction));
         setInteractionError(null);
       } catch (error) {
         if (controller.signal.aborted) return;
+        // API 에러 바디 추출 시도
+        const errorMessage =
+          error instanceof Error && "body" in error
+            ? (error as { body?: { message?: string } }).body?.message
+            : undefined;
         console.error(error);
-        showSnackbar(t("notifications.snackbar.analysisFailedRetry"), {
+        showSnackbar(errorMessage || t("notifications.snackbar.analysisFailedRetry"), {
           type: "warning",
           duration: 3000,
         });
-        setInteractionError(t("analyze.errors.analysisFailed"));
+        setInteractionError(errorMessage || t("analyze.errors.analysisFailed"));
         setResult(null);
+        setPredictions([]);
       } finally {
         if (!controller.signal.aborted) {
           setIsScanning(false);
@@ -208,7 +219,7 @@ export function AnalyzePage() {
         analysisAbortRef.current = null;
       }
     },
-    [buildRecognitionResult, t],
+    [buildRecognitionResult, showSnackbar, t],
   );
 
   // 프리뷰와 함께 분석을 시작
@@ -299,7 +310,8 @@ export function AnalyzePage() {
       const now = new Date();
       const dateStr = now.toISOString().split("T")[0]; // YYYY-MM-DD
       const timeStr = now.toTimeString().split(" ")[0]; // HH:mm:ss
-      const apiCategory = CATEGORY_TO_API[result.categoryId] || "GENERAL";
+      // 서버가 반환한 카테고리를 직접 사용 (변환 없이)
+      const apiCategory = (result.serverCategory as CategoryType) || "GENERAL";
 
       createPlanMutation.mutate(
         {
@@ -359,8 +371,20 @@ export function AnalyzePage() {
     setResult(null);
     setCapturedImage(null);
     setInteractionError(null);
+    setPredictions([]);
+    setSelectedPredictionIndex(0);
     stopCamera();
   };
+
+  // 다른 예측 후보 선택 핸들러
+  const handleSelectPrediction = useCallback(
+    (index: number) => {
+      if (index < 0 || index >= predictions.length) return;
+      setSelectedPredictionIndex(index);
+      setResult(buildRecognitionResult(predictions[index]));
+    },
+    [predictions, buildRecognitionResult],
+  );
 
   useEffect(() => {
     return () => {
@@ -418,12 +442,44 @@ export function AnalyzePage() {
         </S.SectionCard>
       )}
 
-      {capturedImage && <AnalyzeCapturedImageCard imageSrc={capturedImage} onReset={reset} />}
+      {capturedImage && (
+        <AnalyzeCapturedImageCard imageSrc={capturedImage} onReset={reset} bbox={result?.bbox} />
+      )}
 
       {isScanning && <AnalyzeScanningCard />}
 
       {result && !isScanning && (
         <AnalyzeResultCard result={result} onReset={reset} onSave={handleSaveEntry} />
+      )}
+
+      {/* 다중 예측 후보 리스트 (2개 이상일 때만 표시) */}
+      {result && !isScanning && predictions.length > 1 && (
+        <S.SectionCard>
+          <S.SectionCardContent>
+            <S.PredictionListContainer>
+              <S.PredictionListHeader>
+                <S.PredictionListTitle>{t("analyze.predictions.title")}</S.PredictionListTitle>
+              </S.PredictionListHeader>
+              {predictions.map((pred, index) => {
+                const confidencePct = formatConfidence(pred.confidence);
+                const categoryLabel = t(`materials.categories.${translateCategory(pred.category)}`);
+                return (
+                  <S.PredictionItem
+                    key={`${pred.category}-${index}`}
+                    $selected={index === selectedPredictionIndex}
+                    onClick={() => handleSelectPrediction(index)}
+                    type="button"
+                  >
+                    <S.PredictionItemCategory>{categoryLabel}</S.PredictionItemCategory>
+                    <S.PredictionItemConfidence $low={confidencePct < 70}>
+                      {confidencePct}%
+                    </S.PredictionItemConfidence>
+                  </S.PredictionItem>
+                );
+              })}
+            </S.PredictionListContainer>
+          </S.SectionCardContent>
+        </S.SectionCard>
       )}
 
       {/* 오류 알림을 페이지 하단에 고정 */}

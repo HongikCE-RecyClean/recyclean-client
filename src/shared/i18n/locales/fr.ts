@@ -227,6 +227,8 @@ export const frTranslation = {
       captureFailed: "Impossible de capturer l'image.",
       analysisFailed: "Impossible de contacter le service d'IA. Réessayez dans quelques instants.",
       noPrediction: "Aucun matériau recyclable détecté. Essayez avec un angle plus net.",
+      emptyPredictions:
+        "Aucun résultat de classification. Reprenez la photo avec l'objet bien visible.",
     },
     camera: {
       overlay: "Préparation de la caméra...",
@@ -263,6 +265,12 @@ export const frTranslation = {
     captured: {
       alt: "Aperçu de l'image capturée",
       resetAria: "Reprendre la photo",
+      bboxToggle: "Afficher/masquer la zone détectée",
+      showBbox: "Afficher zone",
+      hideBbox: "Masquer zone",
+    },
+    predictions: {
+      title: "Sélectionner un autre résultat",
     },
     guides: {
       plastic: {
@@ -605,6 +613,7 @@ export const frTranslation = {
       analysisFailedRetry:
         "Échec de l'analyse. Reprenez la photo avec un meilleur éclairage ou angle.",
       analysisLowConfidence: "Confiance faible (≤60 %). Veuillez reprendre la photo.",
+      emptyPredictions: "Aucun résultat. Reprenez la photo avec l'objet bien visible.",
     },
   },
   common: {

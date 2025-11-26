@@ -219,6 +219,7 @@ export const koTranslation = {
       captureFailed: "이미지를 캡처하지 못했어요.",
       analysisFailed: "AI 분석 중 오류가 발생했어요. 잠시 후 다시 시도해주세요.",
       noPrediction: "결과를 찾지 못했어요. 다른 각도로 다시 촬영해보세요.",
+      emptyPredictions: "분류 결과가 비어 있어요. 물체가 잘 보이도록 다시 촬영해주세요.",
     },
     camera: {
       overlay: "카메라를 준비하고 있어요...",
@@ -254,6 +255,12 @@ export const koTranslation = {
     captured: {
       alt: "촬영한 이미지 미리보기",
       resetAria: "사진 다시 촬영",
+      bboxToggle: "감지 영역 토글",
+      showBbox: "영역 표시",
+      hideBbox: "영역 숨기기",
+    },
+    predictions: {
+      title: "다른 후보 선택",
     },
     guides: {
       plastic: {
@@ -590,6 +597,7 @@ export const koTranslation = {
       locationError: "위치 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요",
       analysisFailedRetry: "분석에 실패했어요. 다른 각도나 밝은 곳에서 다시 촬영해주세요.",
       analysisLowConfidence: "정확도가 낮아요(60% 이하). 다시 한 번 촬영해볼까요?",
+      emptyPredictions: "분류 결과가 비어있어요. 물체가 잘 보이도록 다시 촬영해주세요.",
     },
   },
   common: {
