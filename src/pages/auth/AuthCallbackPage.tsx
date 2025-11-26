@@ -109,11 +109,11 @@ function LoadingState() {
 function SuccessState() {
   const { t } = useTranslation();
   return (
-    <StatusCard>
+    <SuccessStack>
       <SuccessIcon>✓</SuccessIcon>
       <StatusText>{t("auth.callback.success")}</StatusText>
       <SubText>{t("auth.callback.redirecting")}</SubText>
-    </StatusCard>
+    </SuccessStack>
   );
 }
 
@@ -156,16 +156,6 @@ const Page = styled.div`
 
 const Content = styled.div`
   padding: 1rem;
-`;
-
-const StatusCard = styled.div`
-  background: ${({ theme }) => theme.colors.surface};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.lg};
-  padding: 2.5rem 2rem;
-  min-width: 280px;
-  text-align: center;
-  box-shadow: ${({ theme }) => theme.shadows.medium};
 `;
 
 const Spinner = styled.div`
@@ -228,4 +218,19 @@ const RetryButton = styled.button`
   &:hover {
     opacity: 0.9;
   }
+`;
+
+const SuccessStack = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const ErrorMessage = styled.p`
+  font-size: 0.875rem;
+  color: ${({ theme }) => theme.colors.textMuted};
+  margin: 0.25rem 0 0.75rem;
+  line-height: 1.5;
+  text-align: center;
 `;
