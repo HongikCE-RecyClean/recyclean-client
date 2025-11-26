@@ -60,8 +60,10 @@ export const recordMemoText = (theme: AppTheme) => css`
   font-style: italic;
   margin-top: ${theme.spacing(0.5)};
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  white-space: normal;
+  word-break: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
@@ -328,6 +330,8 @@ export const RecordInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
+  flex: 1;
+  min-width: 0;
 `;
 
 export const RecordTitleRow = styled.div`
