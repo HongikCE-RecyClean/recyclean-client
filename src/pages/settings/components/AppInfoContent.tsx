@@ -9,6 +9,19 @@ export function AppInfoContent() {
   const language = normalizeLanguage(i18n.language);
   const copy = APP_INFO_COPY[language];
   const appName = t("app.name");
+  // 오픈소스 라이브러리 단일 항목 리스트
+  const ossLibraries = [
+    "React 19",
+    "Vite 7",
+    "TypeScript 5",
+    "React Router 7",
+    "Zustand 5",
+    "TanStack Query 5",
+    "Emotion",
+    "i18next",
+    "date-fns",
+    "Lucide",
+  ];
 
   return (
     <>
@@ -64,9 +77,10 @@ export function AppInfoContent() {
         <S.SectionTitle>{copy.ossTitle}</S.SectionTitle>
         <S.SectionText>{copy.ossDescription}</S.SectionText>
         <S.List>
-          <S.ListItem>React 19 · Vite 7 · TypeScript 5</S.ListItem>
-          <S.ListItem>React Router 7 · Zustand 5 · TanStack Query 5</S.ListItem>
-          <S.ListItem>Emotion · i18next · date-fns · Lucide</S.ListItem>
+          {/* 라이브러리별로 줄바꿈 렌더링 */}
+          {ossLibraries.map((library) => (
+            <S.ListItem key={library}>{library}</S.ListItem>
+          ))}
         </S.List>
       </S.Section>
 

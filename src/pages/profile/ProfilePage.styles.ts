@@ -82,10 +82,11 @@ export const ImpactStatValueSuccess = styled.div`
 `;
 
 // 영향력 통계 주요 수치(정보) 스타일
+// 영향력 포인트 값은 테마 기본색 적용
 export const ImpactStatValueInfo = styled.div`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
-  color: ${({ theme }) => theme.colors.info};
+  color: ${({ theme }) => theme.colors.primary};
   max-width: 7ch;
   white-space: nowrap;
   overflow: hidden;

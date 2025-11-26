@@ -62,8 +62,8 @@ export function TrackerCard({
             <S.TrackerHighlightText>{t("dashboard.tracker.highlight")}</S.TrackerHighlightText>
           </S.HighlightBox>
         )}
-        {/* 홈 CTA 버튼을 브랜드 초록색(primary)으로 표시 */}
-        <Button variant="primary" onClick={onLogAction}>
+        {/* 홈 CTA 버튼을 브랜드 초록색(primary)·대형 높이로 표시 */}
+        <Button variant="primary" size="lg" onClick={onLogAction}>
           <RotateCcw size={16} />
           {t("dashboard.tracker.logAction")}
         </Button>

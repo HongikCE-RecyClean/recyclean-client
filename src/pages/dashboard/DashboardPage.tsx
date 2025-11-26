@@ -157,7 +157,13 @@ export function DashboardPage() {
         totalItems={totalItems}
         categoryCount={categoryCount}
       />
-      <Button variant="primary" onClick={() => setIsAddEntryOpen(true)} css={{ width: "100%" }}>
+      {/* 카카오 로그인 버튼과 동일한 높이로 CTA 정렬 */}
+      <Button
+        variant="primary"
+        size="lg"
+        onClick={() => setIsAddEntryOpen(true)}
+        css={{ width: "100%" }}
+      >
         <Sparkles size={18} />
         {t("dashboard.tracker.logAction")}
       </Button>
