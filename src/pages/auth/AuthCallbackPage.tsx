@@ -20,8 +20,10 @@ export function AuthCallbackPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<CallbackStatus>("loading");
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const handledCodeRef = useRef<string | null>(null);
+  const handledCodeRef = useRef<string | null>(null); // code 중복 처리 여부 추적해 멱등 보장
+
+  const code = searchParams.get("code");
+  const error = searchParams.get("error");
 
   const kakaoLoginMutation = useKakaoLogin();
   const completeOnboarding = useUserStore((state) => state.completeOnboarding);
@@ -34,19 +36,13 @@ export function AuthCallbackPage() {
       return;
     }
 
-    const code = searchParams.get("code");
-    const error = searchParams.get("error");
-    const errorDescription = searchParams.get("error_description");
-
     if (error) {
       setStatus("error");
-      setErrorMessage(errorDescription || t("auth.errors.kakaoFailed"));
       return;
     }
 
     if (!code) {
       setStatus("error");
-      setErrorMessage(t("auth.errors.noCode"));
       return;
     }
 
@@ -68,13 +64,20 @@ export function AuthCallbackPage() {
           navigate("/", { replace: true });
         }, 1500);
       },
-      onError: (err) => {
+      onError: () => {
         setStatus("error");
-        setErrorMessage(err instanceof Error ? err.message : t("auth.errors.loginFailed"));
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [
+    code,
+    error,
+    isAuthenticated,
+    kakaoLoginMutation,
+    t,
+    completeOnboarding,
+    setUserName,
+    navigate,
+  ]);
 
   const handleRetry = () => {
     handledCodeRef.current = null;
@@ -86,7 +89,7 @@ export function AuthCallbackPage() {
       <Content>
         {status === "loading" && <LoadingState />}
         {status === "success" && <SuccessState />}
-        {status === "error" && <ErrorState message={errorMessage} onRetry={handleRetry} />}
+        {status === "error" && <ErrorState onRetry={handleRetry} />}
       </Content>
     </Page>
   );
@@ -117,15 +120,13 @@ function SuccessState() {
   );
 }
 
-function ErrorState({ message, onRetry }: { message: string; onRetry: () => void }) {
+function ErrorState({ onRetry }: { onRetry: () => void }) {
   const { t } = useTranslation();
   return (
-    <StatusCard>
-      <ErrorIcon>✕</ErrorIcon>
+    <ErrorStack>
       <StatusText>{t("auth.callback.error")}</StatusText>
-      <ErrorMessage>{message}</ErrorMessage>
       <RetryButton onClick={onRetry}>{t("auth.callback.retry")}</RetryButton>
-    </StatusCard>
+    </ErrorStack>
   );
 }
 
@@ -207,34 +208,20 @@ const SuccessIcon = styled.div`
   animation: ${scaleIn} 0.3s ease-out;
 `;
 
-const ErrorIcon = styled.div`
-  width: 56px;
-  height: 56px;
-  background: ${({ theme }) => theme.colors.danger};
-  border-radius: 50%;
+const ErrorStack = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-  animation: ${scaleIn} 0.3s ease-out;
-`;
+  gap: 1rem;
+`; // 에러 상태는 카드 없이 단순 스택으로 표시
 
-const ErrorMessage = styled.p`
-  font-size: 0.875rem;
-  color: ${({ theme }) => theme.colors.textMuted};
-  margin: 0.75rem 0 1.25rem;
-  line-height: 1.5;
-`;
-
+// 재시도 버튼을 위험 색상으로 강조해 실패 상황을 명확히 전달
 const RetryButton = styled.button`
   padding: 0.75rem 1.5rem;
   font-size: 0.9375rem;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.primaryContrast};
-  background: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.danger};
   border: none;
   border-radius: ${({ theme }) => theme.radii.md};
   cursor: pointer;
