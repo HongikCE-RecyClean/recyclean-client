@@ -198,7 +198,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
       dataLoss: {
         question: "I signed out or cleared my cache—did I lose my data?",
         answer:
-          "If you are signed in, your dashboard, plans, and calendar are stored on RecyClean servers and will resync after you log in again. Clearing browser data only removes the local cache and access tokens. In guest mode, items saved in the local activity log live only on this device; clearing browser storage or switching devices removes them.",
+          "If you are signed in, your dashboard, plans, and calendar are stored on RecyClean servers and will resync after you log in again. Clearing browser data removes the local cache and access tokens—just sign in to reload. Activities saved while you are signed out stay only on this device and do not sync automatically.",
       },
       issues: {
         question: "The app is not working properly",
@@ -256,7 +256,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
       dataLoss: {
         question: "Q. 로그아웃했거나 캐시를 지웠는데 데이터가 사라졌나요?",
         answer:
-          "로그인 상태라면 대시보드·계획·캘린더 데이터는 RecyClean 서버에 저장되어 있으며 다시 로그인하면 동기화돼요. 브라우저 데이터 삭제 시 로컬 캐시와 접근 토큰만 지워져요. 게스트 모드에서 저장한 활동 기록은 기기에만 남으므로 브라우저 저장소 삭제나 기기 변경 시 사라져요.",
+          "로그인 상태라면 대시보드·계획·캘린더 데이터가 RecyClean 서버에 저장되어 있으며 다시 로그인하면 동기화돼요. 브라우저 데이터 삭제 시 로컬 캐시와 접근 토큰만 지워지니 재로그인하면 돼요. 로그인 없이 기록한 활동은 이 기기에만 남고 자동으로 계정과 합쳐지지 않아요.",
       },
       issues: {
         question: "Q. 앱이 제대로 작동하지 않아요",
@@ -305,7 +305,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
       dataLoss: {
         question: "P. Cerré sesión o borré la caché, ¿perdí mis datos?",
         answer:
-          "Si estás conectado, tu tablero, planes y calendario se guardan en los servidores de RecyClean y se sincronizarán al iniciar sesión otra vez. Borrar los datos del navegador solo elimina la caché local y los tokens de acceso. En modo invitado, los elementos guardados en el registro local viven solo en este dispositivo; borrar el almacenamiento del navegador o cambiar de dispositivo los elimina.",
+          "Si estás conectado, tu tablero, planes y calendario se guardan en los servidores de RecyClean y se sincronizarán al iniciar sesión otra vez. Borrar los datos del navegador elimina la caché local y los tokens; vuelve a iniciar sesión para recargar. Las actividades guardadas sin iniciar sesión permanecen solo en este dispositivo y no se sincronizan automáticamente.",
       },
       issues: {
         question: "P. La app no funciona correctamente",
@@ -366,7 +366,7 @@ export const HELP_COPY: Record<SupportedLanguage, HelpCopy> = {
       dataLoss: {
         question: "Q. Je me suis déconnecté ou j'ai vidé le cache : ai-je perdu mes données ?",
         answer:
-          "Si vous êtes connecté, votre tableau de bord, vos plans et votre calendrier sont stockés sur les serveurs RecyClean et se resynchroniseront après reconnexion. Vider les données du navigateur supprime seulement le cache local et les jetons d'accès. En mode invité, les éléments enregistrés dans le journal local restent uniquement sur cet appareil ; effacer le stockage du navigateur ou changer d'appareil les supprime.",
+          "Si vous êtes connecté, votre tableau de bord, vos plans et votre calendrier sont stockés sur les serveurs RecyClean et se resynchroniseront après reconnexion. Vider les données du navigateur supprime la cache locale et les jetons ; reconnectez-vous pour recharger. Les activités enregistrées hors connexion restent sur cet appareil et ne se synchronisent pas automatiquement.",
       },
       issues: {
         question: "Q. L'application ne fonctionne pas correctement",
@@ -451,7 +451,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
       optionalValue: "Location (for map results), push notifications (when available)",
       automaticLabel: "Activity data:",
       automaticValue:
-        "Recycling plans, calendar entries, and AI classification results you choose to save, with timestamps. In guest mode these stay on this device; when signed in they sync to your account.",
+        "Recycling plans, calendar entries, and AI classification results you choose to save, with timestamps. Items saved while signed in sync to your account; items saved while signed out stay on this device and do not auto-merge.",
     },
     purposeTitle: "How your data is used",
     purposeList: [
@@ -484,7 +484,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
       optionalValue: "위치 정보(지도 결과 개선), 푸시 알림(지원되는 경우)",
       automaticLabel: "활동 데이터:",
       automaticValue:
-        "사용자가 저장한 재활용 계획, 캘린더 항목, AI 분류 결과와 시간 정보. 게스트 모드에서는 기기에만 저장되고, 로그인하면 계정에 동기화돼요.",
+        "사용자가 저장한 재활용 계획, 캘린더 항목, AI 분류 결과와 시간 정보. 로그인 상태에서 저장한 데이터는 계정에 동기화되고, 로그인 없이 저장한 데이터는 이 기기에만 남으며 자동 병합되지 않아요.",
     },
     purposeTitle: "데이터 사용 방식",
     purposeList: [
@@ -519,7 +519,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
         "Ubicación (para resultados del mapa), notificaciones push (cuando estén disponibles)",
       automaticLabel: "Datos de actividad:",
       automaticValue:
-        "Planes de reciclaje, entradas de calendario y resultados de clasificación por IA que guardes, con marcas de tiempo. En modo invitado se quedan en este dispositivo; al iniciar sesión se sincronizan con tu cuenta.",
+        "Planes de reciclaje, entradas de calendario y resultados de clasificación por IA que guardes, con marcas de tiempo. Lo guardado con sesión iniciada se sincroniza con tu cuenta; lo guardado sin sesión permanece en este dispositivo y no se fusiona automáticamente.",
     },
     purposeTitle: "Cómo se usan tus datos",
     purposeList: [
@@ -555,7 +555,7 @@ export const PRIVACY_COPY: Record<SupportedLanguage, PrivacyCopy> = {
         "Localisation (pour les résultats de la carte), notifications push (si disponibles)",
       automaticLabel: "Données d'activité :",
       automaticValue:
-        "Plans de recyclage, entrées de calendrier et résultats de classification IA que vous enregistrez, avec horodatage. En mode invité, ils restent sur cet appareil ; une fois connecté, ils se synchronisent avec votre compte.",
+        "Plans de recyclage, entrées de calendrier et résultats de classification IA que vous enregistrez, avec horodatage. Ce qui est enregistré en étant connecté se synchronise avec votre compte ; ce qui est enregistré sans connexion reste sur cet appareil et ne se fusionne pas automatiquement.",
     },
     purposeTitle: "Utilisation des données",
     purposeList: [
