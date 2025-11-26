@@ -100,6 +100,8 @@ const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
   other: "GENERAL",
 };
 
+const LOW_CONFIDENCE_THRESHOLD = 60;
+
 export function AnalyzePage() {
   const { t } = useTranslation();
   const { addEntry } = useActivityStore();
@@ -204,6 +206,10 @@ export function AnalyzePage() {
         if (controller.signal.aborted) return;
 
         if (!predictions.length) {
+          showSnackbar(t("notifications.snackbar.analysisFailedRetry"), {
+            type: "warning",
+            duration: 3000,
+          });
           setInteractionError(t("analyze.errors.noPrediction"));
           setResult(null);
           return;
@@ -211,11 +217,27 @@ export function AnalyzePage() {
 
         const sorted = [...predictions].sort((a, b) => b.confidence - a.confidence);
         const bestPrediction = sorted[0];
+        const confidencePct = formatConfidence(bestPrediction.confidence);
+
+        if (confidencePct <= LOW_CONFIDENCE_THRESHOLD) {
+          showSnackbar(t("notifications.snackbar.analysisLowConfidence"), {
+            type: "warning",
+            duration: 3000,
+          });
+          setInteractionError(t("analyze.errors.analysisFailed"));
+          setResult(null);
+          return;
+        }
+
         setResult(buildRecognitionResult(bestPrediction));
         setInteractionError(null);
       } catch (error) {
         if (controller.signal.aborted) return;
         console.error(error);
+        showSnackbar(t("notifications.snackbar.analysisFailedRetry"), {
+          type: "warning",
+          duration: 3000,
+        });
         setInteractionError(t("analyze.errors.analysisFailed"));
         setResult(null);
       } finally {

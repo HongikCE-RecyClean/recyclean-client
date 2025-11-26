@@ -617,6 +617,9 @@ export const frTranslation = {
       locationPinned: "Votre position actuelle est affichée sur la carte.",
       locationPermissionDenied: "Le navigateur a refusé l'accès à la localisation.",
       locationError: "Impossible de récupérer votre position. Réessayez plus tard.",
+      analysisFailedRetry:
+        "Échec de l'analyse. Reprenez la photo avec un meilleur éclairage ou angle.",
+      analysisLowConfidence: "Confiance faible (≤60 %). Veuillez reprendre la photo.",
     },
   },
   common: {

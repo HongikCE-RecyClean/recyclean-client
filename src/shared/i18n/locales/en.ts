@@ -602,6 +602,8 @@ export const enTranslation = {
       locationPinned: "Your current location is now pinned on the map.",
       locationPermissionDenied: "Location access was denied by the browser.",
       locationError: "We couldn't load your location. Please try again.",
+      analysisFailedRetry: "Analysis failed. Try retaking the photo with better light or angle.",
+      analysisLowConfidence: "Low confidence (≤60%). Please retake the photo.",
     },
   },
   common: {

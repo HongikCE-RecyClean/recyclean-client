@@ -618,6 +618,8 @@ export const esTranslation = {
       locationPinned: "Su ubicación actual se ha marcado en el mapa.",
       locationPermissionDenied: "El navegador rechazó el acceso a la ubicación.",
       locationError: "No pudimos obtener su ubicación. Inténtelo de nuevo.",
+      analysisFailedRetry: "El análisis falló. Toma otra foto con mejor luz o ángulo.",
+      analysisLowConfidence: "Confianza baja (≤60%). Vuelve a tomar la foto.",
     },
   },
   common: {

@@ -600,6 +600,8 @@ export const koTranslation = {
       locationPinned: "현재 위치를 지도에 표시했어요",
       locationPermissionDenied: "브라우저에서 위치 권한이 거부되어 위치 정보를 가져올 수 없어요",
       locationError: "위치 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요",
+      analysisFailedRetry: "분석에 실패했어요. 다른 각도나 밝은 곳에서 다시 촬영해주세요.",
+      analysisLowConfidence: "정확도가 낮아요(60% 이하). 다시 한 번 촬영해볼까요?",
     },
   },
   common: {
