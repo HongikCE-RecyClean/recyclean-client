@@ -18,7 +18,7 @@ The front-end lives in `src/`, split by responsibility. Page-level shells reside
 
 ## Architecture & State Flow
 
-The runtime is composed of layered providers initialized in `AppProviders`. Emotion's `ThemeProvider` and `AppGlobalStyles` supply design context, while `@tanstack/react-query` handles asynchronous data with a shared `QueryClient`. Client state that must persist across routes (filters, toggles, cached entries) is centralized in zustand stores (`useDashboardStore`, `useMapStore`, `useSettingsStore`). Session-only UI state (notifications, modals) uses non-persistent stores (`useNotificationStore`). When adding a new domain:
+The runtime is composed of layered providers initialized in `AppProviders`. Emotion's `ThemeProvider` and `AppGlobalStyles` supply design context, while `@tanstack/react-query` handles asynchronous data with a shared `QueryClient`. Client state that must persist across routes (filters, toggles, cached entries) is centralized in zustand stores (`useAuthStore`, `useDashboardStore`, `useMapStore`, `useSettingsStore`). Session-only UI state (notifications, modals) uses non-persistent stores (`useNotificationStore`). When adding a new domain:
 
 1. Create query keys in `src/shared/api/queryKeys.ts`.
 2. Draft fetcher hooks inside `src/shared/api/`.
@@ -33,6 +33,7 @@ The app follows a **local-first** approach powered by localStorage, enabling ful
 
 **Persistent Stores** (zustand + persist middleware):
 
+- **`useAuthStore`** (`recyclean-auth`): Access/refresh tokens, Kakao 사용자 정보, 인증 여부 저장. `setAuth`/`setTokens`로 갱신하고, `forceLogout`가 auth/user/activity 스토어와 React Query 캐시를 함께 초기화.
 - **`useUserStore`** (`recyclean-user`): User profile data
   - `name`: User's nickname (required for onboarding)
   - `region`: Preferred region (default: "kr")
@@ -63,7 +64,7 @@ The app follows a **local-first** approach powered by localStorage, enabling ful
 
 온보딩 완료 여부를 localStorage에 저장하고 라우팅 가드로 제어해요:
 
-1. **Guard Check**: `OnboardingGuard`가 `useUserStore().isOnboarded`를 확인하고 미완료 시 `/onboarding`으로 이동해요.
+1. **Guard Check**: `OnboardingGuard`가 `useAuthStore().isAuthenticated`와 `useUserStore().isOnboarded`를 모두 확인하고 미완료 시 `/onboarding`으로 이동해요.
 2. **Onboarding Page**: `OnboardingPage`는 소개 문구와 시작 버튼만 노출하고 `completeOnboarding()` 호출로 완료 플래그와 `joinedAt`를 기록해요.
 3. **Profile Editing**: 온보딩 이후에는 ProfilePage의 바텀시트에서 닉네임을 수정하고 localStorage에 저장해요.
 
@@ -84,11 +85,12 @@ Users can manage their local data through Settings:
 
 ### Hybrid Server Integration
 
-While the app operates fully offline, React Query remains available for server-dependent features:
+While the app operates fully offline, 주요 도메인(API)이 실서버와 연결돼요. Map은 여전히 시드 데이터를 사용해요.
 
-- **Image Analysis**: `/analyze` endpoint for AI-powered recycling classification
-- **Map Data**: Dynamic recycling center locations
-- **Initial Seed Data**: API responses populate `activityStore` on first load if empty
+- **Auth**: Kakao OAuth 콜백 후 `/api/auth/login` → `useAuthStore`에 토큰/사용자 저장. 401 응답 시 `HttpClient`가 `/api/auth/token_reissue`로 자동 재발급 후 재시도, 실패 시 `forceLogout`.
+- **Plans / Dashboard / Calendar / Category**: 서버 CRUD·요약 API 사용(`src/shared/api/*`). React Query 캐시 무효화로 목록·요약 동기화.
+- **Image Analysis**: `/api/ai/labeling`(또는 `VITE_AI_LABELING_ENDPOINT`)로 서버 분석. 인증 불필요.
+- **Fallback**: 서버 실패나 비인증 상태에서는 로컬 `activityStore` 통계를 표시(`useDashboardData` 등), 저장 시 로컬에만 기록.
 
 **Data Sync Pattern**:
 
@@ -103,9 +105,8 @@ useEffect(() => {
 
 **Best Practices**:
 
-- Never rely on React Query for core CRUD operations on local data
-- Use `activityStore` actions directly for all user-generated activities
-- Reserve API calls for server-computed features (analytics, ML inference)
+- 인증 상태에서는 서버 데이터를 우선 사용하되, 실패 시 로컬 스토어로 폴백
+- 로컬-only 흐름(수동 기록 등)은 `activityStore`를 직접 갱신하고, 서버 동기화가 필요하면 해당 API 모듈을 통해 처리
 
 ### localStorage Schema
 
@@ -168,7 +169,7 @@ Users can add recycling activities through three entry points:
 **Implementation Files**:
 
 - `src/pages/dashboard/components/AddEntryBottomSheet.tsx`: Manual entry form
-- `src/pages/analyze/AnalyzePage.tsx`: AI result save handler (handleSaveEntry)
+- `src/pages/analyze/AnalyzePage.tsx`: AI result save handler (인증 시 Plan 생성 API, 실패/비인증 시 로컬 저장)
 - `src/pages/calendar/components/CalendarEntriesCard.tsx`: Delete button integration
 
 ## Recycling Points & Material Classification
@@ -889,11 +890,17 @@ clearAllEntries();
 ## Development Workflow & Tooling
 
 - `pnpm install` — hydrate dependencies via the pinned lockfile.
-- `pnpm dev` — launch the Vite dev server on port 5174.
+- `pnpm dev` — launch the Vite dev server on port 5173 (Vite proxy `/api` → `https://www.recyclean-server.com`).
 - `pnpm build` — run `tsc -b` and `vite build` to emit production assets.
 - `pnpm preview` — serve the compiled bundle for manual QA.
 - `pnpm typecheck` — validate TypeScript contracts without emitting files.
 - `pnpm lint` / `pnpm format:write` — enforce ESLint and Prettier rules; resolve lint warnings before review.
+
+**Environment variables (required for API 연동):**
+
+- `VITE_API_BASE_URL` (prod API base; dev는 빈 값으로 프록시 사용)
+- `VITE_AI_LABELING_ENDPOINT` (선택; 미설정 시 `/api/ai/labeling`)
+- `VITE_KAKAO_CLIENT_ID`, `VITE_KAKAO_REDIRECT_URI`
 
 ## Contribution Roadmap
 
