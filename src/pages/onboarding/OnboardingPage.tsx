@@ -261,8 +261,8 @@ export function OnboardingPage() {
     window.location.href = kakaoLoginUrl;
   };
 
-  // 이미 인증 또는 온보딩 완료 시 대시보드로 이동
-  if (isAuthenticated || isOnboarded) {
+  // 로그인과 온보딩이 모두 완료된 경우에만 대시보드로 이동해 루프를 방지
+  if (isAuthenticated && isOnboarded) {
     return <Navigate to="/" replace />;
   }
 
