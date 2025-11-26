@@ -96,6 +96,7 @@ export function AnalyzePage() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const objectUrlRef = useRef<string | null>(null);
   const analysisAbortRef = useRef<AbortController | null>(null);
+  const resultScrollRef = useRef<HTMLDivElement | null>(null);
 
   // 경고 메시지를 스낵바로 통일해 노출
   const showWarning = useCallback(
@@ -118,6 +119,13 @@ export function AnalyzePage() {
     handleVideoReady,
     capturePhoto,
   } = useCamera({ onError: showWarning });
+
+  // 결과 섹션으로 스크롤 이동 헬퍼
+  const scrollToResult = useCallback(() => {
+    requestAnimationFrame(() => {
+      resultScrollRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, []);
 
   // 진행 중인 분석 요청을 취소하는 헬퍼
   const cancelActiveAnalysis = useCallback(() => {
@@ -237,9 +245,10 @@ export function AnalyzePage() {
       setPredictions([]);
       setSelectedPredictionIndex(0);
       setIsScanning(true);
+      scrollToResult();
       void runAiRecognition(sourceFile);
     },
-    [cancelActiveAnalysis, runAiRecognition],
+    [cancelActiveAnalysis, runAiRecognition, scrollToResult],
   );
 
   // 카메라 스트림 자원 정리 함수 정의
@@ -444,6 +453,8 @@ export function AnalyzePage() {
           </S.SectionCardContent>
         </S.SectionCard>
       )}
+
+      <div ref={resultScrollRef} aria-hidden style={{ height: 1 }} />
 
       {capturedImage && (
         <AnalyzeCapturedImageCard imageSrc={capturedImage} onReset={reset} bbox={result?.bbox} />

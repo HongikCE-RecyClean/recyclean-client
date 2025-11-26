@@ -92,9 +92,18 @@ export const ImageWrapper = styled.div`
   overflow: hidden;
 `;
 
-// 촬영 이미지 프레임 높이 지정 클래스
+// 촬영 이미지 프레임 비율/최대크기 지정
 export const capturedImageFrame = css`
-  height: 220px;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  max-height: 80vh;
+  height: auto;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 `;
 
 // 분석 소개 문단 스타일

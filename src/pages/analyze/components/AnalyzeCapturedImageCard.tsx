@@ -48,12 +48,16 @@ export function AnalyzeCapturedImageCard({
   };
 
   const bboxPercent = bbox ? getBboxPercentage(bbox) : null;
+  const aspectRatio =
+    imageDimensions.width && imageDimensions.height
+      ? `${imageDimensions.width} / ${imageDimensions.height}`
+      : "3 / 4";
 
   return (
     <S.SectionCard>
       <S.SectionCardContent>
         {/* 촬영 이미지 프리뷰 영역 */}
-        <S.ImageWrapper css={S.capturedImageFrame}>
+        <S.ImageWrapper css={S.capturedImageFrame} style={{ aspectRatio }}>
           <ImageWithFallback src={imageSrc} alt={t("analyze.captured.alt")} />
           {/* bbox 오버레이 (토글 활성화 시) */}
           {showBbox && bbox && bboxPercent && (
