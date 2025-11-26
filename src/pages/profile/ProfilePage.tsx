@@ -5,7 +5,9 @@ import { useActivityStore } from "shared/state/activityStore";
 import { useAuthStore } from "shared/state/authStore";
 import { useMyProfile } from "shared/api/members";
 import { useDashboardSummary } from "shared/api/dashboard";
-import { calculateUserStats, calculateCategoryStats } from "shared/utils/userStats";
+import { usePlans } from "shared/api/plans";
+import { calculateUserStats, calculateCategoryStats, calculateLevel } from "shared/utils/userStats";
+import { planToEntry } from "shared/utils/planUtils";
 import { ProfileCard, ImpactCard, LevelProgressCard, CategoryStatsCard } from "./components";
 import recycleanLogo from "../../assets/recycleanLogo.svg";
 import * as S from "./ProfilePage.styles";
@@ -26,27 +28,47 @@ export function ProfilePage() {
   const { data: dashboardData } = useDashboardSummary({
     enabled: isAuthenticated,
   });
+  const { data: plansData } = usePlans({
+    enabled: isAuthenticated,
+  });
 
   // 실시간 통계 계산 (메모이제이션)
   const userStats = useMemo(() => {
     const baseStats = calculateUserStats(entries, joinedAt);
 
-    if (!dashboardData) {
+    if (!isAuthenticated || !dashboardData) {
       return baseStats;
     }
 
+    const totalPoints = dashboardData.myPoint ?? baseStats.totalPoints;
+    const levelInfo = calculateLevel(totalPoints);
+
     return {
       ...baseStats,
-      totalPoints: dashboardData.myPoint ?? baseStats.totalPoints,
+      totalPoints,
       itemsRecycled: dashboardData.totalItems ?? baseStats.itemsRecycled,
       streakDays: dashboardData.streakDays ?? baseStats.streakDays,
+      level: levelInfo.level,
+      nextLevelPoints: levelInfo.nextLevelPoints,
+      levelProgress: levelInfo.levelProgress,
     };
-  }, [dashboardData, entries, joinedAt]);
+  }, [dashboardData, isAuthenticated, entries, joinedAt]);
 
   // 카테고리별 통계 계산 (메모이제이션)
   const categoryStats = useMemo(() => {
+    if (isAuthenticated && plansData?.length) {
+      // 완료된 서버 계획을 활동 기록으로 환산 후 집계
+      const completedEntries = plansData
+        .flatMap(planToEntry)
+        .filter((entry) => (entry.mode ?? "record") === "record");
+
+      if (completedEntries.length > 0) {
+        return calculateCategoryStats(completedEntries);
+      }
+    }
+
     return calculateCategoryStats(entries);
-  }, [entries]);
+  }, [isAuthenticated, plansData, entries]);
 
   // 프로필 편집 클릭 핸들러
   const displayName = profileData?.nickname ?? name;

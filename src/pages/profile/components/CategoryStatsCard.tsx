@@ -35,7 +35,7 @@ export function CategoryStatsCard({ categoryStats }: CategoryStatsCardProps) {
                   <S.CategoryStatName>
                     {/* 1등 카테고리에 배지 표시 */}
                     {index === 0 && (
-                      <Badge tone="success" variant="outline" style={{ marginRight: "8px" }}>
+                      <Badge tone="primary" variant="outline" style={{ marginRight: "8px" }}>
                         {t("profile.categories.topCategory")}
                       </Badge>
                     )}
@@ -45,7 +45,7 @@ export function CategoryStatsCard({ categoryStats }: CategoryStatsCardProps) {
                 {/* 카테고리 메타 정보 (개수, 포인트) */}
                 <S.CategoryStatMeta>
                   <span>{t("profile.categories.items", { count: category.count })}</span>
-                  <Badge tone="info">
+                  <Badge tone="primary">
                     {t("profile.categories.points", { points: category.points })}
                   </Badge>
                 </S.CategoryStatMeta>

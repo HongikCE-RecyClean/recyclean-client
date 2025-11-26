@@ -28,7 +28,7 @@ export function LevelProgressCard({ userStats }: LevelProgressCardProps) {
       <CardContent>
         {/* 레벨 정보 행 */}
         <div css={S.levelHeaderRow}>
-          <Badge tone="info" variant="solid">
+          <Badge tone="primary" variant="solid">
             {t("profile.level.currentLevel", { level: userStats.level })}
           </Badge>
           <div css={S.levelProgressMeta(theme)}>
@@ -38,7 +38,7 @@ export function LevelProgressCard({ userStats }: LevelProgressCardProps) {
 
         {/* 진행률 영역 */}
         <div css={S.levelProgressSection(theme)}>
-          <Progress value={userStats.levelProgress} tone="info" />
+          <Progress value={userStats.levelProgress} tone="primary" />
         </div>
       </CardContent>
     </Card>

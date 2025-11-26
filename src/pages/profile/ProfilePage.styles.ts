@@ -125,11 +125,17 @@ export const CategoryStatItem = styled.div`
   align-items: center;
   padding: ${({ theme }) => theme.spacing(3)};
   border-radius: ${({ theme }) => theme.radii.md};
-  background: ${({ theme }) => theme.colors.surfaceMuted};
-  transition: background 0.15s ease;
+  background: ${({ theme }) =>
+    `linear-gradient(135deg, ${theme.colors.primary}1a, ${theme.colors.accent}14)`};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.surface};
+    background: ${({ theme }) =>
+      `linear-gradient(135deg, ${theme.colors.primary}26, ${theme.colors.accent}1f)`};
+    border-color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
