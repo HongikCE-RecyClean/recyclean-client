@@ -8,6 +8,17 @@ import { openConfirmDialog } from "../../../shared/ui/AlertDialog";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../CalendarPage.styles";
 
+// 액션 버튼 레이아웃 상수
+const ACTION_BUTTON_SIZE = 36; // 액션 버튼 한 변(px)
+const ACTION_GAP = 4; // 버튼 사이 간격(px) - spacing(1)
+const ACTION_PADDING = 8; // 좌우 패딩(px) - spacing(2)
+
+// 액션 버튼 개수에 따라 필요한 총 너비 계산
+const calculateActionsWidth = (count: number) => {
+  if (count <= 0) return 0;
+  return count * ACTION_BUTTON_SIZE + Math.max(count - 1, 0) * ACTION_GAP + ACTION_PADDING * 2;
+};
+
 type CalendarEntriesCardProps = {
   selectedDateLabel: string;
   entries: RecyclingEntry[];
@@ -64,12 +75,19 @@ export function CalendarEntriesCard({
               const isCompletedPlan = entry.mode === "plan" && entry.completed;
               // 열림 상태 확인
               const isOpen = openItemId === entry.id;
+              // 액션 버튼 개수 기반 너비 계산
+              const actionsCount =
+                (isPendingPlan && onComplete ? 1 : 0) +
+                (entry.mode === "plan" && !isCompletedPlan && onEdit ? 1 : 0) +
+                (onDelete ? 1 : 0);
+              const actionsWidth = calculateActionsWidth(actionsCount);
 
               return (
                 <S.SwipeableContainer key={entry.id}>
                   {/* 슬라이드 콘텐츠 영역 */}
                   <S.SwipeableContent
                     $isOpen={isOpen}
+                    $actionsWidth={actionsWidth}
                     onClick={() => handleItemClick(entry.id)}
                     style={{ opacity: isCompletedPlan ? 0.7 : 1 }}
                   >

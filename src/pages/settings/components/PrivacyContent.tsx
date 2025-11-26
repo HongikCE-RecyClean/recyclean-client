@@ -45,6 +45,16 @@ export function PrivacyContent() {
       </S.Section>
 
       <S.Section>
+        <S.SectionTitle>{copy.thirdPartyTitle}</S.SectionTitle>
+        <S.SectionText>{copy.thirdPartyDescription}</S.SectionText>
+      </S.Section>
+
+      <S.Section>
+        <S.SectionTitle>{copy.rightsTitle}</S.SectionTitle>
+        <S.SectionText>{copy.rightsDescription}</S.SectionText>
+      </S.Section>
+
+      <S.Section>
         <S.SectionTitle>{copy.retentionTitle}</S.SectionTitle>
         <S.SectionText>{copy.retentionDescription}</S.SectionText>
       </S.Section>

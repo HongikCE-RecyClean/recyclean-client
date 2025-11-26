@@ -443,7 +443,7 @@ export const SwipeableContainer = styled.div`
 `;
 
 // 스와이프 가능한 콘텐츠 영역
-export const SwipeableContent = styled.div<{ $isOpen: boolean }>`
+export const SwipeableContent = styled.div<{ $isOpen: boolean; $actionsWidth: number }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -453,7 +453,7 @@ export const SwipeableContent = styled.div<{ $isOpen: boolean }>`
   cursor: pointer;
   user-select: none;
   // 열림 상태에 따라 좌측 슬라이드
-  transform: translateX(${({ $isOpen }) => ($isOpen ? "-140px" : "0")});
+  transform: translateX(${({ $isOpen, $actionsWidth }) => ($isOpen ? `-${$actionsWidth}px` : "0")});
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:active {

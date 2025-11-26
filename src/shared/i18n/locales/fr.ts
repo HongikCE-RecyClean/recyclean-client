@@ -608,6 +608,7 @@ export const frTranslation = {
     },
     snackbar: {
       entrySaved: "Activité enregistrée ! +{{points}}pt gagnés",
+      entrySavedLocally: "Enregistré localement (hors ligne). +{{points}}pt appliqués",
       entryDeleted: "L'enregistrement a été supprimé",
       entryRestored: "Enregistrement restauré",
       profileUpdated: "Nom de profil mis à jour",

@@ -318,26 +318,20 @@ export const BboxOverlay = styled.svg`
 `;
 
 // Bbox 사각형 스타일 (SVG rect에 적용할 CSS)
-export const bboxRectStyle = (theme: AppTheme) => css`
-  fill: ${theme.colors.primary}10;
-  stroke: ${theme.colors.primary};
-  stroke-width: 2;
-  rx: 8;
-  ry: 8;
-  filter: drop-shadow(0 0 8px ${theme.colors.primary}40);
+export const bboxRectStyle = (_theme: AppTheme) => css`
+  /* 밝은 초록색 영역 표시 */
+  stroke: none;
 
-  /* 펄스 애니메이션 */
+  /* 부드러운 펄스 애니메이션 */
   animation: bboxPulse 2s ease-in-out infinite;
 
   @keyframes bboxPulse {
     0%,
     100% {
-      stroke-opacity: 1;
-      filter: drop-shadow(0 0 8px ${theme.colors.primary}40);
+      opacity: 1;
     }
     50% {
-      stroke-opacity: 0.7;
-      filter: drop-shadow(0 0 12px ${theme.colors.primary}60);
+      opacity: 0.7;
     }
   }
 `;

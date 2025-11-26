@@ -58,83 +58,16 @@ export function AnalyzeCapturedImageCard({
           {/* bbox 오버레이 (토글 활성화 시) */}
           {showBbox && bbox && bboxPercent && (
             <S.BboxOverlay viewBox="0 0 100 100" preserveAspectRatio="none">
-              {/* SVG 필터 정의 (글로우 효과) */}
-              <defs>
-                <filter id="bboxGlow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="1" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-                <linearGradient id="bboxGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor={theme.colors.primary} stopOpacity="0.9" />
-                  <stop offset="100%" stopColor={theme.colors.highlight} stopOpacity="0.9" />
-                </linearGradient>
-              </defs>
-              {/* 반투명 배경 채우기 */}
+              {/* 밝은 초록색 둥근 영역 */}
               <rect
                 x={bboxPercent.x}
                 y={bboxPercent.y}
                 width={bboxPercent.width}
                 height={bboxPercent.height}
-                fill={`${theme.colors.primary}15`}
-                rx="1"
-                ry="1"
-              />
-              {/* 메인 테두리 (그라데이션 + 글로우) */}
-              <rect
-                x={bboxPercent.x}
-                y={bboxPercent.y}
-                width={bboxPercent.width}
-                height={bboxPercent.height}
-                fill="none"
-                stroke="url(#bboxGradient)"
-                strokeWidth="0.6"
-                rx="1"
-                ry="1"
-                filter="url(#bboxGlow)"
+                fill={`${theme.colors.highlight}30`}
+                rx="2"
+                ry="2"
                 css={S.bboxRectStyle(theme)}
-              />
-              {/* 코너 마커 (좌상단) */}
-              <path
-                d={`M ${bboxPercent.x} ${bboxPercent.y + 3} 
-                    L ${bboxPercent.x} ${bboxPercent.y} 
-                    L ${bboxPercent.x + 3} ${bboxPercent.y}`}
-                fill="none"
-                stroke={theme.colors.primary}
-                strokeWidth="0.8"
-                strokeLinecap="round"
-              />
-              {/* 코너 마커 (우상단) */}
-              <path
-                d={`M ${bboxPercent.x + bboxPercent.width - 3} ${bboxPercent.y} 
-                    L ${bboxPercent.x + bboxPercent.width} ${bboxPercent.y} 
-                    L ${bboxPercent.x + bboxPercent.width} ${bboxPercent.y + 3}`}
-                fill="none"
-                stroke={theme.colors.primary}
-                strokeWidth="0.8"
-                strokeLinecap="round"
-              />
-              {/* 코너 마커 (좌하단) */}
-              <path
-                d={`M ${bboxPercent.x} ${bboxPercent.y + bboxPercent.height - 3} 
-                    L ${bboxPercent.x} ${bboxPercent.y + bboxPercent.height} 
-                    L ${bboxPercent.x + 3} ${bboxPercent.y + bboxPercent.height}`}
-                fill="none"
-                stroke={theme.colors.primary}
-                strokeWidth="0.8"
-                strokeLinecap="round"
-              />
-              {/* 코너 마커 (우하단) */}
-              <path
-                d={`M ${bboxPercent.x + bboxPercent.width - 3} ${bboxPercent.y + bboxPercent.height} 
-                    L ${bboxPercent.x + bboxPercent.width} ${bboxPercent.y + bboxPercent.height} 
-                    L ${bboxPercent.x + bboxPercent.width} ${bboxPercent.y + bboxPercent.height - 3}`}
-                fill="none"
-                stroke={theme.colors.primary}
-                strokeWidth="0.8"
-                strokeLinecap="round"
               />
             </S.BboxOverlay>
           )}

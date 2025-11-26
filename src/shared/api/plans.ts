@@ -26,8 +26,28 @@ export async function createPlan(data: PlanCreateRequest): Promise<Plan> {
 
 // 전체 계획 조회
 export async function fetchPlans(signal?: AbortSignal): Promise<Plan[]> {
-  const response = await apiClient.get<Plan[]>("/api/plans", { signal });
-  return response.data;
+  const response = await apiClient.get<Plan[] | Record<string, unknown>>("/api/plans", {
+    signal,
+  });
+  const data = response.data;
+
+  // API가 배열을 바로 반환하는 경우
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  // API가 페이지네이션 객체나 래핑 객체를 반환하는 경우(content/plans 키 선호)
+  const maybeContent = (data as { content?: unknown }).content;
+  if (Array.isArray(maybeContent)) {
+    return maybeContent;
+  }
+  const maybePlans = (data as { plans?: unknown }).plans;
+  if (Array.isArray(maybePlans)) {
+    return maybePlans;
+  }
+
+  // 예외 상황에서는 빈 배열로 폴백해 런타임 오류를 방지
+  return [];
 }
 
 // 계획 수정

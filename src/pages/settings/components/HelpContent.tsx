@@ -16,6 +16,11 @@ export function HelpContent() {
       </S.Section>
 
       <S.Section>
+        <S.SectionTitle>{copy.faq.guestMode.question}</S.SectionTitle>
+        <S.SectionText>{copy.faq.guestMode.answer}</S.SectionText>
+      </S.Section>
+
+      <S.Section>
         <S.SectionTitle>{copy.faq.points.question}</S.SectionTitle>
         <S.SectionText>{copy.faq.points.answer}</S.SectionText>
       </S.Section>

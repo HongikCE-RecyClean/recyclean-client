@@ -593,6 +593,7 @@ export const enTranslation = {
     },
     snackbar: {
       entrySaved: "Activity saved! +{{points}}pt earned",
+      entrySavedLocally: "Saved locally (offline). +{{points}}pt applied",
       entryDeleted: "Activity entry deleted",
       entryRestored: "Entry restored",
       profileUpdated: "Profile name updated",

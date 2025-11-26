@@ -594,6 +594,7 @@ export const koTranslation = {
     },
     snackbar: {
       entrySaved: "활동이 기록되었어요! +{{points}}pt 획득",
+      entrySavedLocally: "오프라인으로 로컬에 저장했어요. +{{points}}pt 유지",
       entryDeleted: "활동 기록이 삭제되었어요",
       entryRestored: "기록이 복구되었어요",
       profileUpdated: "프로필 이름이 업데이트되었어요",
