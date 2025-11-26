@@ -26,10 +26,18 @@ export function AuthCallbackPage() {
   const kakaoLoginMutation = useKakaoLogin();
   const completeOnboarding = useUserStore((state) => state.completeOnboarding);
   const setUserName = useUserStore((state) => state.setName);
+  const isOnboarded = useUserStore((state) => state.isOnboarded);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    // 토큰은 있지만 온보딩 플래그가 꺼져 있을 때 보정해 루프 차단
+    if (isAuthenticated && !isOnboarded) {
+      completeOnboarding();
+      navigate("/", { replace: true });
+      return;
+    }
+
+    if (isAuthenticated && isOnboarded) {
       navigate("/", { replace: true });
       return;
     }
@@ -74,7 +82,7 @@ export function AuthCallbackPage() {
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [searchParams, isAuthenticated, isOnboarded]);
 
   const handleRetry = () => {
     handledCodeRef.current = null;
