@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { z } from "zod";
 import { useUserStore } from "./userStore";
 import { useActivityStore } from "./activityStore";
 import { queryClient } from "../providers/queryClient";
@@ -22,6 +23,7 @@ interface AuthState {
   // 토큰
   accessToken: string | null;
   refreshToken: string | null;
+  tokenExpiresAt: number | null; // ms 단위 만료 시각
   // 사용자 정보
   user: AuthUser | null;
   // 로딩 상태
@@ -43,16 +45,89 @@ interface AuthState {
   getAccessToken: () => string | null;
   // 헬퍼: 현재 리프레시 토큰 반환
   getRefreshToken: () => string | null;
+  // 하이드레이션 플래그
+  hasHydrated: boolean;
+  setHydrated: (value: boolean) => void;
 }
 
 // 초기 상태 생성 함수
 const createInitialState = () => ({
   accessToken: null,
   refreshToken: null,
+  tokenExpiresAt: null,
   user: null,
   isLoading: false,
   isAuthenticated: false,
+  hasHydrated: false,
 });
+
+const authUserSchema = z.object({
+  memberId: z.number(),
+  socialType: z.literal("KAKAO"),
+  socialId: z.string(),
+  nickname: z.string(),
+  profileImageUrl: z.string().optional().nullable(),
+});
+
+const authPersistSchema = z.object({
+  accessToken: z.string().min(1).optional().nullable(),
+  refreshToken: z.string().min(1).optional().nullable(),
+  user: authUserSchema.optional().nullable(),
+  tokenExpiresAt: z.number().optional().nullable(),
+});
+
+const JWT_CLOCK_SKEW_MS = 60_000;
+
+function decodeJwtExpMs(token: string | null): number | null {
+  if (!token || !token.includes(".")) {
+    return null;
+  }
+  try {
+    const payload = token.split(".")[1];
+    const json = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+    const expSeconds = typeof json.exp === "number" ? json.exp : null;
+    return expSeconds ? expSeconds * 1000 : null;
+  } catch {
+    return null;
+  }
+}
+
+function isAccessTokenExpired(token: string | null, tokenExpiresAt?: number | null): boolean {
+  if (!token) {
+    return true;
+  }
+  const expMs = tokenExpiresAt ?? decodeJwtExpMs(token);
+  if (!expMs) {
+    return false;
+  }
+  return Date.now() >= expMs - JWT_CLOCK_SKEW_MS;
+}
+
+function sanitizeAuthState(state: unknown) {
+  const parsed = authPersistSchema.safeParse(state ?? {});
+  if (!parsed.success) {
+    return createInitialState();
+  }
+
+  const accessToken = parsed.data.accessToken ?? null;
+  const refreshToken = parsed.data.refreshToken ?? null;
+  const tokenExpiresAt = parsed.data.tokenExpiresAt ?? decodeJwtExpMs(accessToken);
+
+  const expired = isAccessTokenExpired(accessToken, tokenExpiresAt);
+  if (expired) {
+    return createInitialState();
+  }
+
+  const user = parsed.data.user ?? null;
+  return {
+    accessToken,
+    refreshToken,
+    tokenExpiresAt: tokenExpiresAt ?? null,
+    user,
+    isAuthenticated: Boolean(accessToken && user),
+    isLoading: false,
+  };
+}
 
 // 인증 스토어 생성 (localStorage 지속성 포함)
 export const useAuthStore = create<AuthState>()(
@@ -65,7 +140,8 @@ export const useAuthStore = create<AuthState>()(
         set({
           accessToken,
           refreshToken,
-          isAuthenticated: true,
+          tokenExpiresAt: decodeJwtExpMs(accessToken),
+          isAuthenticated: !isAccessTokenExpired(accessToken, decodeJwtExpMs(accessToken)),
         }),
 
       // 사용자 정보 설정
@@ -77,7 +153,9 @@ export const useAuthStore = create<AuthState>()(
           accessToken,
           refreshToken,
           user,
-          isAuthenticated: true,
+          tokenExpiresAt: decodeJwtExpMs(accessToken),
+          isAuthenticated:
+            !isAccessTokenExpired(accessToken, decodeJwtExpMs(accessToken)) && Boolean(user),
           isLoading: false,
         }),
 
@@ -92,30 +170,33 @@ export const useAuthStore = create<AuthState>()(
 
       // 현재 리프레시 토큰 반환
       getRefreshToken: () => get().refreshToken,
+
+      setHydrated: (value) => set({ hasHydrated: value }),
     }),
     {
-      name: "recyclean-auth",
+      name: "recyclean:v2:auth",
       storage: createJSONStorage(() => localStorage),
+      version: 2,
       // 민감한 토큰도 localStorage에 저장 (PWA 오프라인 지원)
       partialize: (state) => ({
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         user: state.user,
+        tokenExpiresAt: state.tokenExpiresAt,
       }),
       merge: (persistedState, currentState) => {
-        if (!persistedState) {
-          return currentState;
-        }
-        const state = persistedState as AuthState;
-        const accessToken = state.accessToken ?? null;
-        const refreshToken = state.refreshToken ?? null;
+        const sanitized = sanitizeAuthState(persistedState);
         return {
           ...currentState,
-          ...state,
-          accessToken,
-          refreshToken,
-          isAuthenticated: Boolean(accessToken),
+          ...sanitized,
         } satisfies AuthState;
+      },
+      migrate: (persistedState) => sanitizeAuthState(persistedState),
+      onRehydrateStorage: () => (state, error) => {
+        if (error) {
+          console.error("authStore hydration failed", error);
+        }
+        state?.setHydrated(true);
       },
     },
   ),

@@ -10,11 +10,20 @@ import { OnboardingPage } from "./pages/onboarding/OnboardingPage";
 import { AuthCallbackPage } from "./pages/auth/AuthCallbackPage";
 import { useUserStore } from "./shared/state/userStore";
 import { useAuthStore } from "./shared/state/authStore";
+import { useSettingsStore } from "./shared/state/settingsStore";
 
 // 온보딩/인증 완료 여부를 확인하는 가드 컴포넌트
 function AuthGuard({ children }: { children: React.ReactElement }) {
   const { isOnboarded } = useUserStore();
+  const userHydrated = useUserStore((state) => state.hasHydrated);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const authHydrated = useAuthStore((state) => state.hasHydrated);
+  const settingsHydrated = useSettingsStore((state) => state.hasHydrated);
+
+  // 스토어 하이드레이션 완료 전에는 판단 보류
+  if (!authHydrated || !userHydrated || !settingsHydrated) {
+    return null;
+  }
 
   // 인증 또는 온보딩이 하나라도 미충족이면 온보딩으로 이동
   if (!isAuthenticated || !isOnboarded) {

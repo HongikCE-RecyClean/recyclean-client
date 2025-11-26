@@ -1,16 +1,19 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { z } from "zod";
 import type { RecyclingEntry } from "shared/types/dashboard";
 import { normalizeMaterialId } from "shared/utils/recyclingPoints";
 
 // 활동 기록 상태 타입
 interface ActivityState {
   entries: RecyclingEntry[];
+  hasHydrated: boolean;
   addEntry: (entry: Omit<RecyclingEntry, "id">) => void;
   updateEntry: (id: string, updates: Partial<RecyclingEntry>) => void;
   deleteEntry: (id: string) => void;
   setEntries: (entries: RecyclingEntry[]) => void;
   clearAllEntries: () => void;
+  setHydrated: (value: boolean) => void;
 }
 
 // UUID 생성 함수 (간단한 버전)
@@ -24,13 +27,52 @@ function normalizeDate(value: Date | string): Date {
   return value instanceof Date ? value : new Date(value);
 }
 
+const MAX_ACTIVITY_ENTRIES = 10000;
+
+const activityEntrySchema = z.object({
+  id: z.string().optional(),
+  type: z.string(),
+  amount: z.coerce.number().nonnegative().default(0),
+  points: z.coerce.number().default(0),
+  date: z.union([z.string(), z.date()]),
+  mode: z.enum(["record", "plan"]).optional(),
+  planId: z.number().optional(),
+  completed: z.boolean().optional(),
+  detectedByAi: z.boolean().optional(),
+  memo: z.string().optional(),
+});
+
+const persistedActivitySchema = z.object({
+  entries: z.array(activityEntrySchema).default([]),
+});
+
 function normalizeEntries(entries: PersistedRecyclingEntry[] = []): RecyclingEntry[] {
-  return entries.map((entry) => ({
-    ...entry,
-    type: normalizeMaterialId(entry.type),
-    mode: entry.mode ?? "record",
-    date: normalizeDate(entry.date),
-  }));
+  const seen = new Set<string>();
+
+  return entries
+    .map((entry) => {
+      const id = entry.id ?? generateId();
+      const date = normalizeDate(entry.date);
+      return {
+        ...entry,
+        id,
+        type: normalizeMaterialId(entry.type),
+        mode: entry.mode ?? "record",
+        date,
+      };
+    })
+    .filter((entry) => {
+      if (!Number.isFinite(entry.date.getTime())) {
+        return false;
+      }
+      if (seen.has(entry.id)) {
+        return false;
+      }
+      seen.add(entry.id);
+      return true;
+    })
+    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .slice(0, MAX_ACTIVITY_ENTRIES);
 }
 
 // 활동 기록 zustand 스토어 (localStorage 지속성 포함)
@@ -38,6 +80,7 @@ export const useActivityStore = create<ActivityState>()(
   persist(
     (set) => ({
       entries: [],
+      hasHydrated: false,
 
       // 새 활동 추가
       addEntry: (entry) =>
@@ -95,31 +138,44 @@ export const useActivityStore = create<ActivityState>()(
 
       // 모든 활동 삭제 (데이터 초기화)
       clearAllEntries: () => set({ entries: [] }),
+
+      // 하이드레이션 완료 플래그
+      setHydrated: (value) => set({ hasHydrated: value }),
     }),
     {
-      name: "recyclean-activities",
+      name: "recyclean:v2:activities",
       storage: createJSONStorage(() => localStorage),
-      version: 3,
+      version: 4,
       merge: (persistedState, currentState) => {
-        if (!persistedState) {
+        const parsed = persistedActivitySchema.safeParse(persistedState ?? {});
+        if (!parsed.success) {
+          console.warn("activityStore: persisted state invalid, falling back to defaults");
           return currentState;
         }
-        const state = persistedState as ActivityState;
+        const entries = normalizeEntries(parsed.data.entries as PersistedRecyclingEntry[]);
         return {
           ...currentState,
-          ...state,
-          entries: normalizeEntries(state.entries as PersistedRecyclingEntry[]),
+          entries,
         };
       },
       migrate: (persistedState) => {
         if (!persistedState) {
           return persistedState;
         }
-        const state = persistedState as ActivityState;
+        const parsed = persistedActivitySchema.safeParse(persistedState);
+        if (!parsed.success) {
+          return undefined;
+        }
+        const state = parsed.data;
         return {
-          ...state,
           entries: normalizeEntries(state.entries as PersistedRecyclingEntry[]),
-        } satisfies ActivityState;
+        } satisfies Partial<ActivityState>;
+      },
+      onRehydrateStorage: () => (state, error) => {
+        if (error) {
+          console.error("activityStore hydration failed", error);
+        }
+        state?.setHydrated(true);
       },
     },
   ),
