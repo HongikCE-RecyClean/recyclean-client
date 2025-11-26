@@ -7,6 +7,8 @@ import { SelectField } from "../../../shared/ui/SelectField/SelectField";
 import { NumberInput } from "../../../shared/ui/NumberInput/NumberInput";
 import { useActivityStore } from "../../../shared/state/activityStore";
 import { useNotificationStore } from "../../../shared/state/notificationStore";
+import { useAuthStore } from "../../../shared/state/authStore";
+import { useCreatePlan } from "../../../shared/api/plans";
 import type { SnackbarOptions } from "../../../shared/types/notifications";
 import {
   MATERIAL_CATEGORY_ORDER,
@@ -15,6 +17,7 @@ import {
   type MaterialId,
   calculatePoints,
 } from "../../../shared/utils/recyclingPoints";
+import type { CategoryType } from "../../../shared/api/types";
 import type { EntryMode } from "../../../shared/types/dashboard";
 import * as S from "./AddEntryBottomSheet.styles";
 
@@ -36,10 +39,23 @@ const formatTimeInput = (value: Date) => {
   return `${hours}:${minutes}`;
 };
 
+// 폼 카테고리를 API CategoryType으로 매핑
+const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
+  plastic: "PLASTIC",
+  paper: "PAPER",
+  metal: "METAL",
+  glass: "GLASS",
+  textile: "CLOTHING",
+  electronic: "ELECTRONICS",
+  other: "GENERAL",
+};
+
 export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProps) {
   const { t } = useTranslation();
   const { addEntry } = useActivityStore();
   const { showSnackbar } = useNotificationStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const createPlanMutation = useCreatePlan();
   const pendingSnackbarRef = useRef<PendingSnackbar | null>(null);
 
   // 폼 상태
@@ -120,7 +136,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
     // 포인트 계산
     const points = calculatePoints(type, amountNum);
 
-    // activityStore에 추가
+    // 로컬 스토어 추가 (UI 즉시 반영 및 오프라인 폴백)
     addEntry({
       type,
       amount: amountNum,
@@ -129,14 +145,49 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
       mode: entryMode,
     });
 
-    // 성공 스낵바는 바텀시트가 완전히 닫힌 뒤 표시
-    pendingSnackbarRef.current = {
-      message: t("notifications.snackbar.entrySaved", { points }),
-      options: {
-        type: "success",
-        duration: 3000,
-      },
-    };
+    // 인증된 경우 서버 Plan 생성 시도
+    if (isAuthenticated) {
+      const apiCategory = CATEGORY_TO_API[category] ?? "GENERAL";
+      const timeWithSeconds = time.length === 5 ? `${time}:00` : time;
+
+      createPlanMutation.mutate(
+        {
+          date,
+          time: timeWithSeconds,
+          memo: t("dashboard.addEntry.modeOptions.plan"),
+          items: [
+            {
+              category: apiCategory,
+              quantity: amountNum,
+              detectedByAi: false,
+            },
+          ],
+        },
+        {
+          onSuccess: () => {
+            showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
+              type: "success",
+              duration: 3000,
+            });
+          },
+          onError: () => {
+            showSnackbar(t("notifications.snackbar.entrySavedLocally", { points }), {
+              type: "warning",
+              duration: 3000,
+            });
+          },
+        },
+      );
+    } else {
+      // 미인증 시 로컬 저장 안내를 바텀시트 닫힌 뒤 노출
+      pendingSnackbarRef.current = {
+        message: t("notifications.snackbar.entrySaved", { points }),
+        options: {
+          type: "success",
+          duration: 3000,
+        },
+      };
+    }
 
     // 폼 초기화 및 닫기
     closeSheet();
