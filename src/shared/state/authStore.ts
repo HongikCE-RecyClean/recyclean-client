@@ -131,7 +131,9 @@ function sanitizeAuthState(state: unknown): AuthPersistedState {
     return createInitialState();
   }
 
-  const user = parsed.data.user ?? null;
+  const user = parsed.data.user
+    ? { ...parsed.data.user, profileImageUrl: parsed.data.user.profileImageUrl ?? null }
+    : null;
   return {
     accessToken,
     refreshToken,
