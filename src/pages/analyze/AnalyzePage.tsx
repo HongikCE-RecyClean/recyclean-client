@@ -179,7 +179,6 @@ export function AnalyzePage() {
             type: "warning",
             duration: 3000,
           });
-          setInteractionError(t("analyze.errors.emptyPredictions"));
           setResult(null);
           setPredictions([]);
           return;
@@ -196,7 +195,6 @@ export function AnalyzePage() {
             type: "warning",
             duration: 3000,
           });
-          setInteractionError(t("analyze.errors.analysisFailed"));
           setResult(null);
           setPredictions([]);
           return;
@@ -206,7 +204,6 @@ export function AnalyzePage() {
         setPredictions(topPredictions);
         setSelectedPredictionIndex(0);
         setResult(buildRecognitionResult(bestPrediction));
-        setInteractionError(null);
       } catch (error) {
         if (controller.signal.aborted) return;
         // API 에러 바디 추출 시도
@@ -219,7 +216,6 @@ export function AnalyzePage() {
           type: "warning",
           duration: 3000,
         });
-        setInteractionError(errorMessage || t("analyze.errors.analysisFailed"));
         setResult(null);
         setPredictions([]);
       } finally {
@@ -238,7 +234,8 @@ export function AnalyzePage() {
       cancelActiveAnalysis();
       setCapturedImage(previewSrc);
       setResult(null);
-      setInteractionError(null);
+      setPredictions([]);
+      setSelectedPredictionIndex(0);
       setIsScanning(true);
       void runAiRecognition(sourceFile);
     },
@@ -255,13 +252,11 @@ export function AnalyzePage() {
 
   // 업로드 버튼 클릭 처리 정의
   const handleUploadButtonClick = () => {
-    setInteractionError(null);
     fileInputRef.current?.click();
   };
 
   // 파일 업로드 변경 이벤트 처리 정의
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setInteractionError(null);
     const [file] = event.target.files ?? [];
 
     if (!file) {
@@ -269,7 +264,7 @@ export function AnalyzePage() {
     }
 
     if (!file.type.startsWith("image/")) {
-      setInteractionError(t("analyze.errors.onlyImages"));
+      showWarning(t("analyze.errors.onlyImages"));
       event.target.value = "";
       return;
     }
@@ -290,7 +285,7 @@ export function AnalyzePage() {
 
     const capturedFile = dataUrlToFile(dataUrl);
     if (!capturedFile) {
-      setInteractionError(t("analyze.errors.analysisFailed"));
+      showWarning(t("analyze.errors.analysisFailed"));
       return;
     }
 
@@ -301,7 +296,6 @@ export function AnalyzePage() {
 
   // 카메라 열기 처리 정의
   const handleOpenCamera = () => {
-    setInteractionError(null);
     void openCamera();
   };
 
@@ -380,7 +374,6 @@ export function AnalyzePage() {
     revokeObjectUrl();
     setResult(null);
     setCapturedImage(null);
-    setInteractionError(null);
     setPredictions([]);
     setSelectedPredictionIndex(0);
     stopCamera();

@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import * as S from "../DashboardPage.styles";
 
 interface TrackerCardProps {
-  totalPoints: number;
+  monthlyPoints: number;
   monthlyGoal: number;
   progressValue: number;
   entriesCount: number;
@@ -17,7 +17,7 @@ interface TrackerCardProps {
 }
 
 export function TrackerCard({
-  totalPoints,
+  monthlyPoints,
   monthlyGoal,
   progressValue,
   entriesCount,
@@ -36,7 +36,7 @@ export function TrackerCard({
         {/* 통계 요약 표시 */}
         {/* 요약 박스 컴포넌트 적용 */}
         <S.TrackerSummaryBox>
-          <S.TrackerPointsValue>{totalPoints}</S.TrackerPointsValue>
+          <S.TrackerPointsValue>{monthlyPoints}</S.TrackerPointsValue>
           <S.TrackerPointsLabel>{t("dashboard.tracker.monthlyPoints")}</S.TrackerPointsLabel>
           <Progress value={progressValue} />
           <div css={S.trackerProgressRow}>

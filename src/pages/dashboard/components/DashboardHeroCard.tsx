@@ -6,7 +6,7 @@ import * as S from "../DashboardPage.styles";
 interface DashboardHeroCardProps {
   userName: string;
   todayStats: TodayStats;
-  totalPoints: number;
+  monthlyPoints: number;
   monthlyGoal: number;
   progressValue: number;
   entriesCount: number;
@@ -18,7 +18,7 @@ interface DashboardHeroCardProps {
 export function DashboardHeroCard({
   userName,
   todayStats,
-  totalPoints,
+  monthlyPoints,
   monthlyGoal,
   progressValue,
   entriesCount,
@@ -48,7 +48,7 @@ export function DashboardHeroCard({
         {/* 중앙 주요 통계: 월간 포인트 */}
         <S.HeroMainSection>
           <S.HeroMainStat>
-            <S.HeroMainValue>{totalPoints}</S.HeroMainValue>
+            <S.HeroMainValue>{monthlyPoints}</S.HeroMainValue>
             <S.HeroMainLabel>{t("dashboard.hero.currentPoints")}</S.HeroMainLabel>
           </S.HeroMainStat>
           <S.HeroGoalText>{goalText}</S.HeroGoalText>

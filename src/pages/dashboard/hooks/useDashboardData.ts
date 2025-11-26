@@ -135,6 +135,7 @@ export function useDashboardData(): DashboardData {
         streakDays: apiSummary.streakDays,
       },
       totalPoints: apiSummary.myPoint,
+      monthlyPoints: apiSummary.monthlyPoints,
       monthlyGoal: apiSummary.monthlyGoal,
       progressValue: apiSummary.monthlyAchievementRate,
       entriesCount: apiSummary.activityCount,
