@@ -41,7 +41,7 @@ export const frTranslation = {
   dashboard: {
     welcome: {
       greeting: "Bonjour, {{name}} !",
-      defaultName: "ami",
+      defaultName: "utilisateur",
       helper: "Je vous accompagne pour le recyclage d'aujourd'hui.",
       stats: {
         items: "Objets traités aujourd'hui",
@@ -596,7 +596,7 @@ export const frTranslation = {
     },
     banner: {
       welcome: {
-        message: "Bonjour {{name}} !\nOn ajoute un nouveau geste de tri aujourd'hui ?",
+        message: "Bonjour {{name}} !\nSouhaitez-vous ajouter un nouveau geste de tri aujourd'hui ?",
         cta: "Ajouter un enregistrement",
       },
     },

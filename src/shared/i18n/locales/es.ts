@@ -14,19 +14,19 @@ export const esTranslation = {
     settings: "Ajustes",
   },
   onboarding: {
-    tagline: "Haz que reciclar sea sencillo",
+    tagline: "Haga que reciclar sea sencillo",
     description:
-      "Registra pequeños gestos ecológicos diarios.\\nEncuentra puntos de entrega cercanos con facilidad.",
+      "Registre pequeños gestos ecológicos diarios.\\nEncuentre puntos de entrega cercanos con facilidad.",
     cta: "Comenzar",
-    hint: "Empieza a actuar por el planeta con {{appName}} ahora.",
-    nameRequired: "Ingresa un apodo.",
-    namePlaceholder: "Ingresa tu apodo",
+    hint: "Empiece a actuar por el planeta con {{appName}} ahora.",
+    nameRequired: "Ingrese un apodo.",
+    namePlaceholder: "Ingrese su apodo",
     kakaoLogin: "Continuar con Kakao",
     kakaoNotConfigured: "El inicio de sesión con Kakao no está configurado",
   },
   auth: {
     callback: {
-      loading: "Procesando tu inicio de sesión...",
+      loading: "Procesando su inicio de sesión...",
       success: "¡Inicio de sesión exitoso!",
       redirecting: "Redirigiendo en breve...",
       error: "Error de inicio de sesión",
@@ -35,14 +35,14 @@ export const esTranslation = {
     errors: {
       kakaoFailed: "Error en el inicio de sesión con Kakao",
       noCode: "Falta el código de autorización",
-      loginFailed: "Error de inicio de sesión. Por favor, inténtalo de nuevo.",
+      loginFailed: "Error de inicio de sesión. Por favor, inténtelo de nuevo.",
     },
   },
   dashboard: {
     welcome: {
       greeting: "Hola, {{name}}!",
       defaultName: "amigo",
-      helper: "Te guiaré en el reciclaje de hoy.",
+      helper: "Le guiaré en el reciclaje de hoy.",
       stats: {
         items: "Artículos gestionados hoy",
         points: "Puntos obtenidos",
@@ -71,7 +71,7 @@ export const esTranslation = {
     },
     materialSearch: {
       title: "Búsqueda de materiales",
-      placeholder: "Busca por material o producto",
+      placeholder: "Busque por material o producto",
       filters: {
         all: "Todos",
         Plastic: "Plástico",
@@ -95,7 +95,7 @@ export const esTranslation = {
         plan: "Planificado",
       },
       empty:
-        "Aún no hay actividades registradas.\n¡Comienza a registrar tu primera actividad de reciclaje!",
+        "Aún no hay actividades registradas.\n¡Comience a registrar su primera actividad de reciclaje!",
     },
     monthlyProgress: {
       title: "Progreso de la meta mensual",
@@ -162,50 +162,50 @@ export const esTranslation = {
       plasticPetBottle: {
         name: "Botellas PET transparentes (agua y bebidas)",
         instructions:
-          "Vacía, enjuaga, retira la etiqueta y la tapa, y luego comprime la botella antes de depositarla en el contenedor exclusivo para PET transparente.",
+          "Vacíe, enjuague, retire la etiqueta y la tapa, y luego comprima la botella antes de depositarla en el contenedor exclusivo para PET transparente.",
         tips: "Las botellas incoloras, sin etiqueta y comprimidas producen resina reciclada de mejor calidad.",
       },
       plasticTakeoutContainer: {
         name: "Envase plástico de comida con grasa",
         instructions:
-          "Si quedan salsas u aceites difíciles de limpiar, el reciclaje se rechaza; cuando no puedas limpiarlo bien, tíralo como residuo general.",
+          "Si quedan salsas u aceites difíciles de limpiar, el reciclaje se rechaza; cuando no pueda limpiarlo bien, tírelo como residuo general.",
         tips: "Solo los envases totalmente lavados y secos pueden enviarse al flujo de plásticos.",
       },
       paperCarton: {
         name: "Cartón de leche o jugo",
         instructions:
-          "Vacía, enjuaga, abre y seca. Retira pajillas, pegatinas u otros materiales antes de agruparlos.",
-        tips: "Incluso los cartonados laminados pueden reciclarse si están limpios; entrégalos en campañas o contenedores especiales.",
+          "Vacíe, enjuague, abra y seque. Retire pajillas, pegatinas u otros materiales antes de agruparlos.",
+        tips: "Incluso los cartonados laminados pueden reciclarse si están limpios; entréguelos en campañas o contenedores especiales.",
       },
       greasyPizzaBox: {
         name: "Caja de pizza con grasa",
         instructions:
-          "La grasa contamina otros papeles, así que tira las partes manchadas en bolsas de basura o sacos especiales.",
-        tips: "Separa la tapa limpia y recicla solo esa sección para mejorar el rendimiento.",
+          "La grasa contamina otros papeles, así que tire las partes manchadas en bolsas de basura o sacos especiales.",
+        tips: "Separe la tapa limpia y recicle solo esa sección para mejorar el rendimiento.",
       },
       aluminumCan: {
         name: "Lata de aluminio",
         instructions:
-          "Enjuaga para quitar residuos y evita objetos extraños; retira cualquier tapa plástica antes de reciclarla.",
+          "Enjuague para quitar residuos y evite objetos extraños; retire cualquier tapa plástica antes de reciclarla.",
         tips: "Aplastar la parte superior mejora la eficiencia de recolección y el apilado.",
       },
       butaneCan: {
         name: "Lata de butano con gas restante",
         instructions:
-          "Si aún queda gas, no se acepta; ventílala por completo al aire libre y deposítala en un saco especial.",
-        tips: "Perfora la lata y retira las etiquetas una vez vacía para reciclarla como metal.",
+          "Si aún queda gas, no se acepta; ventílela por completo al aire libre y depósitela en un saco especial.",
+        tips: "Perfore la lata y retire las etiquetas una vez vacía para reciclarla como metal.",
       },
       glassBottle: {
         name: "Botella de vidrio de soju o cerveza",
         instructions:
-          "Retira tapas y etiquetas, enjuaga y recicla con cuidado o devuélvela mediante el programa de depósito.",
+          "Retire tapas y etiquetas, enjuague y recicle con cuidado o devuélvala mediante el programa de depósito.",
         tips: "Las botellas con depósito pueden devolverse a las tiendas para obtener el reembolso.",
       },
       heatResistantGlass: {
         name: "Utensilio de vidrio resistente al calor",
         instructions:
-          "El vidrio templado tiene otro punto de fusión; envuélvelo en papel periódico y deséchalo como residuo general.",
-        tips: "Marca claramente los fragmentos afilados para proteger al personal de recolección.",
+          "El vidrio templado tiene otro punto de fusión; envuélvalo en papel periódico y deséchelo como residuo general.",
+        tips: "Marque claramente los fragmentos afilados para proteger al personal de recolección.",
       },
     },
   },
@@ -219,21 +219,21 @@ export const esTranslation = {
     },
     errors: {
       onlyImages: "Solo se pueden subir archivos de imagen.",
-      unsupported: "Tu navegador no puede acceder a la cámara.",
-      permission: "Permite el acceso a la cámara.",
+      unsupported: "Su navegador no puede acceder a la cámara.",
+      permission: "Permita el acceso a la cámara.",
       playback: "No se puede reproducir la señal de la cámara.",
       notReady: "La vista de la cámara aún no está lista.",
-      stillInitializing: "La cámara sigue inicializándose. Inténtalo de nuevo en unos segundos.",
+      stillInitializing: "La cámara sigue inicializándose. Inténtelo de nuevo en unos segundos.",
       captureFailed: "No se pudo capturar la imagen.",
       analysisFailed:
-        "No pudimos contactar el servicio de IA. Intenta nuevamente en unos segundos.",
-      noPrediction: "No se detectó material reciclable. Prueba con otro ángulo más claro.",
+        "No pudimos contactar el servicio de IA. Intente nuevamente en unos segundos.",
+      noPrediction: "No se detectó material reciclable. Pruebe con otro ángulo más claro.",
     },
     camera: {
       overlay: "Preparando la cámara...",
     },
     scanning: {
-      headline: "Analizando tu imagen...",
+      headline: "Analizando su imagen...",
       subtext: "Será solo un momento.",
     },
     status: {
@@ -247,16 +247,16 @@ export const esTranslation = {
       instructionsTitle: "Pasos de manejo",
       retry: "Volver a tomar",
       logAction: "Registrar reciclaje",
-      saveSuccess: "✅ ¡Añadido a tu registro de actividades!",
-      defaultInstructions: "Retira los residuos y sigue las normas de reciclaje de tu municipio.",
+      saveSuccess: "✅ ¡Añadido a su registro de actividades!",
+      defaultInstructions: "Retire los residuos y siga las normas de reciclaje de su municipio.",
     },
     tips: {
       title: "Consejos de captura",
       items: [
-        "Toma la foto en un lugar bien iluminado.",
+        "Tome la foto en un lugar bien iluminado.",
         "Un fondo limpio mejora la precisión.",
-        "Asegura que el símbolo de reciclaje sea visible.",
-        "Si puedes, toma la imagen de frente.",
+        "Asegúrese de que el símbolo de reciclaje sea visible.",
+        "Si puede, tome la imagen de frente.",
       ],
       bannerMessage: "Tip de foto ✨\nBuena luz y fondo limpio ayudan a que la IA acierte más.",
     },
@@ -268,59 +268,59 @@ export const esTranslation = {
       plasticBottle: {
         item: "Botella de agua de plástico",
         category: "Plástico #1 (PET)",
-        instructions: "Quita la etiqueta y la tapa, enjuaga bien y recicla.",
-        tips: "Busca el símbolo de reciclaje #1 en la base.",
+        instructions: "Quite la etiqueta y la tapa, enjuague bien y recicle.",
+        tips: "Busque el símbolo de reciclaje #1 en la base.",
       },
       pizzaBox: {
         item: "Caja de pizza",
         category: "Papel contaminado",
         instructions: "La grasa y los restos impiden reciclarla.",
-        tips: "Recicla solo las partes limpias y desecha el resto.",
+        tips: "Recicle solo las partes limpias y deseche el resto.",
       },
       aluminumCan: {
         item: "Lata de aluminio",
         category: "Aluminio",
-        instructions: "Enjuaga y aplasta para ahorrar espacio.",
+        instructions: "Enjuague y aplaste para ahorrar espacio.",
         tips: "Las latas metálicas tienen alto valor de reciclaje.",
       },
     },
     guides: {
       plastic: {
         item: "Plásticos",
-        instructions: "Quita etiquetas y tapas, enjuaga a fondo y aplasta antes de entregarlos.",
-        tips: "Sécalos bien para evitar contaminación.",
+        instructions: "Quite etiquetas y tapas, enjuague a fondo y aplaste antes de entregarlos.",
+        tips: "Séquelos bien para evitar contaminación.",
       },
       paper: {
         item: "Papel y cartón",
-        instructions: "Retira cinta o grapas, aplana las cajas y separa las partes sucias.",
-        tips: "Guárdalos en una bolsa seca hasta la recolección.",
+        instructions: "Retire cinta o grapas, aplane las cajas y separe las partes sucias.",
+        tips: "Guárdelos en una bolsa seca hasta la recolección.",
       },
       metal: {
         item: "Latas metálicas",
         instructions:
-          "Vacía y enjuaga las latas, luego presiónalas ligeramente para ahorrar espacio.",
-        tips: "Quita tapas o sellos plásticos antes de reciclar.",
+          "Vacíe y enjuague las latas, luego presiónelas ligeramente para ahorrar espacio.",
+        tips: "Quite tapas o sellos plásticos antes de reciclar.",
       },
       glass: {
         item: "Envases de vidrio",
-        instructions: "Retira las tapas, enjuaga y deposita con cuidado para que no se rompan.",
+        instructions: "Retire las tapas, enjuague y deposítelos con cuidado para que no se rompan.",
         tips: "El vidrio roto se envuelve aparte según la guía local.",
       },
       textile: {
         item: "Textiles",
-        instructions: "Lava y seca las prendas antes de llevarlas al contenedor de ropa.",
-        tips: "Agrúpalas en bolsas cerradas para facilitar el manejo.",
+        instructions: "Lave y seque las prendas antes de llevarlas al contenedor de ropa.",
+        tips: "Agrúpelas en bolsas cerradas para facilitar el manejo.",
       },
       electronic: {
         item: "Baterías y electrónicos",
         instructions:
-          "Extrae las baterías y lleva los aparatos a un punto limpio o centro de e-waste.",
-        tips: "Cubre ambos polos de las baterías sueltas con cinta.",
+          "Extraiga las baterías y lleve los aparatos a un punto limpio o centro de e-waste.",
+        tips: "Cubra ambos polos de las baterías sueltas con cinta.",
       },
       other: {
         item: "Residuos generales",
-        instructions: "Consulta la guía municipal cuando no estés seguro del contenedor correcto.",
-        tips: "Busca símbolos de reciclaje o las indicaciones locales.",
+        instructions: "Consulte la guía municipal cuando no esté seguro del contenedor correcto.",
+        tips: "Busque símbolos de reciclaje o las indicaciones locales.",
       },
     },
   },
@@ -349,26 +349,26 @@ export const esTranslation = {
       },
       empty: "No hay registros este día.",
       // 삭제 확인 모달 메시지
-      confirmDelete: "¿Seguro que quieres eliminar este registro?",
+      confirmDelete: "¿Seguro que quiere eliminar este registro?",
       // 기록 삭제 안내 메시지
       deleteGuide: "Al eliminar también se borran los puntos y no se puede deshacer",
     },
     guide: {
       title: "Guía de registro",
       items: [
-        "Los registros se suman automáticamente a tus estadísticas mensuales.",
+        "Los registros se suman automáticamente a sus estadísticas mensuales.",
         "Los nuevos análisis aparecen de inmediato en el calendario.",
         "Los días con más actividad muestran un punto en el calendario.",
       ],
       bannerMessage:
-        "Tip del calendario 🗓️\nToca una fecha para ver y eliminar sus registros al instante.",
+        "Tip del calendario 🗓️\nToque una fecha para ver y eliminar sus registros al instante.",
     },
   },
   map: {
     mapView: {
       title: "Ver ubicaciones en el mapa",
       subtitle:
-        'Mostramos los puntos de entrega de tu región predeterminada; activa "Usar mi ubicación" para ordenarlos por distancia.',
+        'Mostramos los puntos de entrega de su región predeterminada; active "Usar mi ubicación" para ordenarlos por distancia.',
       loading: "Cargando el mapa...",
       missingKey: {
         title: "Falta la clave de la API del mapa",
@@ -377,7 +377,7 @@ export const esTranslation = {
       },
       loadFailed: {
         title: "No pudimos cargar el mapa",
-        description: "Comprueba la conexión de red y la lista de dominios autorizados.",
+        description: "Compruebe la conexión de red y la lista de dominios autorizados.",
       },
       initFailed: {
         title: "El motor del mapa no se inicializó",
@@ -391,11 +391,11 @@ export const esTranslation = {
     },
     routePanel: {
       title: "Cómo llegar",
-      idle: "Toca el botón de rutas en la lista para ver el recorrido.",
+      idle: "Toque el botón de rutas en la lista para ver el recorrido.",
       measuring: "Obteniendo la ruta a pie...",
-      failed: "No se pudo cargar la ruta. Inténtalo de nuevo.",
+      failed: "No se pudo cargar la ruta. Inténtelo de nuevo.",
       clear: "Borrar ruta",
-      locationRequired: "Activa primero tu ubicación para usar las indicaciones a pie.",
+      locationRequired: "Active primero su ubicación para usar las indicaciones a pie.",
     },
     filter: {
       title: "Contenedores cercanos",
@@ -433,7 +433,7 @@ export const esTranslation = {
     errors: {
       title: "No se pudieron cargar los datos del mapa",
       description:
-        "Comprueba la conexión del servidor o la configuración SSL y vuelve a intentarlo.",
+        "Compruebe la conexión del servidor o la configuración SSL y vuelva a intentarlo.",
       detail: "Mensaje de error: {{message}}",
       action: "Reintentar",
       retrying: "Reintentando...",
@@ -468,7 +468,7 @@ export const esTranslation = {
       location: {
         title: "Servicios de ubicación",
         status: {
-          requesting: "Solicitando acceso a tu ubicación…",
+          requesting: "Solicitando acceso a su ubicación…",
           granted: "El acceso a la ubicación está permitido.",
           denied: "El acceso a la ubicación está bloqueado.",
           unsupported: "Este dispositivo no puede compartir la ubicación.",
@@ -484,7 +484,7 @@ export const esTranslation = {
         title: "Meta mensual de puntos",
         description: "Base de cálculo del progreso",
         placeholder: "p. ej. 200",
-        helper: "Ingresa al menos 10 pt para guardarlo.",
+        helper: "Ingrese al menos 10 pt para guardarlo.",
       },
       sounds: {
         title: "Sonidos",
@@ -542,9 +542,9 @@ export const esTranslation = {
     },
     monthlyGoal: {
       title: "Meta de puntos mensuales",
-      description: "Define cuántos puntos quieres lograr este mes.",
+      description: "Defina cuántos puntos desea lograr este mes.",
       placeholder: "ej. 250",
-      helper: "Ingresa un valor mayor a 10 puntos para guardarlo automáticamente.",
+      helper: "Ingrese un valor mayor a 10 puntos para guardarlo automáticamente.",
       cta: "Guardar meta",
       usage: "Se refleja en las tarjetas de progreso y el tracker del panel.",
     },
@@ -611,11 +611,11 @@ export const esTranslation = {
       darkModeEnabled: "Modo oscuro activado",
       darkModeDisabled: "Modo claro activado",
       locationPermissionRequired:
-        "Activa el permiso de ubicación en Ajustes para mostrar tu posición actual.",
+        "Active el permiso de ubicación en Ajustes para mostrar su posición actual.",
       locationUnsupported: "Este dispositivo no puede usar servicios de ubicación.",
-      locationPinned: "Tu ubicación actual se ha marcado en el mapa.",
+      locationPinned: "Su ubicación actual se ha marcado en el mapa.",
       locationPermissionDenied: "El navegador rechazó el acceso a la ubicación.",
-      locationError: "No pudimos obtener tu ubicación. Inténtalo de nuevo.",
+      locationError: "No pudimos obtener su ubicación. Inténtelo de nuevo.",
     },
   },
   common: {
