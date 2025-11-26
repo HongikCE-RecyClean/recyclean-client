@@ -74,6 +74,11 @@ export const ImpactStatValueSuccess = styled.div`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   color: ${({ theme }) => theme.colors.success};
+  max-width: 7ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
 `;
 
 // 영향력 통계 주요 수치(정보) 스타일
@@ -81,6 +86,11 @@ export const ImpactStatValueInfo = styled.div`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   color: ${({ theme }) => theme.colors.info};
+  max-width: 7ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
 `;
 
 // 영향력 통계 라벨 텍스트 스타일

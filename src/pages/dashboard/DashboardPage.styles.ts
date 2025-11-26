@@ -465,6 +465,11 @@ export const TrackerValue = styled.span`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
   color: ${({ theme }) => theme.colors.text};
+  max-width: 7ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
 `;
 
 // 추적 지표 라벨 정의
@@ -485,6 +490,11 @@ export const TrackerSummaryBox = styled.div`
 export const TrackerPointsValue = styled.span`
   font-size: 2rem;
   font-weight: ${({ theme }) => theme.typography.weights.bold};
+  max-width: 7ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
 `;
 
 // 활동 추적 포인트 라벨 스타일
@@ -615,6 +625,12 @@ export const HeroMainValue = styled.div`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  max-width: 8ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+  align-self: center;
 `;
 
 // 메인 라벨

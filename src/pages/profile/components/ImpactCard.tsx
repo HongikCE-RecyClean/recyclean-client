@@ -3,6 +3,7 @@ import { useTheme } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "shared/ui/Card/Card";
 import type { UserStats } from "shared/utils/userStats";
+import { formatNumber } from "shared/utils/numberFormat";
 import * as S from "../ProfilePage.styles";
 
 // 사용자 영향력 카드 컴포넌트 정의
@@ -13,7 +14,10 @@ interface ImpactCardProps {
 export function ImpactCard({ userStats }: ImpactCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
+  const formattedItems = formatNumber(userStats.itemsRecycled, locale);
+  const formattedPoints = formatNumber(userStats.totalPoints, locale);
 
   // 통계 값을 시각적으로 배치
   return (
@@ -28,12 +32,12 @@ export function ImpactCard({ userStats }: ImpactCardProps) {
         <S.StatGrid>
           <div>
             {/* 영향력 통계 수치 - 재활용 아이템 수 */}
-            <S.ImpactStatValueSuccess>{userStats.itemsRecycled}</S.ImpactStatValueSuccess>
+            <S.ImpactStatValueSuccess>{formattedItems}</S.ImpactStatValueSuccess>
             <div css={S.impactStatLabel(theme)}>{t("profile.impact.items")}</div>
           </div>
           <div>
             {/* 영향력 통계 수치 - 총 포인트 */}
-            <S.ImpactStatValueInfo>{userStats.totalPoints}</S.ImpactStatValueInfo>
+            <S.ImpactStatValueInfo>{formattedPoints}</S.ImpactStatValueInfo>
             <div css={S.impactStatLabel(theme)}>{t("profile.impact.points")}</div>
           </div>
         </S.StatGrid>

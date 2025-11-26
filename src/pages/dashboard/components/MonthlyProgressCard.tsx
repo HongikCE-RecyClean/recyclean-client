@@ -2,6 +2,7 @@ import { Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "../../../shared/ui/Card/Card";
 import { Progress } from "../../../shared/ui/Progress/Progress";
+import { formatNumber } from "shared/utils/numberFormat";
 import * as S from "../DashboardPage.styles";
 
 interface MonthlyProgressCardProps {
@@ -15,7 +16,10 @@ export function MonthlyProgressCard({
   monthlyGoal,
   progressValue,
 }: MonthlyProgressCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
+  const formattedTotalPoints = formatNumber(totalPoints, locale);
+  const formattedMonthlyGoal = formatNumber(monthlyGoal, locale);
   return (
     <Card>
       <CardHeader>
@@ -29,7 +33,10 @@ export function MonthlyProgressCard({
         <div>
           {/* 진행 수치 텍스트 클래스 적용 */}
           <S.MonthlyProgressValue>
-            {t("dashboard.monthlyProgress.value", { current: totalPoints, goal: monthlyGoal })}
+            {t("dashboard.monthlyProgress.value", {
+              current: formattedTotalPoints,
+              goal: formattedMonthlyGoal,
+            })}
           </S.MonthlyProgressValue>
           <S.MonthlyProgressSubtitle>
             {t("dashboard.monthlyProgress.subtitle")}

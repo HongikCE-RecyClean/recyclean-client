@@ -4,6 +4,7 @@ import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Progress } from "../../../shared/ui/Progress/Progress";
 import { Button } from "../../../shared/ui/Button/Button";
 import { useTranslation } from "react-i18next";
+import { formatNumber } from "shared/utils/numberFormat";
 import * as S from "../DashboardPage.styles";
 
 interface TrackerCardProps {
@@ -25,8 +26,14 @@ export function TrackerCard({
   categoryCount,
   onLogAction,
 }: TrackerCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const theme = useTheme();
+  const locale = i18n.language;
+  const formattedMonthlyPoints = formatNumber(monthlyPoints, locale);
+  const formattedMonthlyGoal = formatNumber(monthlyGoal, locale);
+  const formattedEntriesCount = formatNumber(entriesCount, locale);
+  const formattedTotalItems = formatNumber(totalItems, locale);
+  const formattedCategoryCount = formatNumber(categoryCount, locale);
   return (
     <S.SectionCard>
       <S.SectionCardHeader>
@@ -36,12 +43,12 @@ export function TrackerCard({
         {/* 통계 요약 표시 */}
         {/* 요약 박스 컴포넌트 적용 */}
         <S.TrackerSummaryBox>
-          <S.TrackerPointsValue>{monthlyPoints}</S.TrackerPointsValue>
+          <S.TrackerPointsValue>{formattedMonthlyPoints}</S.TrackerPointsValue>
           <S.TrackerPointsLabel>{t("dashboard.tracker.monthlyPoints")}</S.TrackerPointsLabel>
           <Progress value={progressValue} />
           <div css={S.trackerProgressRow}>
             <S.TrackerGoalText>
-              {t("dashboard.tracker.goal", { goal: monthlyGoal })}
+              {t("dashboard.tracker.goal", { goal: formattedMonthlyGoal })}
             </S.TrackerGoalText>
             <S.TrackerPercentText>
               {t("dashboard.tracker.percent", { percent: Math.round(progressValue) })}
@@ -67,7 +74,7 @@ export function TrackerCard({
             <S.TrackerIconWrapper>
               <ListChecks size={18} color={theme.colors.secondary} strokeWidth={2} />
             </S.TrackerIconWrapper>
-            <S.TrackerValue>{entriesCount}</S.TrackerValue>
+            <S.TrackerValue>{formattedEntriesCount}</S.TrackerValue>
             <S.TrackerLabel>{t("dashboard.tracker.stats.entries")}</S.TrackerLabel>
           </S.TrackerStat>
           <S.TrackerStat>
@@ -75,7 +82,7 @@ export function TrackerCard({
             <S.TrackerIconWrapper>
               <Package size={18} color={theme.colors.primary} strokeWidth={2} />
             </S.TrackerIconWrapper>
-            <S.TrackerValue>{totalItems}</S.TrackerValue>
+            <S.TrackerValue>{formattedTotalItems}</S.TrackerValue>
             <S.TrackerLabel>{t("dashboard.tracker.stats.items")}</S.TrackerLabel>
           </S.TrackerStat>
           <S.TrackerStat>
@@ -83,7 +90,7 @@ export function TrackerCard({
             <S.TrackerIconWrapper>
               <Grid3x3 size={18} color={theme.colors.accent} strokeWidth={2} />
             </S.TrackerIconWrapper>
-            <S.TrackerValue>{categoryCount}</S.TrackerValue>
+            <S.TrackerValue>{formattedCategoryCount}</S.TrackerValue>
             <S.TrackerLabel>{t("dashboard.tracker.stats.categories")}</S.TrackerLabel>
           </S.TrackerStat>
         </S.TrackerGrid>

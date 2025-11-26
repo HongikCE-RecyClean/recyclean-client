@@ -3,13 +3,15 @@ import { CardTitle } from "../../../shared/ui/Card/Card";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import * as S from "../DashboardPage.styles";
 import type { RecentActivityItem } from "../../../shared/types/dashboard";
+import { formatNumber } from "shared/utils/numberFormat";
 
 interface RecentActivityCardProps {
   recentActivity: RecentActivityItem[];
 }
 
 export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   return (
     <S.SectionCard>
       <S.SectionCardHeader>
@@ -37,18 +39,22 @@ export function RecentActivityCard({ recentActivity }: RecentActivityCardProps) 
                   </S.RecentActivityTitleRow>
                   <S.RecentActivityMeta>
                     {t("dashboard.recentActivity.meta", {
-                      count: activity.count,
+                      count: formatNumber(activity.count, locale),
                       time: activity.time,
                     })}
                   </S.RecentActivityMeta>
                 </S.RecentActivityInfo>
                 {activity.mode === "plan" ? (
                   <Badge tone="warning">
-                    {t("dashboard.recentActivity.pointsPlanned", { points: activity.points })}
+                    {t("dashboard.recentActivity.pointsPlanned", {
+                      points: formatNumber(activity.points, locale),
+                    })}
                   </Badge>
                 ) : (
                   <Badge tone="primary">
-                    {t("dashboard.recentActivity.points", { points: activity.points })}
+                    {t("dashboard.recentActivity.points", {
+                      points: formatNumber(activity.points, locale),
+                    })}
                   </Badge>
                 )}
               </S.ActivityRow>

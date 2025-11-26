@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Progress } from "shared/ui/Progress/Progress";
 import type { TodayStats } from "shared/utils/userStats";
+import { formatNumber } from "shared/utils/numberFormat";
 import * as S from "../DashboardPage.styles";
 
 interface DashboardHeroCardProps {
@@ -26,15 +27,23 @@ export function DashboardHeroCard({
   totalItems,
   categoryCount,
 }: DashboardHeroCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language;
   const trimmedName = userName?.trim();
   const displayName =
     trimmedName && trimmedName.length > 0 ? trimmedName : t("dashboard.welcome.defaultName");
   const roundedProgress = Math.round(progressValue);
-  const goalText = `${t("dashboard.tracker.goal", { goal: monthlyGoal })} (${t(
+  const goalText = `${t("dashboard.tracker.goal", { goal: formatNumber(monthlyGoal, locale) })} (${t(
     "dashboard.tracker.percent",
     { percent: roundedProgress },
   )})`;
+  const formattedMonthlyPoints = formatNumber(monthlyPoints, locale);
+  const formattedTodayItems = formatNumber(todayStats.itemsRecycled, locale);
+  const formattedTodayPoints = formatNumber(todayStats.pointsEarned, locale);
+  const formattedTotalItems = formatNumber(totalItems, locale);
+  const formattedCategoryCount = formatNumber(categoryCount, locale);
+  const formattedEntriesCount = formatNumber(entriesCount, locale);
+  const formattedPlannedCount = formatNumber(plannedCount, locale);
 
   return (
     <S.HeroCard>
@@ -48,7 +57,7 @@ export function DashboardHeroCard({
         {/* 중앙 주요 통계: 월간 포인트 */}
         <S.HeroMainSection>
           <S.HeroMainStat>
-            <S.HeroMainValue>{monthlyPoints}</S.HeroMainValue>
+            <S.HeroMainValue>{formattedMonthlyPoints}</S.HeroMainValue>
             <S.HeroMainLabel>{t("dashboard.hero.currentPoints")}</S.HeroMainLabel>
           </S.HeroMainStat>
           <S.HeroGoalText>{goalText}</S.HeroGoalText>
@@ -67,11 +76,11 @@ export function DashboardHeroCard({
             <S.StatSectionContent>
               <S.StatRow>
                 <S.StatRowLabel>{t("dashboard.welcome.stats.items")}</S.StatRowLabel>
-                <S.StatRowValue>{todayStats.itemsRecycled}</S.StatRowValue>
+                <S.StatRowValue>{formattedTodayItems}</S.StatRowValue>
               </S.StatRow>
               <S.StatRow>
                 <S.StatRowLabel>{t("dashboard.welcome.stats.points")}</S.StatRowLabel>
-                <S.StatRowValue>{todayStats.pointsEarned}</S.StatRowValue>
+                <S.StatRowValue>{formattedTodayPoints}</S.StatRowValue>
               </S.StatRow>
               <S.StatRow>
                 <S.StatRowLabel>{t("dashboard.welcome.stats.streak")}</S.StatRowLabel>
@@ -86,20 +95,20 @@ export function DashboardHeroCard({
             <S.StatSectionContent>
               <S.StatRow>
                 <S.StatRowLabel>{t("dashboard.tracker.stats.items")}</S.StatRowLabel>
-                <S.StatRowValue>{totalItems}</S.StatRowValue>
+                <S.StatRowValue>{formattedTotalItems}</S.StatRowValue>
               </S.StatRow>
               <S.StatRow>
                 <S.StatRowLabel>{t("dashboard.tracker.stats.categories")}</S.StatRowLabel>
-                <S.StatRowValue>{categoryCount}</S.StatRowValue>
+                <S.StatRowValue>{formattedCategoryCount}</S.StatRowValue>
               </S.StatRow>
               <S.StatRow>
                 <S.StatRowGroup>
                   <S.StatRowLabelInline>
                     <S.StatRowLabel>{t("dashboard.tracker.stats.entries")}</S.StatRowLabel>
-                    <S.StatRowValue>{entriesCount}</S.StatRowValue>
+                    <S.StatRowValue>{formattedEntriesCount}</S.StatRowValue>
                   </S.StatRowLabelInline>
                   <S.StatRowHelper>
-                    {t("dashboard.tracker.stats.planned", { count: plannedCount })}
+                    {t("dashboard.tracker.stats.planned", { count: formattedPlannedCount })}
                   </S.StatRowHelper>
                 </S.StatRowGroup>
               </S.StatRow>
