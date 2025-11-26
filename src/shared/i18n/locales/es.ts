@@ -442,6 +442,7 @@ export const esTranslation = {
       sectionTitle: "Centros de reciclaje",
       directions: "Cómo llegar",
       call: "Llamar",
+      callUnavailable: "La función de llamada aún no está lista.",
     },
     errors: {
       title: "No se pudieron cargar los datos del mapa",

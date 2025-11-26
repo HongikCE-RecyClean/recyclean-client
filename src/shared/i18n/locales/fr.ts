@@ -442,6 +442,7 @@ export const frTranslation = {
       sectionTitle: "Centres de recyclage",
       directions: "Itinéraire",
       call: "Appeler",
+      callUnavailable: "La fonction d'appel n'est pas encore prête.",
     },
     errors: {
       title: "Impossible de charger les données de la carte",

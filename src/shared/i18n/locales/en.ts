@@ -428,6 +428,7 @@ export const enTranslation = {
       sectionTitle: "Recycling centers",
       directions: "Directions",
       call: "Call",
+      callUnavailable: "Calling is not ready yet.",
     },
     errors: {
       title: "Unable to load map data",

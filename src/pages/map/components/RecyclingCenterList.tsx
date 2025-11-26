@@ -9,6 +9,7 @@ import { resolveMaterialBadgeTone } from "shared/constants/mapVisuals";
 import type { RecyclingCenter, TrashBin, FilterOption } from "shared/types/map";
 import { SectionCard, SectionCardContent, SectionCardHeader } from "../MapPage.styles";
 import * as S from "./RecyclingCenterList.styles";
+import { useNotificationStore } from "shared/state/notificationStore";
 
 interface RecyclingCenterListProps {
   centers: RecyclingCenter[];
@@ -25,6 +26,7 @@ export function RecyclingCenterList({
   onRequestCenterDirections,
 }: RecyclingCenterListProps) {
   const { t } = useTranslation();
+  const { showSnackbar } = useNotificationStore();
 
   // 로고 기본 이미지를 만드는 헬퍼 정의
   const createLogoFallback = (centerName: string) => (
@@ -44,6 +46,13 @@ export function RecyclingCenterList({
     배출함 업데이트 시간 포맷 보류
     const formatBinUpdatedTime = (timestamp: string) => { ... }
   */
+
+  const handleCall = (_center: RecyclingCenter) => {
+    showSnackbar(t("map.centers.callUnavailable"), {
+      type: "info",
+      duration: 2200,
+    });
+  };
 
   return (
     <SectionCard>
@@ -181,7 +190,12 @@ export function RecyclingCenterList({
                       {t("map.centers.directions")}
                     </Button>
                     {center.phone && (
-                      <Button variant="outline" size="sm" css={S.centerActionButton}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        css={S.centerActionButton}
+                        onClick={() => handleCall(center)}
+                      >
                         <Phone size={14} />
                         {t("map.centers.call")}
                       </Button>
