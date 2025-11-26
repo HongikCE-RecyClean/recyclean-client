@@ -184,7 +184,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
         {
           date,
           time: timeWithSeconds,
-          memo: memo.trim() || undefined,
+          memo: memo.trim() || "",
           items: [
             {
               category: apiCategory,

@@ -21,23 +21,32 @@ export const CATEGORY_TO_MATERIAL: Record<CategoryType, MaterialId> = {
 
 // 로컬 MaterialId를 API 카테고리로 역매핑
 export const MATERIAL_TO_CATEGORY: Record<MaterialId, CategoryType> = {
+  // 캔류
   can: "CAN",
   steelCan: "METAL",
   aluminumCan: "CAN",
+  // 종이류
   paper: "PAPER",
   newspaper: "PAPER",
   cardboard: "PAPER",
   milkCarton: "PAPER",
+  // 플라스틱류
+  plasticBottle: "PLASTIC",
   petBottle: "PLASTIC",
   plasticContainer: "PLASTIC",
   vinyl: "PLASTIC",
   styrofoam: "PLASTIC",
+  // 유리류
   glassBottle: "GLASS",
   sojuBottle: "GLASS",
-  beerBottle: "GLASS",
+  // 의류
+  clothes: "CLOTHING",
+  oldClothes: "CLOTHING",
+  textile: "CLOTHING",
+  // 전자제품/기타
   battery: "ELECTRONICS",
   electronics: "ELECTRONICS",
-  clothes: "CLOTHING",
+  fluorescentLamp: "ELECTRONICS",
   other: "GENERAL",
 };
 

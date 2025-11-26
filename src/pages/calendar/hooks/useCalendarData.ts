@@ -161,6 +161,7 @@ export function useCalendarData(): CalendarData {
           {
             category: MATERIAL_TO_CATEGORY[backup.type] || "GENERAL",
             quantity: backup.amount,
+            detectedByAi: backup.detectedByAi ?? false,
           },
         ],
       });
