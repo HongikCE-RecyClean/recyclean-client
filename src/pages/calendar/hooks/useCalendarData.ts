@@ -3,8 +3,13 @@ import { useTranslation } from "react-i18next";
 import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useNotificationStore } from "shared/state/notificationStore";
-import { useCompletePlan, useCreatePlan, useDeletePlan, useUpdatePlan } from "shared/api/plans";
-import { useCalendar } from "shared/api/calendar";
+import {
+  useCompletePlan,
+  useCreatePlan,
+  useDeletePlan,
+  usePlans,
+  useUpdatePlan,
+} from "shared/api/plans";
 import type { Plan } from "shared/api/types";
 import type { RecyclingEntry } from "shared/types/dashboard";
 import { planToEntry, MATERIAL_TO_CATEGORY } from "shared/utils/planUtils";
@@ -59,12 +64,12 @@ export function useCalendarData(): CalendarData {
   // 인증 상태 확인
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-  // API 데이터 (인증된 경우에만 활성화, Calendar API 사용)
+  // API 데이터 (인증된 경우에만 활성화, Plans API 사용)
   const {
     data: apiPlans,
     isLoading: apiLoading,
     error: apiError,
-  } = useCalendar({
+  } = usePlans({
     enabled: isAuthenticated,
   });
 

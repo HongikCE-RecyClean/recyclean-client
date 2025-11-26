@@ -159,7 +159,7 @@ export function MapViewCard({
 
   const routeSummaryText = useMemo(() => {
     if (!routeSummary) return null;
-    return `${formatDistance(routeSummary.distance)} | ${formatDuration(routeSummary.duration)}`;
+    return `${formatDistance(routeSummary.distance)} · ${formatDuration(routeSummary.duration)}`;
   }, [routeSummary]);
 
   const disposeMarkers = (markersRef: MutableRefObject<naver.maps.Marker[]>) => {

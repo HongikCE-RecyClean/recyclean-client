@@ -87,7 +87,7 @@ export const esTranslation = {
     },
     recentActivity: {
       title: "Actividad reciente",
-      meta: "{{count}} artículos | {{time}}",
+      meta: "{{count}} artículos · {{time}}",
       points: "+{{points}} pts",
       pointsPlanned: "Planificado +{{points}} pts",
       modes: {
@@ -330,7 +330,7 @@ export const esTranslation = {
     },
     entries: {
       title: "{{date}}",
-      meta: "{{count}} artículos | {{time}}",
+      meta: "{{count}} artículos · {{time}}",
       points: "+{{points}} pts",
       pointsPlanned: "Planificado +{{points}} pts",
       modes: {

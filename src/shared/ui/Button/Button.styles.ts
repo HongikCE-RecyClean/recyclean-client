@@ -108,12 +108,10 @@ export const StyledButton = styled.button<{ $variant: ButtonVariant; $size: Butt
     borderRadius: theme.radii.md,
     border: "none",
     fontWeight: theme.typography.weights.medium,
-    transition:
-      "background-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease",
+    transition: "background-color 0.2s ease, color 0.2s ease",
     cursor: "pointer",
     position: "relative",
     outline: "none",
-    boxShadow: theme.shadows.soft,
     textTransform: "none",
     letterSpacing: "0.01em",
     ...variantStyles[$variant](theme),
@@ -122,11 +120,11 @@ export const StyledButton = styled.button<{ $variant: ButtonVariant; $size: Butt
     ":disabled": {
       opacity: 0.55,
       cursor: "not-allowed",
-      boxShadow: "none",
       color: $variant === "text" ? theme.colors.textMuted : undefined,
     },
     ":focus-visible": {
-      boxShadow: $variant === "text" ? "none" : `0 0 0 4px ${theme.colors.focusRing}`,
+      outline: `2px solid ${theme.colors.focusRing}`,
+      outlineOffset: "2px",
       textDecoration: $variant === "text" ? "underline" : undefined,
     },
   }),

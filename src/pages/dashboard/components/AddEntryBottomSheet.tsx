@@ -8,7 +8,7 @@ import { NumberInput } from "../../../shared/ui/NumberInput/NumberInput";
 import { useActivityStore } from "../../../shared/state/activityStore";
 import { useNotificationStore } from "../../../shared/state/notificationStore";
 import { useAuthStore } from "../../../shared/state/authStore";
-import { useCreatePlan } from "../../../shared/api/plans";
+import { useCreatePlan, useCompletePlan } from "../../../shared/api/plans";
 import { useCategories } from "../../../shared/api/categories";
 import type { SnackbarOptions } from "../../../shared/types/notifications";
 import {
@@ -69,6 +69,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   const { showSnackbar } = useNotificationStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const createPlanMutation = useCreatePlan();
+  const completePlanMutation = useCompletePlan();
   const pendingSnackbarRef = useRef<PendingSnackbar | null>(null);
 
   // 서버에서 카테고리 목록 가져오기 (캐시됨)
@@ -179,6 +180,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
     if (isAuthenticated) {
       const apiCategory = CATEGORY_TO_API[category] ?? "GENERAL";
       const timeWithSeconds = time.length === 5 ? `${time}:00` : time;
+      const isRecordMode = entryMode === "record";
 
       createPlanMutation.mutate(
         {
@@ -194,11 +196,32 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
           ],
         },
         {
-          onSuccess: () => {
-            showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
-              type: "success",
-              duration: 3000,
-            });
+          onSuccess: (createdPlan) => {
+            // 기록 모드: 생성 후 즉시 완료 처리
+            if (isRecordMode && createdPlan.id) {
+              completePlanMutation.mutate(createdPlan.id, {
+                onSuccess: (response) => {
+                  // 적립된 포인트 표시
+                  showSnackbar(
+                    t("calendar.entries.pointsEarned", { points: response.addedPoint }),
+                    { type: "success", duration: 3000 },
+                  );
+                },
+                onError: () => {
+                  // 완료 실패 시 계획 생성은 성공했음을 알림
+                  showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
+                    type: "success",
+                    duration: 3000,
+                  });
+                },
+              });
+            } else {
+              // 계획 모드: 생성만 완료
+              showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
+                type: "success",
+                duration: 3000,
+              });
+            }
           },
           onError: () => {
             showSnackbar(t("notifications.snackbar.entrySavedLocally", { points }), {
@@ -297,18 +320,16 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
           </S.FormRowItem>
         </S.FormRow>
 
-        {/* 메모 입력 (계획 모드일 때만) */}
-        {entryMode === "plan" && (
-          <S.FormGroup>
-            <S.Label>{t("dashboard.addEntry.memo")}</S.Label>
-            <TextField
-              type="text"
-              value={memo}
-              onChange={(e) => setMemo(e.target.value)}
-              placeholder={t("dashboard.addEntry.memoPlaceholder")}
-            />
-          </S.FormGroup>
-        )}
+        {/* 메모 입력 */}
+        <S.FormGroup>
+          <S.Label>{t("dashboard.addEntry.memo")}</S.Label>
+          <TextField
+            type="text"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+            placeholder={t("dashboard.addEntry.memoPlaceholder")}
+          />
+        </S.FormGroup>
 
         {/* 예상 포인트 표시 */}
         <S.PointsPreview>

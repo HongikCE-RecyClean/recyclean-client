@@ -74,10 +74,6 @@ export const EditButton = styled.button`
     background: ${({ theme }) => theme.colors.surfaceMuted};
     color: ${({ theme }) => theme.colors.primary};
   }
-
-  &:active {
-    transform: scale(0.95);
-  }
 `;
 
 // 프로필 메타 텍스트 스타일
@@ -151,12 +147,9 @@ export const CategoryStatItem = styled.div`
   padding: ${({ theme }) => theme.spacing(3)};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surfaceMuted};
-  transition:
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.15s ease;
+  transition: background 0.15s ease;
 
   &:hover {
-    transform: translateX(4px);
     background: ${({ theme }) => theme.colors.surface};
   }
 `;

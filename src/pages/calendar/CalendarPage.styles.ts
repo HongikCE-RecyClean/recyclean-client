@@ -266,15 +266,10 @@ export const LegendItem = styled.div`
   padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(3)};
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.surfaceMuted};
-  transition:
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: background 0.15s ease;
 
   &:hover {
-    transform: translateY(-2px);
     background: ${({ theme }) => theme.colors.surface};
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
   }
 `;
 
@@ -319,13 +314,11 @@ export const RecordItem = styled.div<{ $completed?: boolean }>`
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.surfaceMuted};
   transition:
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
     background 0.15s ease,
     opacity 0.15s ease;
   opacity: ${({ $completed }) => ($completed ? 0.7 : 1)};
 
   &:hover {
-    transform: translateX(4px);
     background: ${({ theme }) => theme.colors.surface};
   }
 `;
@@ -438,6 +431,104 @@ export const ActionButton = styled.button<{ $variant: "complete" | "edit" }>`
     outline: 2px solid
       ${({ theme, $variant }) =>
         $variant === "complete" ? theme.colors.success : theme.colors.info};
+    outline-offset: 2px;
+  }
+`;
+
+// 스와이프 액션 컨테이너 - 항목을 감싸는 래퍼
+export const SwipeableContainer = styled.div`
+  position: relative;
+  overflow: hidden;
+  border-radius: ${({ theme }) => theme.radii.lg};
+`;
+
+// 스와이프 가능한 콘텐츠 영역
+export const SwipeableContent = styled.div<{ $isOpen: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing(3)};
+  border-radius: ${({ theme }) => theme.radii.lg};
+  background: ${({ theme }) => theme.colors.surfaceMuted};
+  cursor: pointer;
+  user-select: none;
+  // 열림 상태에 따라 좌측 슬라이드
+  transform: translateX(${({ $isOpen }) => ($isOpen ? "-100px" : "0")});
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:active {
+    background: ${({ theme }) => theme.colors.surface};
+  }
+`;
+
+// 완료된 항목용 스와이프 콘텐츠
+export const SwipeableContentCompleted = styled(SwipeableContent)`
+  opacity: 0.7;
+`;
+
+// 스와이프 액션 버튼 영역 - 우측에 숨겨진 상태
+export const SwipeableActions = styled.div<{ $isOpen: boolean }>`
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+  padding: 0 ${({ theme }) => theme.spacing(2)};
+  // 열림 상태에 따라 표시
+  opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
+  pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
+  transition: opacity 0.2s ease;
+`;
+
+// 스와이프 액션 버튼 공통 스타일
+export const SwipeActionButton = styled.button<{
+  $variant: "complete" | "edit" | "delete";
+}>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: ${({ theme }) => theme.radii.md};
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
+
+  // variant별 색상 설정
+  background: ${({ theme, $variant }) =>
+    $variant === "complete"
+      ? theme.colors.successSurface
+      : $variant === "edit"
+        ? theme.colors.infoSurface
+        : theme.colors.dangerSurface};
+
+  color: ${({ theme, $variant }) =>
+    $variant === "complete"
+      ? theme.colors.success
+      : $variant === "edit"
+        ? theme.colors.info
+        : theme.colors.danger};
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    outline: 2px solid
+      ${({ theme, $variant }) =>
+        $variant === "complete"
+          ? theme.colors.success
+          : $variant === "edit"
+            ? theme.colors.info
+            : theme.colors.danger};
     outline-offset: 2px;
   }
 `;

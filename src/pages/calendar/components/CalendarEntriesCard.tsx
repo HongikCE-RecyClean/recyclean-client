@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from "react";
 import { Check, Pencil, Trash2 } from "lucide-react";
 import { format, type Locale } from "date-fns";
 import { useTranslation } from "react-i18next";
@@ -28,7 +29,26 @@ export function CalendarEntriesCard({
   onEdit,
 }: CalendarEntriesCardProps) {
   const { t } = useTranslation();
-  // 날짜별 기록 리스트 출력을 카드로 분리
+  // 열린 항목 ID 추적
+  const [openItemId, setOpenItemId] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // 항목 탭 핸들러 - 토글 방식
+  const handleItemClick = (id: string) => {
+    setOpenItemId((prev) => (prev === id ? null : id));
+  };
+
+  // 외부 클릭 시 닫기
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpenItemId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <S.SectionCard>
       <S.SectionCardHeader>
@@ -36,54 +56,61 @@ export function CalendarEntriesCard({
       </S.SectionCardHeader>
       <S.SectionCardContent>
         {entries.length > 0 ? (
-          <S.RecordList>
+          <S.RecordList ref={containerRef}>
             {entries.map((entry) => {
               // 계획이면서 아직 완료되지 않은 경우
               const isPendingPlan = entry.mode === "plan" && !entry.completed;
               // 완료된 계획
               const isCompletedPlan = entry.mode === "plan" && entry.completed;
+              // 열림 상태 확인
+              const isOpen = openItemId === entry.id;
 
               return (
-                <S.RecordItem key={entry.id} $completed={isCompletedPlan}>
-                  {/* 항목 정보를 묶어서 정렬 */}
-                  <S.RecordInfo>
-                    <S.RecordTitleRow>
-                      {/* 기록 타입 텍스트 클래스 적용 */}
-                      <S.RecordTypeText $completed={isCompletedPlan}>
-                        {t(`materials.items.${entry.type}`, { defaultValue: entry.type })}
-                      </S.RecordTypeText>
-                      <Badge
-                        tone={
-                          isCompletedPlan
-                            ? "success"
-                            : entry.mode === "plan"
-                              ? "warning"
-                              : "success"
-                        }
-                        variant="soft"
-                      >
-                        {isCompletedPlan
-                          ? t("calendar.entries.modes.completed")
-                          : t(`calendar.entries.modes.${entry.mode ?? "record"}`)}
-                      </Badge>
-                      {/* AI 감지 배지 */}
-                      {entry.detectedByAi && (
-                        <Badge tone="info" variant="soft">
-                          {t("calendar.entries.aiDetected")}
+                <S.SwipeableContainer key={entry.id}>
+                  {/* 슬라이드 콘텐츠 영역 */}
+                  <S.SwipeableContent
+                    $isOpen={isOpen}
+                    onClick={() => handleItemClick(entry.id)}
+                    style={{ opacity: isCompletedPlan ? 0.7 : 1 }}
+                  >
+                    {/* 항목 정보 */}
+                    <S.RecordInfo>
+                      <S.RecordTitleRow>
+                        <S.RecordTypeText $completed={isCompletedPlan}>
+                          {t(`materials.items.${entry.type}`, { defaultValue: entry.type })}
+                        </S.RecordTypeText>
+                        <Badge
+                          tone={
+                            isCompletedPlan
+                              ? "success"
+                              : entry.mode === "plan"
+                                ? "warning"
+                                : "success"
+                          }
+                          variant="soft"
+                        >
+                          {isCompletedPlan
+                            ? t("calendar.entries.modes.completed")
+                            : t(`calendar.entries.modes.${entry.mode ?? "record"}`)}
                         </Badge>
-                      )}
-                    </S.RecordTitleRow>
-                    {/* 수량, 시간 메타 텍스트 */}
-                    <span css={S.recordMetaText}>
-                      {t("calendar.entries.meta", {
-                        count: entry.amount,
-                        time: format(entry.date, "p", { locale: timeLocale }),
-                      })}
-                    </span>
-                    {/* 메모 표시 */}
-                    {entry.memo && <span css={S.recordMemoText}>💬 {entry.memo}</span>}
-                  </S.RecordInfo>
-                  <div css={S.recordActionsRow}>
+                        {/* AI 감지 배지 */}
+                        {entry.detectedByAi && (
+                          <Badge tone="info" variant="soft">
+                            {t("calendar.entries.aiDetected")}
+                          </Badge>
+                        )}
+                      </S.RecordTitleRow>
+                      {/* 수량, 시간 메타 텍스트 */}
+                      <span css={S.recordMetaText}>
+                        {t("calendar.entries.meta", {
+                          count: entry.amount,
+                          time: format(entry.date, "p", { locale: timeLocale }),
+                        })}
+                      </span>
+                      {/* 메모 표시 */}
+                      {entry.memo && <span css={S.recordMemoText}>💬 {entry.memo}</span>}
+                    </S.RecordInfo>
+                    {/* 포인트 표시 */}
                     <S.RecordPoints
                       $variant={isPendingPlan ? "plan" : "record"}
                       $completed={isCompletedPlan}
@@ -92,67 +119,78 @@ export function CalendarEntriesCard({
                         ? t("calendar.entries.pointsPlanned", { points: entry.points })
                         : t("calendar.entries.points", { points: entry.points })}
                     </S.RecordPoints>
-                    <S.ActionButtonGroup>
-                      {/* 계획 완료 버튼 (미완료 계획만 표시) */}
-                      {isPendingPlan && onComplete && (
-                        <S.ActionButton
-                          $variant="complete"
-                          onClick={async () => {
-                            const confirmed = await openConfirmDialog({
-                              title: t("calendar.entries.confirmComplete"),
-                              description: t("calendar.entries.completeGuide"),
-                              tone: "success",
-                              confirmLabel: t("calendar.entries.complete"),
-                              cancelLabel: t("common.cancel"),
-                              showToneIcon: true,
-                            });
-                            if (confirmed) {
-                              onComplete(entry.id);
-                            }
-                          }}
-                          aria-label={t("calendar.entries.complete")}
-                          title={t("calendar.entries.complete")}
-                        >
-                          <Check size={16} />
-                        </S.ActionButton>
-                      )}
-                      {/* 편집 버튼 (계획만 편집 가능) */}
-                      {entry.mode === "plan" && !isCompletedPlan && onEdit && (
-                        <S.ActionButton
-                          $variant="edit"
-                          onClick={() => onEdit(entry)}
-                          aria-label={t("calendar.entries.edit")}
-                          title={t("calendar.entries.edit")}
-                        >
-                          <Pencil size={16} />
-                        </S.ActionButton>
-                      )}
-                      {/* 삭제 버튼 */}
-                      {onDelete && (
-                        <S.DeleteButton
-                          onClick={async () => {
-                            const confirmed = await openConfirmDialog({
-                              title: t("calendar.entries.confirmDelete"),
-                              description: t("calendar.entries.deleteGuide"),
-                              tone: "warning",
-                              confirmLabel: t("common.delete"),
-                              cancelLabel: t("common.cancel"),
-                              showToneIcon: false,
-                              confirmVariant: "destructive",
-                            });
-                            if (confirmed) {
-                              onDelete(entry.id);
-                            }
-                          }}
-                          aria-label={t("common.delete")}
-                          title={t("common.delete")}
-                        >
-                          <Trash2 size={16} />
-                        </S.DeleteButton>
-                      )}
-                    </S.ActionButtonGroup>
-                  </div>
-                </S.RecordItem>
+                  </S.SwipeableContent>
+
+                  {/* 스와이프로 나타나는 액션 버튼 */}
+                  <S.SwipeableActions $isOpen={isOpen}>
+                    {/* 계획 완료 버튼 (미완료 계획만) */}
+                    {isPendingPlan && onComplete && (
+                      <S.SwipeActionButton
+                        $variant="complete"
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          const confirmed = await openConfirmDialog({
+                            title: t("calendar.entries.confirmComplete"),
+                            description: t("calendar.entries.completeGuide"),
+                            tone: "success",
+                            confirmLabel: t("calendar.entries.complete"),
+                            cancelLabel: t("common.cancel"),
+                            showToneIcon: true,
+                          });
+                          if (confirmed) {
+                            onComplete(entry.id);
+                            setOpenItemId(null);
+                          }
+                        }}
+                        aria-label={t("calendar.entries.complete")}
+                        title={t("calendar.entries.complete")}
+                      >
+                        <Check size={18} />
+                      </S.SwipeActionButton>
+                    )}
+                    {/* 편집 버튼 (계획만) */}
+                    {entry.mode === "plan" && !isCompletedPlan && onEdit && (
+                      <S.SwipeActionButton
+                        $variant="edit"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onEdit(entry);
+                          setOpenItemId(null);
+                        }}
+                        aria-label={t("calendar.entries.edit")}
+                        title={t("calendar.entries.edit")}
+                      >
+                        <Pencil size={18} />
+                      </S.SwipeActionButton>
+                    )}
+                    {/* 삭제 버튼 */}
+                    {onDelete && (
+                      <S.SwipeActionButton
+                        $variant="delete"
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          const confirmed = await openConfirmDialog({
+                            title: t("calendar.entries.confirmDelete"),
+                            description: t("calendar.entries.deleteGuide"),
+                            tone: "warning",
+                            confirmLabel: t("common.delete"),
+                            cancelLabel: t("common.cancel"),
+                            showToneIcon: false,
+                            confirmVariant: "destructive",
+                          });
+                          if (confirmed) {
+                            onDelete(entry.id);
+                            setOpenItemId(null);
+                          }
+                        }}
+                        aria-label={t("common.delete")}
+                        title={t("common.delete")}
+                      >
+                        <Trash2 size={18} />
+                      </S.SwipeActionButton>
+                    )}
+                  </S.SwipeableActions>
+                </S.SwipeableContainer>
               );
             })}
           </S.RecordList>

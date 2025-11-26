@@ -194,14 +194,6 @@ export const Callout = styled.div`
   border-radius: ${({ theme }) => theme.radii.lg};
   background: ${({ theme }) => theme.colors.infoSurface};
   color: ${({ theme }) => theme.colors.info};
-  transition:
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.15s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
-  }
 `;
 
 // 처리 방법 섹션 제목 스타일
@@ -371,39 +363,15 @@ export const BboxToggle = styled.button<{ $active?: boolean }>`
   font-size: 0.75rem;
   font-weight: ${({ theme }) => theme.typography.weights.medium};
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: ${({ $active }) =>
-    $active
-      ? "0 4px 12px rgba(47, 133, 90, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)"
-      : "0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)"};
-
-  /* 아이콘 스타일 */
-  svg {
-    transition: transform 0.2s ease;
-  }
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 
   &:hover {
     background: ${({ theme, $active }) =>
       $active ? theme.colors.primary : "rgba(15, 23, 42, 0.75)"};
     border-color: ${({ theme, $active }) =>
       $active ? theme.colors.primary : "rgba(255, 255, 255, 0.3)"};
-    transform: translateY(-1px);
-    box-shadow: ${({ $active }) =>
-      $active
-        ? "0 6px 16px rgba(47, 133, 90, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15)"
-        : "0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)"};
-
-    svg {
-      transform: scale(1.1);
-    }
-  }
-
-  &:active {
-    transform: translateY(0);
-    box-shadow: ${({ $active }) =>
-      $active
-        ? "0 2px 8px rgba(47, 133, 90, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.1)"
-        : "0 1px 4px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.1)"};
   }
 `;
 

@@ -86,7 +86,7 @@ export const enTranslation = {
     },
     recentActivity: {
       title: "Recent activity",
-      meta: "{{count}} items | {{time}}",
+      meta: "{{count}} items · {{time}}",
       points: "+{{points}} pts",
       pointsPlanned: "Planned +{{points}} pts",
       modes: {
@@ -318,7 +318,7 @@ export const enTranslation = {
     },
     entries: {
       title: "{{date}}",
-      meta: "{{count}} items | {{time}}",
+      meta: "{{count}} items · {{time}}",
       points: "+{{points}} pts",
       pointsPlanned: "Planned +{{points}} pts",
       modes: {

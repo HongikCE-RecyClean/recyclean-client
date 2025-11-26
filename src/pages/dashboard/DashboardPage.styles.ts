@@ -111,13 +111,7 @@ export const StatIconWrapper = styled.div`
   height: 40px;
   border-radius: ${({ theme }) => theme.radii.full};
   background: ${({ theme }) => theme.colors.surface};
-  box-shadow: ${({ theme }) => theme.shadows.soft};
   margin-bottom: ${({ theme }) => theme.spacing(1)};
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
 `;
 
 // 통계 값 스타일 정의
@@ -148,12 +142,9 @@ export const ActivityRow = styled.div`
   padding: ${({ theme }) => theme.spacing(3)};
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surfaceMuted};
-  transition:
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.15s ease;
+  transition: background 0.15s ease;
 
   &:hover {
-    transform: translateX(4px);
     background: ${({ theme }) => theme.colors.surface};
   }
 `;
@@ -188,14 +179,6 @@ export const AchievementRow = styled.div<{ $earned: boolean }>`
     $earned ? theme.colors.successSurface : theme.colors.surfaceMuted};
   border: 1px solid
     ${({ theme, $earned }) => ($earned ? "rgba(34, 197, 94, 0.35)" : theme.colors.border)};
-  transition:
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.15s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
-  }
 `;
 
 // 업적 카드 컨텐츠 간격 조정 스타일
@@ -233,16 +216,10 @@ export const MaterialItem = styled.div`
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surface};
   border: 1px solid ${({ theme }) => theme.colors.border};
-  box-shadow: ${({ theme }) => theme.shadows.soft};
-  transition:
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: background 0.15s ease;
 
   &:hover {
-    transform: translateY(-2px);
     background: ${({ theme }) => theme.colors.surfaceMuted};
-    box-shadow: ${({ theme }) => theme.shadows.medium};
   }
 `;
 
@@ -371,12 +348,9 @@ export const GoalCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
-  transition:
-    transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.15s ease;
+  transition: background 0.15s ease;
 
   &:hover {
-    transform: translateY(-2px);
     background: ${({ theme }) => theme.colors.surface};
   }
 `;
@@ -473,12 +447,9 @@ export const TrackerIconWrapper = styled.div`
   height: 36px;
   border-radius: ${({ theme }) => theme.radii.md};
   background: ${({ theme }) => theme.colors.surfaceMuted};
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease;
+  transition: background 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
     background: ${({ theme }) => theme.colors.surface};
   }
 `;

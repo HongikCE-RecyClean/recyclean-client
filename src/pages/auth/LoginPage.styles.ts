@@ -39,7 +39,6 @@ export const Page = styled.div`
 // 헤더 영역 컨테이너 정의
 export const HeaderBar = styled.div`
   background: ${({ theme }) => theme.colors.surface};
-  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.08);
   position: sticky;
   top: 0;
   z-index: 1;
@@ -142,48 +141,20 @@ export const StartButton = styled.button`
   cursor: pointer;
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   font-size: 1.05rem;
-  box-shadow: ${({ theme }) => `
-      0 8px 20px ${hexToRgba(theme.colors.primary, 0.3)},
-      0 2px 8px ${hexToRgba(theme.colors.border, 0.4)}
-    `};
-  transition:
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.2s ease;
+  transition: background 0.2s ease;
 
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
     background: ${({ theme }) => theme.colors.primaryHover};
-    box-shadow: ${({ theme }) => `
-        0 12px 28px ${hexToRgba(theme.colors.primary, 0.4)},
-        0 4px 12px ${hexToRgba(theme.colors.border, 0.45)}
-      `};
   }
 
   &:focus-visible {
-    outline: none;
-    box-shadow: ${({ theme }) => `
-        0 0 0 4px ${theme.colors.focusRing},
-        0 8px 20px ${hexToRgba(theme.colors.primary, 0.3)}
-      `};
-  }
-
-  &:active:not(:disabled) {
-    transform: translateY(0);
-    box-shadow: ${({ theme }) => `
-        0 4px 12px ${hexToRgba(theme.colors.primary, 0.3)},
-        0 2px 6px ${hexToRgba(theme.colors.border, 0.4)}
-      `};
+    outline: 2px solid ${({ theme }) => theme.colors.focusRing};
+    outline-offset: 2px;
   }
 
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
-    transform: none;
-    box-shadow: ${({ theme }) => `
-        0 4px 12px ${hexToRgba(theme.colors.primary, 0.2)},
-        0 2px 6px ${hexToRgba(theme.colors.border, 0.3)}
-      `};
   }
 `;
 
@@ -284,14 +255,9 @@ export const RetryButton = styled.button`
   font-size: 1rem;
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: filter 0.2s ease;
 
   &:hover {
     filter: brightness(0.9);
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
   }
 `;

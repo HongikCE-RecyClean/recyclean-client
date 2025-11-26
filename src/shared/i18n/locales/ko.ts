@@ -86,7 +86,7 @@ export const koTranslation = {
     },
     recentActivity: {
       title: "최근 활동",
-      meta: "{{count}}개 | {{time}}",
+      meta: "{{count}}개 · {{time}}",
       points: "+{{points}} pts",
       pointsPlanned: "예정 +{{points}} pts",
       modes: {
@@ -318,7 +318,7 @@ export const koTranslation = {
     },
     entries: {
       title: "{{date}}",
-      meta: "{{count}}개 | {{time}}",
+      meta: "{{count}}개 · {{time}}",
       points: "+{{points}} pts",
       pointsPlanned: "예정 +{{points}} pts",
       modes: {

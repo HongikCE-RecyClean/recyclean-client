@@ -25,10 +25,6 @@ export const BannerContainer = styled.div(({ theme }) => ({
   backgroundColor: theme.colors.surface,
   borderRadius: theme.radii.lg,
   border: `1px solid ${theme.colors.border}`,
-  boxShadow: `
-      0 2px 8px rgba(15, 23, 42, 0.06),
-      0 1px 3px rgba(15, 23, 42, 0.04)
-    `,
   animation: `${slideDown} 0.4s cubic-bezier(0.4, 0, 0.2, 1)`,
   "@media (max-width: 768px)": {
     padding: `${theme.spacing(3)} ${theme.spacing(3)}`,
@@ -101,25 +97,17 @@ export const ActionButton = styled.button(({ theme }) => ({
   border: "none",
   borderRadius: theme.radii.md,
   cursor: "pointer",
-  transition: "all 0.2s ease",
+  transition: "background-color 0.2s ease",
   whiteSpace: "nowrap",
-  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
   letterSpacing: "-0.01em",
 
   "&:hover": {
     backgroundColor: theme.colors.primaryHover,
-    boxShadow: "0 2px 6px rgba(0, 0, 0, 0.15)",
-    transform: "translateY(-1px)",
   },
 
   "&:focus-visible": {
-    outline: "none",
-    boxShadow: `0 0 0 4px ${theme.colors.focusRing}`,
-  },
-
-  "&:active": {
-    transform: "translateY(0)",
-    boxShadow: "0 1px 2px rgba(0, 0, 0, 0.1)",
+    outline: `2px solid ${theme.colors.focusRing}`,
+    outlineOffset: "2px",
   },
 
   "@media (max-width: 768px)": {
@@ -144,15 +132,10 @@ export const CloseButton = styled.button(({ theme }) => ({
   borderRadius: theme.radii.md,
   color: theme.colors.textMuted,
   cursor: "pointer",
-  transition: "all 0.2s ease",
+  transition: "background-color 0.2s ease, color 0.2s ease",
 
   "&:hover": {
     backgroundColor: theme.colors.surfaceMuted,
     color: theme.colors.text,
-    transform: "rotate(90deg)",
-  },
-
-  "&:active": {
-    transform: "rotate(90deg) scale(0.9)",
   },
 }));

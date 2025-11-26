@@ -3,7 +3,7 @@ import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useSettingsStore } from "shared/state/settingsStore";
 import { useDashboardSummary } from "shared/api/dashboard";
-import { useCalendar } from "shared/api/calendar";
+import { usePlans } from "shared/api/plans";
 import { calculateTodayStats, calculateTotalStats } from "shared/utils/userStats";
 import { planToEntry } from "shared/utils/planUtils";
 import type { TodayStats } from "shared/utils/userStats";
@@ -58,8 +58,8 @@ export function useDashboardData(): DashboardData {
     enabled: isAuthenticated,
   });
 
-  // API 캘린더 데이터 (최근 활동용, 인증된 경우에만 활성화)
-  const { data: apiPlans, isLoading: plansLoading } = useCalendar({
+  // API Plans 데이터 (최근 활동용, 인증된 경우에만 활성화)
+  const { data: apiPlans, isLoading: plansLoading } = usePlans({
     enabled: isAuthenticated,
   });
 

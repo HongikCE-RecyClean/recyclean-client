@@ -53,7 +53,6 @@ export const ParticleSvg = styled.svg`
 // 헤더 컨테이너
 export const HeaderBar = styled.div`
   background: ${({ theme }) => theme.colors.surface};
-  box-shadow: ${({ theme }) => theme.shadows.soft};
   position: sticky;
   top: 0;
   z-index: 10;
@@ -165,22 +164,14 @@ export const StartButton = styled.button`
   cursor: pointer;
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   font-size: 1.05rem;
-  box-shadow: ${({ theme }) => theme.shadows.medium};
-  transition:
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    filter 0.2s ease;
+  transition: filter 0.2s ease;
 
   &:hover {
-    transform: translateY(-2px);
     filter: brightness(0.9);
-    box-shadow: ${({ theme }) => theme.shadows.medium};
   }
 
   &:active {
-    transform: translateY(0);
     filter: brightness(0.85);
-    box-shadow: ${({ theme }) => theme.shadows.soft};
   }
 `;
 
@@ -200,22 +191,14 @@ export const KakaoLoginButton = styled.button`
   cursor: pointer;
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
   font-size: 1.05rem;
-  box-shadow: ${({ theme }) => theme.shadows.soft};
-  transition:
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    filter 0.2s ease;
+  transition: filter 0.2s ease;
 
   &:hover:not(:disabled) {
-    transform: translateY(-2px);
     filter: brightness(0.95);
-    box-shadow: ${({ theme }) => theme.shadows.medium};
   }
 
   &:active:not(:disabled) {
-    transform: translateY(0);
     filter: brightness(0.9);
-    box-shadow: ${({ theme }) => theme.shadows.soft};
   }
 
   &:disabled {
