@@ -22,7 +22,7 @@ import {
   type MaterialCategoryId,
 } from "../../shared/utils/recyclingPoints";
 import { useAiLabeling, type AiPrediction } from "../../shared/api/analyze";
-import { useCreatePlan } from "../../shared/api/plans";
+import { useCreatePlan, useCompletePlan } from "../../shared/api/plans";
 import type { CategoryType } from "../../shared/api/types";
 import * as S from "./AnalyzePage.styles";
 
@@ -83,6 +83,7 @@ export function AnalyzePage() {
   const { showSnackbar } = useNotificationStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const createPlanMutation = useCreatePlan();
+  const completePlanMutation = useCompletePlan();
   const aiLabelingMutation = useAiLabeling();
   // 분석 화면 표시와 결과 상태 정의
   const [isScanning, setIsScanning] = useState(false);
@@ -340,11 +341,31 @@ export function AnalyzePage() {
           ],
         },
         {
-          onSuccess: () => {
-            showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
-              type: "success",
-              duration: 3000,
-            });
+          onSuccess: (createdPlan) => {
+            if (createdPlan.id) {
+              completePlanMutation.mutate(createdPlan.id, {
+                onSuccess: (response) => {
+                  showSnackbar(
+                    t("calendar.entries.pointsEarned", { points: response.addedPoint }),
+                    {
+                      type: "success",
+                      duration: 3000,
+                    },
+                  );
+                },
+                onError: () => {
+                  showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
+                    type: "success",
+                    duration: 3000,
+                  });
+                },
+              });
+            } else {
+              showSnackbar(t("notifications.snackbar.entrySaved", { points }), {
+                type: "success",
+                duration: 3000,
+              });
+            }
           },
           onError: () => {
             // API 실패 시 로컬에 저장
@@ -375,7 +396,15 @@ export function AnalyzePage() {
         duration: 3000,
       });
     }
-  }, [result, isAuthenticated, createPlanMutation, addEntry, showSnackbar, t]);
+  }, [
+    result,
+    isAuthenticated,
+    createPlanMutation,
+    completePlanMutation,
+    addEntry,
+    showSnackbar,
+    t,
+  ]);
 
   // 분석 상태 초기화 처리 정의
   const reset = () => {
