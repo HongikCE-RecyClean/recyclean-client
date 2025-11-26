@@ -12,7 +12,7 @@ import {
 } from "shared/api/plans";
 import type { Plan } from "shared/api/types";
 import type { RecyclingEntry } from "shared/types/dashboard";
-import { planToEntry, MATERIAL_TO_CATEGORY } from "shared/utils/planUtils";
+import { planToEntry, MATERIAL_TO_CATEGORY, formatPlanDateTime } from "shared/utils/planUtils";
 
 // ============================================================
 // 달력 데이터 통합 훅
@@ -155,8 +155,7 @@ export function useCalendarData(): CalendarData {
     (backup: RecyclingEntry) => {
       // RecyclingEntry를 CreatePlan 형식으로 변환
       const entryDate = backup.date instanceof Date ? backup.date : new Date(backup.date);
-      const dateStr = entryDate.toISOString().split("T")[0];
-      const timeStr = entryDate.toTimeString().split(" ")[0];
+      const { date: dateStr, time: timeStr } = formatPlanDateTime(entryDate);
 
       createPlanMutation.mutate({
         date: dateStr,

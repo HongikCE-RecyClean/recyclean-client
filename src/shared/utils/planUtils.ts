@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import type { Plan, CategoryType } from "shared/api/types";
 import type { RecyclingEntry } from "shared/types/dashboard";
 import type { MaterialId } from "shared/utils/recyclingPoints";
@@ -49,6 +50,16 @@ export const MATERIAL_TO_CATEGORY: Record<MaterialId, CategoryType> = {
   fluorescentLamp: "ELECTRONICS",
   other: "GENERAL",
 };
+
+// 주의: new Date(\"YYYY-MM-DD\")는 UTC 자정으로 파싱되어 로컬 타임존에서 하루 밀릴 수 있음
+// 로컬 기준 날짜/시간 문자열을 안정적으로 생성하는 헬퍼
+export function formatPlanDateTime(date: Date): { date: string; time: string } {
+  const safeDate = new Date(date.getTime());
+  return {
+    date: format(safeDate, "yyyy-MM-dd"),
+    time: format(safeDate, "HH:mm:ss"),
+  };
+}
 
 // API Plan을 로컬 RecyclingEntry 형식으로 변환
 export function planToEntry(plan: Plan): RecyclingEntry[] {

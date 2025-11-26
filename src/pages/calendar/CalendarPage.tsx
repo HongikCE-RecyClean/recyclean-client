@@ -17,6 +17,7 @@ import {
 } from "./components";
 import { normalizeLanguage, type SupportedLanguage } from "shared/i18n/supportedLanguages";
 import type { MaterialId } from "shared/utils/recyclingPoints";
+import { formatPlanDateTime } from "shared/utils/planUtils";
 import { useCalendarData } from "./hooks";
 
 // 범례 배지 색상 순서를 정의
@@ -291,8 +292,7 @@ export function CalendarPage() {
     (entry: RecyclingEntry, updates: { amount: number; date: Date; memo?: string }) => {
       if (source === "api") {
         // API 연동 시 updatePlan 호출
-        const dateStr = updates.date.toISOString().split("T")[0];
-        const timeStr = updates.date.toTimeString().split(" ")[0];
+        const { date: dateStr, time: timeStr } = formatPlanDateTime(updates.date);
         updatePlan(entry.id, {
           date: dateStr,
           time: timeStr,

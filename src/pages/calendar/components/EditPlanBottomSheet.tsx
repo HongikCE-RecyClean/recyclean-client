@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { format } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { BottomSheet } from "../../../shared/ui/BottomSheet/BottomSheet";
 import { Button } from "../../../shared/ui/Button/Button";
@@ -48,13 +49,9 @@ interface EditPlanBottomSheetProps {
   onSave: (entry: RecyclingEntry, updates: { amount: number; date: Date; memo?: string }) => void;
 }
 
-const formatDateInput = (value: Date) => value.toISOString().split("T")[0];
+const formatDateInput = (value: Date) => format(value, "yyyy-MM-dd");
 
-const formatTimeInput = (value: Date) => {
-  const hours = value.getHours().toString().padStart(2, "0");
-  const minutes = value.getMinutes().toString().padStart(2, "0");
-  return `${hours}:${minutes}`;
-};
+const formatTimeInput = (value: Date) => format(value, "HH:mm");
 
 export function EditPlanBottomSheet({ isOpen, entry, onClose, onSave }: EditPlanBottomSheetProps) {
   const { t } = useTranslation();
@@ -136,8 +133,9 @@ export function EditPlanBottomSheet({ isOpen, entry, onClose, onSave }: EditPlan
     if (Number.isNaN(hours) || Number.isNaN(minutes)) {
       return;
     }
-    const entryDate = new Date(date);
-    entryDate.setHours(hours, minutes, 0, 0);
+    const [year, month, day] = date.split("-").map((part) => parseInt(part, 10));
+    // 로컬 자정 기준으로 Date 생성(YYYY-MM-DD의 UTC 파싱 문제 방지)
+    const entryDate = new Date(year, month - 1, day, hours, minutes, 0, 0);
 
     // 부모 컴포넌트에 저장 요청
     onSave(entry, {
