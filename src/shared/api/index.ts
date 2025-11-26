@@ -73,3 +73,6 @@ export {
 
 // AI 분석
 export { requestAiLabeling } from "./analyze";
+
+// 회원
+export { fetchMyProfile, updateNickname, useMyProfile, useUpdateNickname } from "./members";

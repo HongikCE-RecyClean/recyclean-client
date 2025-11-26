@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from "react";
+import { useMemo, useRef, useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { BottomSheet } from "../../../shared/ui/BottomSheet/BottomSheet";
 import { Button } from "../../../shared/ui/Button/Button";
@@ -9,6 +9,7 @@ import { useActivityStore } from "../../../shared/state/activityStore";
 import { useNotificationStore } from "../../../shared/state/notificationStore";
 import { useAuthStore } from "../../../shared/state/authStore";
 import { useCreatePlan } from "../../../shared/api/plans";
+import { useCategories } from "../../../shared/api/categories";
 import type { SnackbarOptions } from "../../../shared/types/notifications";
 import {
   MATERIAL_CATEGORY_ORDER,
@@ -50,6 +51,18 @@ const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
   other: "GENERAL",
 };
 
+// 서버 카테고리 name을 로컬 MaterialCategoryId로 매핑
+const API_TO_CATEGORY: Record<string, MaterialCategoryId> = {
+  PLASTIC: "plastic",
+  PAPER: "paper",
+  METAL: "metal",
+  GLASS: "glass",
+  CLOTHING: "textile",
+  ELECTRONICS: "electronic",
+  GENERAL: "other",
+  CAN: "metal", // CAN은 metal로 매핑
+};
+
 export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProps) {
   const { t } = useTranslation();
   const { addEntry } = useActivityStore();
@@ -57,6 +70,9 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const createPlanMutation = useCreatePlan();
   const pendingSnackbarRef = useRef<PendingSnackbar | null>(null);
+
+  // 서버에서 카테고리 목록 가져오기 (캐시됨)
+  const { data: serverCategories } = useCategories();
 
   // 폼 상태
   const [category, setCategory] = useState<MaterialCategoryId>("plastic");
@@ -66,8 +82,20 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   const [time, setTime] = useState<string>(() => formatTimeInput(new Date()));
   const [entryMode, setEntryMode] = useState<EntryMode>("record");
 
-  // 카테고리별 품목 목록
-  const categoryOptions = MATERIAL_CATEGORY_ORDER;
+  // 서버 카테고리가 있으면 서버 데이터 사용, 없으면 로컬 폴백
+  const categoryOptions = useMemo(() => {
+    if (serverCategories && serverCategories.length > 0) {
+      // 서버 카테고리를 로컬 MaterialCategoryId로 변환하고 중복 제거
+      const mappedCategories = serverCategories
+        .map((cat) => API_TO_CATEGORY[cat.name])
+        .filter((cat): cat is MaterialCategoryId => cat !== undefined);
+      // 유니크한 카테고리만 유지하고 로컬 순서 적용
+      const uniqueCategories = [...new Set(mappedCategories)];
+      return MATERIAL_CATEGORY_ORDER.filter((cat) => uniqueCategories.includes(cat));
+    }
+    return MATERIAL_CATEGORY_ORDER;
+  }, [serverCategories]);
+
   const materialOptions = MATERIALS_BY_CATEGORY[category] ?? [];
 
   // 카테고리 변경 시 첫 번째 품목 자동 선택

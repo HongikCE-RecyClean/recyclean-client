@@ -424,6 +424,13 @@ export const enTranslation = {
       points: "{{points}} pts",
       streak: "{{days}}-day streak",
       nickname: "Nickname",
+      editNickname: "Edit nickname",
+      editNicknameTitle: "Edit Nickname",
+      nicknameLabel: "Nickname",
+      nicknamePlaceholder: "Enter your nickname",
+      nicknameRequired: "Please enter a nickname",
+      nicknameUpdated: "Nickname updated successfully",
+      nicknameUpdateFailed: "Failed to update nickname",
     },
     impact: {
       title: "My impact",

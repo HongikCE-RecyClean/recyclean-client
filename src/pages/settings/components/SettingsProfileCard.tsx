@@ -1,8 +1,10 @@
 import { useTheme } from "@emotion/react";
 import { useTranslation } from "react-i18next";
+import { Edit2 } from "lucide-react";
 import { Avatar, AvatarImage } from "../../../shared/ui/Avatar/Avatar";
 import { Badge } from "../../../shared/ui/Badge/Badge";
 import { Card, CardContent } from "../../../shared/ui/Card/Card";
+import { Button } from "../../../shared/ui/Button/Button";
 import * as S from "../SettingsPage.styles";
 import type { UserStats } from "../types";
 import { normalizeLanguage } from "shared/i18n/supportedLanguages";
@@ -11,9 +13,18 @@ import { normalizeLanguage } from "shared/i18n/supportedLanguages";
 interface SettingsProfileCardProps {
   userStats: UserStats;
   avatarSrc: string;
+  nickname?: string;
+  onEditNickname?: () => void;
+  isLoading?: boolean;
 }
 
-export function SettingsProfileCard({ userStats, avatarSrc }: SettingsProfileCardProps) {
+export function SettingsProfileCard({
+  userStats,
+  avatarSrc,
+  nickname,
+  onEditNickname,
+  isLoading,
+}: SettingsProfileCardProps) {
   // 테마 객체 가져오기
   const theme = useTheme();
   const { t, i18n } = useTranslation();
@@ -47,6 +58,22 @@ export function SettingsProfileCard({ userStats, avatarSrc }: SettingsProfileCar
           </Avatar>
           {/* 프로필 정보 컨테이너 클래스 적용 */}
           <div css={S.profileInfoContainer}>
+            {/* 닉네임 표시 */}
+            {nickname && (
+              <div css={S.profileNameRow}>
+                <span css={S.profileNameText(theme)}>{isLoading ? "..." : nickname}</span>
+                {onEditNickname && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={onEditNickname}
+                    aria-label={t("settings.profile.editNickname")}
+                  >
+                    <Edit2 size={16} />
+                  </Button>
+                )}
+              </div>
+            )}
             <p css={S.profileMetaText(theme)}>
               {t("settings.profile.joined", { date: formattedJoinDate })}
             </p>

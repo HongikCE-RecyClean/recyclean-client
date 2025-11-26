@@ -424,6 +424,13 @@ export const koTranslation = {
       points: "{{points}} pts",
       streak: "{{days}}일 연속",
       nickname: "닉네임",
+      editNickname: "닉네임 수정",
+      editNicknameTitle: "닉네임 수정",
+      nicknameLabel: "닉네임",
+      nicknamePlaceholder: "닉네임을 입력하세요",
+      nicknameRequired: "닉네임을 입력해주세요",
+      nicknameUpdated: "닉네임이 변경되었어요",
+      nicknameUpdateFailed: "닉네임 변경에 실패했어요",
     },
     impact: {
       title: "나의 영향력",

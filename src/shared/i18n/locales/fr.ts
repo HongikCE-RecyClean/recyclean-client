@@ -438,6 +438,13 @@ export const frTranslation = {
       points: "{{points}} pts",
       streak: "{{days}} jours d'affilée",
       nickname: "Pseudo",
+      editNickname: "Modifier le pseudo",
+      editNicknameTitle: "Modifier le Pseudo",
+      nicknameLabel: "Pseudo",
+      nicknamePlaceholder: "Entrez votre pseudo",
+      nicknameRequired: "Veuillez entrer un pseudo",
+      nicknameUpdated: "Pseudo mis à jour avec succès",
+      nicknameUpdateFailed: "Échec de la mise à jour du pseudo",
     },
     impact: {
       title: "Mon impact",

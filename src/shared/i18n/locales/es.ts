@@ -439,6 +439,13 @@ export const esTranslation = {
       nickname: "Apodo",
       points: "{{points}} pts",
       streak: "Racha de {{days}} días",
+      editNickname: "Editar apodo",
+      editNicknameTitle: "Editar Apodo",
+      nicknameLabel: "Apodo",
+      nicknamePlaceholder: "Introduce tu apodo",
+      nicknameRequired: "Por favor, introduce un apodo",
+      nicknameUpdated: "Apodo actualizado correctamente",
+      nicknameUpdateFailed: "Error al actualizar el apodo",
     },
     impact: {
       title: "Mi impacto",

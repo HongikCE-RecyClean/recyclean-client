@@ -1,7 +1,8 @@
 import { useCallback, useMemo } from "react";
 import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
-import { useCompletePlan, useDeletePlan, usePlans, useUpdatePlan } from "shared/api/plans";
+import { useCompletePlan, useDeletePlan, useUpdatePlan } from "shared/api/plans";
+import { useCalendar } from "shared/api/calendar";
 import type { Plan, CategoryType } from "shared/api/types";
 import type { RecyclingEntry } from "shared/types/dashboard";
 import type { MaterialId } from "shared/utils/recyclingPoints";
@@ -78,12 +79,12 @@ export function useCalendarData(): CalendarData {
   // 인증 상태 확인
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-  // API 데이터 (인증된 경우에만 활성화)
+  // API 데이터 (인증된 경우에만 활성화, Calendar API 사용)
   const {
     data: apiPlans,
     isLoading: apiLoading,
     error: apiError,
-  } = usePlans({
+  } = useCalendar({
     enabled: isAuthenticated,
   });
 

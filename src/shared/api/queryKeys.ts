@@ -55,4 +55,10 @@ export const queryKeys = {
     profile: () => [...queryKeys.settings.all, "profile"] as const,
     preferences: () => [...queryKeys.settings.all, "preferences"] as const,
   },
+
+  // 회원
+  members: {
+    all: ["members"] as const,
+    me: () => [...queryKeys.members.all, "me"] as const,
+  },
 };

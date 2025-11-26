@@ -191,3 +191,27 @@ export interface CalendarEntry {
   date: string;
   plans: Plan[];
 }
+
+// ============================================================
+// 회원 (Member) 타입
+// ============================================================
+
+// 회원 프로필 응답
+export interface MemberProfile {
+  memberId: number;
+  socialType: SocialType;
+  socialId: string;
+  nickname: string;
+  profileImageUrl: string;
+}
+
+// 닉네임 수정 요청
+export interface NicknameUpdateRequest {
+  nickname: string;
+}
+
+// 닉네임 수정 응답
+export interface NicknameUpdateResponse {
+  memberId: number;
+  nickname: string;
+}

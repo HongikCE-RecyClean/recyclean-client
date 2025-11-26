@@ -176,6 +176,20 @@ export const profileBadgeRow = css`
   margin-top: 8px;
 `;
 
+// 프로필 이름 행 스타일
+export const profileNameRow = css`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
+// 프로필 이름 텍스트 스타일
+export const profileNameText = (theme: AppTheme) => css`
+  font-size: 1rem;
+  font-weight: ${theme.typography.weights.semibold};
+  color: ${theme.colors.text};
+`;
+
 // 영향력 통계 주요 수치(성공) 스타일
 export const ImpactStatValueSuccess = styled.div`
   font-size: 1.5rem;
