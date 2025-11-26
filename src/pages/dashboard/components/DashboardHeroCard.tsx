@@ -45,7 +45,6 @@ export function DashboardHeroCard({
   const formattedTotalItems = formatNumber(totalItems);
   const formattedCategoryCount = formatNumber(categoryCount);
   const formattedEntriesCount = formatNumber(entriesCount);
-  const formattedPlannedCount = formatNumber(plannedCount);
 
   return (
     <S.HeroCard>
@@ -110,7 +109,10 @@ export function DashboardHeroCard({
                     <S.StatRowValue>{formattedEntriesCount}</S.StatRowValue>
                   </S.StatRowLabelInline>
                   <S.StatRowHelper>
-                    {t("dashboard.tracker.stats.planned", { count: formattedPlannedCount })}
+                    {t("dashboard.tracker.stats.planned", {
+                      count: plannedCount,
+                      formatParams: { count: "number" },
+                    })}
                   </S.StatRowHelper>
                 </S.StatRowGroup>
               </S.StatRow>

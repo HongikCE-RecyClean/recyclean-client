@@ -34,7 +34,8 @@ export function CalendarLegendCard({ items }: CalendarLegendCardProps) {
                   {/* 범례 수량 텍스트 컴포넌트 적용 */}
                   <S.LegendCountText>
                     {t("calendar.legend.count", {
-                      count: formatNumber(item.count),
+                      count: item.count,
+                      formatParams: { count: "number" },
                     })}
                   </S.LegendCountText>
                   <div css={S.legendPointsText}>
