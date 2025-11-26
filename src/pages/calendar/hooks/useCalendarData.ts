@@ -3,50 +3,17 @@ import { useTranslation } from "react-i18next";
 import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useNotificationStore } from "shared/state/notificationStore";
-import { useCompletePlan, useDeletePlan, useUpdatePlan } from "shared/api/plans";
+import { useCompletePlan, useCreatePlan, useDeletePlan, useUpdatePlan } from "shared/api/plans";
 import { useCalendar } from "shared/api/calendar";
-import type { Plan, CategoryType } from "shared/api/types";
+import type { Plan } from "shared/api/types";
 import type { RecyclingEntry } from "shared/types/dashboard";
-import type { MaterialId } from "shared/utils/recyclingPoints";
+import { planToEntry, MATERIAL_TO_CATEGORY } from "shared/utils/planUtils";
 
 // ============================================================
 // 달력 데이터 통합 훅
 // - 인증 시: API Plans 데이터 사용
 // - 미인증 시: 로컬 ActivityStore 사용
 // ============================================================
-
-// API 카테고리를 로컬 MaterialId로 매핑
-const CATEGORY_TO_MATERIAL: Record<CategoryType, MaterialId> = {
-  CAN: "can",
-  PAPER: "paper",
-  PLASTIC: "petBottle",
-  GLASS: "glassBottle",
-  GENERAL: "other",
-  ELECTRONICS: "electronics",
-  METAL: "steelCan",
-  CLOTHING: "clothes",
-};
-
-// API Plan을 로컬 RecyclingEntry 형식으로 변환
-function planToEntry(plan: Plan): RecyclingEntry[] {
-  // Plan 하나에 여러 items가 있을 수 있으므로 각 item을 별도 entry로 변환
-  return plan.items.map((item, index) => ({
-    id: `plan-${plan.id}-${index}`,
-    type: CATEGORY_TO_MATERIAL[item.category] || "other",
-    amount: item.quantity,
-    date: new Date(`${plan.date}T${plan.time}`),
-    points: Math.floor((plan.planPoint ?? 0) / plan.items.length), // 포인트를 아이템 수로 분배
-    mode: plan.completed ? "record" : "plan",
-    // 서버 Plan ID 저장 (API 연동용)
-    planId: plan.id,
-    // 완료 여부
-    completed: plan.completed,
-    // AI 감지 여부
-    detectedByAi: item.detectedByAi,
-    // 메모 (Plan 레벨, 첫 번째 item에만 표시)
-    memo: index === 0 ? plan.memo : undefined,
-  }));
-}
 
 // 계획 수정 데이터 타입
 export interface PlanUpdateData {
@@ -67,8 +34,10 @@ export interface CalendarData {
   source: "api" | "local";
   // 삭제 핸들러 (API 또는 로컬)
   deleteEntry: (id: string) => void;
-  // 항목 추가 핸들러 (복구용)
+  // 항목 추가 핸들러 (복구용, 로컬 전용)
   addEntry: (entry: Omit<RecyclingEntry, "id">) => void;
+  // 삭제 취소 핸들러 (API: createPlan, 로컬: addEntry)
+  undoDelete: (backup: RecyclingEntry) => void;
   // 계획 완료 핸들러
   completePlan: (id: string) => void;
   // 계획 수정 핸들러
@@ -79,6 +48,8 @@ export interface CalendarData {
   isCompleting: boolean;
   // 수정 중 상태
   isUpdating: boolean;
+  // 복원 중 상태
+  isRestoring: boolean;
 }
 
 export function useCalendarData(): CalendarData {
@@ -106,6 +77,7 @@ export function useCalendarData(): CalendarData {
   const deletePlanMutation = useDeletePlan();
   const completePlanMutation = useCompletePlan();
   const updatePlanMutation = useUpdatePlan();
+  const createPlanMutation = useCreatePlan();
 
   // API Plans를 RecyclingEntry[]로 변환
   const apiEntries = useMemo(() => {
@@ -173,6 +145,37 @@ export function useCalendarData(): CalendarData {
     [extractPlanId, apiPlans, updatePlanMutation],
   );
 
+  // 삭제 취소 핸들러 (API: createPlan으로 재생성, 로컬: addEntry)
+  const handleApiUndoDelete = useCallback(
+    (backup: RecyclingEntry) => {
+      // RecyclingEntry를 CreatePlan 형식으로 변환
+      const entryDate = backup.date instanceof Date ? backup.date : new Date(backup.date);
+      const dateStr = entryDate.toISOString().split("T")[0];
+      const timeStr = entryDate.toTimeString().split(" ")[0];
+
+      createPlanMutation.mutate({
+        date: dateStr,
+        time: timeStr,
+        memo: backup.memo || "",
+        items: [
+          {
+            category: MATERIAL_TO_CATEGORY[backup.type] || "GENERAL",
+            quantity: backup.amount,
+          },
+        ],
+      });
+    },
+    [createPlanMutation],
+  );
+
+  // 로컬 삭제 취소 핸들러
+  const handleLocalUndoDelete = useCallback(
+    (backup: RecyclingEntry) => {
+      localAddEntry(backup);
+    },
+    [localAddEntry],
+  );
+
   // API 데이터가 있으면 API 데이터 사용
   if (isAuthenticated && apiPlans) {
     return {
@@ -185,11 +188,13 @@ export function useCalendarData(): CalendarData {
         // API에서는 CreatePlan 사용 (CalendarPage에서 직접 처리)
         console.warn("Use createPlan mutation directly for API:", entry);
       },
+      undoDelete: handleApiUndoDelete,
       completePlan: handleApiComplete,
       updatePlan: handleApiUpdate,
       isDeleting: deletePlanMutation.isPending,
       isCompleting: completePlanMutation.isPending,
       isUpdating: updatePlanMutation.isPending,
+      isRestoring: createPlanMutation.isPending,
     };
   }
 
@@ -202,11 +207,13 @@ export function useCalendarData(): CalendarData {
       source: "local",
       deleteEntry: localDeleteEntry,
       addEntry: localAddEntry,
+      undoDelete: handleLocalUndoDelete,
       completePlan: () => {},
       updatePlan: () => {},
       isDeleting: false,
       isCompleting: false,
       isUpdating: false,
+      isRestoring: false,
     };
   }
 
@@ -219,11 +226,13 @@ export function useCalendarData(): CalendarData {
       source: "local",
       deleteEntry: localDeleteEntry,
       addEntry: localAddEntry,
+      undoDelete: handleLocalUndoDelete,
       completePlan: () => {},
       updatePlan: () => {},
       isDeleting: false,
       isCompleting: false,
       isUpdating: false,
+      isRestoring: false,
     };
   }
 
@@ -235,10 +244,12 @@ export function useCalendarData(): CalendarData {
     source: "local",
     deleteEntry: localDeleteEntry,
     addEntry: localAddEntry,
+    undoDelete: handleLocalUndoDelete,
     completePlan: () => {},
     updatePlan: () => {},
     isDeleting: false,
     isCompleting: false,
     isUpdating: false,
+    isRestoring: false,
   };
 }

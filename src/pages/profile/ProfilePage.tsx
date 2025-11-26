@@ -4,6 +4,9 @@ import { useShallow } from "zustand/react/shallow";
 import { useUserStore } from "shared/state/userStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useNotificationStore } from "shared/state/notificationStore";
+import { useAuthStore } from "shared/state/authStore";
+import { useMyProfile, useUpdateNickname } from "shared/api/members";
+import { useDashboardSummary } from "shared/api/dashboard";
 import { calculateUserStats, calculateCategoryStats } from "shared/utils/userStats";
 import { ProfileCard, ImpactCard, LevelProgressCard, CategoryStatsCard } from "./components";
 import { BottomSheet } from "shared/ui/BottomSheet";
@@ -24,6 +27,14 @@ export function ProfilePage() {
   const entries = useActivityStore((state) => state.entries); // 필요한 조각만 구독
   const { showSnackbar } = useNotificationStore();
   const { t } = useTranslation();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { data: profileData, isLoading: isProfileLoading } = useMyProfile({
+    enabled: isAuthenticated,
+  });
+  const { data: dashboardData } = useDashboardSummary({
+    enabled: isAuthenticated,
+  });
+  const updateNicknameMutation = useUpdateNickname();
 
   // 프로필 편집 BottomSheet 상태 관리
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
@@ -31,8 +42,19 @@ export function ProfilePage() {
 
   // 실시간 통계 계산 (메모이제이션)
   const userStats = useMemo(() => {
-    return calculateUserStats(entries, joinedAt);
-  }, [entries, joinedAt]);
+    const baseStats = calculateUserStats(entries, joinedAt);
+
+    if (!dashboardData) {
+      return baseStats;
+    }
+
+    return {
+      ...baseStats,
+      totalPoints: dashboardData.myPoint ?? baseStats.totalPoints,
+      itemsRecycled: dashboardData.totalItems ?? baseStats.itemsRecycled,
+      streakDays: dashboardData.streakDays ?? baseStats.streakDays,
+    };
+  }, [dashboardData, entries, joinedAt]);
 
   // 카테고리별 통계 계산 (메모이제이션)
   const categoryStats = useMemo(() => {
@@ -40,23 +62,55 @@ export function ProfilePage() {
   }, [entries]);
 
   // 프로필 편집 클릭 핸들러
+  const displayName = profileData?.nickname ?? name;
+  const avatarSrc = profileData?.profileImageUrl ?? recycleanLogo;
+
   const handleEditProfileClick = () => {
-    setNewName(name);
+    setNewName(displayName ?? "");
     setIsEditProfileOpen(true);
   };
 
   // 프로필 저장 핸들러
   const handleSaveProfile = () => {
     const trimmedName = newName.trim();
-    if (trimmedName && trimmedName !== name) {
+    if (!trimmedName) {
+      showSnackbar(t("settings.profile.nicknameRequired"), {
+        type: "warning",
+        duration: 2500,
+      });
+      return;
+    }
+
+    if (trimmedName === displayName) {
+      setIsEditProfileOpen(false);
+      setNewName("");
+      return;
+    }
+
+    const handleSuccess = () => {
       setName(trimmedName);
       showSnackbar(t("notifications.snackbar.profileUpdated"), {
         type: "success",
         duration: 2500,
       });
+      setIsEditProfileOpen(false);
+      setNewName("");
+    };
+
+    if (isAuthenticated) {
+      updateNicknameMutation.mutate(trimmedName, {
+        onSuccess: handleSuccess,
+        onError: () => {
+          showSnackbar(t("settings.profile.nicknameUpdateFailed"), {
+            type: "warning",
+            duration: 3000,
+          });
+        },
+      });
+      return;
     }
-    setIsEditProfileOpen(false);
-    setNewName("");
+
+    handleSuccess();
   };
 
   // BottomSheet 닫기 핸들러
@@ -71,8 +125,8 @@ export function ProfilePage() {
         {/* 프로필 카드: 닉네임, 아바타, 가입 날짜, 포인트, 연속 일수 */}
         <ProfileCard
           userStats={userStats}
-          avatarSrc={recycleanLogo}
-          userName={name}
+          avatarSrc={avatarSrc}
+          userName={isProfileLoading ? "..." : displayName || name || "Guest"}
           onEditClick={handleEditProfileClick}
         />
 

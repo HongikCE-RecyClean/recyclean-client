@@ -157,6 +157,8 @@ export const esTranslation = {
       time: "Hora",
       // 포인트 미리보기 문구
       pointsPreview: "Puntos estimados: +{{points}}pt",
+      memo: "Nota",
+      memoPlaceholder: "Añadir nota (opcional)",
     },
     materials: {
       plasticPetBottle: {

@@ -63,7 +63,8 @@ export function CalendarPage() {
   const dateLocale = dateLocaleMap[language];
 
   // 달력 데이터 (API/로컬 하이브리드)
-  const { entries, deleteEntry, addEntry, completePlan, updatePlan, source } = useCalendarData();
+  const { entries, deleteEntry, addEntry, undoDelete, completePlan, updatePlan, source } =
+    useCalendarData();
   const { recordedEntries, plannedEntries } = useMemo(() => {
     const completed: RecyclingEntry[] = [];
     const plannedList: RecyclingEntry[] = [];
@@ -213,14 +214,15 @@ export function CalendarPage() {
       // 삭제 실행
       deleteEntry(id);
 
-      // 실행취소 스낵바 표시
+      // 실행취소 스낵바 표시 (API 또는 로컬 기반 복원)
       showSnackbar(t("notifications.snackbar.entryDeleted"), {
         type: "success",
         duration: 5000,
         action: {
           label: t("notifications.actions.undo"),
           onClick: () => {
-            addEntry(backup);
+            // undoDelete: API 모드에서는 createPlan, 로컬 모드에서는 addEntry 호출
+            undoDelete(backup);
             showSnackbar(t("notifications.snackbar.entryRestored"), {
               type: "info",
               duration: 2000,
@@ -229,7 +231,7 @@ export function CalendarPage() {
         },
       });
     },
-    [entries, deleteEntry, addEntry, showSnackbar, t],
+    [entries, deleteEntry, undoDelete, showSnackbar, t],
   );
 
   // 계획 완료 처리
@@ -270,7 +272,7 @@ export function CalendarPage() {
 
   // 편집 저장
   const handleEditSave = useCallback(
-    (entry: RecyclingEntry, updates: { amount: number; date: Date }) => {
+    (entry: RecyclingEntry, updates: { amount: number; date: Date; memo?: string }) => {
       if (source === "api") {
         // API 연동 시 updatePlan 호출
         const dateStr = updates.date.toISOString().split("T")[0];
@@ -278,6 +280,7 @@ export function CalendarPage() {
         updatePlan(entry.id, {
           date: dateStr,
           time: timeStr,
+          memo: updates.memo,
         });
       } else {
         // 로컬 모드에서는 삭제 후 재추가
@@ -286,6 +289,7 @@ export function CalendarPage() {
           ...entry,
           amount: updates.amount,
           date: updates.date,
+          memo: updates.memo,
         });
       }
     },

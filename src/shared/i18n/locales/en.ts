@@ -149,6 +149,8 @@ export const enTranslation = {
       date: "Date",
       time: "Time",
       pointsPreview: "Expected points: +{{points}}pt",
+      memo: "Memo",
+      memoPlaceholder: "Add a note (optional)",
     },
     materials: {
       plasticPetBottle: {

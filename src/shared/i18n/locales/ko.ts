@@ -149,6 +149,8 @@ export const koTranslation = {
       date: "날짜",
       time: "시간",
       pointsPreview: "예상 포인트: +{{points}}pt",
+      memo: "메모",
+      memoPlaceholder: "메모를 입력해요 (선택사항)",
     },
     materials: {
       plasticPetBottle: {

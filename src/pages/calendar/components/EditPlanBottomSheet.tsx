@@ -45,7 +45,7 @@ interface EditPlanBottomSheetProps {
   isOpen: boolean;
   entry: RecyclingEntry | null;
   onClose: () => void;
-  onSave: (entry: RecyclingEntry, updates: { amount: number; date: Date }) => void;
+  onSave: (entry: RecyclingEntry, updates: { amount: number; date: Date; memo?: string }) => void;
 }
 
 const formatDateInput = (value: Date) => value.toISOString().split("T")[0];
@@ -70,6 +70,7 @@ export function EditPlanBottomSheet({ isOpen, entry, onClose, onSave }: EditPlan
   const [time, setTime] = useState<string>(() =>
     entry ? formatTimeInput(entry.date) : formatTimeInput(new Date()),
   );
+  const [memo, setMemo] = useState<string>(entry?.memo ?? "");
 
   // 카테고리별 품목 목록
   const categoryOptions = MATERIAL_CATEGORY_ORDER;
@@ -84,6 +85,7 @@ export function EditPlanBottomSheet({ isOpen, entry, onClose, onSave }: EditPlan
       setAmount(entry.amount);
       setDate(formatDateInput(entry.date));
       setTime(formatTimeInput(entry.date));
+      setMemo(entry.memo ?? "");
     }
   }, [entry]);
 
@@ -106,6 +108,7 @@ export function EditPlanBottomSheet({ isOpen, entry, onClose, onSave }: EditPlan
       setAmount(entry.amount);
       setDate(formatDateInput(entry.date));
       setTime(formatTimeInput(entry.date));
+      setMemo(entry.memo ?? "");
     }
   };
 
@@ -140,6 +143,7 @@ export function EditPlanBottomSheet({ isOpen, entry, onClose, onSave }: EditPlan
     onSave(entry, {
       amount: amountNum,
       date: entryDate,
+      memo: memo.trim() || undefined,
     });
 
     // 성공 스낵바 표시
@@ -201,6 +205,17 @@ export function EditPlanBottomSheet({ isOpen, entry, onClose, onSave }: EditPlan
             <TextField type="time" value={time} onChange={(e) => setTime(e.target.value)} />
           </S.FormRowItem>
         </S.FormRow>
+
+        {/* 메모 입력 */}
+        <S.FormGroup>
+          <S.Label>{t("dashboard.addEntry.memo")}</S.Label>
+          <TextField
+            type="text"
+            value={memo}
+            onChange={(e) => setMemo(e.target.value)}
+            placeholder={t("dashboard.addEntry.memoPlaceholder")}
+          />
+        </S.FormGroup>
 
         {/* 예상 포인트 표시 */}
         <S.PointsPreview>

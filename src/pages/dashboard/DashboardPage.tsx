@@ -5,7 +5,6 @@ import type { Locale } from "date-fns";
 import { useTranslation } from "react-i18next";
 import { Sparkles } from "lucide-react";
 import { useDashboardStore } from "shared/state/dashboardStore";
-import { useActivityStore } from "shared/state/activityStore";
 import { useUserStore } from "shared/state/userStore";
 import { useNotificationStore } from "shared/state/notificationStore";
 import type { MaterialItemData } from "shared/types/dashboard";
@@ -45,14 +44,10 @@ const MATERIAL_GUIDE_DEFINITIONS: Array<{
   { key: "heatResistantGlass", category: "Glass", recyclable: false },
 ];
 
-const RECENT_ACTIVITY_LIMIT = 3;
-
 export function DashboardPage() {
   const { t, i18n } = useTranslation();
   // 전역 상태와 스토어 제어자 로드
   const { searchTerm, setSearchTerm, materialCategory, setMaterialCategory } = useDashboardStore();
-  // 활동 기록 스토어에서 entries 로드 (최근 활동 표시용)
-  const { entries } = useActivityStore();
   // 사용자 정보 스토어에서 이름 로드
   const { name: userName } = useUserStore();
   // 알림 스토어에서 배너 제어 로드
@@ -106,7 +101,7 @@ export function DashboardPage() {
     };
   }, [userName, showBanner, closeBanner, t]);
 
-  // dashboardData에서 통계 추출 (API 또는 로컬 데이터)
+  // dashboardData에서 통계 및 최근 활동 추출 (API 또는 로컬 데이터)
   const {
     todayStats,
     totalPoints,
@@ -116,32 +111,26 @@ export function DashboardPage() {
     plannedCount,
     totalItems,
     categoryCount,
+    recentActivity: recentEntries,
   } = dashboardData;
 
+  // 최근 활동을 UI용 형식으로 변환
   const recentActivity = useMemo(() => {
-    return [...entries]
-      .sort((a, b) => {
-        const dateA = a.date instanceof Date ? a.date : new Date(a.date);
-        const dateB = b.date instanceof Date ? b.date : new Date(b.date);
-        return dateB.getTime() - dateA.getTime();
-      })
-      .slice(0, RECENT_ACTIVITY_LIMIT)
-      .map((entry) => {
-        const entryDate = entry.date instanceof Date ? entry.date : new Date(entry.date);
-        return {
-          // 리스트 키(key)로 사용할 항목 id
-          id: entry.id,
-          type: entry.type,
-          count: entry.amount,
-          points: entry.points,
-          time: formatDistanceToNow(entryDate, {
-            addSuffix: true,
-            locale: dateLocale,
-          }),
-          mode: entry.mode ?? "record",
-        };
-      });
-  }, [entries, dateLocale]);
+    return recentEntries.map((entry) => {
+      const entryDate = entry.date instanceof Date ? entry.date : new Date(entry.date);
+      return {
+        id: entry.id,
+        type: entry.type,
+        count: entry.amount,
+        points: entry.points,
+        time: formatDistanceToNow(entryDate, {
+          addSuffix: true,
+          locale: dateLocale,
+        }),
+        mode: entry.mode ?? "record",
+      };
+    });
+  }, [recentEntries, dateLocale]);
 
   // 재질 검색 결과 필터링 수행 (더미 데이터 사용)
   const filteredMaterials = useMemo(() => {

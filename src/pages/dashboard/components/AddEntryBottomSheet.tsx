@@ -81,6 +81,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
   const [date, setDate] = useState<string>(() => formatDateInput(new Date()));
   const [time, setTime] = useState<string>(() => formatTimeInput(new Date()));
   const [entryMode, setEntryMode] = useState<EntryMode>("record");
+  const [memo, setMemo] = useState<string>("");
 
   // 서버 카테고리가 있으면 서버 데이터 사용, 없으면 로컬 폴백
   const categoryOptions = useMemo(() => {
@@ -117,6 +118,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
     setDate(formatDateInput(now));
     setTime(formatTimeInput(now));
     setEntryMode("record");
+    setMemo("");
   };
 
   // 바텀시트 기본 닫기
@@ -182,7 +184,7 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
         {
           date,
           time: timeWithSeconds,
-          memo: t("dashboard.addEntry.modeOptions.plan"),
+          memo: memo.trim() || undefined,
           items: [
             {
               category: apiCategory,
@@ -294,6 +296,19 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
             <TextField type="time" value={time} onChange={(e) => setTime(e.target.value)} />
           </S.FormRowItem>
         </S.FormRow>
+
+        {/* 메모 입력 (계획 모드일 때만) */}
+        {entryMode === "plan" && (
+          <S.FormGroup>
+            <S.Label>{t("dashboard.addEntry.memo")}</S.Label>
+            <TextField
+              type="text"
+              value={memo}
+              onChange={(e) => setMemo(e.target.value)}
+              placeholder={t("dashboard.addEntry.memoPlaceholder")}
+            />
+          </S.FormGroup>
+        )}
 
         {/* 예상 포인트 표시 */}
         <S.PointsPreview>

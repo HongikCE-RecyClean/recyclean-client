@@ -153,8 +153,10 @@ export const supportActionButtonNoShadow = css`
 
 // 프로필 아바타 이미지 패딩 스타일
 export const profileAvatarImage = css`
-  object-fit: contain;
-  padding: 12px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  padding: 0;
 `;
 
 // 프로필 정보 컨테이너 레이아웃 스타일

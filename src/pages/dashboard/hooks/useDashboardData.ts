@@ -3,14 +3,20 @@ import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useSettingsStore } from "shared/state/settingsStore";
 import { useDashboardSummary } from "shared/api/dashboard";
+import { useCalendar } from "shared/api/calendar";
 import { calculateTodayStats, calculateTotalStats } from "shared/utils/userStats";
+import { planToEntry } from "shared/utils/planUtils";
 import type { TodayStats } from "shared/utils/userStats";
+import type { RecyclingEntry } from "shared/types/dashboard";
 
 // ============================================================
 // 대시보드 데이터 통합 훅
-// - 인증 시: API 데이터 사용
+// - 인증 시: API 데이터 사용 (통계 + 최근 활동)
 // - 미인증 시: 로컬 스토어 데이터 사용
 // ============================================================
+
+// 최근 활동 표시 개수
+const RECENT_ACTIVITY_LIMIT = 3;
 
 export interface DashboardData {
   // 오늘 통계
@@ -29,6 +35,8 @@ export interface DashboardData {
   totalItems: number;
   // 카테고리 수
   categoryCount: number;
+  // 최근 활동 목록 (인증 시 API, 미인증 시 로컬)
+  recentActivity: RecyclingEntry[];
   // 로딩 상태
   isLoading: boolean;
   // 에러 상태
@@ -41,13 +49,18 @@ export function useDashboardData(): DashboardData {
   // 인증 상태 확인
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 
-  // API 데이터 (인증된 경우에만 활성화)
+  // API 요약 데이터 (인증된 경우에만 활성화)
   const {
     data: apiSummary,
-    isLoading: apiLoading,
-    error: apiError,
+    isLoading: summaryLoading,
+    error: summaryError,
   } = useDashboardSummary({
-    enabled: isAuthenticated, // 인증된 경우에만 API 호출
+    enabled: isAuthenticated,
+  });
+
+  // API 캘린더 데이터 (최근 활동용, 인증된 경우에만 활성화)
+  const { data: apiPlans, isLoading: plansLoading } = useCalendar({
+    enabled: isAuthenticated,
   });
 
   // 로컬 스토어 데이터
@@ -74,7 +87,7 @@ export function useDashboardData(): DashboardData {
       todayStats,
       totalPoints: totalStats.totalPoints,
       monthlyGoal: localMonthlyGoal,
-      progressValue: Math.min(progressValue, 100), // 최대 100%
+      progressValue: Math.min(progressValue, 100),
       entriesCount: recordedEntries.length,
       plannedCount: plannedEntries.length,
       totalItems: totalStats.itemsRecycled,
@@ -82,7 +95,26 @@ export function useDashboardData(): DashboardData {
     };
   }, [entries, localMonthlyGoal]);
 
-  // API 데이터가 있으면 API 데이터 사용, 없으면 로컬 데이터 사용
+  // API Plans를 RecyclingEntry로 변환 (최근 활동용)
+  const apiEntries = useMemo(() => {
+    if (!apiPlans) return [];
+    return apiPlans.flatMap(planToEntry);
+  }, [apiPlans]);
+
+  // 최근 활동 계산 (인증 시 API, 미인증 시 로컬)
+  const recentActivity = useMemo((): RecyclingEntry[] => {
+    const sourceEntries = isAuthenticated && apiPlans ? apiEntries : entries;
+
+    return [...sourceEntries]
+      .sort((a, b) => {
+        const dateA = a.date instanceof Date ? a.date : new Date(a.date);
+        const dateB = b.date instanceof Date ? b.date : new Date(b.date);
+        return dateB.getTime() - dateA.getTime();
+      })
+      .slice(0, RECENT_ACTIVITY_LIMIT);
+  }, [isAuthenticated, apiPlans, apiEntries, entries]);
+
+  // API 데이터가 있으면 API 데이터 사용
   if (isAuthenticated && apiSummary) {
     return {
       todayStats: {
@@ -97,6 +129,7 @@ export function useDashboardData(): DashboardData {
       plannedCount: apiSummary.planCount,
       totalItems: apiSummary.totalItems,
       categoryCount: apiSummary.totalCategories,
+      recentActivity,
       isLoading: false,
       error: null,
       source: "api",
@@ -104,28 +137,31 @@ export function useDashboardData(): DashboardData {
   }
 
   // 인증되었지만 API 로딩 중
-  if (isAuthenticated && apiLoading) {
+  if (isAuthenticated && (summaryLoading || plansLoading)) {
     return {
       ...localData,
+      recentActivity: entries.slice(0, RECENT_ACTIVITY_LIMIT),
       isLoading: true,
       error: null,
-      source: "local", // 로딩 중에는 로컬 데이터 표시
+      source: "local",
     };
   }
 
   // 인증되었지만 API 에러 발생 시 로컬 폴백
-  if (isAuthenticated && apiError) {
+  if (isAuthenticated && summaryError) {
     return {
       ...localData,
+      recentActivity: entries.slice(0, RECENT_ACTIVITY_LIMIT),
       isLoading: false,
-      error: apiError,
-      source: "local", // 에러 시 로컬 폴백
+      error: summaryError,
+      source: "local",
     };
   }
 
   // 미인증 시 로컬 데이터 사용
   return {
     ...localData,
+    recentActivity,
     isLoading: false,
     error: null,
     source: "local",
