@@ -136,6 +136,12 @@ export class HttpClient {
       ...(options.headers ?? {}),
     });
 
+    // FormData 전송 시 브라우저가 boundary를 설정할 수 있도록 Content-Type 제거
+    const isFormDataBody = options.body instanceof FormData;
+    if (isFormDataBody) {
+      headers.delete("Content-Type");
+    }
+
     // 인증 토큰 자동 주입 (skipAuth가 아닐 때)
     if (!options.skipAuth) {
       const accessToken = getAccessToken();
@@ -147,7 +153,7 @@ export class HttpClient {
     // 요청 본문 직렬화
     let body: BodyInit | undefined;
     if (options.body !== undefined && options.body !== null) {
-      if (headers.get("Content-Type")?.includes("application/json")) {
+      if (!isFormDataBody && headers.get("Content-Type")?.includes("application/json")) {
         body = JSON.stringify(options.body);
       } else {
         body = options.body as BodyInit;

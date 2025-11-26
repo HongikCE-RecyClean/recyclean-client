@@ -21,7 +21,7 @@ import {
   translateCategory,
   type MaterialCategoryId,
 } from "../../shared/utils/recyclingPoints";
-import { requestAiLabeling, type AiPrediction } from "../../shared/api/analyze";
+import { useAiLabeling, type AiPrediction } from "../../shared/api/analyze";
 import { useCreatePlan } from "../../shared/api/plans";
 import type { CategoryType } from "../../shared/api/types";
 import { isMockApiEnabled } from "../../shared/api/config";
@@ -106,6 +106,7 @@ export function AnalyzePage() {
   const { showSnackbar } = useNotificationStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const createPlanMutation = useCreatePlan();
+  const aiLabelingMutation = useAiLabeling();
   // 분석 화면 표시와 결과 상태 정의
   const [isScanning, setIsScanning] = useState(false);
   const [result, setResult] = useState<RecognitionResult | null>(null);
@@ -194,7 +195,10 @@ export function AnalyzePage() {
           predictions = [buildMockAiPrediction()];
         } else {
           // 실제 API 호출
-          predictions = await requestAiLabeling(source, controller.signal);
+          predictions = await aiLabelingMutation.mutateAsync({
+            file: source,
+            signal: controller.signal,
+          });
         }
 
         if (controller.signal.aborted) return;
