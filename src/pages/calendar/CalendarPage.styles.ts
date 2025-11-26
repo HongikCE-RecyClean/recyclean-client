@@ -453,7 +453,7 @@ export const SwipeableContent = styled.div<{ $isOpen: boolean }>`
   cursor: pointer;
   user-select: none;
   // 열림 상태에 따라 좌측 슬라이드
-  transform: translateX(${({ $isOpen }) => ($isOpen ? "-100px" : "0")});
+  transform: translateX(${({ $isOpen }) => ($isOpen ? "-140px" : "0")});
   transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:active {
@@ -496,25 +496,17 @@ export const SwipeActionButton = styled.button<{
   cursor: pointer;
   transition:
     transform 0.15s ease,
-    background 0.15s ease;
+    color 0.15s ease;
 
-  // variant별 색상 설정
-  background: ${({ theme, $variant }) =>
-    $variant === "complete"
-      ? theme.colors.successSurface
-      : $variant === "edit"
-        ? theme.colors.infoSurface
-        : theme.colors.dangerSurface};
-
+  // 배경 투명, 삭제만 빨간색, 나머지는 primary
+  background: transparent;
   color: ${({ theme, $variant }) =>
-    $variant === "complete"
-      ? theme.colors.success
-      : $variant === "edit"
-        ? theme.colors.info
-        : theme.colors.danger};
+    $variant === "delete" ? theme.colors.danger : theme.colors.primary};
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.15);
+    color: ${({ theme, $variant }) =>
+      $variant === "delete" ? theme.colors.danger : theme.colors.highlight};
   }
 
   &:active {
@@ -524,11 +516,7 @@ export const SwipeActionButton = styled.button<{
   &:focus-visible {
     outline: 2px solid
       ${({ theme, $variant }) =>
-        $variant === "complete"
-          ? theme.colors.success
-          : $variant === "edit"
-            ? theme.colors.info
-            : theme.colors.danger};
+        $variant === "delete" ? theme.colors.danger : theme.colors.primary};
     outline-offset: 2px;
   }
 `;
