@@ -264,26 +264,6 @@ export const esTranslation = {
       alt: "Vista previa de la imagen capturada",
       resetAria: "Volver a tomar la foto",
     },
-    mockResults: {
-      plasticBottle: {
-        item: "Botella de agua de plástico",
-        category: "Plástico #1 (PET)",
-        instructions: "Quite la etiqueta y la tapa, enjuague bien y recicle.",
-        tips: "Busque el símbolo de reciclaje #1 en la base.",
-      },
-      pizzaBox: {
-        item: "Caja de pizza",
-        category: "Papel contaminado",
-        instructions: "La grasa y los restos impiden reciclarla.",
-        tips: "Recicle solo las partes limpias y deseche el resto.",
-      },
-      aluminumCan: {
-        item: "Lata de aluminio",
-        category: "Aluminio",
-        instructions: "Enjuague y aplaste para ahorrar espacio.",
-        tips: "Las latas metálicas tienen alto valor de reciclaje.",
-      },
-    },
     guides: {
       plastic: {
         item: "Plásticos",
@@ -346,12 +326,17 @@ export const esTranslation = {
       modes: {
         record: "Completado",
         plan: "Planificado",
+        completed: "Hecho",
       },
       empty: "No hay registros este día.",
-      // 삭제 확인 모달 메시지
       confirmDelete: "¿Seguro que quiere eliminar este registro?",
-      // 기록 삭제 안내 메시지
       deleteGuide: "Al eliminar también se borran los puntos y no se puede deshacer",
+      complete: "Completar",
+      edit: "Editar",
+      confirmComplete: "¿Marcar este plan como completado?",
+      completeGuide: "Completar añadirá puntos y lo convertirá en un registro",
+      completeSuccess: "¡Plan completado!",
+      editSuccess: "Plan actualizado",
     },
     guide: {
       title: "Guía de registro",

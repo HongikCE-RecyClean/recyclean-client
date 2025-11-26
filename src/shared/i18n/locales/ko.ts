@@ -255,26 +255,6 @@ export const koTranslation = {
       alt: "촬영한 이미지 미리보기",
       resetAria: "사진 다시 촬영",
     },
-    mockResults: {
-      plasticBottle: {
-        item: "Plastic Water Bottle",
-        category: "Plastic #1 (PET)",
-        instructions: "라벨과 뚜껑을 제거하고 깨끗이 헹군 뒤 배출해요.",
-        tips: "바닥의 재활용 기호 #1을 확인해요.",
-      },
-      pizzaBox: {
-        item: "Pizza Box",
-        category: "Contaminated Paper",
-        instructions: "기름과 음식물이 묻어 재활용이 어려워요.",
-        tips: "깨끗한 부분만 분리 배출하고 나머지는 일반쓰레기로 버려요.",
-      },
-      aluminumCan: {
-        item: "Aluminum Can",
-        category: "Aluminum",
-        instructions: "물을 헹군 뒤 눌러서 부피를 줄여요.",
-        tips: "금속류 중에서도 재활용 가치가 높아요.",
-      },
-    },
     guides: {
       plastic: {
         item: "플라스틱류",
@@ -335,11 +315,19 @@ export const koTranslation = {
       modes: {
         record: "완료",
         plan: "계획",
+        completed: "완료됨",
       },
       empty: "선택한 날짜에는 기록이 없어요.",
       confirmDelete: "이 기록을 삭제하시겠어요?",
       // 기록 삭제 안내 메시지
       deleteGuide: "삭제하면 포인트 기록도 함께 사라지고 복구가 불가능해요",
+      // 계획 완료 관련
+      complete: "완료",
+      edit: "편집",
+      confirmComplete: "이 계획을 완료 처리할까요?",
+      completeGuide: "완료하면 포인트가 적립되고 기록으로 전환돼요",
+      completeSuccess: "계획이 완료되었어요!",
+      editSuccess: "계획이 수정되었어요",
     },
     guide: {
       title: "기록 관리 가이드",

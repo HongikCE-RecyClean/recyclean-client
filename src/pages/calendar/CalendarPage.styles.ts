@@ -41,8 +41,10 @@ export const CalendarContent = styled(CardContent)`
 `;
 
 // 기록 목록 항목 제목 텍스트 스타일
-export const RecordTypeText = styled.span`
+export const RecordTypeText = styled.span<{ $completed?: boolean }>`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
+  text-decoration: ${({ $completed }) => ($completed ? "line-through" : "none")};
+  color: ${({ theme, $completed }) => ($completed ? theme.colors.textMuted : theme.colors.text)};
 `;
 
 // 기록 목록 서브 텍스트 스타일
@@ -296,7 +298,7 @@ export const RecordList = styled.div`
 `;
 
 // 기록 아이템 행 정의
-export const RecordItem = styled.div`
+export const RecordItem = styled.div<{ $completed?: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -305,7 +307,9 @@ export const RecordItem = styled.div`
   background: ${({ theme }) => theme.colors.surfaceMuted};
   transition:
     transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
-    background 0.15s ease;
+    background 0.15s ease,
+    opacity 0.15s ease;
+  opacity: ${({ $completed }) => ($completed ? 0.7 : 1)};
 
   &:hover {
     transform: translateX(4px);
@@ -328,10 +332,15 @@ export const RecordTitleRow = styled.div`
 `;
 
 // 포인트 강조 텍스트 정의
-export const RecordPoints = styled.span<{ $variant?: "record" | "plan" }>`
+export const RecordPoints = styled.span<{ $variant?: "record" | "plan"; $completed?: boolean }>`
   font-weight: ${({ theme }) => theme.typography.weights.semibold};
-  color: ${({ theme, $variant }) =>
-    $variant === "plan" ? theme.colors.warning : theme.colors.success};
+  color: ${({ theme, $variant, $completed }) =>
+    $completed
+      ? theme.colors.textMuted
+      : $variant === "plan"
+        ? theme.colors.warning
+        : theme.colors.success};
+  text-decoration: ${({ $completed }) => ($completed ? "line-through" : "none")};
 `;
 
 // 기록 액션 행 스타일
@@ -377,4 +386,45 @@ export const EmptyState = styled.div`
   background: ${({ theme }) => theme.colors.surfaceMuted};
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: 0.9rem;
+`;
+
+// 액션 버튼 그룹 래퍼
+export const ActionButtonGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+// 액션 버튼 (완료, 편집)
+export const ActionButton = styled.button<{ $variant: "complete" | "edit" }>`
+  background: none;
+  border: none;
+  padding: ${({ theme }) => theme.spacing(1)};
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.textMuted};
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${({ theme }) => theme.radii.sm};
+
+  &:hover {
+    color: ${({ theme, $variant }) =>
+      $variant === "complete" ? theme.colors.success : theme.colors.info};
+    background: ${({ theme, $variant }) =>
+      $variant === "complete" ? theme.colors.successSurface : theme.colors.infoSurface};
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    outline: 2px solid
+      ${({ theme, $variant }) =>
+        $variant === "complete" ? theme.colors.success : theme.colors.info};
+    outline-offset: 2px;
+  }
 `;

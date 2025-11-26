@@ -10,6 +10,7 @@ import {
   CalendarEntriesCard,
   CalendarLegendCard,
   CalendarOverviewCard,
+  EditPlanBottomSheet,
   type CalendarLegendItem,
   type CalendarMonthlyStats,
 } from "./components";
@@ -62,7 +63,7 @@ export function CalendarPage() {
   const dateLocale = dateLocaleMap[language];
 
   // 달력 데이터 (API/로컬 하이브리드)
-  const { entries, deleteEntry, addEntry } = useCalendarData();
+  const { entries, deleteEntry, addEntry, completePlan, updatePlan, source } = useCalendarData();
   const { recordedEntries, plannedEntries } = useMemo(() => {
     const completed: RecyclingEntry[] = [];
     const plannedList: RecyclingEntry[] = [];
@@ -78,6 +79,10 @@ export function CalendarPage() {
   const { showSnackbar, showBanner, closeBanner } = useNotificationStore();
   const [currentMonth, setCurrentMonth] = useState<Date>(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date>(() => new Date());
+
+  // 편집 바텀시트 상태
+  const [editingEntry, setEditingEntry] = useState<RecyclingEntry | null>(null);
+  const [isEditSheetOpen, setIsEditSheetOpen] = useState(false);
 
   useEffect(() => {
     // 달력 가이드 요약 배너
@@ -227,6 +232,72 @@ export function CalendarPage() {
     [entries, deleteEntry, addEntry, showSnackbar, t],
   );
 
+  // 계획 완료 처리
+  const handleComplete = useCallback(
+    (id: string) => {
+      // API 연동인 경우만 완료 처리
+      if (source === "api") {
+        completePlan(id);
+        showSnackbar(t("calendar.entries.completeSuccess"), {
+          type: "success",
+          duration: 3000,
+        });
+      } else {
+        // 로컬 모드에서는 mode를 record로 변경
+        const entry = entries.find((e) => e.id === id);
+        if (entry) {
+          deleteEntry(id);
+          addEntry({
+            ...entry,
+            mode: "record",
+            completed: true,
+          });
+          showSnackbar(t("calendar.entries.completeSuccess"), {
+            type: "success",
+            duration: 3000,
+          });
+        }
+      }
+    },
+    [source, completePlan, entries, deleteEntry, addEntry, showSnackbar, t],
+  );
+
+  // 편집 시작
+  const handleEdit = useCallback((entry: RecyclingEntry) => {
+    setEditingEntry(entry);
+    setIsEditSheetOpen(true);
+  }, []);
+
+  // 편집 저장
+  const handleEditSave = useCallback(
+    (entry: RecyclingEntry, updates: { amount: number; date: Date }) => {
+      if (source === "api") {
+        // API 연동 시 updatePlan 호출
+        const dateStr = updates.date.toISOString().split("T")[0];
+        const timeStr = updates.date.toTimeString().split(" ")[0];
+        updatePlan(entry.id, {
+          date: dateStr,
+          time: timeStr,
+        });
+      } else {
+        // 로컬 모드에서는 삭제 후 재추가
+        deleteEntry(entry.id);
+        addEntry({
+          ...entry,
+          amount: updates.amount,
+          date: updates.date,
+        });
+      }
+    },
+    [source, updatePlan, deleteEntry, addEntry],
+  );
+
+  // 편집 닫기
+  const handleEditClose = useCallback(() => {
+    setIsEditSheetOpen(false);
+    setEditingEntry(null);
+  }, []);
+
   return (
     <S.PageContainer>
       {/* 달력과 월간 요약을 전담 카드로 분리 */}
@@ -246,10 +317,20 @@ export function CalendarPage() {
         entries={selectedEntries}
         timeLocale={dateLocale}
         onDelete={handleDelete}
+        onComplete={handleComplete}
+        onEdit={handleEdit}
       />
 
       {/* 월별 범례 정보를 페이지 하단에 배치 */}
       <CalendarLegendCard items={materialLegend} />
+
+      {/* 계획 편집 바텀시트 */}
+      <EditPlanBottomSheet
+        isOpen={isEditSheetOpen}
+        entry={editingEntry}
+        onClose={handleEditClose}
+        onSave={handleEditSave}
+      />
     </S.PageContainer>
   );
 }

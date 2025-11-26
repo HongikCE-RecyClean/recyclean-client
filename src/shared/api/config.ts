@@ -1,12 +1,5 @@
 // API 기본 설정 관련 유틸
 
-// Mock API 사용 여부 확인
-export function isMockApiEnabled(): boolean {
-  const useMocks = import.meta.env?.VITE_API_USE_MOCKS;
-  // 명시적으로 "false"가 아닌 경우 mock 사용 (기본값: true)
-  return useMocks !== "false" && useMocks !== false;
-}
-
 // API 기본 URL 반환
 export function getApiBaseUrl(): string {
   // 개발 모드에서는 빈 문자열 반환 (Vite 프록시 사용)

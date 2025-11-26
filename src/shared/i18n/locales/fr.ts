@@ -264,26 +264,6 @@ export const frTranslation = {
       alt: "Aperçu de l'image capturée",
       resetAria: "Reprendre la photo",
     },
-    mockResults: {
-      plasticBottle: {
-        item: "Bouteille d'eau en plastique",
-        category: "Plastique #1 (PET)",
-        instructions: "Retirez l'étiquette et le bouchon, rincez puis recyclez.",
-        tips: "Repérez le symbole de recyclage #1 sous la bouteille.",
-      },
-      pizzaBox: {
-        item: "Boîte à pizza",
-        category: "Papier souillé",
-        instructions: "La graisse et les restes empêchent le recyclage.",
-        tips: "Recyclez uniquement les zones propres et jetez le reste.",
-      },
-      aluminumCan: {
-        item: "Canette en aluminium",
-        category: "Aluminium",
-        instructions: "Rincez à l'eau puis écrasez pour gagner de la place.",
-        tips: "Les canettes métalliques ont une forte valeur de recyclage.",
-      },
-    },
     guides: {
       plastic: {
         item: "Plastiques",
@@ -346,12 +326,17 @@ export const frTranslation = {
       modes: {
         record: "Terminé",
         plan: "Prévu",
+        completed: "Fait",
       },
       empty: "Aucun enregistrement ce jour-là.",
-      // 삭제 확인 모달 문구
       confirmDelete: "Voulez-vous vraiment supprimer cet enregistrement ?",
-      // 기록 삭제 안내 메시지
       deleteGuide: "La suppression retire aussi les points associés et reste irréversible",
+      complete: "Terminer",
+      edit: "Modifier",
+      confirmComplete: "Marquer ce plan comme terminé ?",
+      completeGuide: "Terminer ajoutera des points et le convertira en enregistrement",
+      completeSuccess: "Plan terminé !",
+      editSuccess: "Plan mis à jour",
     },
     guide: {
       title: "Guide de suivi",

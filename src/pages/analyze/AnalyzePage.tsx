@@ -24,7 +24,6 @@ import {
 import { useAiLabeling, type AiPrediction } from "../../shared/api/analyze";
 import { useCreatePlan } from "../../shared/api/plans";
 import type { CategoryType } from "../../shared/api/types";
-import { isMockApiEnabled } from "../../shared/api/config";
 import * as S from "./AnalyzePage.styles";
 
 type GuideKey = "plastic" | "paper" | "metal" | "glass" | "textile" | "electronic" | "other";
@@ -73,20 +72,6 @@ function dataUrlToFile(dataUrl: string): File | null {
     buffer[i] = binary.charCodeAt(i);
   }
   return new File([buffer], `capture-${Date.now()}.jpg`, { type: mime });
-}
-
-function getRandomHighConfidence(): number {
-  // 임시 Mock 결과를 위한 80% 이상 랜덤 정확도 생성
-  return Math.floor(80 + Math.random() * 20);
-}
-
-function buildMockAiPrediction(): AiPrediction {
-  // 임시 Mock 결과를 PET병으로 고정
-  return {
-    category: "pet bottle",
-    confidence: getRandomHighConfidence(),
-    bbox: [0, 0, 0, 0],
-  };
 }
 
 // MaterialCategoryId를 API CategoryType으로 매핑
@@ -174,34 +159,10 @@ export function AnalyzePage() {
       analysisAbortRef.current = controller;
 
       try {
-        let predictions: AiPrediction[];
-
-        // Mock 모드 여부에 따라 분기
-        if (isMockApiEnabled()) {
-          // Mock 모드: 지연 후 가짜 결과 반환
-          await new Promise<void>((resolve) => {
-            let finished = false;
-            const finish = () => {
-              if (finished) return;
-              finished = true;
-              resolve();
-            };
-            const timeoutId = window.setTimeout(finish, 1200);
-            controller.signal.addEventListener("abort", () => {
-              window.clearTimeout(timeoutId);
-              finish();
-            });
-          });
-
-          if (controller.signal.aborted) return;
-          predictions = [buildMockAiPrediction()];
-        } else {
-          // 실제 API 호출
-          predictions = await aiLabelingMutation.mutateAsync({
-            file: source,
-            signal: controller.signal,
-          });
-        }
+        const predictions = await aiLabelingMutation.mutateAsync({
+          file: source,
+          signal: controller.signal,
+        });
 
         if (controller.signal.aborted) return;
 

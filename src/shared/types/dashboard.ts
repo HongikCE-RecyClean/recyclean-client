@@ -60,6 +60,10 @@ export interface RecyclingEntry {
   date: Date;
   points: number;
   mode?: EntryMode;
+  // 서버 Plan ID (API 연동 시 사용)
+  planId?: number;
+  // 계획 완료 여부
+  completed?: boolean;
 }
 
 // 팁 배지 톤 계산 함수

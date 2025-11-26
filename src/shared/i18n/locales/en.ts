@@ -255,26 +255,6 @@ export const enTranslation = {
       alt: "Captured image preview",
       resetAria: "Retake photo",
     },
-    mockResults: {
-      plasticBottle: {
-        item: "Plastic water bottle",
-        category: "Plastic #1 (PET)",
-        instructions: "Remove the label and cap, rinse well, and recycle.",
-        tips: "Look for the #1 recycling symbol on the bottom.",
-      },
-      pizzaBox: {
-        item: "Pizza box",
-        category: "Contaminated paper",
-        instructions: "Grease and food stains make it hard to recycle.",
-        tips: "Recycle only the clean portions; trash the rest.",
-      },
-      aluminumCan: {
-        item: "Aluminum can",
-        category: "Aluminum",
-        instructions: "Rinse with water and crush to save space.",
-        tips: "Metal cans have high recycling value.",
-      },
-    },
     guides: {
       plastic: {
         item: "Plastic items",
@@ -335,11 +315,17 @@ export const enTranslation = {
       modes: {
         record: "Completed",
         plan: "Planned",
+        completed: "Done",
       },
       empty: "No entries on this day.",
       confirmDelete: "Are you sure you want to delete this record?",
-      // 기록 삭제 안내 메시지
       deleteGuide: "Deleting also removes the related points and cannot be undone",
+      complete: "Complete",
+      edit: "Edit",
+      confirmComplete: "Mark this plan as completed?",
+      completeGuide: "Completing will add points and convert to a record",
+      completeSuccess: "Plan completed!",
+      editSuccess: "Plan updated",
     },
     guide: {
       title: "Tracking guide",

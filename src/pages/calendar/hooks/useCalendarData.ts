@@ -1,7 +1,7 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
-import { usePlans } from "shared/api/plans";
+import { useCompletePlan, useDeletePlan, usePlans, useUpdatePlan } from "shared/api/plans";
 import type { Plan, CategoryType } from "shared/api/types";
 import type { RecyclingEntry } from "shared/types/dashboard";
 import type { MaterialId } from "shared/utils/recyclingPoints";
@@ -29,12 +29,24 @@ function planToEntry(plan: Plan): RecyclingEntry[] {
   // Plan 하나에 여러 items가 있을 수 있으므로 각 item을 별도 entry로 변환
   return plan.items.map((item, index) => ({
     id: `plan-${plan.id}-${index}`,
-    type: CATEGORY_TO_MATERIAL[item.category] || "기타",
+    type: CATEGORY_TO_MATERIAL[item.category] || "other",
     amount: item.quantity,
     date: new Date(`${plan.date}T${plan.time}`),
     points: Math.floor((plan.planPoint ?? 0) / plan.items.length), // 포인트를 아이템 수로 분배
     mode: plan.completed ? "record" : "plan",
+    // 서버 Plan ID 저장 (API 연동용)
+    planId: plan.id,
+    // 완료 여부
+    completed: plan.completed,
   }));
+}
+
+// 계획 수정 데이터 타입
+export interface PlanUpdateData {
+  date?: string;
+  time?: string;
+  memo?: string;
+  items?: Plan["items"];
 }
 
 export interface CalendarData {
@@ -50,6 +62,16 @@ export interface CalendarData {
   deleteEntry: (id: string) => void;
   // 항목 추가 핸들러 (복구용)
   addEntry: (entry: Omit<RecyclingEntry, "id">) => void;
+  // 계획 완료 핸들러
+  completePlan: (id: string) => void;
+  // 계획 수정 핸들러
+  updatePlan: (id: string, data: PlanUpdateData) => void;
+  // 삭제 중 상태
+  isDeleting: boolean;
+  // 완료 처리 중 상태
+  isCompleting: boolean;
+  // 수정 중 상태
+  isUpdating: boolean;
 }
 
 export function useCalendarData(): CalendarData {
@@ -70,11 +92,68 @@ export function useCalendarData(): CalendarData {
   const localDeleteEntry = useActivityStore((state) => state.deleteEntry);
   const localAddEntry = useActivityStore((state) => state.addEntry);
 
+  // API mutation 훅
+  const deletePlanMutation = useDeletePlan();
+  const completePlanMutation = useCompletePlan();
+  const updatePlanMutation = useUpdatePlan();
+
   // API Plans를 RecyclingEntry[]로 변환
   const apiEntries = useMemo(() => {
     if (!apiPlans) return [];
     return apiPlans.flatMap(planToEntry);
   }, [apiPlans]);
+
+  // entry ID에서 planId 추출
+  const extractPlanId = useCallback((entryId: string): number | null => {
+    const match = entryId.match(/^plan-(\d+)-/);
+    return match ? parseInt(match[1], 10) : null;
+  }, []);
+
+  // API 삭제 핸들러
+  const handleApiDelete = useCallback(
+    (id: string) => {
+      const planId = extractPlanId(id);
+      if (planId) {
+        deletePlanMutation.mutate(planId);
+      }
+    },
+    [extractPlanId, deletePlanMutation],
+  );
+
+  // API 계획 완료 핸들러
+  const handleApiComplete = useCallback(
+    (id: string) => {
+      const planId = extractPlanId(id);
+      if (planId) {
+        completePlanMutation.mutate(planId);
+      }
+    },
+    [extractPlanId, completePlanMutation],
+  );
+
+  // API 계획 수정 핸들러
+  const handleApiUpdate = useCallback(
+    (id: string, data: PlanUpdateData) => {
+      const planId = extractPlanId(id);
+      if (planId) {
+        // 기존 Plan 찾기
+        const existingPlan = apiPlans?.find((p) => p.id === planId);
+        if (existingPlan) {
+          updatePlanMutation.mutate({
+            id: planId,
+            data: {
+              ...existingPlan,
+              date: data.date ?? existingPlan.date,
+              time: data.time ?? existingPlan.time,
+              memo: data.memo ?? existingPlan.memo,
+              items: data.items ?? existingPlan.items,
+            },
+          });
+        }
+      }
+    },
+    [extractPlanId, apiPlans, updatePlanMutation],
+  );
 
   // API 데이터가 있으면 API 데이터 사용
   if (isAuthenticated && apiPlans) {
@@ -83,13 +162,16 @@ export function useCalendarData(): CalendarData {
       isLoading: false,
       error: null,
       source: "api",
-      // API 삭제는 아직 미구현 (TODO: useDeletePlan 연동)
-      deleteEntry: (id: string) => {
-        console.warn("API delete not yet implemented for id:", id);
-      },
+      deleteEntry: handleApiDelete,
       addEntry: (entry) => {
-        console.warn("API add not yet implemented for entry:", entry);
+        // API에서는 CreatePlan 사용 (CalendarPage에서 직접 처리)
+        console.warn("Use createPlan mutation directly for API:", entry);
       },
+      completePlan: handleApiComplete,
+      updatePlan: handleApiUpdate,
+      isDeleting: deletePlanMutation.isPending,
+      isCompleting: completePlanMutation.isPending,
+      isUpdating: updatePlanMutation.isPending,
     };
   }
 
@@ -102,6 +184,11 @@ export function useCalendarData(): CalendarData {
       source: "local",
       deleteEntry: localDeleteEntry,
       addEntry: localAddEntry,
+      completePlan: () => {},
+      updatePlan: () => {},
+      isDeleting: false,
+      isCompleting: false,
+      isUpdating: false,
     };
   }
 
@@ -114,6 +201,11 @@ export function useCalendarData(): CalendarData {
       source: "local",
       deleteEntry: localDeleteEntry,
       addEntry: localAddEntry,
+      completePlan: () => {},
+      updatePlan: () => {},
+      isDeleting: false,
+      isCompleting: false,
+      isUpdating: false,
     };
   }
 
@@ -125,5 +217,10 @@ export function useCalendarData(): CalendarData {
     source: "local",
     deleteEntry: localDeleteEntry,
     addEntry: localAddEntry,
+    completePlan: () => {},
+    updatePlan: () => {},
+    isDeleting: false,
+    isCompleting: false,
+    isUpdating: false,
   };
 }
