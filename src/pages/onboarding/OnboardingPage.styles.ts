@@ -108,7 +108,7 @@ export const Tagline = styled.p`
   text-align: left;
   align-self: flex-start;
   width: 100%;
-  padding-left: 1px;
+  padding-left: 2px;
 `;
 
 // 설명 문단
