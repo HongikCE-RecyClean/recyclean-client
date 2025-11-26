@@ -94,7 +94,6 @@ export const BrandName = styled.h1`
   letter-spacing: -0.03em;
   line-height: 1.1;
   text-align: left;
-  padding-left: 32px;
   align-self: flex-start;
   width: 100%;
 `;
@@ -108,7 +107,6 @@ export const Tagline = styled.p`
   letter-spacing: -0.01em;
   line-height: 1.4;
   text-align: left;
-  padding-left: 32px;
   align-self: flex-start;
   width: 100%;
 `;
@@ -120,14 +118,13 @@ export const Description = styled.p`
   color: ${({ theme }) => theme.colors.textMuted};
   font-size: clamp(0.95rem, 2.5vw, 1.05rem);
   line-height: 1.8;
-  max-width: 26rem;
+  max-width: min(26rem, 66%);
   margin-left: auto;
   margin-right: 0;
   font-weight: ${({ theme }) => theme.typography.weights.regular};
   text-align: right;
-  padding-right: 32px;
   align-self: flex-end;
-  width: 100%;
+  width: 66%;
 `;
 
 // 하단 버튼 영역
