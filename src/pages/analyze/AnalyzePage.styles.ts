@@ -300,7 +300,7 @@ export const PredictionItemConfidence = styled.span<{ $low?: boolean }>`
   color: ${({ theme, $low }) => ($low ? theme.colors.warning : theme.colors.success)};
 `;
 
-// Bbox 오버레이 컨테이너
+// Bbox 오버레이 컨테이너 (애니메이션 포함)
 export const BboxOverlay = styled.svg`
   position: absolute;
   top: 0;
@@ -308,27 +308,148 @@ export const BboxOverlay = styled.svg`
   width: 100%;
   height: 100%;
   pointer-events: none;
+  overflow: visible;
+
+  /* 페이드인 애니메이션 */
+  animation: bboxFadeIn 0.3s ease-out;
+
+  @keyframes bboxFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 `;
 
-// Bbox 토글 버튼
+// Bbox 사각형 스타일 (SVG rect에 적용할 CSS)
+export const bboxRectStyle = (theme: AppTheme) => css`
+  fill: ${theme.colors.primary}10;
+  stroke: ${theme.colors.primary};
+  stroke-width: 2;
+  rx: 8;
+  ry: 8;
+  filter: drop-shadow(0 0 8px ${theme.colors.primary}40);
+
+  /* 펄스 애니메이션 */
+  animation: bboxPulse 2s ease-in-out infinite;
+
+  @keyframes bboxPulse {
+    0%,
+    100% {
+      stroke-opacity: 1;
+      filter: drop-shadow(0 0 8px ${theme.colors.primary}40);
+    }
+    50% {
+      stroke-opacity: 0.7;
+      filter: drop-shadow(0 0 12px ${theme.colors.primary}60);
+    }
+  }
+`;
+
+// Bbox 토글 버튼 (글래스모피즘 스타일)
 export const BboxToggle = styled.button<{ $active?: boolean }>`
   position: absolute;
   bottom: ${({ theme }) => theme.spacing(2)};
   left: ${({ theme }) => theme.spacing(2)};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing(1)};
-  padding: ${({ theme }) => `${theme.spacing(1)} ${theme.spacing(2)}`};
-  border: none;
-  border-radius: ${({ theme }) => theme.radii.sm};
+  gap: ${({ theme }) => theme.spacing(1.5)};
+  padding: ${({ theme }) => `${theme.spacing(1.5)} ${theme.spacing(2.5)}`};
+  border: 1px solid
+    ${({ theme, $active }) => ($active ? `${theme.colors.primary}80` : "rgba(255, 255, 255, 0.2)")};
+  border-radius: ${({ theme }) => theme.radii.pill};
   background: ${({ theme, $active }) =>
-    $active ? theme.colors.primary : "rgba(15, 23, 42, 0.65)"};
+    $active
+      ? `linear-gradient(135deg, ${theme.colors.primary}dd, ${theme.colors.primary})`
+      : "rgba(15, 23, 42, 0.6)"};
+  backdrop-filter: blur(8px);
   color: ${({ theme }) => theme.colors.surface};
   font-size: 0.75rem;
+  font-weight: ${({ theme }) => theme.typography.weights.medium};
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: all 0.2s ease;
+  box-shadow: ${({ $active }) =>
+    $active
+      ? "0 4px 12px rgba(47, 133, 90, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)"
+      : "0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)"};
+
+  /* 아이콘 스타일 */
+  svg {
+    transition: transform 0.2s ease;
+  }
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme, $active }) =>
+      $active ? theme.colors.primary : "rgba(15, 23, 42, 0.75)"};
+    border-color: ${({ theme, $active }) =>
+      $active ? theme.colors.primary : "rgba(255, 255, 255, 0.3)"};
+    transform: translateY(-1px);
+    box-shadow: ${({ $active }) =>
+      $active
+        ? "0 6px 16px rgba(47, 133, 90, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15)"
+        : "0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)"};
+
+    svg {
+      transform: scale(1.1);
+    }
   }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: ${({ $active }) =>
+      $active
+        ? "0 2px 8px rgba(47, 133, 90, 0.3), inset 0 1px 2px rgba(0, 0, 0, 0.1)"
+        : "0 1px 4px rgba(0, 0, 0, 0.2), inset 0 1px 2px rgba(0, 0, 0, 0.1)"};
+  }
+`;
+
+// Bbox 코너 마커 스타일 (선택적 장식용)
+export const BboxCornerMarker = styled.div<{ $position: "tl" | "tr" | "bl" | "br" }>`
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: ${({ theme }) => theme.colors.primary};
+  border-style: solid;
+  border-width: 0;
+
+  ${({ $position }) => {
+    switch ($position) {
+      case "tl":
+        return css`
+          top: 0;
+          left: 0;
+          border-top-width: 3px;
+          border-left-width: 3px;
+          border-top-left-radius: 4px;
+        `;
+      case "tr":
+        return css`
+          top: 0;
+          right: 0;
+          border-top-width: 3px;
+          border-right-width: 3px;
+          border-top-right-radius: 4px;
+        `;
+      case "bl":
+        return css`
+          bottom: 0;
+          left: 0;
+          border-bottom-width: 3px;
+          border-left-width: 3px;
+          border-bottom-left-radius: 4px;
+        `;
+      case "br":
+        return css`
+          bottom: 0;
+          right: 0;
+          border-bottom-width: 3px;
+          border-right-width: 3px;
+          border-bottom-right-radius: 4px;
+        `;
+    }
+  }}
 `;
