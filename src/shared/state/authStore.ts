@@ -50,6 +50,16 @@ interface AuthState {
   setHydrated: (value: boolean) => void;
 }
 
+// 로컬스토리지에 저장·마이그레이션되는 슬라이스 타입
+type AuthPersistedState = {
+  accessToken: string | null;
+  refreshToken: string | null;
+  tokenExpiresAt: number | null;
+  user: AuthUser | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+};
+
 // 초기 상태 생성 함수
 const createInitialState = () => ({
   accessToken: null,
@@ -103,10 +113,14 @@ function isAccessTokenExpired(token: string | null, tokenExpiresAt?: number | nu
   return Date.now() >= expMs - JWT_CLOCK_SKEW_MS;
 }
 
-function sanitizeAuthState(state: unknown) {
+function sanitizeAuthState(state: unknown): AuthPersistedState {
   const parsed = authPersistSchema.safeParse(state ?? {});
   if (!parsed.success) {
-    return createInitialState();
+    return {
+      ...createInitialState(),
+      isAuthenticated: false,
+      isLoading: false,
+    };
   }
 
   const accessToken = parsed.data.accessToken ?? null;
@@ -131,7 +145,7 @@ function sanitizeAuthState(state: unknown) {
 
 // 인증 스토어 생성 (localStorage 지속성 포함)
 export const useAuthStore = create<AuthState>()(
-  persist(
+  persist<AuthState, AuthPersistedState>(
     (set, get) => ({
       ...createInitialState(),
 
@@ -183,13 +197,17 @@ export const useAuthStore = create<AuthState>()(
         refreshToken: state.refreshToken,
         user: state.user,
         tokenExpiresAt: state.tokenExpiresAt,
+        isAuthenticated: state.isAuthenticated,
+        isLoading: false,
       }),
       merge: (persistedState, currentState) => {
         const sanitized = sanitizeAuthState(persistedState);
-        return {
+        const merged: AuthState = {
           ...currentState,
           ...sanitized,
-        } satisfies AuthState;
+          hasHydrated: currentState.hasHydrated,
+        };
+        return merged;
       },
       migrate: (persistedState) => sanitizeAuthState(persistedState),
       onRehydrateStorage: () => (state, error) => {
