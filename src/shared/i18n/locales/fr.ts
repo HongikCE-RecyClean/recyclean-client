@@ -631,7 +631,7 @@ export const frTranslation = {
     },
     snackbar: {
       entrySaved: "Activité enregistrée ! +{{points}}pt gagnés",
-      entrySavedLocally: "Enregistré localement (hors ligne). +{{points}}pt appliqués",
+      entrySavedLocally: "Enregistré localement (hors ligne).\n+{{points}}pt appliqués",
       entryDeleted: "L'enregistrement a été supprimé",
       entryRestored: "Enregistrement restauré",
       profileUpdated: "Nom de profil mis à jour",
@@ -644,12 +644,12 @@ export const frTranslation = {
       locationUnsupported: "Cet appareil ne peut pas utiliser les services de localisation.",
       locationPinned: "Votre position actuelle est affichée sur la carte.",
       locationPermissionDenied: "Le navigateur a refusé l'accès à la localisation.",
-      locationError: "Impossible de récupérer votre position. Réessayez plus tard.",
+      locationError: "Impossible de récupérer votre position.\nRéessayez plus tard.",
       analysisFailedRetry:
-        "Échec de l'analyse. Reprenez la photo avec un meilleur éclairage ou angle.",
-      analysisLowConfidence: "Confiance faible (≤60 %). Veuillez reprendre la photo.",
-      emptyPredictions: "Aucun résultat. Reprenez la photo avec l'objet bien visible.",
-      monthlyGoalSyncFailed: "Échec de la synchronisation de l'objectif mensuel. Réessayez.",
+        "Échec de l'analyse.\nReprenez la photo avec un meilleur éclairage ou angle.",
+      analysisLowConfidence: "Confiance faible (≤60 %).\nVeuillez reprendre la photo.",
+      emptyPredictions: "Aucun résultat.\nReprenez la photo avec l'objet bien visible.",
+      monthlyGoalSyncFailed: "Échec de la synchronisation de l'objectif mensuel.\nRéessayez.",
     },
   },
   common: {
