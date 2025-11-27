@@ -316,7 +316,7 @@ export const frTranslation = {
     },
   },
   calendar: {
-    overviewTitle: "{{month}}",
+    overviewTitle: "Calendrier",
     monthLabel: "{{month}} {{year}}",
     monthNames: {
       january: "janvier",

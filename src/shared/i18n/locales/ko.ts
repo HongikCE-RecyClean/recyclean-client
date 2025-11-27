@@ -304,7 +304,7 @@ export const koTranslation = {
     },
   },
   calendar: {
-    overviewTitle: "{{month}}",
+    overviewTitle: "달력",
     monthLabel: "{{year}}년 {{month}}",
     monthNames: {
       january: "1월",

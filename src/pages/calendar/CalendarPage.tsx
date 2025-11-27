@@ -3,6 +3,7 @@ import { format, isSameMonth, startOfMonth, type Locale } from "date-fns";
 import { enUS, es, fr, ko as koLocale } from "date-fns/locale";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
+import type { Formatters } from "react-day-picker";
 import type { BadgeTone } from "../../shared/ui/Badge/Badge";
 import { useNotificationStore } from "../../shared/state/notificationStore";
 import type { RecyclingEntry } from "../../shared/types/dashboard";
@@ -208,7 +209,10 @@ export function CalendarPage() {
   );
 
   const selectedDateLabel = formatSelectedDateLabel(selectedDate, intlLocale);
-  const currentMonthLabel = formatMonthLabel(currentMonth, t);
+  const formatCaption = useCallback<Formatters["formatCaption"]>(
+    (month) => formatMonthLabel(month, t),
+    [t],
+  );
 
   // 날짜 선택에 따른 상태 갱신 처리
   const handleSelectDate = useCallback((date: Date) => {
@@ -323,13 +327,13 @@ export function CalendarPage() {
       {/* 달력과 월간 요약을 전담 카드로 분리 */}
       <CalendarOverviewCard
         currentMonth={currentMonth}
-        currentMonthLabel={currentMonthLabel}
         selectedDate={selectedDate}
         onSelectDate={handleSelectDate}
         onChangeMonth={handleMonthChange}
         modifiers={modifiers}
         monthlyStats={monthlyStats}
         locale={dateLocale}
+        formatCaption={formatCaption}
       />
 
       {/* 선택 날짜의 기록 상세를 독립 카드로 표현 */}

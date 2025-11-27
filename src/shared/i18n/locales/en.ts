@@ -304,7 +304,7 @@ export const enTranslation = {
     },
   },
   calendar: {
-    overviewTitle: "{{month}}",
+    overviewTitle: "Calendar",
     monthLabel: "{{month}} {{year}}",
     monthNames: {
       january: "January",

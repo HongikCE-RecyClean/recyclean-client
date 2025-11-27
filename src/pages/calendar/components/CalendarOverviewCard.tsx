@@ -1,4 +1,4 @@
-import { DayPicker } from "react-day-picker";
+import { DayPicker, type Formatters } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import type { DayPickerProps } from "react-day-picker";
 import { useTranslation } from "react-i18next";
@@ -10,24 +10,24 @@ import { useNumberFormatter } from "shared/utils/numberFormat";
 
 type CalendarOverviewCardProps = {
   currentMonth: Date;
-  currentMonthLabel: string;
   selectedDate: Date;
   onSelectDate: (date: Date) => void;
   onChangeMonth: (month: Date) => void;
   modifiers: DayPickerProps["modifiers"];
   monthlyStats: CalendarMonthlyStats;
   locale: Locale;
+  formatCaption: Formatters["formatCaption"];
 };
 
 export function CalendarOverviewCard({
   currentMonth,
-  currentMonthLabel,
   selectedDate,
   onSelectDate,
   onChangeMonth,
   modifiers,
   monthlyStats,
   locale,
+  formatCaption,
 }: CalendarOverviewCardProps) {
   const { t } = useTranslation();
   const formatNumber = useNumberFormatter({ maximumFractionDigits: 1 });
@@ -35,7 +35,7 @@ export function CalendarOverviewCard({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("calendar.overviewTitle", { month: currentMonthLabel })}</CardTitle>
+        <CardTitle>{t("calendar.overviewTitle")}</CardTitle>
       </CardHeader>
       <S.CalendarContent>
         {/* 달력과 통계 묶음을 유지하여 시각적 맥락 보존 */}
@@ -58,6 +58,9 @@ export function CalendarOverviewCard({
               selected: "calendar-selected",
               hasRecord: "calendar-has-record",
               hasPlan: "calendar-has-plan",
+            }}
+            formatters={{
+              formatCaption,
             }}
             captionLayout="label"
             // 이전 버튼 배치를 유지하기 위해 네비게이션을 양옆으로 정렬
