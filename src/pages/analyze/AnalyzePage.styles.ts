@@ -27,6 +27,21 @@ export const SectionCard = styled(Card)`
   }
 `;
 
+// 섹션 전환 시 페이드/슬라이드 애니메이션 래퍼
+export const FadeSection = styled.div<{ $visible: boolean; $delay?: number }>`
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+  transform: ${({ $visible }) => ($visible ? "translateY(0)" : "translateY(8px)")};
+  max-height: ${({ $visible }) => ($visible ? "1400px" : "0px")};
+  overflow: hidden;
+  pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    max-height 0.22s ease;
+  transition-delay: ${({ $visible, $delay = 0 }) => ($visible ? `${$delay}ms` : "0ms")};
+  will-change: opacity, transform;
+`;
+
 // 카드 헤더 좌우 패딩 제거
 export const SectionCardHeader = styled(CardHeader)`
   padding: ${({ theme }) => `${theme.spacing(4)} 0`};

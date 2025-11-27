@@ -74,8 +74,8 @@ function dataUrlToFile(dataUrl: string): File | null {
   return new File([buffer], `capture-${Date.now()}.jpg`, { type: mime });
 }
 
-// 신뢰도 임계값 (0~1 스케일, 60% = 0.6)
-const LOW_CONFIDENCE_THRESHOLD = 0.6;
+// 신뢰도 임계값 (0~1 스케일, 40% = 0.4)
+const LOW_CONFIDENCE_THRESHOLD = 0.4;
 
 export function AnalyzePage() {
   const { t } = useTranslation();
@@ -87,6 +87,7 @@ export function AnalyzePage() {
   const aiLabelingMutation = useAiLabeling();
   // 분석 화면 표시와 결과 상태 정의
   const [isScanning, setIsScanning] = useState(false);
+  const [isCameraPanelOpen, setIsCameraPanelOpen] = useState(false);
   const [result, setResult] = useState<RecognitionResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   // 다중 예측 후보 상태 (상위 3개까지)
@@ -97,7 +98,6 @@ export function AnalyzePage() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const objectUrlRef = useRef<string | null>(null);
   const analysisAbortRef = useRef<AbortController | null>(null);
-  const resultScrollRef = useRef<HTMLDivElement | null>(null);
 
   // 경고 메시지를 스낵바로 통일해 노출
   const showWarning = useCallback(
@@ -120,13 +120,6 @@ export function AnalyzePage() {
     handleVideoReady,
     capturePhoto,
   } = useCamera({ onError: showWarning });
-
-  // 결과 섹션으로 스크롤 이동 헬퍼
-  const scrollToResult = useCallback(() => {
-    requestAnimationFrame(() => {
-      resultScrollRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }, []);
 
   // 진행 중인 분석 요청을 취소하는 헬퍼
   const cancelActiveAnalysis = useCallback(() => {
@@ -198,7 +191,7 @@ export function AnalyzePage() {
         const topPredictions = sorted.slice(0, 3);
         const bestPrediction = topPredictions[0];
 
-        // 0~1 스케일 기준으로 신뢰도 확인 (LOW_CONFIDENCE_THRESHOLD = 0.6)
+        // 0~1 스케일 기준으로 신뢰도 확인 (LOW_CONFIDENCE_THRESHOLD = 0.4)
         if (bestPrediction.confidence <= LOW_CONFIDENCE_THRESHOLD) {
           showSnackbar(t("notifications.snackbar.analysisLowConfidence"), {
             type: "warning",
@@ -246,10 +239,9 @@ export function AnalyzePage() {
       setPredictions([]);
       setSelectedPredictionIndex(0);
       setIsScanning(true);
-      scrollToResult();
       void runAiRecognition(sourceFile);
     },
-    [cancelActiveAnalysis, runAiRecognition, scrollToResult],
+    [cancelActiveAnalysis, runAiRecognition],
   );
 
   // 카메라 스트림 자원 정리 함수 정의
@@ -300,13 +292,21 @@ export function AnalyzePage() {
     }
 
     stopCamera();
+    setIsCameraPanelOpen(false);
     revokeObjectUrl();
     beginAnalysis(dataUrl, capturedFile);
   };
 
   // 카메라 열기 처리 정의
   const handleOpenCamera = () => {
+    setIsCameraPanelOpen(true);
     void openCamera();
+  };
+
+  // 카메라 닫기 처리 정의
+  const handleCancelCamera = () => {
+    setIsCameraPanelOpen(false);
+    stopCamera();
   };
 
   // 분석 결과를 활동 기록으로 저장
@@ -422,6 +422,7 @@ export function AnalyzePage() {
     setCapturedImage(null);
     setPredictions([]);
     setSelectedPredictionIndex(0);
+    setIsCameraPanelOpen(false);
     stopCamera();
   };
 
@@ -435,13 +436,6 @@ export function AnalyzePage() {
     [predictions, buildRecognitionResult],
   );
 
-  // 촬영/분석 시작 시 결과 섹션으로 부드럽게 스크롤 이동
-  useEffect(() => {
-    if (isScanning || capturedImage || result) {
-      scrollToResult();
-    }
-  }, [isScanning, capturedImage, result, scrollToResult]);
-
   useEffect(() => {
     return () => {
       cancelActiveAnalysis();
@@ -451,6 +445,8 @@ export function AnalyzePage() {
   }, [cancelActiveAnalysis, revokeObjectUrl, stopCamera]);
 
   const isBusy = isScanning || isCameraActive;
+  const showActions = !capturedImage && !result && !isCameraPanelOpen;
+  const showCameraPanel = isCameraPanelOpen && !capturedImage && !result;
 
   // 분석 페이지 UI 렌더링 시작
   return (
@@ -461,17 +457,16 @@ export function AnalyzePage() {
       {/* 촬영 팁을 상단 배너로 표시 */}
       <AnalyzeTipsCard />
 
-      {!capturedImage && !result && (
+      <S.FadeSection $visible={showActions}>
         <AnalyzeActionsCard
           onCapture={handleOpenCamera}
           onUpload={handleUploadButtonClick}
           disabled={isBusy}
         />
-      )}
+      </S.FadeSection>
 
-      {/* 카메라 촬영 카드를 조건부 렌더링 */}
-      {isCameraActive && (
-        <S.SectionCard>
+      <S.FadeSection $visible={showCameraPanel} $delay={showCameraPanel ? 120 : 0}>
+        <S.SectionCard aria-hidden={!showCameraPanel}>
           <S.SectionCardContent>
             <S.CameraContainer>
               <S.VideoWrapper>
@@ -489,16 +484,14 @@ export function AnalyzePage() {
                 <Button onClick={handleCaptureFromCamera} disabled={!isVideoReady} size="lg">
                   {t("analyze.actions.capture")}
                 </Button>
-                <Button onClick={stopCamera} variant="ghost" size="lg">
+                <Button onClick={handleCancelCamera} variant="ghost" size="lg">
                   {t("analyze.actions.cancel")}
                 </Button>
               </S.CameraControls>
             </S.CameraContainer>
           </S.SectionCardContent>
         </S.SectionCard>
-      )}
-
-      <div ref={resultScrollRef} aria-hidden style={{ height: 1 }} />
+      </S.FadeSection>
 
       {capturedImage && (
         <AnalyzeCapturedImageCard imageSrc={capturedImage} onReset={reset} bbox={result?.bbox} />
