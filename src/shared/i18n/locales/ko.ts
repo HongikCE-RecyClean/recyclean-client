@@ -386,7 +386,7 @@ export const koTranslation = {
     },
     guide: {
       bannerMessage:
-        "지도 팁 🧭\n위치가 꺼져 있으면 지역 순서, 켜면 가장 가까운 배출함부터 보여줘요.",
+        "지도 팁 🧭\n위치 권한이 꺼지면 지역별 순서, 켜지면 내 위치 기준으로 가까운 배출함과 거리를 확인할 수 있어요.",
     },
     routePanel: {
       title: "길 찾기",

@@ -386,7 +386,8 @@ export const enTranslation = {
       },
     },
     guide: {
-      bannerMessage: "Map tip 🧭\nLocation off = regional view, on = closest bins first.",
+      bannerMessage:
+        "Map tip 🧭\nSee bin locations and distances: location off lists by region, on sorts nearest first.",
     },
     routePanel: {
       title: "Directions",

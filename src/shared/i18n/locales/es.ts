@@ -400,7 +400,7 @@ export const esTranslation = {
     },
     guide: {
       bannerMessage:
-        "Tip del mapa 🧭\nUbicación desactivada = vista regional; activada = contenedores más cercanos primero.",
+        "Tip del mapa 🧭\nMira ubicaciones y distancias: con ubicación desactivada se muestra por región, activada se ordena por los más cercanos.",
     },
     routePanel: {
       title: "Cómo llegar",

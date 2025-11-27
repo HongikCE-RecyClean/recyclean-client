@@ -400,7 +400,7 @@ export const frTranslation = {
     },
     guide: {
       bannerMessage:
-        "Astuce carte 🧭\nPosition désactivée = vue régionale ; activée = points les plus proches en premier.",
+        "Astuce carte 🧭\nVoir emplacements et distances : position désactivée = ordre par région, activée = tri par proximité.",
     },
     routePanel: {
       title: "Itinéraire",
