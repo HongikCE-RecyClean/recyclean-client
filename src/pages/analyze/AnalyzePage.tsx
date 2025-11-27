@@ -29,21 +29,29 @@ import * as S from "./AnalyzePage.styles";
 type GuideKey = "plastic" | "paper" | "metal" | "glass" | "textile" | "electronic" | "other";
 
 const CATEGORY_GUIDE_BY_ID: Record<MaterialCategoryId, GuideKey> = {
+  pet: "plastic",
+  vinyl: "plastic",
+  styrofoam: "plastic",
   plastic: "plastic",
   paper: "paper",
   metal: "metal",
   glass: "glass",
   textile: "textile",
+  battery: "electronic",
   electronic: "electronic",
   other: "other",
 };
 
 const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
+  pet: "PLASTIC",
+  vinyl: "PLASTIC",
+  styrofoam: "PLASTIC",
   plastic: "PLASTIC",
   paper: "PAPER",
   metal: "METAL",
   glass: "GLASS",
   textile: "CLOTHING",
+  battery: "ELECTRONICS",
   electronic: "ELECTRONICS",
   other: "GENERAL",
 };
@@ -56,6 +64,7 @@ const RECYCLABLE_GUIDE_KEYS = new Set<GuideKey>([
   "glass",
   "textile",
   "electronic",
+  // pet/vinyl/styrofoam/battery는 상응 가이드를 공유
 ]);
 
 function resolveGuideKey(categoryId: MaterialCategoryId): GuideKey {
@@ -520,7 +529,10 @@ export function AnalyzePage() {
               </S.PredictionListHeader>
               {predictions.map((pred, index) => {
                 const confidencePct = formatConfidence(pred.confidence);
-                const categoryLabel = t(`materials.categories.${translateCategory(pred.category)}`);
+                const derivedCategory = translateCategory(pred.category);
+                const materialId = matchMaterialType(pred.category, derivedCategory);
+                const materialLabel = t(`materials.items.${materialId}`, { defaultValue: "" });
+                const categoryLabel = materialLabel || t(`materials.categories.${derivedCategory}`);
                 return (
                   <S.PredictionItem
                     key={`${pred.category}-${index}`}

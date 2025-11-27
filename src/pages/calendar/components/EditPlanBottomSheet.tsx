@@ -20,10 +20,10 @@ import * as S from "../../dashboard/components/AddEntryBottomSheet.styles";
 // MaterialId를 카테고리로 역매핑
 const MATERIAL_TO_CATEGORY: Record<MaterialId, MaterialCategoryId> = {
   plasticBottle: "plastic",
-  petBottle: "plastic",
+  petBottle: "pet",
   plasticContainer: "plastic",
-  vinyl: "plastic",
-  styrofoam: "plastic",
+  vinyl: "vinyl",
+  styrofoam: "styrofoam",
   paper: "paper",
   cardboard: "paper",
   newspaper: "paper",
@@ -36,7 +36,7 @@ const MATERIAL_TO_CATEGORY: Record<MaterialId, MaterialCategoryId> = {
   clothes: "textile",
   oldClothes: "textile",
   textile: "textile",
-  battery: "electronic",
+  battery: "battery",
   electronics: "electronic",
   fluorescentLamp: "electronic",
   other: "other",

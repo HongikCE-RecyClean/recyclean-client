@@ -42,11 +42,15 @@ const formatTimeInput = (value: Date) => {
 
 // 폼 카테고리를 API CategoryType으로 매핑
 const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
+  pet: "PLASTIC",
+  vinyl: "PLASTIC",
+  styrofoam: "PLASTIC",
   plastic: "PLASTIC",
   paper: "PAPER",
   metal: "METAL",
   glass: "GLASS",
   textile: "CLOTHING",
+  battery: "ELECTRONICS",
   electronic: "ELECTRONICS",
   other: "GENERAL",
 };
@@ -54,15 +58,15 @@ const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
 // 서버 카테고리 name을 로컬 MaterialCategoryId로 매핑
 const API_TO_CATEGORY: Record<string, MaterialCategoryId> = {
   PLASTIC: "plastic",
-  PET: "plastic",
-  VINYL: "plastic",
-  STYROFOAM: "plastic",
+  PET: "pet",
+  VINYL: "vinyl",
+  STYROFOAM: "styrofoam",
   PAPER: "paper",
   METAL: "metal",
   GLASS: "glass",
   CLOTHING: "textile",
   ELECTRONICS: "electronic",
-  BATTERY: "electronic",
+  BATTERY: "battery",
   FLUORESCENT_TUBE: "electronic",
   GENERAL: "other",
   CAN: "metal", // CAN은 metal로 매핑
@@ -96,8 +100,9 @@ export function AddEntryBottomSheet({ isOpen, onClose }: AddEntryBottomSheetProp
       const mappedCategories = serverCategories
         .map((cat) => API_TO_CATEGORY[cat.name])
         .filter((cat): cat is MaterialCategoryId => cat !== undefined);
-      // 유니크한 카테고리만 유지하고 로컬 순서 적용
-      const uniqueCategories = [...new Set(mappedCategories)];
+      // API에 없는 로컬 고정 카테고리도 항상 포함
+      const extraLocals: MaterialCategoryId[] = ["pet", "vinyl", "styrofoam", "battery"];
+      const uniqueCategories = [...new Set([...mappedCategories, ...extraLocals])];
       return MATERIAL_CATEGORY_ORDER.filter((cat) => uniqueCategories.includes(cat));
     }
     return MATERIAL_CATEGORY_ORDER;

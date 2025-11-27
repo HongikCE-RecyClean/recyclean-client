@@ -574,11 +574,15 @@ export const enTranslation = {
   },
   materials: {
     categories: {
+      pet: "PET",
+      vinyl: "Vinyl",
+      styrofoam: "Styrofoam",
       plastic: "Plastic",
       paper: "Paper",
       metal: "Metal",
       glass: "Glass",
       textile: "Textiles",
+      battery: "Battery",
       electronic: "Electronics",
       other: "Other",
     },

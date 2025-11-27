@@ -574,11 +574,15 @@ export const koTranslation = {
   },
   materials: {
     categories: {
+      pet: "페트(PET)",
+      vinyl: "비닐",
+      styrofoam: "스티로폼",
       plastic: "플라스틱",
       paper: "종이",
       metal: "금속",
       glass: "유리",
       textile: "의류/섬유",
+      battery: "배터리",
       electronic: "전자제품",
       other: "기타",
     },

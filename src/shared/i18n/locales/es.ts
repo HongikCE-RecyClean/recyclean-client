@@ -589,11 +589,15 @@ export const esTranslation = {
   },
   materials: {
     categories: {
+      pet: "PET",
+      vinyl: "Vinilo",
+      styrofoam: "Poliestireno",
       plastic: "Plástico",
       paper: "Papel",
       metal: "Metal",
       glass: "Vidrio",
       textile: "Textiles",
+      battery: "Batería",
       electronic: "Electrónica",
       other: "Otros",
     },

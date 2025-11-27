@@ -1,11 +1,15 @@
 // 재활용 품목 및 카테고리 정의와 포인트 계산 유틸리티
 
 export type MaterialCategoryId =
+  | "pet"
+  | "vinyl"
+  | "styrofoam"
   | "plastic"
   | "paper"
   | "metal"
   | "glass"
   | "textile"
+  | "battery"
   | "electronic"
   | "other";
 
@@ -33,22 +37,30 @@ export type MaterialId =
   | "other";
 
 export const MATERIAL_CATEGORY_ORDER: MaterialCategoryId[] = [
+  "pet",
+  "vinyl",
+  "styrofoam",
   "plastic",
   "paper",
   "metal",
   "glass",
   "textile",
+  "battery",
   "electronic",
   "other",
 ];
 
 export const MATERIALS_BY_CATEGORY: Record<MaterialCategoryId, MaterialId[]> = {
-  plastic: ["plasticBottle", "petBottle", "plasticContainer", "vinyl", "styrofoam"],
+  pet: ["petBottle"],
+  vinyl: ["vinyl"],
+  styrofoam: ["styrofoam"],
+  plastic: ["plasticBottle", "plasticContainer"],
   paper: ["paper", "cardboard", "newspaper", "milkCarton"],
   metal: ["can", "aluminumCan", "steelCan"],
   glass: ["glassBottle", "sojuBottle"],
   textile: ["clothes", "oldClothes", "textile"],
-  electronic: ["battery", "electronics", "fluorescentLamp"],
+  battery: ["battery"],
+  electronic: ["electronics", "fluorescentLamp"],
   other: ["other"],
 };
 
@@ -140,11 +152,15 @@ const LEGACY_MATERIAL_LABEL_MAP: Record<string, MaterialId> = {
 };
 
 const LEGACY_CATEGORY_LABEL_MAP: Record<string, MaterialCategoryId> = {
+  페트: "pet",
+  비닐: "vinyl",
+  스티로폼: "styrofoam",
   플라스틱: "plastic",
   종이: "paper",
   금속: "metal",
   유리: "glass",
   "의류/섬유": "textile",
+  배터리: "battery",
   전자제품: "electronic",
 };
 
@@ -152,15 +168,15 @@ const LEGACY_CATEGORY_LABEL_MAP: Record<string, MaterialCategoryId> = {
 // API_SPEC3 기준: CAN, PAPER, PLASTIC, GLASS, GENERAL, ELECTRONICS, METAL, CLOTHING
 export const API_CATEGORY_TO_LOCAL: Record<string, MaterialCategoryId> = {
   PLASTIC: "plastic",
-  PET: "plastic",
-  VINYL: "plastic",
-  STYROFOAM: "plastic",
+  PET: "pet",
+  VINYL: "vinyl",
+  STYROFOAM: "styrofoam",
   PAPER: "paper",
   GLASS: "glass",
   METAL: "metal",
   CAN: "metal", // CAN은 금속으로 분류
   ELECTRONICS: "electronic",
-  BATTERY: "electronic",
+  BATTERY: "battery",
   FLUORESCENT_TUBE: "electronic",
   CLOTHING: "textile",
   GENERAL: "other",
@@ -213,10 +229,19 @@ export function translateCategory(category: string): MaterialCategoryId {
   // 문자열 포함 매핑 (하위 호환성)
   const normalized = category.toLowerCase();
 
-  if (normalized.includes("plastic") || normalized.includes("pet")) {
-    return "plastic";
+  if (normalized.includes("pet")) {
+    return "pet";
   }
-  if (normalized.includes("vinyl") || normalized.includes("styrofoam")) {
+  if (normalized.includes("vinyl")) {
+    return "vinyl";
+  }
+  if (normalized.includes("styrofoam")) {
+    return "styrofoam";
+  }
+  if (normalized.includes("battery")) {
+    return "battery";
+  }
+  if (normalized.includes("plastic") || normalized.includes("pet")) {
     return "plastic";
   }
   if (normalized.includes("paper") || normalized.includes("carton")) {
