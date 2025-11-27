@@ -324,14 +324,8 @@ export function AnalyzePage() {
       const now = new Date();
       const dateStr = now.toISOString().split("T")[0]; // YYYY-MM-DD
       const timeStr = now.toTimeString().split(" ")[0]; // HH:mm:ss
-      // 번역 키가 그대로 노출되지 않도록 기본값과 키 체크로 안전하게 메모 생성
-      const autoMemo =
-        t("analyze.result.autoMemo", {
-          item: result.item,
-          defaultValue: `AI 분석: ${result.item}`,
-        }) || `AI 분석: ${result.item}`;
-      const memoText =
-        autoMemo === "analyze.result.autoMemo" ? `AI 분석: ${result.item}` : autoMemo;
+      // 메모를 비워서 저장
+      const memoText = "";
       // 서버가 반환한 카테고리를 직접 사용 (변환 없이)
       const apiCategory = (result.serverCategory as CategoryType) || "GENERAL";
 
