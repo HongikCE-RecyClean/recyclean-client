@@ -453,7 +453,11 @@ export function AnalyzePage() {
   const showActions = !capturedImage && !result && !isCameraPanelOpen;
   const showCameraPanel = isCameraPanelOpen && !capturedImage && !result;
   const hasDynamicSection =
-    Boolean(capturedImage) || isScanning || Boolean(result) || predictions.length > 0;
+    showCameraPanel ||
+    Boolean(capturedImage) ||
+    isScanning ||
+    Boolean(result) ||
+    predictions.length > 0;
 
   useEffect(() => {
     if (!hasDynamicSection) return;
