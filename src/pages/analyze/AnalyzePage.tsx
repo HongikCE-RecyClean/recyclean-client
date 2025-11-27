@@ -108,9 +108,6 @@ export function AnalyzePage() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const objectUrlRef = useRef<string | null>(null);
   const analysisAbortRef = useRef<AbortController | null>(null);
-  const scrollAnchorRef = useRef<HTMLDivElement | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const prevHeightRef = useRef<number>(0);
 
   // 경고 메시지를 스낵바로 통일해 노출
   const showWarning = useCallback(
@@ -457,48 +454,10 @@ export function AnalyzePage() {
   const isBusy = isScanning || isCameraActive;
   const showActions = !capturedImage && !result && !isCameraPanelOpen;
   const showCameraPanel = isCameraPanelOpen && !capturedImage && !result;
-  const hasDynamicSection =
-    showCameraPanel ||
-    Boolean(capturedImage) ||
-    isScanning ||
-    Boolean(result) ||
-    predictions.length > 0;
-
-  const scrollToAnchor = useCallback(() => {
-    scrollAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, []);
-
-  useEffect(() => {
-    if (!hasDynamicSection) return;
-    // 새 콘텐츠가 추가될 때 하단으로 부드럽게 스크롤 이동 처리
-    const frameId = requestAnimationFrame(() => {
-      scrollToAnchor();
-    });
-    return () => cancelAnimationFrame(frameId);
-  }, [hasDynamicSection, capturedImage, isScanning, result, predictions.length, scrollToAnchor]);
-
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || !hasDynamicSection) return;
-
-    // 콘텐츠 높이가 늘어날 때마다 한 번 더 하단으로 스크롤
-    const observer = new ResizeObserver((entries) => {
-      const nextHeight = entries[0].contentRect.height;
-      if (nextHeight > prevHeightRef.current + 8) {
-        prevHeightRef.current = nextHeight;
-        requestAnimationFrame(scrollToAnchor);
-      } else {
-        prevHeightRef.current = nextHeight;
-      }
-    });
-
-    observer.observe(container);
-    return () => observer.disconnect();
-  }, [hasDynamicSection, scrollToAnchor]);
 
   // 분석 페이지 UI 렌더링 시작
   return (
-    <S.PageContainer ref={containerRef}>
+    <S.PageContainer>
       {/* 파일 업로드 입력 요소를 숨김으로 렌더링 */}
       <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={handleFileChange} />
       <AnalyzeIntroCard />
@@ -580,7 +539,6 @@ export function AnalyzePage() {
           </S.SectionCardContent>
         </S.SectionCard>
       )}
-      <div ref={scrollAnchorRef} aria-hidden />
     </S.PageContainer>
   );
 }
