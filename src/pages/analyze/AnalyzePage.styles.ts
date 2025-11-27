@@ -30,8 +30,8 @@ export const SectionCard = styled(Card)`
 // 섹션 전환 시 페이드/슬라이드 애니메이션 래퍼
 export const FadeSection = styled.div<{ $visible: boolean; $delay?: number }>`
   opacity: ${({ $visible }) => ($visible ? 1 : 0)};
-  transform: ${({ $visible }) => ($visible ? "translateY(0)" : "translateY(8px)")};
-  max-height: ${({ $visible }) => ($visible ? "1400px" : "0px")};
+  transform: ${({ $visible }) => ($visible ? "translateY(0)" : "translateY(6px)")};
+  max-height: ${({ $visible }) => ($visible ? "720px" : "0px")};
   overflow: hidden;
   pointer-events: ${({ $visible }) => ($visible ? "auto" : "none")};
   transition:
