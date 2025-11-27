@@ -1,15 +1,19 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
 import { useNotificationStore } from "shared/state/notificationStore";
 import {
+  completePlan as completePlanRequest,
+  createPlan as createPlanRequest,
   useCompletePlan,
   useCreatePlan,
   useDeletePlan,
   usePlans,
   useUpdatePlan,
 } from "shared/api/plans";
+import { queryKeys } from "shared/api/queryKeys";
 import type { Plan } from "shared/api/types";
 import type { RecyclingEntry } from "shared/types/dashboard";
 import { planToEntry, MATERIAL_TO_CATEGORY, formatPlanDateTime } from "shared/utils/planUtils";
@@ -42,7 +46,7 @@ export interface CalendarData {
   // 항목 추가 핸들러 (복구용, 로컬 전용)
   addEntry: (entry: Omit<RecyclingEntry, "id">) => void;
   // 삭제 취소 핸들러 (API: createPlan, 로컬: addEntry)
-  undoDelete: (backup: RecyclingEntry) => void;
+  undoDelete: (backup: RecyclingEntry) => Promise<void> | void;
   // 계획 완료 핸들러
   completePlan: (id: string) => void;
   // 계획 수정 핸들러
@@ -60,6 +64,7 @@ export interface CalendarData {
 export function useCalendarData(): CalendarData {
   const { t } = useTranslation();
   const showSnackbar = useNotificationStore((state) => state.showSnackbar);
+  const queryClient = useQueryClient();
 
   // 인증 상태 확인
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -83,6 +88,7 @@ export function useCalendarData(): CalendarData {
   const completePlanMutation = useCompletePlan();
   const updatePlanMutation = useUpdatePlan();
   const createPlanMutation = useCreatePlan();
+  const [isRestoringCompleted, setIsRestoringCompleted] = useState(false);
 
   // API Plans를 RecyclingEntry[]로 변환
   const apiEntries = useMemo(() => {
@@ -152,12 +158,12 @@ export function useCalendarData(): CalendarData {
 
   // 삭제 취소 핸들러 (API: createPlan으로 재생성, 로컬: addEntry)
   const handleApiUndoDelete = useCallback(
-    (backup: RecyclingEntry) => {
+    async (backup: RecyclingEntry) => {
       // RecyclingEntry를 CreatePlan 형식으로 변환
       const entryDate = backup.date instanceof Date ? backup.date : new Date(backup.date);
       const { date: dateStr, time: timeStr } = formatPlanDateTime(entryDate);
 
-      createPlanMutation.mutate({
+      const payload = {
         date: dateStr,
         time: timeStr,
         memo: backup.memo || "",
@@ -168,9 +174,27 @@ export function useCalendarData(): CalendarData {
             detectedByAi: backup.detectedByAi ?? false,
           },
         ],
-      });
+      };
+
+      // 완료된 기록을 복원할 때는 Plan 생성 직후 완료까지 연결해 UI를 한 번만 갱신
+      if (backup.completed) {
+        setIsRestoringCompleted(true);
+        try {
+          const newPlan = await createPlanRequest(payload);
+          await completePlanRequest(newPlan.id);
+          await queryClient.invalidateQueries({ queryKey: queryKeys.plans.all });
+          await queryClient.invalidateQueries({ queryKey: queryKeys.dashboard.all });
+        } catch (error) {
+          console.error("restore completed plan failed", error);
+        } finally {
+          setIsRestoringCompleted(false);
+        }
+        return;
+      }
+
+      createPlanMutation.mutate(payload);
     },
-    [createPlanMutation],
+    [createPlanMutation, queryClient],
   );
 
   // 로컬 삭제 취소 핸들러
@@ -199,7 +223,7 @@ export function useCalendarData(): CalendarData {
       isDeleting: deletePlanMutation.isPending,
       isCompleting: completePlanMutation.isPending,
       isUpdating: updatePlanMutation.isPending,
-      isRestoring: createPlanMutation.isPending,
+      isRestoring: createPlanMutation.isPending || isRestoringCompleted,
     };
   }
 
