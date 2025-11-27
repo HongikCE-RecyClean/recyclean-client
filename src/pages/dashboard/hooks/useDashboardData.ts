@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { isSameMonth } from "date-fns";
 import { useAuthStore } from "shared/state/authStore";
 import { useActivityStore } from "shared/state/activityStore";
@@ -69,6 +69,14 @@ export function useDashboardData(): DashboardData {
   // 로컬 스토어 데이터
   const entries = useActivityStore((state) => state.entries);
   const localMonthlyGoal = useSettingsStore((state) => state.monthlyGoal);
+  const setMonthlyGoal = useSettingsStore((state) => state.setMonthlyGoal);
+
+  // 서버 요약 데이터 도착 시 설정 스토어의 월간 목표를 서버 값으로 수화
+  useEffect(() => {
+    if (!isAuthenticated || !apiSummary) return;
+    if (!Number.isFinite(apiSummary.monthlyGoal)) return;
+    setMonthlyGoal(apiSummary.monthlyGoal);
+  }, [apiSummary?.monthlyGoal, isAuthenticated, setMonthlyGoal]);
 
   // 로컬 데이터 계산
   const localData = useMemo(() => {
