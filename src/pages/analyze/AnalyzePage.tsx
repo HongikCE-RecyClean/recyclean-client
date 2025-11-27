@@ -38,6 +38,16 @@ const CATEGORY_GUIDE_BY_ID: Record<MaterialCategoryId, GuideKey> = {
   other: "other",
 };
 
+const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
+  plastic: "PLASTIC",
+  paper: "PAPER",
+  metal: "METAL",
+  glass: "GLASS",
+  textile: "CLOTHING",
+  electronic: "ELECTRONICS",
+  other: "GENERAL",
+};
+
 // 재활용 가능 여부 판별용 가이드 집합
 const RECYCLABLE_GUIDE_KEYS = new Set<GuideKey>([
   "plastic",
@@ -326,8 +336,8 @@ export function AnalyzePage() {
       const timeStr = now.toTimeString().split(" ")[0]; // HH:mm:ss
       // 메모를 비워서 저장
       const memoText = "";
-      // 서버가 반환한 카테고리를 직접 사용 (변환 없이)
-      const apiCategory = (result.serverCategory as CategoryType) || "GENERAL";
+      // 로컬 카테고리를 API CategoryType으로 변환 (서버 class 명과 무관하게 안전 전송)
+      const apiCategory = CATEGORY_TO_API[result.categoryId] ?? "GENERAL";
 
       createPlanMutation.mutate(
         {

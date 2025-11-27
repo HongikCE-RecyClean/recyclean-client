@@ -125,6 +125,17 @@ const LEGACY_MATERIAL_LABEL_MAP: Record<string, MaterialId> = {
   "\ubc30\ud130\ub9ac": "battery",
   "\uc804\uc790\uc81c\ud488": "electronics",
   "\ud615\uad11\ub4f1": "fluorescentLamp",
+  // 서버 AI class명 대응 (영문 소문자)
+  pet: "petBottle",
+  plastic: "plasticContainer",
+  styrofoam: "styrofoam",
+  vinyl: "vinyl",
+  glass: "glassBottle",
+  paper: "paper",
+  can: "can",
+  battery: "battery",
+  fluorescent: "fluorescentLamp",
+  fluorescent_tube: "fluorescentLamp",
   "\uae30\ud0c0": "other",
 };
 
@@ -141,11 +152,16 @@ const LEGACY_CATEGORY_LABEL_MAP: Record<string, MaterialCategoryId> = {
 // API_SPEC3 기준: CAN, PAPER, PLASTIC, GLASS, GENERAL, ELECTRONICS, METAL, CLOTHING
 export const API_CATEGORY_TO_LOCAL: Record<string, MaterialCategoryId> = {
   PLASTIC: "plastic",
+  PET: "plastic",
+  VINYL: "plastic",
+  STYROFOAM: "plastic",
   PAPER: "paper",
   GLASS: "glass",
   METAL: "metal",
   CAN: "metal", // CAN은 금속으로 분류
   ELECTRONICS: "electronic",
+  BATTERY: "electronic",
+  FLUORESCENT_TUBE: "electronic",
   CLOTHING: "textile",
   GENERAL: "other",
 };
@@ -200,6 +216,9 @@ export function translateCategory(category: string): MaterialCategoryId {
   if (normalized.includes("plastic") || normalized.includes("pet")) {
     return "plastic";
   }
+  if (normalized.includes("vinyl") || normalized.includes("styrofoam")) {
+    return "plastic";
+  }
   if (normalized.includes("paper") || normalized.includes("carton")) {
     return "paper";
   }
@@ -216,7 +235,11 @@ export function translateCategory(category: string): MaterialCategoryId {
   ) {
     return "textile";
   }
-  if (normalized.includes("electronic") || normalized.includes("battery")) {
+  if (
+    normalized.includes("electronic") ||
+    normalized.includes("battery") ||
+    normalized.includes("fluorescent")
+  ) {
     return "electronic";
   }
 

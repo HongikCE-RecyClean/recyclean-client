@@ -54,11 +54,16 @@ const CATEGORY_TO_API: Record<MaterialCategoryId, CategoryType> = {
 // 서버 카테고리 name을 로컬 MaterialCategoryId로 매핑
 const API_TO_CATEGORY: Record<string, MaterialCategoryId> = {
   PLASTIC: "plastic",
+  PET: "plastic",
+  VINYL: "plastic",
+  STYROFOAM: "plastic",
   PAPER: "paper",
   METAL: "metal",
   GLASS: "glass",
   CLOTHING: "textile",
   ELECTRONICS: "electronic",
+  BATTERY: "electronic",
+  FLUORESCENT_TUBE: "electronic",
   GENERAL: "other",
   CAN: "metal", // CAN은 metal로 매핑
 };
