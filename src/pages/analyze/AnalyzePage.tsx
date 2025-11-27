@@ -149,18 +149,21 @@ export function AnalyzePage() {
       const categoryId = translateCategory(prediction.category);
       const guideKey = resolveGuideKey(categoryId);
       const categoryLabel = t(`materials.categories.${categoryId}`);
-      const item = t(`analyze.guides.${guideKey}.item`, { defaultValue: categoryLabel });
+      const materialId = matchMaterialType(prediction.category, categoryId);
+      const materialLabel = t(`materials.items.${materialId}`, { defaultValue: "" });
+      const item =
+        materialLabel || t(`analyze.guides.${guideKey}.item`, { defaultValue: categoryLabel });
+      const categoryText = materialLabel || categoryLabel;
       const instructions = t(`analyze.guides.${guideKey}.instructions`, {
         defaultValue: t("analyze.result.defaultInstructions"),
       });
       const rawTips = t(`analyze.guides.${guideKey}.tips`, { defaultValue: "" });
-      const materialId = matchMaterialType(prediction.category, categoryId);
 
       return {
         item,
         materialId,
         categoryId,
-        category: categoryLabel,
+        category: categoryText,
         confidence: formatConfidence(prediction.confidence),
         recyclable: RECYCLABLE_GUIDE_KEYS.has(guideKey),
         instructions,

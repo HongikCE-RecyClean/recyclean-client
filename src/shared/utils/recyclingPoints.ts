@@ -249,6 +249,11 @@ export function translateCategory(category: string): MaterialCategoryId {
 
 export function matchMaterialType(item: string, category?: string): MaterialId {
   if (item) {
+    const normalizedId = normalizeMaterialId(item);
+    if (normalizedId !== "other") {
+      return normalizedId;
+    }
+
     const normalized = item.toLowerCase();
     for (const matcher of MATERIAL_MATCHERS) {
       if (matcher.keywords.some((keyword) => normalized.includes(keyword))) {
