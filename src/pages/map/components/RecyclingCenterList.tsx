@@ -41,9 +41,8 @@ export function RecyclingCenterList({
 
   useEffect(() => {
     // 새 데이터 로딩 시 기본 상태로 접기
-    if (!showAllCenters) return;
     setShowAllCenters(false);
-  }, [centers.length, showAllCenters]);
+  }, [centers.length]);
 
   const formatDistanceLabel = (distance: string) => {
     const match = distance.match(/([\\d.,]+)/);
