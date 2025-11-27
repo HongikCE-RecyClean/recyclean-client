@@ -1,4 +1,4 @@
-import { type ChangeEvent, useMemo, useState } from "react";
+import { type ChangeEvent, useEffect, useMemo, useState } from "react";
 import { Clock, Navigation, Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { CardTitle } from "../../../shared/ui/Card/Card";
@@ -11,6 +11,8 @@ import { SectionCard, SectionCardContent, SectionCardHeader } from "../MapPage.s
 import * as S from "./RecyclingCenterList.styles";
 import { useNotificationStore } from "shared/state/notificationStore";
 import { useNumberFormatter } from "shared/utils/numberFormat";
+
+const CENTER_PREVIEW_COUNT = 2; // 기본 노출할 센터 개수 상수
 
 interface RecyclingCenterListProps {
   centers: RecyclingCenter[];
@@ -31,11 +33,17 @@ export function RecyclingCenterList({
   const formatNumber = useNumberFormatter({ maximumFractionDigits: 1 });
   const [showAllCenters, setShowAllCenters] = useState(false); // 센터 더보기 토글 상태
 
-  const hasHiddenCenters = centers.length > 2; // 두 개 초과 여부
+  const hasHiddenCenters = centers.length > CENTER_PREVIEW_COUNT; // 기준 개수 초과 여부
   const visibleCenters = useMemo(
-    () => (showAllCenters ? centers : centers.slice(0, 2)), // 기본 2개만 노출
+    () => (showAllCenters ? centers : centers.slice(0, CENTER_PREVIEW_COUNT)), // 기본 2개만 노출
     [centers, showAllCenters],
   );
+
+  useEffect(() => {
+    // 새 데이터 로딩 시 기본 상태로 접기
+    if (!showAllCenters) return;
+    setShowAllCenters(false);
+  }, [centers.length, showAllCenters]);
 
   const formatDistanceLabel = (distance: string) => {
     const match = distance.match(/([\\d.,]+)/);
