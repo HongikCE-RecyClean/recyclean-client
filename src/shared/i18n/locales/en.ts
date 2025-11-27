@@ -430,6 +430,8 @@ export const enTranslation = {
       directions: "Directions",
       call: "Call",
       callUnavailable: "Calling is not ready yet.",
+      showMore: "Show more",
+      showLess: "Show less",
     },
     errors: {
       title: "Unable to load map data",

@@ -443,6 +443,8 @@ export const frTranslation = {
       directions: "Itinéraire",
       call: "Appeler",
       callUnavailable: "La fonction d'appel n'est pas encore prête.",
+      showMore: "Afficher plus",
+      showLess: "Afficher moins",
     },
     errors: {
       title: "Impossible de charger les données de la carte",

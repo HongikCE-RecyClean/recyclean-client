@@ -429,6 +429,8 @@ export const koTranslation = {
       directions: "길 찾기",
       call: "전화하기",
       callUnavailable: "아직 준비중이에요!",
+      showMore: "더보기",
+      showLess: "접기",
     },
     errors: {
       title: "지도 데이터를 불러오지 못했어요",

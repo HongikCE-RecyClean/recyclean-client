@@ -144,6 +144,13 @@ export const CenterGrid = styled.div`
   gap: ${({ theme }) => theme.spacing(4)};
 `;
 
+// 센터 더보기 버튼 정렬 래퍼
+export const CenterMoreWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: ${({ theme }) => theme.spacing(2)};
+`;
+
 // 센터 카드 컴포넌트 스타일 정의
 export const CenterCard = styled(Card)`
   overflow: hidden;

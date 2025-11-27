@@ -1,4 +1,4 @@
-import { type ChangeEvent } from "react";
+import { type ChangeEvent, useMemo, useState } from "react";
 import { Clock, Navigation, Phone } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { CardTitle } from "../../../shared/ui/Card/Card";
@@ -29,6 +29,13 @@ export function RecyclingCenterList({
   const { t } = useTranslation();
   const { showSnackbar } = useNotificationStore();
   const formatNumber = useNumberFormatter({ maximumFractionDigits: 1 });
+  const [showAllCenters, setShowAllCenters] = useState(false); // 센터 더보기 토글 상태
+
+  const hasHiddenCenters = centers.length > 2; // 두 개 초과 여부
+  const visibleCenters = useMemo(
+    () => (showAllCenters ? centers : centers.slice(0, 2)), // 기본 2개만 노출
+    [centers, showAllCenters],
+  );
 
   const formatDistanceLabel = (distance: string) => {
     const match = distance.match(/([\\d.,]+)/);
@@ -151,7 +158,7 @@ export function RecyclingCenterList({
          */}
 
         <S.CenterGrid>
-          {centers.map((center) => {
+          {visibleCenters.map((center) => {
             // 고화질 로고 기본 이미지를 준비
             const logoFallback = createLogoFallback(center.name);
 
@@ -217,6 +224,17 @@ export function RecyclingCenterList({
             );
           })}
         </S.CenterGrid>
+        {hasHiddenCenters && (
+          <S.CenterMoreWrapper>
+            <Button
+              variant="text"
+              size="sm"
+              onClick={() => setShowAllCenters((prev) => !prev)} // 토글 전환
+            >
+              {showAllCenters ? t("map.centers.showLess") : t("map.centers.showMore")}
+            </Button>
+          </S.CenterMoreWrapper>
+        )}
       </SectionCardContent>
     </SectionCard>
   );

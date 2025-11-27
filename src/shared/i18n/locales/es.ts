@@ -443,6 +443,8 @@ export const esTranslation = {
       directions: "Cómo llegar",
       call: "Llamar",
       callUnavailable: "La función de llamada aún no está lista.",
+      showMore: "Ver más",
+      showLess: "Ver menos",
     },
     errors: {
       title: "No se pudieron cargar los datos del mapa",
