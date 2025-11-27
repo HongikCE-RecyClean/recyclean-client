@@ -84,68 +84,6 @@ function dataUrlToFile(dataUrl: string): File | null {
   return new File([buffer], `capture-${Date.now()}.jpg`, { type: mime });
 }
 
-const MAX_UPLOAD_DIMENSION = 1280;
-const DEFAULT_UPLOAD_QUALITY = 0.7;
-
-async function blobToDataUrl(blob: Blob): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = () => reject(new Error("blob to dataURL failed"));
-    reader.readAsDataURL(blob);
-  });
-}
-
-async function loadImageElement(src: string): Promise<HTMLImageElement> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error("image load failed"));
-    img.src = src;
-  });
-}
-
-async function compressImageForUpload(
-  file: Blob,
-  options?: { maxSize?: number; quality?: number },
-): Promise<File | Blob> {
-  if (!file.type?.startsWith("image/")) {
-    return file;
-  }
-
-  const maxSize = options?.maxSize ?? MAX_UPLOAD_DIMENSION;
-  const quality = options?.quality ?? DEFAULT_UPLOAD_QUALITY;
-
-  const dataUrl = await blobToDataUrl(file);
-  const image = await loadImageElement(dataUrl);
-  const longestSide = Math.max(image.width, image.height);
-  const scale = longestSide > maxSize ? maxSize / longestSide : 1;
-  const targetWidth = Math.max(1, Math.round(image.width * scale));
-  const targetHeight = Math.max(1, Math.round(image.height * scale));
-
-  const canvas = document.createElement("canvas");
-  canvas.width = targetWidth;
-  canvas.height = targetHeight;
-
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    return file;
-  }
-
-  ctx.drawImage(image, 0, 0, targetWidth, targetHeight);
-
-  const compressedBlob = await new Promise<Blob | null>((resolve) =>
-    canvas.toBlob((blob) => resolve(blob), "image/jpeg", quality),
-  );
-
-  if (!compressedBlob) {
-    return file;
-  }
-
-  const filename = file instanceof File ? file.name : "upload.jpg";
-  return new File([compressedBlob], filename, { type: "image/jpeg" });
-}
-
 // 신뢰도 임계값 (0~1 스케일, 40% = 0.4)
 const LOW_CONFIDENCE_THRESHOLD = 0.4;
 
@@ -240,12 +178,8 @@ export function AnalyzePage() {
       analysisAbortRef.current = controller;
 
       try {
-        const optimizedSource = await compressImageForUpload(source);
-
-        if (controller.signal.aborted) return;
-
         const rawPredictions = await aiLabelingMutation.mutateAsync({
-          file: optimizedSource,
+          file: source,
           signal: controller.signal,
         });
 
