@@ -108,6 +108,7 @@ export function AnalyzePage() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const objectUrlRef = useRef<string | null>(null);
   const analysisAbortRef = useRef<AbortController | null>(null);
+  const scrollAnchorRef = useRef<HTMLDivElement | null>(null);
 
   // 경고 메시지를 스낵바로 통일해 노출
   const showWarning = useCallback(
@@ -451,6 +452,17 @@ export function AnalyzePage() {
   const isBusy = isScanning || isCameraActive;
   const showActions = !capturedImage && !result && !isCameraPanelOpen;
   const showCameraPanel = isCameraPanelOpen && !capturedImage && !result;
+  const hasDynamicSection =
+    Boolean(capturedImage) || isScanning || Boolean(result) || predictions.length > 0;
+
+  useEffect(() => {
+    if (!hasDynamicSection) return;
+    // 새 콘텐츠가 추가될 때 하단으로 부드럽게 스크롤 이동 처리
+    const frameId = requestAnimationFrame(() => {
+      scrollAnchorRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, [hasDynamicSection, capturedImage, isScanning, result, predictions.length]);
 
   // 분석 페이지 UI 렌더링 시작
   return (
@@ -536,6 +548,7 @@ export function AnalyzePage() {
           </S.SectionCardContent>
         </S.SectionCard>
       )}
+      <div ref={scrollAnchorRef} aria-hidden />
     </S.PageContainer>
   );
 }
